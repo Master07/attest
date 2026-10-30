@@ -41,6 +41,7 @@ function producerPrompt(appPath: string, report: string, feedback: string | null
     `Bug report from a customer: "${report}"`,
     "",
     `Fix the bug by changing files in ${appPath} only, and add or update a unit test (node:test, run with \`npm test\` in ${appPath}). Keep the change small. When done, reply with a one-paragraph summary of the root cause and the fix.`,
+    "You are running headless: you cannot open a browser, and nobody can approve commands. Do not start servers or other long-running processes; read the code and run the unit tests instead.",
   ];
   if (feedback !== null) lines.push("", feedback);
   return lines.join("\n");

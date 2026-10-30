@@ -16,6 +16,7 @@ export interface AttemptOptions {
   model: string;
   maxSteps: number;
   logFile: string;          // Muse Code's JSONL event stream is written here
+  timeoutMs?: number;       // default 15 minutes
 }
 
 export interface AttemptResult {
@@ -43,15 +44,41 @@ function museBin(): string {
 
 const quote = (s: string): string => (/[\s"&|<>^]/.test(s) ? `"${s.replace(/"/g, '\\"')}"` : s);
 
-function runMuse(args: string[], cwd: string, logFile: string): Promise<number> {
+function killTree(pid: number | undefined): void {
+  if (pid === undefined) return;
+  if (process.platform === "win32") spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)], { windowsHide: true });
+  else {
+    try {
+      process.kill(-pid, "SIGKILL");
+    } catch {
+      // already gone
+    }
+  }
+}
+
+/** Resolves with the exit code, or "timeout" if Muse Code ran longer than `timeoutMs` (e.g. stuck on an approval). */
+function runMuse(args: string[], cwd: string, logFile: string, timeoutMs: number): Promise<number | "timeout"> {
   return new Promise((resolvePromise, reject) => {
     const out = createWriteStream(logFile);
     // muse.cmd is a batch file on Windows, so it needs a shell; arguments are quoted above.
-    const child = spawn([museBin(), ...args].map(quote).join(" "), { cwd, shell: true, windowsHide: true });
+    const child = spawn([museBin(), ...args].map(quote).join(" "), {
+      cwd, shell: true, windowsHide: true, detached: process.platform !== "win32",
+    });
+    let timedOut = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      killTree(child.pid);
+    }, timeoutMs);
     child.stdout.pipe(out);
     child.stderr.pipe(out);
-    child.on("error", reject);
-    child.on("close", (code) => out.end(() => resolvePromise(code ?? 1)));
+    child.on("error", (err) => {
+      clearTimeout(timer);
+      reject(err);
+    });
+    child.on("close", (code) => {
+      clearTimeout(timer);
+      out.end(() => resolvePromise(timedOut ? "timeout" : (code ?? 1)));
+    });
   });
 }
 
@@ -87,11 +114,13 @@ export async function runProducerAttempt(opts: AttemptOptions): Promise<AttemptR
 
     const args = ["exec", "--workspace", dir, "--prompt-file", promptFile, "--model", opts.model,
       "--max-model-steps", String(opts.maxSteps), "--json", ...opts.images.flatMap((p) => ["--image", p])];
-    const code = await runMuse(args, dir, opts.logFile);
+    const timeoutMs = opts.timeoutMs ?? 15 * 60_000;
+    const code = await runMuse(args, dir, opts.logFile, timeoutMs);
 
     const parsed = parseMuseLog(readFileSync(opts.logFile, "utf8"));
     result.summary = parsed.summary;
     result.usage = parsed.usage;
+    if (code === "timeout") return { ...result, error: `muse exec did not finish within ${timeoutMs / 60_000} minutes` };
     if (code !== 0) return { ...result, error: `muse exec exited with ${code}` };
 
     git(["add", "-A"], dir);
