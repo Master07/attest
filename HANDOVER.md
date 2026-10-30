@@ -3,7 +3,7 @@
 > **Read this first** if you are an AI coding agent (Claude Code, Command Code, Muse Code, or another) picking up Attest. It is the single source of truth for current state, rules, and the next task. **Update the Progress log at the end of every work session**, and keep "Current state" accurate.
 
 - **Repo:** https://github.com/Master07/attest (private; must be **public** before submission)
-- **Local path:** `%USERPROFILE%\OneDrive\Documents\attest` (Windows 11, PowerShell 5.1)
+- **Local path:** `C:\dev\attest` (Windows 11, PowerShell 5.1). Moved out of OneDrive on 2026-10-31 because OneDrive locks git worktree metadata; the old `%USERPROFILE%\OneDrive\Documents\attest` copy is retired — don't work there.
 - **Deadline:** **Nov 4, 2026, 9:00 PM ET** (Nov 5, 7:30 AM IST) — Meta Global AI Developer Hackathon, **Indie** track, theme **Push the Frontier**
 - **Last updated:** 2026-10-31 by Claude Code
 
