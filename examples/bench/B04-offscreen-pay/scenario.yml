@@ -1,0 +1,13 @@
+id: B04
+title: Pay button is off-screen on desktop
+category: layout
+bug_report: "On my laptop the Pay button is missing; I can only see the order summary."
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation

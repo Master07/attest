@@ -1,0 +1,13 @@
+id: B03
+title: Discount applied twice
+category: state
+bug_report: "With the SAVE10 code my total comes out at $72.09 instead of $80.10, and payment fails."
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation

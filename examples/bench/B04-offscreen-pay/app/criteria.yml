@@ -1,0 +1,9 @@
+id: bench-b04
+criteria:
+  - id: pay-completes
+    given: A cart with one item at /cart
+    when: The user clicks "Pay"
+    then: The Pay button is on screen and clicking it shows an order number
+    expect:
+      url: /order-confirmation
+      network: { method: POST, path: /api/pay, status: 200 }

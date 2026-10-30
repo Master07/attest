@@ -1,0 +1,13 @@
+id: B02
+title: Redirect after payment goes to a 404
+category: navigation
+bug_report: "Payment goes through, then I get a Not found page instead of my order."
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation

@@ -1,0 +1,13 @@
+id: B01
+title: Pay button stays disabled
+category: state
+bug_report: "The Pay button is greyed out and I can't click it."
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation

@@ -1,0 +1,11 @@
+{
+  "name": "bench-b04",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Benchmark scenario B04",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}

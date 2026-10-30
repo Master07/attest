@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your cart · Northwind Supply</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">Northwind Supply</span>
+    <nav><a href="/cart">Cart (1)</a></nav>
+  </header>
+
+  <main class="page">
+    <h1>Your cart</h1>
+
+    <div class="layout">
+      <section class="items" aria-label="Cart items">
+        <article class="item">
+          <div class="thumb" aria-hidden="true">👟</div>
+          <div class="item__info">
+            <h2>Trail Runner Shoes</h2>
+            <p class="muted">Size 9 · Slate grey</p>
+          </div>
+          <div class="item__price">$89.00</div>
+        </article>
+      </section>
+
+      <aside class="summary" aria-label="Order summary">
+        <h2>Order summary</h2>
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd>$89.00</dd></div>
+          <div><dt>Shipping</dt><dd>Free</dd></div>
+          <div class="total"><dt>Total</dt><dd id="total">$89.00</dd></div>
+        </dl>
+        <form id="checkout" class="checkout">
+          <label for="email">Email for the receipt</label>
+          <input id="email" name="email" type="email" pattern="[A-Z]+@[A-Z]+" required placeholder="you@example.com" />
+          <button id="pay" data-test="pay" class="pay" type="submit">Pay $89.00</button>
+          <p id="status" class="status" role="status"></p>
+        </form>
+      </aside>
+    </div>
+  </main>
+
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+import { sendPayment } from "./pay-handler.js";
+
+const pay = document.querySelector("#pay");
+const status = document.querySelector("#status");
+
+const total = "89.00";
+const limit = "500";
+if (total > limit) pay.disabled = true;
+
+pay.addEventListener("click", async () => {
+  pay.disabled = true;
+  status.textContent = "Processing…";
+
+  const result = await sendPayment(fetch);
+  if (!result.ok) {
+    status.textContent = "Payment failed. Please try again.";
+    pay.disabled = false;
+    return;
+  }
+
+  location.assign("/order-confirmation?order=" + result.order);
+});
