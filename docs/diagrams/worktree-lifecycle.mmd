@@ -1,0 +1,7 @@
+stateDiagram-v2
+  [*] --> operation_requested
+  operation_requested --> prepared
+  prepared --> lease_active
+  lease_active --> workspace_scope_activated
+  workspace_scope_activated --> committed
+  committed --> [*]

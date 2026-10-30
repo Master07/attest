@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Attest — Every PR ships with proof</title>
+<style>
+  :root{
+    --bg:#0a0d14; --panel:#121826; --panel2:#0f1522; --line:#22304a;
+    --txt:#e6edf7; --dim:#93a4c2; --dim2:#6d7f9e;
+    --blue:#4d8dff; --blue2:#86b4ff; --green:#33d39a; --amber:#ffb648; --purple:#b48cff; --red:#ff6b81;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 700px at 70% -10%,#16233d 0%,var(--bg) 55%);color:var(--txt);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;padding:52px 22px 90px}
+  .wrap{max-width:1000px;margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+  h1{font-size:46px;line-height:1.08;margin:0 0 14px;letter-spacing:-.03em}
+  h1 .grad{background:linear-gradient(92deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:19px;color:var(--dim);max-width:760px}
+  h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim2);margin:52px 0 14px;font-weight:600}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .btn{display:inline-block;font-size:14px;font-weight:600;padding:10px 18px;border-radius:10px;text-decoration:none;border:1px solid var(--line);color:var(--txt);background:var(--panel2)}
+  .btn.primary{background:linear-gradient(92deg,#2f6fe0,#4d8dff);border-color:#3f7bef;color:#fff}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:20px}
+  .grid{display:grid;gap:14px}
+  .g4{grid-template-columns:repeat(4,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:880px){.g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:1fr} .g2{grid-template-columns:1fr}}
+  @media(max-width:560px){.g4{grid-template-columns:1fr}}
+  .step .num{font-family:var(--mono);font-size:12px;color:var(--blue2)}
+  .step h4{margin:6px 0 6px;font-size:16px}
+  .step p{margin:0;color:var(--dim);font-size:14px}
+  .impact{font-size:34px;font-weight:700;letter-spacing:-.02em;background:linear-gradient(92deg,var(--red),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .impact-l{color:var(--dim);font-size:13.5px;margin-top:6px}
+  .diff h4{margin:0 0 6px;font-size:15px;display:flex;gap:8px;align-items:center}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(51,211,154,.12)}
+  .diff p{margin:0;color:var(--dim);font-size:13.5px}
+  table{width:100%;border-collapse:collapse;font-size:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:#0e1626;color:var(--dim);font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+  tbody tr:last-child td{border-bottom:none}
+  .mono{font-family:var(--mono);font-size:12.5px;color:var(--blue2)}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--mono);font-size:13px}
+  .node{border:1px solid var(--line);background:var(--panel2);border-radius:10px;padding:9px 13px;color:var(--txt)}
+  .arrow{color:var(--dim2)}
+  .node.hot{border-color:#3f7bef;box-shadow:0 0 0 3px rgba(77,141,255,.12)}
+  .node.ver{border-color:#3f3165;background:#171233;color:var(--purple)}
+  .pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--dim);margin:0 6px 6px 0}
+  footer{margin-top:56px;color:var(--dim2);font-size:12.5px;border-top:1px solid var(--line);padding-top:18px}
+  footer a{color:var(--blue2);text-decoration:none}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:640px){.stat-row{grid-template-columns:1fr}}
+  .kv{font-family:var(--mono);font-size:12px;color:var(--dim2);text-transform:uppercase;letter-spacing:.1em}
+  .kv-v{font-size:20px;font-weight:650;margin-top:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Meta Global AI Developer Hackathon · Muse Code</div>
+  <h1>Attest — <span class="grad">every PR ships with proof.</span></h1>
+  <p class="lede">An autonomous delivery agent that won't call a task done until a <b>computer-use verifier</b> has driven the running app and confirmed it — then hands you a replayable record of how it passed.</p>
+
+  <div class="hero-cta">
+    <a class="btn primary" href="#how">How it works</a>
+    <a class="btn" href="#why">Why this stack</a>
+    <a class="btn" href="#models">Models</a>
+  </div>
+
+  <h2>The problem</h2>
+  <div class="grid g2">
+    <div class="card">
+      <div class="impact">&lt;55%</div>
+      <div class="impact-l">share of logical mutants caught by frontier agents' own tests — so code passes CI and still doesn't work. <span class="mono">[nielstron, 2026]</span></div>
+    </div>
+    <div class="card">
+      <div style="font-size:16px;font-weight:600">Generation got solved. Trust didn't.</div>
+      <p style="color:var(--dim);font-size:14px;margin:8px 0 0">Agents write code faster than anyone can review it. The bottleneck is no longer <i>producing</i> a change — it's believing it works. Attest makes <b>“done” = verified in the running app</b>, not green CI.</p>
+    </div>
+  </div>
+
+  <h2>The loop</h2>
+  <div class="grid g4">
+    <div class="card step"><div class="num">01</div><h4>Plan</h4><p>Grounded in the real repo, approval-gated before any code changes.</p></div>
+    <div class="card step"><div class="num">02</div><h4>Fan out</h4><p>One write-capable subagent per task, each in its <b>own isolated git worktree</b>.</p></div>
+    <div class="card step"><div class="num">03</div><h4>Verify</h4><p>A <b>separate</b> computer-use agent boots the app, drives the flow, confirms the UI with SAM 3.1.</p></div>
+    <div class="card step"><div class="num">04</div><h4>Attest</h4><p>Evidence derived from the event log: diff + execution trace + before/after video.</p></div>
+  </div>
+
+  <h2>Flow</h2>
+  <div class="card">
+    <div class="flow">
+      <span class="node">work item</span><span class="arrow">→</span>
+      <span class="node hot">plan</span><span class="arrow">→</span>
+      <span class="node hot">fan-out · worktrees</span><span class="arrow">→</span>
+      <span class="node">merge</span><span class="arrow">→</span>
+      <span class="node ver">↻ CUA verify</span><span class="arrow">→</span>
+      <span class="node">PR + evidence</span>
+    </div>
+    <p style="color:var(--dim);font-size:13.5px;margin:14px 0 0">Fail the gate → the task <b>reopens automatically</b> with the verifier's evidence attached. The producing agent can never declare its own success.</p>
+  </div>
+
+  <h2 id="why">Why only this stack can build it</h2>
+  <div class="grid g2">
+    <div class="card diff"><h4><span class="dot"></span>Worktree fan-out</h4><p>Real parallel isolation — workers never collide, the parent's copy stays clean, merges are explicit.</p></div>
+    <div class="card diff"><h4><span class="dot"></span>Replayable event log</h4><p>The attestation is <b>derived from the log</b>, not written beside it — so the model can't fake the evidence.</p></div>
+    <div class="card diff"><h4><span class="dot"></span>Computer-use</h4><p>Verification at the level the user experiences: the running app, driven like a person would.</p></div>
+    <div class="card diff"><h4><span class="dot"></span>Multimodal in / out</h4><p>A screen recording of the desired behaviour goes in; a proof video comes out.</p></div>
+  </div>
+
+  <h2 id="models">Right-sized spend — route by role</h2>
+  <table>
+    <thead><tr><th>Role</th><th>Model</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Parallel workers, tight loops</td><td class="mono">muse-spark-1.3</td><td>Fast, cheap, strong agentic coding — the default</td></tr>
+      <tr><td>Merge / hard reasoning (the ~5%)</td><td class="mono">Muse Wonder Full</td><td>Deepest reasoning; plan-gated</td></tr>
+      <tr><td>UI confirmation</td><td class="mono">sam-3.1</td><td>Segment what's actually on screen</td></tr>
+      <tr><td>App / evidence assets</td><td class="mono">muse-image-1.0</td><td>Generate and edit imagery</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:14px">
+    <span class="pill">1M-token context</span>
+    <span class="pill">Contributor tier ≈ $0.10 / $0.20 per Mtok</span>
+    <span class="pill">Runs stay in the low single-digit dollars</span>
+  </p>
+
+  <h2>Status</h2>
+  <div class="stat-row">
+    <div class="card"><div class="kv">Build</div><div class="kv-v">Hackathon</div><div class="impact-l">Loop in progress — docs first, then code.</div></div>
+    <div class="card"><div class="kv">Repo</div><div class="kv-v mono">/attest</div><div class="impact-l">Full doc set + SDK layer.</div></div>
+    <div class="card"><div class="kv">License</div><div class="kv-v">MIT</div><div class="impact-l">Open pattern, shareable.</div></div>
+  </div>
+
+  <footer>
+    Attest · verified delivery for coding agents · prepared for the Meta Global AI Developer Hackathon, 2026-10-27.<br>
+    Sources: Meta Model API docs · Meta AI Research · Latent Space (Artificial Analysis &amp; Vals AI evals) · nielstron (mutant-gap). Vendor benchmarks are directional.
+  </footer>
+
+</div>
+</body>
+</html>

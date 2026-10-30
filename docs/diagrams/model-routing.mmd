@@ -1,0 +1,15 @@
+flowchart LR
+  subgraph META["Meta Model API"]
+    SPARK["muse-spark-1.3<br/>verifier: computer use<br/>drafter: video input"]
+    SAM["sam-3.1<br/>UI confirmation"]
+  end
+  subgraph BASETEN["Baseten (open weights)"]
+    OPEN["meta-models/muse-spark-open-1026<br/>independent judge"]
+  end
+  CRIT["Criteria + app URL<br/>(never code)"] --> SPARK
+  SHOTS["Screenshots"] --> SAM
+  SHOTS --> OPEN
+  CRIT --> OPEN
+  SPARK --> V["Verdict combiner"]
+  SAM --> V
+  OPEN --> V
