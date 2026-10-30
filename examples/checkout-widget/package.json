@@ -1,0 +1,11 @@
+{
+  "name": "checkout-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tiny checkout app with a covered Pay button, used to demo Attest's Red/Green/Break proof.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}
