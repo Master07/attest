@@ -64,8 +64,8 @@ function parseExpect(value: unknown, label: string): Expect {
 
   if (value["visible"] !== undefined) {
     const visible = value["visible"];
-    if (!Array.isArray(visible) || visible.length === 0) {
-      throw new CriteriaError(`${label}: expect.visible must be a non-empty array of strings`);
+    if (!Array.isArray(visible)) {
+      throw new CriteriaError(`${label}: expect.visible must be an array of strings`);
     }
     expect.visible = visible.map((entry, index) =>
       requireNonEmptyString(entry, label, `expect.visible[${index}]`),

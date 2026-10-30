@@ -87,7 +87,7 @@ async function git(args: string[], cwd: string): Promise<RunResult> {
   try {
     return await spawnOnce("git", args, { cwd });
   } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT" && process.platform === "win32") {
       return spawnOnce(GIT_FALLBACK, args, { cwd });
     }
     throw err;
@@ -172,12 +172,12 @@ export async function startWorkspace(opts: StartOptions): Promise<Workspace> {
       // best effort
     }
     try {
-      await git(["worktree", "prune"], repoRoot);
+      await rm(dir, { recursive: true, force: true });
     } catch {
       // best effort
     }
     try {
-      await rm(dir, { recursive: true, force: true });
+      await git(["worktree", "prune"], repoRoot);
     } catch {
       // best effort
     }

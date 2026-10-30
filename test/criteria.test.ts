@@ -80,6 +80,25 @@ test("empty criteria is rejected", async () => {
   });
 });
 
+test("an empty visible list is accepted", async () => {
+  const yaml = [
+    "id: empty-visible",
+    "criteria:",
+    "  - id: a-criterion",
+    "    given: x",
+    "    when: y",
+    "    then: z",
+    "    expect:",
+    "      visible: []",
+    "",
+  ].join("\n");
+
+  await withTempFile(yaml, (path) => {
+    const file = loadCriteria(path);
+    assert.deepEqual(file.criteria[0]?.expect?.visible, []);
+  });
+});
+
 test("missing then names the criterion", async () => {
   const broken = [
     "id: checkout-pay-button",

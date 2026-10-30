@@ -189,7 +189,9 @@ export async function launchBrowser(viewport: { width: number; height: number })
     },
 
     async locate(selector: string): Promise<{ x: number; y: number } | null> {
-      const box = await page.locator(selector).first().boundingBox();
+      const locator = page.locator(selector);
+      if ((await locator.count()) === 0) return null;
+      const box = await locator.first().boundingBox();
       if (box === null) return null;
       return { x: Math.round(box.x + box.width / 2), y: Math.round(box.y + box.height / 2) };
     },
