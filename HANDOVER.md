@@ -73,7 +73,7 @@ Read, in this order: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (the design �
 
 Each task lists what "done" means. Do them in order; tick them in the Progress log.
 
-> **Status (2026-10-31):** T1–T5 done; the verifier works against the real Meta API. **Next: Day 2 (T6–T10), the gate.** T7 (`verdict.ts`) and T10 (`receipt.ts`) are design-critical — keep them with Claude Code; T6, T8 and T9 can be handed off with a brief like VALIDATION_FROM_CLAUDE.md.
+> **Status (2026-10-31):** T1–T5 done; the verifier works against the real Meta API. **Next: Day 2 (T6–T10), the gate.** **T6 and T9 are assigned to Command Code** — exact specs in **[VALIDATION_FROM_CLAUDE_T6_T9.md](VALIDATION_FROM_CLAUDE_T6_T9.md)** (overrides the short T6/T9 lines below). T7 (`verdict.ts`), T8 (proof runner) and T10 (`receipt.ts`) stay with Claude Code.
 
 ### Day 1 (Nov 1) — core plumbing
 
