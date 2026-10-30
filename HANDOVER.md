@@ -77,7 +77,7 @@ Read, in this order: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (the design �
 
 Each task lists what "done" means. Do them in order; tick them in the Progress log.
 
-> **Status (2026-11-01):** **Gate passed; closed loop, SAM 3.1 and the Wonder judge done.** Both demos return `PROVEN` with all four voters agreeing in every phase. **Next:** evidence page (`report.ts`, reuse `ui/evidence.html`) → benchmark incl. a bug whose cause is outside the repo → proof videos → replay mode → README GIF + demo video. Judge moves to Spark Open if a Baseten key arrives (`ATTEST_ROUTE_JUDGE`).
+> **Status (2026-11-01):** **Gate passed; closed loop, SAM 3.1, Wonder judge and evidence page done.** Both demos return `PROVEN` with all four voters agreeing in every phase. **The benchmark is assigned to Command Code** — spec in **[VALIDATION_FROM_CLAUDE_BENCH.md](VALIDATION_FROM_CLAUDE_BENCH.md)**. Claude Code meanwhile: proof videos → replay mode → README GIF + demo video script. Judge moves to Spark Open if a Baseten key arrives (`ATTEST_ROUTE_JUDGE`).
 
 ### Day 1 (Nov 1) — core plumbing
 
