@@ -2,5 +2,6 @@ node_modules/
 dist/
 evidence/
 .muse/
+.attest/
 *.log
 .env
