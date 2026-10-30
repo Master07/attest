@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order confirmed · Northwind Supply</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">Northwind Supply</span>
+  </header>
+
+  <main class="page confirm">
+    <div class="confirm__card">
+      <div class="confirm__tick" aria-hidden="true">✓</div>
+      <h1>Thank you — your order is confirmed</h1>
+      <p class="order">Order <span id="order-number">#—</span></p>
+      <p class="muted">A receipt is on its way to your inbox.</p>
+      <a href="/cart">Back to the shop</a>
+    </div>
+  </main>
+
+  <script>
+    const order = new URLSearchParams(location.search).get("order");
+    if (order) document.getElementById("order-number").textContent = "#" + order;
+  </script>
+</body>
+</html>

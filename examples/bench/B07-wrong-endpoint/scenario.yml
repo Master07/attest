@@ -1,0 +1,13 @@
+id: B07
+title: Payment posts to an endpoint that does not exist
+category: network
+bug_report: "Paying always shows a payment error."
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation

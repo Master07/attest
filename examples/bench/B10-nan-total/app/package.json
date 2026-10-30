@@ -1,0 +1,11 @@
+{
+  "name": "bench-b10",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Benchmark scenario B10",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}

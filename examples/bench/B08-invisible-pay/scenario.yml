@@ -1,0 +1,13 @@
+id: B08
+title: Pay button is invisible after the cart renders
+category: layout
+bug_report: "The order summary has no Pay button at all."
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation

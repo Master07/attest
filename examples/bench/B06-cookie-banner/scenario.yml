@@ -1,0 +1,15 @@
+id: B06
+title: Cookie banner covers Pay and never closes
+category: overlay
+bug_report: "A cookie banner sits over the page. I click Accept and it never goes away, so I can't pay."
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#accept-cookies" }
+    - { wait: 400 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation
