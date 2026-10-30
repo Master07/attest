@@ -64,6 +64,8 @@ Read, in this order: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (the design �
 
 Each task lists what "done" means. Do them in order; tick them in the Progress log.
 
+> **Current hand-off (2026-10-31):** T2–T4 are assigned to Command Code. The exact specs, rules, self-checks and Claude's return checklist are in **[VALIDATION_FROM_CLAUDE.md](VALIDATION_FROM_CLAUDE.md)** — it overrides the short T2–T4 descriptions below. Stop after T4; Claude Code does T5.
+
 ### Day 1 (Nov 1) — core plumbing
 
 **T1. Example app** — `examples/checkout-demo/`
@@ -127,3 +129,4 @@ Before stopping, update §5 and the Progress log, commit, and push. Claude Code 
 |---|---|---|---|
 | 2026-10-31 | Claude Code | Design finalised (proof-of-fix, ARCHITECTURE §1–§15), provider routing in `src/models.ts`, git + private GitHub repo set up, this handover written | see `git log` |
 | 2026-10-31 | Claude Code | **T1 done.** checkout-demo app + three branches. Verified with a real mouse click at the Pay button's centre in headless Edge: `demo/base` and `demo/bad-fix` → click lands on `div.promo`, stays on `/cart`; `demo/fix` → lands on `button.pay`, reaches `/order-confirmation` showing `#1042`. `demo/bad-fix` unit tests: 4/4 pass. Note: Playwright's `locator.click()` refuses covered elements — the CUA path must use `page.mouse.click(x, y)` like a real user. **Next: T2.** | see `git log` |
+| 2026-10-31 | Claude Code | Handed T2–T4 to Command Code with [VALIDATION_FROM_CLAUDE.md](VALIDATION_FROM_CLAUDE.md) (specs, rules, smoke test, return checklist). Baseline for validation: `ca44ebf`. | see `git log` |
