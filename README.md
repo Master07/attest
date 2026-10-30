@@ -30,20 +30,20 @@ Muse Spark 1.3 computer use drives the app; Spark's video input turns a recordin
 
 ## Quickstart
 
+Requires Node 22+, git, and Chromium or Microsoft Edge (Attest launches Edge by default; set `ATTEST_BROWSER_CHANNEL` to change it).
+
 ```bash
-# 1. Install the agent
-curl -fsSL https://dev.meta.ai/install.sh | sh   # macOS/Linux
-# irm https://dev.meta.ai/install.ps1 | iex      # Windows (PowerShell)
+npm install
+cp .env.example .env            # then set MODEL_API_KEY (Meta Model API)
 
-# 2. Authenticate
-muse --version        # verify the CLI
+# Prove the example fix: Red on demo/base, Green on demo/fix, Break on demo/bad-fix
+npm run attest -- prove --app examples/checkout-demo --base demo/base --pr demo/fix --break demo/bad-fix
 
-# 3. Run Attest against a repo
-cd /path/to/your/repo
-attest run "fix the failing checkout test and prove it works in the browser"
+# Check a receipt — no model calls, no API key needed
+npm run attest -- verify evidence/run-<id>/receipt.json
 ```
 
-Full setup: [`docs/SETUP.md`](docs/SETUP.md).
+`prove` writes `receipt.json`, the hash-chained `events.jsonl`, the criteria and every screenshot to `evidence/run-<id>/`. The demo branches only exist locally after `git branch demo/base origin/demo/base` (and the same for `demo/bad-fix`, `demo/fix`) in a fresh clone.
 
 ## Documentation
 
@@ -72,19 +72,27 @@ Full setup: [`docs/SETUP.md`](docs/SETUP.md).
 
 ## Development
 
-The loop is scaffolded in TypeScript and runs end-to-end against a **mock harness** — no API key or Muse Code install needed — so you can watch the plan → fan-out → verify → attest flow execute.
-
 ```bash
-npm install
-npm run typecheck     # tsc --noEmit
-npm run demo          # runs the loop, writes an event log under evidence/
+npm run typecheck                    # tsc --noEmit
+npm test                             # unit tests (no network)
+npm run smoke                        # boots the three demo branches, raw-mouse clicks Pay
+npm run phase -- demo/base red       # one verifier phase against the real API
 ```
 
-The real integration swaps `MockHarness` (`src/harness.ts`) for an adapter over the Muse Code SDK, and `CuaVerifier` (`src/verifier.ts`) is the seam where the live computer-use driver plugs in. Model routing lives in `src/models.ts`. See [ARCHITECTURE](docs/ARCHITECTURE.md).
+| Module | Role |
+|---|---|
+| `src/proof.ts` | Runs Red / Green / Break and seals the receipt |
+| `src/cua.ts`, `src/prompt.ts` | Blind computer-use verifier on `muse-spark-1.3` |
+| `src/checks.ts` | Deterministic URL / network checks |
+| `src/verdict.ts` | Pure vote and verdict logic |
+| `src/eventlog.ts`, `src/receipt.ts` | Hash-chained log; signed receipt and `verify` |
+| `src/workspace.ts`, `src/browser.ts` | Git worktree per ref; Playwright with raw mouse/keyboard |
+
+See [ARCHITECTURE](docs/ARCHITECTURE.md) and [HANDOVER](HANDOVER.md).
 
 ## Status
 
-Hackathon build. The loop is scaffolded in TypeScript and runs against a mock harness; swapping in the Muse Code SDK is the next step. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
+Hackathon build. The core proof works end to end against the real Meta API: `attest prove` on the example app returns `PROVEN`, and `attest verify` rejects any edit to the receipt, log, screenshots or criteria. Not built yet: SAM 3.1 confirmation, the independent judge, the Muse Code closed loop, the benchmark. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Open-source dependencies
 
