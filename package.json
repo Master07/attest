@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Verified delivery for coding agents: plan, fan out, verify, attest.",
+  "description": "Proof-of-fix for AI pull requests: reproduce the bug, confirm the fix, catch a wrong fix, seal a verifiable receipt.",
   "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.json",
     "test": "node --import tsx --test \"test/**/*.test.ts\"",
     "smoke": "tsx scripts/smoke-t4.ts",
-    "phase": "tsx scripts/run-phase.ts"
+    "phase": "tsx scripts/run-phase.ts",
+    "attest": "tsx src/index.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
