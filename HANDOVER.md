@@ -57,6 +57,8 @@ Read, in this order: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (the design �
 | `src/index.ts` | Old CLI (`npm run demo` runs the mock) — to be replaced with `prove` / `verify` |
 | Real Meta API calls | **None yet** |
 | `ui/evidence.html` | Static mockup of an evidence page (Oct 28) — reuse its styling for `report.ts` |
+| `examples/checkout-demo/` | **T1 done.** No-dependency Node app (`server.js`, `public/`), `attest.yml`, `criteria.yml`. Branches `demo/base`, `demo/bad-fix`, `demo/fix` (pushed). `main` holds the base version |
+| Playwright | `playwright` 1.64.1 is a root devDependency. **No bundled browser downloaded** — launch with `channel: "msedge"` (Edge is installed on this PC) |
 
 ## 6. Next tasks, in order
 
@@ -124,3 +126,4 @@ Before stopping, update §5 and the Progress log, commit, and push. Claude Code 
 | Date | Agent | What changed | Commit |
 |---|---|---|---|
 | 2026-10-31 | Claude Code | Design finalised (proof-of-fix, ARCHITECTURE §1–§15), provider routing in `src/models.ts`, git + private GitHub repo set up, this handover written | see `git log` |
+| 2026-10-31 | Claude Code | **T1 done.** checkout-demo app + three branches. Verified with a real mouse click at the Pay button's centre in headless Edge: `demo/base` and `demo/bad-fix` → click lands on `div.promo`, stays on `/cart`; `demo/fix` → lands on `button.pay`, reaches `/order-confirmation` showing `#1042`. `demo/bad-fix` unit tests: 4/4 pass. Note: Playwright's `locator.click()` refuses covered elements — the CUA path must use `page.mouse.click(x, y)` like a real user. **Next: T2.** | see `git log` |

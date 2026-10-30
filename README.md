@@ -91,6 +91,7 @@ Hackathon build. The loop is scaffolded in TypeScript and runs against a mock ha
 | Package | Use | License |
 |---|---|---|
 | [`typescript`](https://www.npmjs.com/package/typescript) | Compiler (dev) | Apache-2.0 |
+| [`playwright`](https://www.npmjs.com/package/playwright) | Browser driver for the verifier | Apache-2.0 |
 | [`tsx`](https://www.npmjs.com/package/tsx) | TypeScript runner (dev) | MIT |
 | [`@types/node`](https://www.npmjs.com/package/@types/node) | Node type definitions (dev) | MIT |
 | `@muse-code/sdk` | Muse Code integration (optional, not yet wired) | Check the package's license on install |
