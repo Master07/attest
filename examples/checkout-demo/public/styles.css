@@ -62,8 +62,10 @@ h1 { margin: 0 0 24px; font-size: 28px; }
 .promo {
   position: absolute; inset: 0; z-index: 10;
   padding: 16px;
+  pointer-events: none; /* the layer is decorative; only the card takes clicks */
 }
 .promo__card {
+  pointer-events: auto;
   background: var(--promo); border: 1px solid var(--promo-line); border-radius: 10px;
   padding: 10px 12px; font-size: 14px;
 }
