@@ -2,7 +2,9 @@ import { spawnSync } from "node:child_process";
 import { copyFileSync, mkdirSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, join, relative, resolve, sep } from "node:path";
 import { launchBrowser } from "./browser.js";
-import type { BrowserSession } from "./browser.js";
+import type { BrowserSession, Overlay } from "./browser.js";
+import { runJudge } from "./judge.js";
+import { judgeVisibility, segment } from "./sam.js";
 import { runAllChecks } from "./checks.js";
 import { loadConfig } from "./config.js";
 import type { AttestConfig } from "./config.js";
@@ -14,7 +16,7 @@ import { pickRoute } from "./models.js";
 import { sha256File, signReceipt } from "./receipt.js";
 import type { CriterionRecord, PhaseRecord, Receipt, ReceiptBody } from "./receipt.js";
 import { combineCriterion, combinePhase, fixVerdict } from "./verdict.js";
-import type { CuaVote, PhaseName } from "./verdict.js";
+import type { CuaVote, PhaseName, Vote } from "./verdict.js";
 import { startWorkspace } from "./workspace.js";
 import type { Workspace } from "./workspace.js";
 
@@ -80,6 +82,8 @@ async function runPhase(
 
     ctx.progress(`${phase}: verifier running`);
     const shots = new Map<number, string>();
+    let firstPng: Buffer | undefined;
+    let lastPng: Buffer | undefined;
     const result = await runVerifier({
       browser,
       criteria,
@@ -89,6 +93,8 @@ async function runPhase(
         const path = join(dir, "shots", `${phase}-${String(step).padStart(2, "0")}.png`);
         writeFileSync(path, png);
         shots.set(step, rel(dir, path));
+        firstPng ??= png;
+        lastPng = png;
         log.append("screenshot", { step, file: rel(dir, path), sha256: sha256File(path) }, phase);
       },
     });
@@ -109,15 +115,68 @@ async function runPhase(
     const checks = runAllChecks(criteria.criteria, records);
     log.append("checks", { final_url: records.finalUrl, results: checks }, phase);
 
+    const clicks = browser.clicks();
+    log.append("clicks", { clicks }, phase);
+
+    // SAM 3.1: is each `expect.visible` element on screen, and did clicks on it actually reach it?
+    const sam = new Map<string, { vote: Vote; notes: string[]; reveal: string | null }>();
+    for (const c of criteria.criteria) {
+      const names = c.expect?.visible ?? [];
+      if (names.length === 0 || firstPng === undefined) continue;
+      const notes: string[] = [];
+      let vote: Vote = "pass";
+      let reveal: string | null = null;
+      for (const name of names) {
+        try {
+          const seg = await segment(firstPng, name);
+          const check = judgeVisibility(name, seg.boxes, clicks);
+          log.append("sam", { criterion: c.id, name, phrase_used: seg.phraseUsed, boxes: seg.boxes, check }, phase);
+          notes.push(`SAM 3.1 ("${seg.phraseUsed}"): ${check.reason}`);
+          if (check.result === "fail") vote = "fail";
+          if (check.box !== null && reveal === null) {
+            const covered = check.coveredBy !== null ? clicks.find((k) => k.target === check.coveredBy) : undefined;
+            const overlays: Overlay[] = [{ rect: check.box, label: `${name} · SAM 3.1`, color: "#22c55e" }];
+            if (covered?.rect) overlays.push({ rect: covered.rect, label: `click landed on ${covered.target}`, color: "#c0392b", dashed: true });
+            const png = await browser.annotate(covered ? (lastPng ?? firstPng) : firstPng, overlays);
+            const path = join(dir, "shots", `${phase}-reveal.png`);
+            writeFileSync(path, png);
+            reveal = rel(dir, path);
+          }
+        } catch (err) {
+          vote = "n/a";
+          notes.push(`SAM 3.1 could not run for "${name}": ${err instanceof Error ? err.message : String(err)}`);
+          log.append("sam_error", { criterion: c.id, name, error: notes.at(-1) }, phase);
+        }
+      }
+      sam.set(c.id, { vote, notes, reveal });
+    }
+
+    // Independent judge: criteria + before/after screenshots only.
+    const judge = ctx.config.verifier.judge && firstPng !== undefined && lastPng !== undefined
+      ? await runJudge(criteria, firstPng, lastPng)
+      : null;
+    if (judge !== null) log.append("judge", { model: judge.model, provider: judge.provider, votes: judge.votes, error: judge.error, prompt_sha256: judge.promptSha256 }, phase);
+
     const lastShot = shots.get(Math.max(...shots.keys()));
     record.criteria = criteria.criteria.map((c): CriterionRecord => {
       const v = result.verdicts.find((x) => x.id === c.id);
       const cua: CuaVote = v?.result ?? "missing";
-      const votes = { cua, checks: checks.find((x) => x.id === c.id)?.result ?? "n/a", sam: "n/a" as const, judge: "n/a" as const };
+      const s = sam.get(c.id);
+      const j = judge?.votes.find((x) => x.id === c.id);
+      const votes = {
+        cua,
+        checks: checks.find((x) => x.id === c.id)?.result ?? "n/a",
+        sam: s?.vote ?? "n/a",
+        judge: j?.result ?? ("n/a" as const),
+      };
       const out = combineCriterion(votes);
       const cited = v?.evidence_step != null ? shots.get(v.evidence_step) : undefined;
-      const evidence = [cited ?? lastShot].filter((x): x is string => x !== undefined);
-      return { id: c.id, votes, result: out.result, reason: out.reason, observation: v?.observation ?? "", evidence };
+      const evidence = [cited ?? lastShot, s?.reveal ?? undefined].filter((x): x is string => x !== undefined && x !== null);
+      const notes = [
+        ...(s?.notes ?? []),
+        ...(j ? [`Judge (${judge?.model}): ${j.result} — ${j.reason}`] : judge?.error ? [`Judge could not vote: ${judge.error}`] : []),
+      ];
+      return { id: c.id, votes, result: out.result, reason: out.reason, observation: v?.observation ?? "", evidence, notes };
     });
   } catch (err) {
     record.error = err instanceof Error ? err.message : String(err);
@@ -169,7 +228,11 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
     if (r !== "events.jsonl" && r !== "receipt.json") artifacts[r] = sha256File(path);
   }
 
-  const verifier = pickRoute("verifier");
+  const models = [
+    { role: "verifier", ...pickRoute("verifier") },
+    ...(criteria.criteria.some((c) => (c.expect?.visible ?? []).length > 0) ? [{ role: "ui", ...pickRoute("ui") }] : []),
+    ...(config.verifier.judge ? [{ role: "judge", ...pickRoute("judge") }] : []),
+  ];
   const body: ReceiptBody = {
     version: "attest.receipt/0.1",
     mode: "fix",
@@ -184,7 +247,7 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
     phases,
     verdict: outcome.verdict,
     reasons: outcome.reasons,
-    models: [{ role: "verifier", provider: verifier.provider, model: verifier.model }],
+    models,
     artifacts,
     log: { path: "events.jsonl", head: log.head, entries: log.length },
   };

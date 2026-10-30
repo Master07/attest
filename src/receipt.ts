@@ -19,6 +19,7 @@ export interface CriterionRecord {
   reason: string;
   observation: string;
   evidence: string[];          // artifact paths (relative to the receipt)
+  notes?: string[];            // human-readable explanations of the SAM / judge / check votes
 }
 
 export interface PhaseRecord {

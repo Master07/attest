@@ -34,7 +34,9 @@ export const ROLE_ROUTE: Record<ModelRole, ModelRoute> = {
   ui: { provider: "meta", model: MODEL_IDS.sam },
   // The Model API's computer tool works on Spark 1.3; Wonder returns 400 Unsupported tool type.
   verifier: { provider: "meta", model: MODEL_IDS.spark },
-  judge: { provider: "baseten", model: MODEL_IDS.sparkOpen },
+  // Independent judge: a different model from the verifier. Muse Wonder needs no computer tool, so it
+  // works here. With a Baseten key, ATTEST_ROUTE_JUDGE=baseten:<spark-open id> moves it to open weights.
+  judge: { provider: "meta", model: MODEL_IDS.wonder },
 };
 
 function isProvider(value: string): value is Provider {

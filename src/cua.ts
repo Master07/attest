@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { ApiError, pngDataUrl, postResponses } from "./api.js";
+import type { ApiOutputItem, ApiResponse } from "./api.js";
 import type { Action, BrowserSession } from "./browser.js";
 import type { CriteriaFile } from "./criteria.js";
 import { pickRoute, resolveProvider } from "./models.js";
@@ -48,30 +50,9 @@ export interface CuaOptions {
   env?: NodeJS.ProcessEnv;
 }
 
-interface ApiOutputItem {
-  type?: string;
-  call_id?: string;
-  actions?: unknown[];
-  pending_safety_checks?: SafetyCheck[];
-  content?: { type?: string; text?: string }[];
-}
-
-interface ApiResponse {
-  id?: string;
-  status?: string;
-  output?: ApiOutputItem[];
-  incomplete_details?: { reason?: string };
-}
-
-class ApiError extends Error {
-  constructor(message: string, readonly status: number | null, readonly body: string) {
-    super(message);
-    this.name = "ApiError";
-  }
-}
-
 const sha256 = (data: Buffer | string): string => createHash("sha256").update(data).digest("hex");
-const dataUrl = (png: Buffer): string => `data:image/png;base64,${png.toString("base64")}`;
+const dataUrl = pngDataUrl;
+const post = postResponses;
 
 function isLocalUrl(url: string): boolean {
   try {
@@ -82,32 +63,6 @@ function isLocalUrl(url: string): boolean {
   }
 }
 
-async function post(baseUrl: string, apiKey: string, body: unknown): Promise<ApiResponse> {
-  const send = async (): Promise<ApiResponse> => {
-    let res: Response;
-    try {
-      res = await fetch(`${baseUrl.replace(/\/+$/, "")}/responses`, {
-        method: "POST",
-        headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
-        body: JSON.stringify(body),
-        signal: AbortSignal.timeout(120_000),
-      });
-    } catch (err) {
-      throw new ApiError(`request failed: ${err instanceof Error ? err.message : String(err)}`, null, "");
-    }
-    const text = await res.text();
-    if (!res.ok) throw new ApiError(`HTTP ${res.status}`, res.status, text.slice(0, 2000));
-    return JSON.parse(text) as ApiResponse;
-  };
-
-  try {
-    return await send();
-  } catch (err) {
-    // One retry on transient failures (network, 5xx); participants report occasional 500s.
-    if (err instanceof ApiError && (err.status === null || err.status >= 500)) return send();
-    throw err;
-  }
-}
 
 /** Maps one model action to browser actions. Returns null for actions that need no execution. */
 function toBrowserActions(raw: unknown): Action[] | null {
