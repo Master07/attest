@@ -7,7 +7,7 @@ export interface ProviderConfig {
 }
 
 export const PROVIDERS: Record<Provider, ProviderConfig> = {
-  meta: { apiKeyEnv: "MODEL_API_KEY", baseUrlEnv: "META_API_BASE_URL" },
+  meta: { apiKeyEnv: "MODEL_API_KEY", baseUrlEnv: "META_API_BASE_URL", defaultBaseUrl: "https://api.meta.ai/v1" },
   baseten: {
     apiKeyEnv: "BASETEN_API_KEY",
     baseUrlEnv: "BASETEN_BASE_URL",
@@ -71,8 +71,9 @@ export interface ProviderEndpoint {
 
 export function resolveProvider(provider: Provider, env: NodeJS.ProcessEnv = process.env): ProviderEndpoint {
   const config = PROVIDERS[provider];
-  const baseUrl = env[config.baseUrlEnv] ?? config.defaultBaseUrl;
-  const apiKey = env[config.apiKeyEnv];
+  // `||`, not `??`: an empty `KEY=` line in .env must fall back to the default.
+  const baseUrl = env[config.baseUrlEnv] || config.defaultBaseUrl;
+  const apiKey = env[config.apiKeyEnv] || undefined;
   if (!baseUrl) throw new Error(`${provider}: set ${config.baseUrlEnv}`);
   if (!apiKey) throw new Error(`${provider}: set ${config.apiKeyEnv}`);
   return { baseUrl, apiKey };

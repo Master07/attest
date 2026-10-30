@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.json",
     "test": "node --import tsx --test \"test/**/*.test.ts\"",
-    "smoke": "tsx scripts/smoke-t4.ts"
+    "smoke": "tsx scripts/smoke-t4.ts",
+    "phase": "tsx scripts/run-phase.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
