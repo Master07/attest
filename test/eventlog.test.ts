@@ -51,6 +51,17 @@ test("three appends verify with the right seq, prev and head", async () => {
     assert.equal(check.head, third.hash);
     assert.equal(log.length, 3);
     assert.equal(log.path, path);
+
+    const firstLine = linesOf(path)[0] ?? "";
+    assert.deepEqual(Object.keys(JSON.parse(firstLine) as Record<string, unknown>), [
+      "seq",
+      "ts",
+      "phase",
+      "kind",
+      "data",
+      "prev",
+      "hash",
+    ]);
   });
 });
 
@@ -77,7 +88,7 @@ test("editing a value in line 2 breaks the chain at line 2", async () => {
   await withTempDir((dir) => {
     const path = join(dir, "events.jsonl");
     const log = EventLog.create(path);
-    log.append("run_start");
+    const first = log.append("run_start");
     log.append("cua_action", { x: 1 });
     log.append("phase_result");
 
@@ -91,6 +102,7 @@ test("editing a value in line 2 breaks the chain at line 2", async () => {
     assert.equal(check.ok, false);
     assert.equal(check.error?.line, 2);
     assert.equal(check.entries, 1);
+    assert.equal(check.head, first.hash);
   });
 });
 
@@ -200,6 +212,9 @@ test("canonicalJson sorts keys recursively and keeps array order", () => {
 
 test("canonicalJson rejects values JSON cannot carry", () => {
   assert.throws(() => canonicalJson({ a: undefined }), /undefined/);
+  assert.throws(() => canonicalJson(undefined), /undefined/);
+  assert.throws(() => canonicalJson([undefined]), /undefined/);
+  assert.throws(() => canonicalJson([, 1]), /undefined/);
   assert.throws(() => canonicalJson({ a: Buffer.from("hi") }), /plain object/);
   assert.throws(() => canonicalJson(new Date()), /plain object/);
   assert.throws(() => canonicalJson(Number.NaN), /non-finite/);
