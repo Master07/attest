@@ -1,91 +1,99 @@
 # Go-to-Market Brief
 
-> **Audience:** team + judges · **Status:** draft · **Last updated:** 2026-10-27 · **Related:** [STRATEGIC_OUTLOOK](STRATEGIC_OUTLOOK.md) · [COMPETITIVE_LANDSCAPE](COMPETITIVE_LANDSCAPE.md)
+> **Audience:** team + judges · **Status:** draft · **Last updated:** 2026-11-01 · **Related:** [STRATEGIC_OUTLOOK](STRATEGIC_OUTLOOK.md) · [COMPETITIVE_LANDSCAPE](COMPETITIVE_LANDSCAPE.md) · [ADR 0005](adr/0005-narrow-to-proof-of-fix.md)
 
-## The pick
+## The short version
 
-**Beachhead: behaviour-equivalence verification for enterprise legacy modernisation.**
+**Users come from developers; revenue comes from compliance.** Attest gets adopted as a free proof-of-fix check on pull requests (open-source maintainers, small teams), and earns money where a signed record of *why a change was accepted* is worth paying for: agent platforms, regulated companies, and migrations.
 
-Not "AI QA." Not "test generation." The wedge is the one job that is *high volume, high stakes, and structurally underserved*: **proving that a rewritten, upgraded, or replatformed system still behaves like the original.**
+Not "AI QA." Not "test generation." The product is the **receipt**: a signed, checkable proof that a change fixes what it claims, in the running app.
 
-Why not general AI QA: that fight is a head-on collision with funded incumbents (Momentic, QA Wolf, mabl) who hold enterprise logos and Gartner coverage. See [COMPETITIVE_LANDSCAPE](COMPETITIVE_LANDSCAPE.md). Why not formal verification: it's a different, harder technology — partner with it, don't compete.
+## Unit economics
 
-Why modernisation wins as the entry point:
-- **Enormous, funded volume.** Framework/SQL/cloud migrations and monolith→services work are large, risky, and already budgeted.
-- **The incumbent QA tools aren't shaped for it.** They generate and run tests; they don't prove *equivalence to a prior system*.
-- **The artifact is the deliverable.** Differential evidence — same inputs, old vs new, agrees — is exactly what the customer needs to sign off.
-- **It expands upward into compliance** once the artifact is trusted (see expansion below).
+Measured on the hackathon build (see HANDOVER.md §9): the first three single-phase live runs plus one full proof cost **$0.12** of Meta Model API credits in total, about 2 cents per verifier phase. A full proof adds SAM 3.1 and a judge call per phase; confirm the exact figure from the billing page after the benchmark run before quoting it.
+
+The AI is not the expensive part. The real cost of a proof is **running the customer's app** (a worktree, a build, a browser) — compute and setup, not tokens. Pricing should be per proof or per repo, well above that cost; the margin comes from the evidence, not the compute.
+
+## Four revenue paths
+
+| # | Path | Who pays | Model | Why it might work | Why it might not |
+|---|---|---|---|---|---|
+| 1 | **GitHub app** | Free for public repos; small teams for private repos | Per repo or per proof | Fastest route to users and visibility; maintainers are drowning in AI-written PRs | Small teams pay little; the free tier must not eat the business |
+| 2 | **API / CI check for agent platforms** | Companies whose agents open PRs | Usage-based, sold to the platform | "Every agent PR arrives with a receipt" — one platform deal is a lot of volume | The platform can build its own; neutrality across vendors is the counter |
+| 3 | **Compliance receipts** | Regulated teams (finance, health, critical infrastructure) | Annual contract; receipts retained as audit evidence | Highest willingness to pay; regulation (SOX / DORA / EU AI Act / SR 11-7) turns "nice proof" into "required proof" | Slow sales; needs security review, data-handling guarantees, receipts anchored publicly, and auditor acceptance |
+| 4 | **Legacy migrations** | Teams and consultancies replatforming systems | Per-project licence, using the equivalence proof mode | Budgets already exist inside migration projects; the receipt is the sign-off artifact | Starts service-heavy; every migration's setup is different |
+
+**Read:** path 1 earns adoption and trust in the receipt format; paths 3 and 4 earn revenue; path 2 is the big upside if a platform partners. The sequence below follows that.
 
 ## The job to be done
 
-> *"Prove this change preserves behaviour — before it reaches production, with evidence I can show someone."*
+> *"Prove this change fixes the problem and breaks nothing — in the running app — with evidence I can show someone."*
 
-Felt most acutely by teams mid-migration, where a passing new test suite can still hide a changed behaviour that only surfaces in production.
+Felt by: maintainers reviewing agent PRs; platform teams merging many of them; anyone who has to sign off on a change they didn't write.
 
-## Buyer & stakeholders
+## Buyer & stakeholders (paths 3 and 4)
 
 | Role | Who | What convinces them |
 |---|---|---|
-| **Economic buyer** | CTO / CIO / VP Eng owning the migration | Lower migration risk, faster sign-off, fewer prod incidents |
-| **Champion** | Staff/Principal engineer, QA lead on the migration | Cuts their manual verification toil; credible to their peers |
-| **Blocker** | Security / procurement | Where code and data are processed; data-handling posture |
-| **Influencer** | Internal audit / compliance | A retained, replayable record (the future expansion path) |
+| **Economic buyer** | CTO / CIO / VP Eng | Lower change risk, faster sign-off, an audit trail |
+| **Champion** | Staff engineer, QA or release lead | Less manual verification; evidence they can point to |
+| **Blocker** | Security / procurement | Where code, data and screenshots are processed; self-hosting option |
+| **Influencer** | Internal audit / compliance | A retained, verifiable record — does an auditor accept it? |
 
-**Budget source:** the migration project — not a tools line. This matters: it moves Attest out of the "small dev-tool budget" fight.
-
-## The wedge → expansion
-
-1. **Land:** Attest as the **change gate** on the migration — every change ships with a behavioural attestation.
-2. **Expand within the account:** from per-PR gate to **release gate** across the migration programme.
-3. **Expand into compliance:** the same artifact becomes **audit evidence** (SOX / DORA / EU AI Act / SR 11-7), sold as attestation-as-a-service to the regulated customer.
-
-The wedge is one migration. The expansion is the trust layer for the whole enterprise.
+**Budget source:** the migration or compliance programme, not the dev-tools line.
 
 ## Positioning statement
 
-> **Attest is the attestation layer for agent-written code — model-agnostic verification that turns any coding agent's output into a change you can *prove* works, packaged as an auditable artifact.**
+> **Attest is proof-of-fix for AI pull requests: a verifier that never sees the code reproduces the bug, confirms the fix in the running app, proves it would catch a wrong fix, and seals it all into a receipt anyone can check.**
 
-Deliberately model-agnostic: it verifies output from Claude Code, Codex, Cursor *and* Muse Code. That turns competitors into inputs and is the one thing a single-vendor platform structurally won't do.
+Deliberately model-agnostic: it verifies changes from Muse Code, other agents, or people. That makes competing agents into inputs, and is the one thing a single-vendor platform structurally won't do.
 
-## Pricing
+## Pricing (hypotheses to test, not decisions)
 
 | Tier | Model | Who |
 |---|---|---|
-| **Pilot** | Per-verified-change, capped | One migration team proving the loop |
-| **Programme** | Per-migration licence | Platform org running many agent PRs |
-| **Attestation-as-a-service** | Retained, audit-cycled subscription | Regulated customer needing evidence over time |
-| **Compliance export** | Add-on | Internal audit / external regulators |
+| **Open source** | Free for public repos, with a monthly proof cap | Maintainers |
+| **Team** | Per private repo per month, proofs included | Small teams |
+| **Platform** | Per proof, volume-tiered | Agent platforms, large engineering orgs |
+| **Assurance** | Annual: retained receipts, compliance export, self-hosted verifier | Regulated customers |
 
-Monetise the **artifact**, not the compute. Verification runs are a cost to pass through; the evidence is the recurring product.
+Monetise the **receipt**, not the compute.
 
-## First 90 days
+## What's defensible
 
-- **Phase 0 — one design partner.** A single team mid-migration; instrument Attest on their real changes.
-- **Phase 1 — prove the loop.** Ship the change gate + attestation; measure false-pass rate against their incidents.
-- **Phase 2 — publish the format.** Open the attestation schema so it becomes the thing auditors and tools reference.
-- **Phase 3 — the compliance export.** Ship the auditable report; use it to open the regulated expansion.
+- **Not** "we verify with computer use" — a feature many will copy, and one Meta teaches in its own sessions.
+- **The receipt as a standard:** an open, signed, checkable format that any agent or CI system can produce and any auditor can check. An accepted standard is hard to displace.
+- **Measured trustworthiness:** a published false-pass rate, and a verifier that says INCONCLUSIVE rather than guessing.
+- **Neutrality:** verifying every vendor's agent output.
 
-## Metrics that matter
-
-- **Verified changes / week** — adoption.
-- **False-pass rate** — changes that passed Attest and still broke (the honesty metric; must trend to zero).
-- **Time-to-approve** — did we *reduce* the review tax, not add to it?
-- **Audit acceptance** — did a real auditor accept the artifact?
-- **Expansion revenue** — pilot → programme → service.
-
-## Risks & moat
+## Risks
 
 | Risk | Response |
 |---|---|
-| Platform absorption (Meta/Anthropic ship a verify gate) | Be cross-vendor; own the artifact, not the agent |
-| Verifier unreliability (false passes) | Invest in verifier independence; publish false-pass rate |
-| "AI QA" commoditisation | Stay in behaviour-equivalence + compliance, not generic QA |
-| Trust in a new vendor | Design partner + open format + external audit acceptance |
+| A platform (GitHub, Meta, Anthropic, OpenAI) ships a built-in "verify before merge" | Stay cross-vendor; own the receipt format, not the agent |
+| Setting up each customer's app is the real friction | Start with web apps that already have a dev server; a config file (`attest.yml`) per repo; templates for common stacks |
+| A public false pass destroys trust | Measure and publish the false-pass rate; never certify on incomplete evidence |
+| Crowded AI-testing market (see COMPETITIVE_LANDSCAPE) | Sell proof and audit evidence, not test generation |
+| Screenshots may contain customer data | Self-hosted verifier for regulated customers; no data leaves their environment |
 
-**The moat is the artifact:** its format, its evidence-integrity guarantees, cross-vendor neutrality, and regulatory acceptance. Features are copyable; an accepted standard is not.
+## Validation plan (after the hackathon)
+
+1. **Weeks 1–2:** show the demo and a receipt to ~10 open-source maintainers and ~5 teams using coding agents. Ask: would you install it? What would make you trust the receipt? What would you pay for?
+2. **Weeks 3–6, if there's pull:** a hosted GitHub app with a free tier for public repos; measure proofs per week and false-pass rate.
+3. **In parallel, if a regulated team is interested:** one design partner for the compliance track; the goal is a real auditor accepting a receipt.
+4. **Publish the receipt schema** once the format is stable, so others can produce and check receipts.
+
+## Metrics that matter
+
+- **Proofs per week** — adoption.
+- **False-pass rate** — changes that got `PROVEN` and still broke. Must trend to zero, and be public.
+- **Time to approve a PR** — does Attest reduce review time, or add to it?
+- **Auditor acceptance** — did a real auditor accept a receipt?
+- **Conversion** — free → team → platform / assurance.
 
 ## What we deliberately do NOT do
 
-- Head-on general AI QA (lose to incumbents).
-- Formal verification (partner; it's a different technology).
-- Any single-vendor lock-in (kills the neutrality that is the moat).
+- Head-on general AI QA or test generation.
+- Formal verification (a different technology; partner with it).
+- Any single-vendor lock-in (it would kill the neutrality that is the moat).
+- Claims we can't measure: no false-pass or revenue numbers until they exist.
