@@ -3,5 +3,6 @@ dist/
 evidence/
 .muse/
 .attest/
+.commandcode/
 *.log
 .env
