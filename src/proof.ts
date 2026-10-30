@@ -14,6 +14,7 @@ import { runVerifier } from "./cua.js";
 import { EventLog } from "./eventlog.js";
 import { pickRoute } from "./models.js";
 import { sha256File, signReceipt } from "./receipt.js";
+import { writeReport } from "./report.js";
 import type { CriterionRecord, PhaseRecord, Receipt, ReceiptBody } from "./receipt.js";
 import { combineCriterion, combinePhase, fixVerdict } from "./verdict.js";
 import type { CuaVote, PhaseName, Vote } from "./verdict.js";
@@ -255,5 +256,6 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
   const receipt = signReceipt(body);
   const receiptPath = join(dir, "receipt.json");
   writeFileSync(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
+  writeReport(receiptPath);   // a view of the receipt; written after signing, so not covered by it
   return { dir, receiptPath, receipt };
 }

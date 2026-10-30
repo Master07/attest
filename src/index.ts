@@ -4,11 +4,13 @@ import { fileURLToPath } from "node:url";
 import { runLoop } from "./loop.js";
 import { runProof } from "./proof.js";
 import { verifyReceipt } from "./receipt.js";
+import { writeReport } from "./report.js";
 
 const USAGE = `usage:
   attest prove --app <path> --base <ref> --pr <ref> [--break <ref>] [--criteria <file>] [--out <dir>]
   attest loop  --app <path> --base <ref> --report "<bug report>" [--break <ref>] [--max-attempts <n>]
-  attest verify <receipt.json>`;
+  attest verify <receipt.json>
+  attest report <receipt.json>     (re)render the evidence page next to a receipt`;
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 if (existsSync(join(repoRoot, ".env"))) process.loadEnvFile(join(repoRoot, ".env"));
@@ -51,6 +53,7 @@ try {
     console.log(`\nverdict: ${receipt.verdict}`);
     for (const r of receipt.reasons) console.log(`  - ${r}`);
     console.log(`receipt: ${receiptPath}`);
+    console.log(`evidence page: ${join(dirname(receiptPath), "index.html")}`);
     process.exitCode = receipt.verdict === "PROVEN" || receipt.verdict === "PROVEN_UNCHECKED" ? 0 : 1;
   } else if (command === "loop") {
     const f = flags(rest);
@@ -77,6 +80,10 @@ try {
     }
     console.log(`evidence: ${result.dir}`);
     process.exitCode = result.outcome === "proven" ? 0 : 1;
+  } else if (command === "report") {
+    const path = rest[0];
+    if (path === undefined) throw new Error("report needs a receipt path");
+    console.log(`evidence page: ${writeReport(path)}`);
   } else if (command === "verify") {
     const path = rest[0];
     if (path === undefined) throw new Error("verify needs a receipt path");
