@@ -92,7 +92,7 @@ See [ARCHITECTURE](docs/ARCHITECTURE.md) and [HANDOVER](HANDOVER.md).
 
 ## Status
 
-Hackathon build. The core proof works end to end against the real Meta API: `attest prove` on the example app returns `PROVEN`, and `attest verify` rejects any edit to the receipt, log, screenshots or criteria. Not built yet: SAM 3.1 confirmation, the independent judge, the Muse Code closed loop, the benchmark. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
+Hackathon build, working end to end against the real Meta API. On both example apps, `attest prove` returns `PROVEN` with four independent votes per phase — the Spark verifier, code checks, SAM 3.1 and a Muse Wonder judge — and `attest verify` rejects any edit to the receipt, log, screenshots or criteria. `attest loop` lets Muse Code write the fix and Attest prove it. Not built yet: the benchmark, proof videos, the evidence page, replay mode. See [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Open-source dependencies
 

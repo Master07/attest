@@ -1,6 +1,6 @@
 # Model Strategy
 
-> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-10-30 · **Related:** [AGENT_DESIGN](AGENT_DESIGN.md) · [COST](COST.md) · [reference/muse-models](reference/muse-models.md)
+> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-11-01 · **Related:** [AGENT_DESIGN](AGENT_DESIGN.md) · [COST](COST.md) · [reference/muse-models](reference/muse-models.md)
 
 Attest's quality-per-dollar comes from routing each role to the cheapest Muse model that can do the job. See the [ADR](../adr/0004-model-tier-routing.md).
 
@@ -34,9 +34,9 @@ Each role routes to a **provider** (`meta` = Meta Model API, `baseten` = Meta op
 | `worker` | `meta:muse-spark-1.3` | `ATTEST_CONTRIBUTOR=1` switches to the Contributor tier |
 | `reasoning` | `meta:muse-wonder-1.0` | Wonder Full has no API ID, so the API route uses Wonder |
 | `image` | `meta:muse-image-1.0` | |
-| `ui` | `meta:sam-3.1` | |
+| `ui` | `meta:sam-3.1` | Locates `expect.visible` elements; prefers short concepts ("button" works where "Pay button" returns nothing), so Attest falls back to the head noun |
 | `verifier` | `meta:muse-spark-1.3` | Drives the computer-use loop. Must be Spark: Wonder rejects the `computer` tool on the Model API |
-| `judge` | `baseten:meta-models/muse-spark-open-1026` | Independent second verifier on open weights (not wired into the loop yet) |
+| `judge` | `meta:muse-wonder-1.0` | Independent vote from criteria + before/after screenshots only. With a Baseten key, `ATTEST_ROUTE_JUDGE=baseten:meta-models/muse-spark-open-1026` moves it to open weights |
 
 Override any role without code changes: `ATTEST_ROUTE_<ROLE>=provider:model`, e.g. `ATTEST_ROUTE_WORKER=baseten:meta-models/muse-spark-open-1026` to move the fan-out onto Baseten credits. Keys and endpoints come from env vars; see `.env.example`.
 

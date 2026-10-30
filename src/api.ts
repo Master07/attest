@@ -23,7 +23,7 @@ export class ApiError extends Error {
   }
 }
 
-/** POST <baseUrl>/responses, with one retry on network errors and 5xx. */
+/** POST <baseUrl>/responses, retrying network errors and 5xx up to 3 times with backoff. */
 export async function postResponses(baseUrl: string, apiKey: string, body: unknown): Promise<ApiResponse> {
   const send = async (): Promise<ApiResponse> => {
     let res: Response;
@@ -42,11 +42,18 @@ export async function postResponses(baseUrl: string, apiKey: string, body: unkno
     return JSON.parse(text) as ApiResponse;
   };
 
-  try {
-    return await send();
-  } catch (err) {
-    if (err instanceof ApiError && (err.status === null || err.status >= 500)) return send();
-    throw err;
+  // Transient failures (network, 5xx — e.g. the 500s and 503 "persistence service error" seen in live runs)
+  // are retried with backoff. 4xx means the request itself is wrong, so it is never retried.
+  const backoffMs = [1000, 3000, 8000];
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await send();
+    } catch (err) {
+      const transient = err instanceof ApiError && (err.status === null || err.status >= 500);
+      const wait = backoffMs[attempt];
+      if (!transient || wait === undefined) throw err;
+      await new Promise((r) => setTimeout(r, wait));
+    }
   }
 }
 
