@@ -6,7 +6,6 @@
   "description": "Verified delivery for coding agents: plan, fan out, verify, attest.",
   "license": "MIT",
   "scripts": {
-    "demo": "tsx src/index.ts run",
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.json",
     "test": "node --import tsx --test \"test/**/*.test.ts\"",
