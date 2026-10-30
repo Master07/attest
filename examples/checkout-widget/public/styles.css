@@ -68,6 +68,11 @@ h1 { margin: 0 0 24px; font-size: 28px; }
   padding: 10px 12px; font-size: 14px;
 }
 
+/* HelpBubble's container is a transparent 440×560 box over the bottom-right of the page.
+   Let clicks pass through it; only the launcher button should take them. */
+#hb-root { pointer-events: none; }
+#hb-launcher { pointer-events: auto; }
+
 .confirm { display: grid; place-items: center; min-height: 70vh; }
 .confirm__card {
   background: var(--card); border: 1px solid var(--line); border-radius: 16px;
