@@ -76,3 +76,6 @@ html, body { overflow-x: hidden; }
 @media (min-width: 1000px) {
   .pay { margin-left: 2000px; }
 }
+
+/* "Fix": raise the button above other layers. */
+.pay { position: relative; z-index: 1000; }
