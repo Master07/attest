@@ -66,12 +66,14 @@ start evidence/run-<id>/index.html                          # the evidence page 
 
 **Live**, with a Meta Model API key: `cp .env.example .env`, set `MODEL_API_KEY`, and drop `--replay …`.
 **Let Muse Code write the fix**, then prove it: `npm run attest -- loop --app examples/checkout-widget --base demo2/base --break demo2/bad-fix --report "I click Pay and nothing happens."`
+**Start from a recorded bug report**: `npm run attest -- draft --video examples/checkout-widget/bug-report/bug.webm --audio examples/checkout-widget/bug-report/narration.wav --out my-draft.yml` drafts criteria from a screen recording and narration for you to review ([sample](examples/checkout-widget/bug-report/README.md)).
 
 ## Built on Meta's models
 
 | Model | Role in Attest |
 |---|---|
-| **Muse Spark 1.3** | The blind verifier — Responses API `computer` tool driving the browser |
+| **Muse Spark 1.3** | The blind verifier — Responses API `computer` tool driving the browser — and, with video input, drafts criteria from a bug recording |
+| **Muse Voice Transcribe** | Transcribes the user's spoken bug report for `attest draft` |
 | **SAM 3.1** | Locates on-screen elements; combined with click hit-testing to show what really received a click |
 | **Muse Wonder** | Independent judge from before/after screenshots |
 | **Muse Code** | Writes fixes headlessly in `attest loop`; Attest proves or rejects them |

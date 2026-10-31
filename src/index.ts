@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { draftCriteria } from "./intake.js";
 import { runLoop } from "./loop.js";
 import { runProof } from "./proof.js";
 import { verifyReceipt } from "./receipt.js";
@@ -10,6 +11,7 @@ const USAGE = `usage:
   attest prove --app <path> --base <ref> --pr <ref> [--break <ref>] [--criteria <file>] [--out <dir>]
                [--record <cassette.jsonl> | --replay <cassette.jsonl>]
   attest loop  --app <path> --base <ref> --report "<bug report>" [--break <ref>] [--max-attempts <n>]
+  attest draft --out <criteria.draft.yml> [--video <bug.mp4|.webm>] [--audio <narration.wav>] [--report "<text>"]
   attest verify <receipt.json>
   attest report <receipt.json>     (re)render the evidence page next to a receipt`;
 
@@ -93,6 +95,23 @@ try {
     }
     console.log(`evidence: ${result.dir}`);
     process.exitCode = result.outcome === "proven" ? 0 : 1;
+  } else if (command === "draft") {
+    const f = flags(rest);
+    const out = f.get("out");
+    if (out === undefined) throw new Error("draft needs --out <file>");
+    const video = f.get("video");
+    const audio = f.get("audio");
+    const report = f.get("report");
+    const result = await draftCriteria({
+      out: resolve(out),
+      ...(video !== undefined ? { video: resolve(video) } : {}),
+      ...(audio !== undefined ? { audio: resolve(audio) } : {}),
+      ...(report !== undefined ? { report } : {}),
+    });
+    if (result.transcript) console.log(`transcript: ${result.transcript}`);
+    for (const u of result.uncertain) console.log(`unsure: ${u}`);
+    console.log(`\ndraft with ${result.criteriaCount} criteria: ${result.path}`);
+    console.log("Review and edit it, then pass it to `attest prove --criteria <file>`.");
   } else if (command === "report") {
     const path = rest[0];
     if (path === undefined) throw new Error("report needs a receipt path");

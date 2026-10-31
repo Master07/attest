@@ -1,0 +1,16 @@
+# DRAFT acceptance criteria — review and edit before using them in a proof.
+# Drafted by muse-spark-1.3 (narration transcribed by muse-voice-transcribe-1.0) from: video bug.webm, narration narration.wav.
+# Add `expect.url` / `expect.network` checks yourself if you know them; the draft does not guess them.
+# Transcript: Hi. I'm on the cart page with my trail running shoes. I click the pay button and nothing happens. I click it again still nothing. I can't pay for my order.
+# Unsure: What should happen immediately after clicking Pay (next page, payment form, or confirmation) was not shown or stated
+# Unsure: The page URL was not visible, only described as the cart page
+id: cart-pay-button-fix
+criteria:
+  - id: pay-for-trail-runner-shoes
+    given: the user is on the cart page with Trail Runner Shoes Size 9 Slate grey
+      for $89.00 and Order summary showing Total $89.00
+    when: the user clicks "Pay $89.00"
+    then: the payment proceeds and the user can pay for the order
+    expect:
+      visible:
+        - Pay $89.00 button
