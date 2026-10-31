@@ -3,7 +3,7 @@ const status = document.querySelector("#status");
 
 const total = "89.00";
 const limit = "500";
-if (total > limit) pay.disabled = true;
+if (Number(total) > Number(limit)) pay.disabled = true;
 
 pay.addEventListener("click", async () => {
   pay.disabled = true;
