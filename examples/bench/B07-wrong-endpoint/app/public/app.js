@@ -5,7 +5,7 @@ pay.addEventListener("click", async () => {
   pay.disabled = true;
   status.textContent = "Processing…";
 
-  const res = await fetch("/api/payments", { method: "POST" })
+  const res = await fetch("/api/pay", { method: "POST" });
   if (!res.ok) {
     status.textContent = "Payment failed. Please try again.";
     pay.disabled = false;
