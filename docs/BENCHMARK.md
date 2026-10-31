@@ -56,6 +56,12 @@ Two honest conclusions:
 
 Whether B04's bad-fix "works" is genuinely debatable (a determined user can scroll to the button), so B04 is a borderline scenario. The criterion says the user clicks Pay; it doesn't say the button must be visible without scrolling. A sharper criterion (`expect.visible: ["Pay button"]`, checked by SAM on the first screen) would make the intent explicit. It was **not** changed after the run.
 
+## Real-world: an AI agent's merged fix (shizukutanaka/Board#921)
+
+Found by searching merged pull requests written by AI coding agents (GitHub Copilot's coding agent, Devin) for UI-interaction fixes, then keeping only permissively licensed web apps that run locally without accounts or a backend: of 291 PRs in 237 repos, about 81 repos were permissively licensed and one candidate passed every filter. [Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), by Devin: Enter on a focused toolbar button also stamped a shape on the canvas.
+
+The criterion was written from the PR's description and committed before any run. **Run 1, first attempt: PROVEN_UNCHECKED** — Red fail, Green pass, verifier and Muse Spark Open judge agreeing in both phases; no Break, because no wrong fix exists. Receipt: [proofs/realworld/board-921-run1](../proofs/realworld/board-921-run1/); write-up: [examples/realworld/board-enter](../examples/realworld/board-enter/README.md).
+
 ## Real-world bug: TodoMVC (2012)
 
 Beyond planted bugs, Attest was run on a **real bug fixed in real history** in a project we didn't write: TodoMVC's vanilla JS example, where deleting a todo took two clicks ([`124b1c9`](https://github.com/tastejs/todomvc/commit/124b1c996171ba14f558ab401da4f986c0ec4239), June 2012, MIT licence). The wrong fix (`==` instead of `===`) is ours. Full details and every run: [examples/realworld/todomvc-delete](../examples/realworld/todomvc-delete/README.md).
@@ -78,7 +84,7 @@ After removing every `// BUG:` comment and the vendor script's self-describing b
 - **The benchmark runs above used the verifier and judge as of Nov 1 morning.** Two changes came later from the TodoMVC case — the verifier judges a single stated action by its first attempt, and the judge sees the whole screenshot sequence — so a re-run today may differ.
 - **Base branches include scenario metadata** (`scenario.yml`, README) that names each bug. Irrelevant to Attest's blind verifier; strip it before using these scenarios to test agents.
 - **Ten scenarios, all in one tiny app style.** This shows the mechanism works; it is not a measure of real-world accuracy.
-- **Planted bugs.** Real bugs are messier; a real-world proof is the next step.
+- **Planted bugs.** Real bugs are messier; the two real-world proofs above (Board, TodoMVC) are single cases, not a measure of accuracy.
 - **The verifier is non-deterministic** (B04). Repeat runs and the judge reduce false passes; they don't eliminate them.
 - **Scenario metadata names the bug.** The `// BUG:` comments and the vendor banner are gone (branches rebuilt and pushed 2026-11-01), but `scenario.yml` and the benchmark README still sit in each base branch. Harmless for the verifier, which never reads code; an agent under test can read them (see the B09 loop confound above).
 - **Costs:** check the Meta billing page for the exact spend of both runs before quoting a cost per proof.

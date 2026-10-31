@@ -32,6 +32,14 @@ npm run attest -- prove --app . --config-dir examples/realworld/board-enter \
 
 Every run is reported here in order, whatever its verdict.
 
-| # | Date | Verdict | Receipt |
-|---|---|---|---|
-| — | — | (no run yet) | — |
+| # | Criteria | Change before the run | Red | Green | Verdict | Receipt |
+|---|---|---|---|---|---|---|
+| 1 | `criteria.yml` (frozen in `a665097`) | none | fail | pass | **PROVEN_UNCHECKED** | [proofs/realworld/board-921-run1](../../../proofs/realworld/board-921-run1/) |
+
+**Run 1, live, first attempt.** Red (the PR's parent): the verifier clicked the Ellipse button and pressed Enter — *"an ellipse shape was created with Shapes 1 and Created toast instead of the canvas staying empty"*. The independent judge (Muse Spark Open), from the screenshots alone: *"Frame 3 shows … 'Created: Ellipse @ 554,279'"* — fail. Green (Devin's fix): *"the Ellipse tool remained selected with Shapes 0 … no shape created"*; the judge agreed — pass. The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element), so they abstained (`n/a`).
+
+**What this proves, and what it doesn't.** The bug Devin described is real in the running app, and Devin's merged one-line fix removes it — shown by two Meta models that never saw the code, agreeing. There is no Break: the PR's history has no wrong attempt, and we did not write one, so the verdict is `PROVEN_UNCHECKED` (the fix works; whether Attest would have rejected a wrong fix wasn't tested on this app).
+
+`proofs/realworld/board-921-run1/pr-comment.md` shows the comment Attest would post on the PR. It was **not** posted to the Board repo.
+
+Re-run it without a key from the recorded responses (after the two `git fetch` lines above): add `--replay examples/realworld/board-enter/cassette.jsonl` — a cassette, not a live run.

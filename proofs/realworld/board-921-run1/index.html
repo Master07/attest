@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attest receipt · PROVEN_UNCHECKED</title>
+<style>
+:root{--paper:#f6f3ee;--card:#fffdf9;--ink:#191612;--ink-2:#443f38;--muted:#6f685e;--faint:#9b9387;--line:#e6dfd3;--line-2:#d9d1c2;
+--ok:#1a6b45;--ok-bg:#eaf4ee;--bad:#a8271d;--bad-bg:#fbeeec;--warn:#836210;--warn-bg:#f8f1df;
+--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--sans)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.mast{padding:26px 0 18px;border-bottom:1px solid var(--line-2);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start}
+.brand{font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:14px}.brand small{display:block;letter-spacing:.03em;text-transform:none;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:4px}
+.stamp{border:2px solid currentColor;border-radius:3px;padding:6px 14px;font:700 14px var(--mono);letter-spacing:.14em}
+.stamp.ok{color:var(--ok)}.stamp.bad{color:var(--bad)}.stamp.warn{color:var(--warn)}
+.lede{font-size:17px;color:var(--ink-2);margin:18px 0 6px}
+.reasons{margin:0 0 4px;padding-left:18px;color:var(--muted);font-size:13.5px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line-2);border-radius:10px;overflow:hidden;background:var(--card);margin:18px 0}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}}
+.grid div{padding:12px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.grid dt{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}.grid dd{margin:5px 0 0;font:12.5px var(--mono);word-break:break-all}
+h2{font-size:13px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin:30px 0 12px;font-weight:600}
+ul.crit{list-style:none;margin:0;padding:14px 16px;background:var(--card);border:1px solid var(--line-2);border-radius:10px}
+ul.crit li{font-size:14.5px}.k{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 6px 0 10px}ul.crit .k:first-child{margin-left:0}
+.phase{background:var(--card);border:1px solid var(--line-2);border-radius:12px;padding:18px;margin-bottom:16px}
+.phase header{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.phase h3{margin:0;font-size:17px}.ref{font:12.5px var(--mono);color:var(--muted);font-weight:400}
+.pname{display:inline-block;padding:1px 9px;border-radius:4px;color:#fff;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+.p-red{background:#a8271d}.p-green{background:#1a6b45}.p-break{background:#5b4a87}
+.role{margin:4px 0 0;color:var(--muted);font-size:13.5px}.right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:4px 9px;border:1px solid}
+.status .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.s-pass{color:var(--ok);border-color:#bfe0cd;background:var(--ok-bg)}.s-fail{color:var(--bad);border-color:#ecc7c2;background:var(--bad-bg)}.s-warn{color:var(--warn);border-color:#e6dcc0;background:var(--warn-bg)}
+.expect{font-size:12px}.expect.ok{color:var(--ok)}.expect.bad{color:var(--bad);font-weight:600}
+.votes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 10px}@media(max-width:760px){.votes{grid-template-columns:repeat(2,1fr)}}
+.vote{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:grid;grid-template-columns:20px 1fr;row-gap:2px}
+.vote .mark{grid-row:span 2;font-weight:700}.vote .vl{font-size:12px;color:var(--muted)}.vote .vv{font:600 12.5px var(--mono)}
+.v-pass{background:var(--ok-bg);color:var(--ok)}.v-fail{background:var(--bad-bg);color:var(--bad)}.v-na{color:var(--faint)}
+.obs{margin:6px 0;font-size:14px}.obs .k{margin-left:0}.notes{margin:4px 0 10px;padding-left:18px;font-size:13px;color:var(--ink-2)}
+.err{color:var(--bad);font-size:13.5px}.small{font-size:12px;color:var(--faint);margin:10px 0 0}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:760px){.shots{grid-template-columns:1fr}}
+.video{margin-top:12px}.video video{display:block;width:100%;background:#111}
+.timeline{margin-top:12px;border:1px solid var(--line-2);border-radius:8px;background:#fff}
+.timeline summary{cursor:pointer;padding:9px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.timeline ol{list-style:none;margin:0;padding:0 12px 6px}
+.timeline li{display:grid;grid-template-columns:28px 1fr 180px;gap:12px;align-items:start;padding:9px 0;border-top:1px solid var(--line)}
+.timeline .stepn{font:600 12px var(--mono);color:var(--faint);padding-top:2px}
+.timeline .stepbody{font:12.5px var(--mono);color:var(--ink-2)}
+.timeline img{width:180px;border:1px solid var(--line);border-radius:4px;display:block}
+@media(max-width:760px){.timeline li{grid-template-columns:24px 1fr}.timeline img{grid-column:2;width:100%}}
+figure{margin:0;border:1px solid var(--line-2);border-radius:8px;overflow:hidden;background:#fff}figure img{display:block;width:100%}
+figcaption{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:7px 10px;border-top:1px solid var(--line)}
+.cmd{background:#241f19;color:#f0e9dd;border-radius:8px;padding:11px 13px;font:12.5px var(--mono);overflow:auto}
+.kvs{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;font-size:13px;background:var(--card);border:1px solid var(--line-2);border-radius:10px;padding:14px 16px}
+.kvs dt{color:var(--muted)}.kvs dd{margin:0;font:12.5px var(--mono);word-break:break-all}
+footer{border-top:1px solid var(--line-2);margin-top:30px;padding:18px 0 40px;color:var(--faint);font-size:12.5px}
+.replay{margin:16px 0 0;padding:10px 14px;border:1px solid #e6dcc0;background:var(--warn-bg);color:#5f4708;border-radius:9px;font-size:13.5px}
+</style></head>
+<body><div class="wrap">
+<div class="mast">
+  <div class="brand">Attest<small>Proof-of-fix receipt · .</small></div>
+  <div class="stamp warn">PROVEN UNCHECKED</div>
+</div>
+
+<p class="lede">The bug reproduced and the fix works. No wrong fix was supplied, so the verifier&#39;s sensitivity is unchecked.</p>
+<ul class="reasons"><li>red failed and green passed; no break build, so sensitivity is unchecked</li></ul>
+<dl class="grid">
+  <div><dt>Repository</dt><dd>https://github.com/Master07/attest.git</dd></div>
+  <div><dt>Created</dt><dd>2026-10-31T23:51:57.936Z</dd></div>
+  <div><dt>Criteria sha256</dt><dd>b47cc439b060fcbb…</dd></div>
+  <div><dt>Event log</dt><dd>35 entries · e261ecbabc3d…</dd></div>
+</dl>
+<h2>Acceptance criteria (human-approved)</h2>
+<ul class="crit"><li><span class="k">Given</span>The Board whiteboard is open with an empty canvas (no shapes) <span class="k">When</span>The user clicks the Ellipse tool button in the left toolbar, then presses the Enter key once while that button still has keyboard focus <span class="k">Then</span>The Ellipse tool is selected and the canvas is still empty — pressing Enter on the focused button does not create a shape</li></ul>
+<h2>The proof</h2>
+
+  <article class="phase">
+    <header>
+      <div>
+        <h3><span class="pname p-red">Red</span> <span class="ref">rw/board921/base @ d896961</span></h3>
+        <p class="role">Original code — the bug should reproduce</p>
+      </div>
+      <div class="right">
+        <span class="status s-fail"><span class="dot"></span>fail</span>
+        <span class="expect ok">as expected</span>
+      </div>
+    </header>
+    
+    
+    <div class="votes">
+      <div class="vote v-fail"><span class="mark">✗</span><span class="vl">Verifier · Spark 1.3</span><span class="vv">fail</span></div>
+      <div class="vote v-na"><span class="mark">–</span><span class="vl">Code checks</span><span class="vv">n/a</span></div>
+      <div class="vote v-na"><span class="mark">–</span><span class="vl">SAM 3.1</span><span class="vv">n/a</span></div>
+      <div class="vote v-fail"><span class="mark">✗</span><span class="vl">Judge</span><span class="vv">fail</span></div>
+    </div>
+    <p class="obs"><span class="k">Verifier saw</span> After clicking the Ellipse tool and pressing Enter once, an ellipse shape was created with Shapes 1 and Created toast instead of the canvas staying empty.</p>
+    <ul class="notes"><li>Judge (meta-models/muse-spark-open): fail — After the Ellipse tool was selected (Frame 2, Shapes 0), Frame 3 shows an ellipse was created on the canvas (Shapes 1, &#39;Created: Ellipse @ 554,279&#39;), so pressing Enter created a shape instead of leaving the canvas empty.</li></ul>
+    <div class="shots"><figure><a href="shots/red-02.png"><img src="shots/red-02.png" alt="shots/red-02.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    <figure class="video"><video src="videos/red.webm" controls muted preload="metadata"></video><figcaption>Screen recording of this phase · videos/red.webm</figcaption></figure>
+    <details class="timeline"><summary>What the verifier did, step by step</summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a href="shots/red-00.png"><img src="shots/red-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (24, 240) → landed on svg</div></div><a href="shots/red-01.png"><img src="shots/red-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>press Enter</div></div><a href="shots/red-02.png"><img src="shots/red-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>look at the screen</div></div><a href="shots/red-03.png"><img src="shots/red-03.png" alt="step 3" loading="lazy"></a></li></ol></details>
+    <p class="small">3 verifier steps · muse-spark-1.3 · prompt c3d4c85bf9a0</p>
+  </article>
+  <article class="phase">
+    <header>
+      <div>
+        <h3><span class="pname p-green">Green</span> <span class="ref">rw/board921/fix @ f05983d</span></h3>
+        <p class="role">The fix — the criteria should pass</p>
+      </div>
+      <div class="right">
+        <span class="status s-pass"><span class="dot"></span>pass</span>
+        <span class="expect ok">as expected</span>
+      </div>
+    </header>
+    
+    
+    <div class="votes">
+      <div class="vote v-pass"><span class="mark">✓</span><span class="vl">Verifier · Spark 1.3</span><span class="vv">pass</span></div>
+      <div class="vote v-na"><span class="mark">–</span><span class="vl">Code checks</span><span class="vv">n/a</span></div>
+      <div class="vote v-na"><span class="mark">–</span><span class="vl">SAM 3.1</span><span class="vv">n/a</span></div>
+      <div class="vote v-pass"><span class="mark">✓</span><span class="vl">Judge</span><span class="vv">pass</span></div>
+    </div>
+    <p class="obs"><span class="k">Verifier saw</span> After clicking Ellipse and pressing Enter once, the Ellipse tool remained selected with Shapes 0 and the empty-canvas message visible and no shape created.</p>
+    <ul class="notes"><li>Judge (meta-models/muse-spark-open): pass — Frame 2 shows Ellipse tool selected after click, and Frames 3-4 after Enter still show Shapes 0 and empty canvas with &#39;Click or pick a tool&#39; prompt, with no shape created.</li></ul>
+    <div class="shots"><figure><a href="shots/green-03.png"><img src="shots/green-03.png" alt="shots/green-03.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    <figure class="video"><video src="videos/green.webm" controls muted preload="metadata"></video><figcaption>Screen recording of this phase · videos/green.webm</figcaption></figure>
+    <details class="timeline"><summary>What the verifier did, step by step</summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a href="shots/green-00.png"><img src="shots/green-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (24, 239) → landed on svg</div></div><a href="shots/green-01.png"><img src="shots/green-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>press Enter</div></div><a href="shots/green-02.png"><img src="shots/green-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a href="shots/green-03.png"><img src="shots/green-03.png" alt="step 3" loading="lazy"></a></li></ol></details>
+    <p class="small">3 verifier steps · muse-spark-1.3 · prompt 39b41cefb401</p>
+  </article>
+<h2>Check this receipt yourself</h2>
+<div class="cmd">npm run attest -- verify receipt.json</div>
+<p class="small">Verification needs no model calls: it checks the Ed25519 signature, the hash-chained event log and its pinned head, every screenshot's hash, the criteria hash, and re-derives the verdict from the recorded votes.</p>
+<dl class="kvs" style="margin-top:12px"><dt>verifier</dt><dd>muse-spark-1.3</dd><dt>judge</dt><dd>meta-models/muse-spark-open</dd><dt>artifacts</dt><dd>11 files, each hashed</dd><dt>signing key</dt><dd>Qy0rTcJP6x7lbzFhPcQcY3I=</dd></dl>
+<footer>This page is generated from <code>receipt.json</code> and is not itself signed. The receipt is the source of truth — if they ever disagree, trust <code>attest verify</code>.</footer>
+</div></body></html>

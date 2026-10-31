@@ -41,7 +41,9 @@ Everything — votes, screenshots, a hash-chained event log — is sealed into a
 
 ## Results
 
-**On a real pull request:** Attest proved [Master07/attest#1](https://github.com/Master07/attest/pull/1) live and posted the proof as a comment ([receipt](proofs/pr-1-live/)).
+**On an AI agent's real, merged fix in someone else's app:** [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), written by **Devin**, fixed "Enter on a focused toolbar button also stamps a shape". With the criterion frozen before the run, Attest's first live attempt reproduced the bug on the PR's parent and showed Devin's fix removes it — the verifier and the open-weights judge agreeing, neither seeing the code. Verdict **PROVEN_UNCHECKED**: the PR has no wrong fix to test against, so the Break phase wasn't run ([receipt](proofs/realworld/board-921-run1/) · [write-up](examples/realworld/board-enter/README.md)).
+
+**As a pull-request comment:** on our own demo PR [Master07/attest#1](https://github.com/Master07/attest/pull/1), Attest proved the fix live, rejected a wrong fix, and posted the proof as a comment ([receipt](proofs/pr-1-live/)).
 
 On a [benchmark of 10 planted UI bugs](docs/BENCHMARK.md), each with a plausible wrong fix ([receipts](proofs/benchmark/)):
 

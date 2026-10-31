@@ -1,0 +1,9 @@
+id: board-enter-on-focused-button
+# Frozen before any Attest run (Nov 1), written from the pull request's own description of the bug:
+# shizukutanaka/Board#921 (by Devin) — "Enter on a focused button ... createShapeKbd() (shape stamped
+# at view center)". Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: enter-activates-focused-button-only
+    given: The Board whiteboard is open with an empty canvas (no shapes)
+    when: The user clicks the Ellipse tool button in the left toolbar, then presses the Enter key once while that button still has keyboard focus
+    then: The Ellipse tool is selected and the canvas is still empty — pressing Enter on the focused button does not create a shape

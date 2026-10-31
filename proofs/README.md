@@ -14,6 +14,7 @@ What a receipt does **not** prove: it shows nothing was changed after capture, n
 
 | Bundle | What it shows | Verdict | Run | Judge |
 |---|---|---|---|---|
+| [realworld/board-921-run1](realworld/board-921-run1/) | **An AI agent's merged fix in someone else's app.** [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), written by Devin: Enter on a focused toolbar button also stamped a shape. Red reproduces it, Green shows Devin's fix removes it. Criterion frozen before the run; first attempt. No wrong fix exists, so no Break ([write-up](../examples/realworld/board-enter/README.md)) | **PROVEN_UNCHECKED** | live | Muse Spark Open (open weights, Baseten) |
 | [pr-1-live](pr-1-live/) | Attest on a real pull request ([Master07/attest#1](https://github.com/Master07/attest/pull/1)): the invisible chat-widget container swallows the Pay click; the PR's fix lets it through; a `z-index` wrong fix is rejected. Posted to the PR as [this comment](pr-1-live/pr-comment.md) | **PROVEN** | live | Muse Spark Open (open weights, Baseten) |
 | [benchmark/run-1](benchmark/run-1/) | All 10 planted bugs ([results](benchmark/run-1/results.md)) | 4 PROVEN, 6 INCONCLUSIVE (Meta API 500/503) | live | Muse Wonder |
 | [benchmark/run-2](benchmark/run-2/) | Re-run of the 6 hit by API errors ([results](benchmark/run-2/results.md)) | 4 PROVEN, 2 INCONCLUSIVE | live | Muse Wonder |
