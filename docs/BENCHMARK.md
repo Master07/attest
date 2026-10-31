@@ -78,7 +78,7 @@ After removing every `// BUG:` comment and the vendor script's self-describing b
 - **Ten scenarios, all in one tiny app style.** This shows the mechanism works; it is not a measure of real-world accuracy.
 - **Planted bugs.** Real bugs are messier; a real-world proof is the next step.
 - **The verifier is non-deterministic** (B04). Repeat runs and the judge reduce false passes; they don't eliminate them.
-- **Base code contains `// BUG:` comments.** Harmless here — the verifier never reads code — but they must be removed before using these scenarios to test agents (e.g. the Muse Code loop).
+- **Scenario metadata names the bug.** The `// BUG:` comments and the vendor banner are gone (branches rebuilt and pushed 2026-11-01), but `scenario.yml` and the benchmark README still sit in each base branch. Harmless for the verifier, which never reads code; an agent under test can read them (see the B09 loop confound above).
 - **Costs:** check the Meta billing page for the exact spend of both runs before quoting a cost per proof.
 
 ## Reproduce
