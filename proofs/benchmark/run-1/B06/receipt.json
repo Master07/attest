@@ -1,0 +1,170 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-10-30T23:35:32.034Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench/B06-cookie-banner/app",
+    "refs": {
+      "red": {
+        "ref": "bench/B06/base",
+        "sha": "b3dfd399afb5aa804b2366a27521f67de9c2ae86"
+      },
+      "green": {
+        "ref": "bench/B06/fix",
+        "sha": "eee4994473fe8c51218bbb9769538e03ee81ef0a"
+      },
+      "break": {
+        "ref": "bench/B06/bad-fix",
+        "sha": "5911bd4fdcdf9d21904d62fb401f25bdf472c1d2"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "a527e2fb3ee46580122040e2998c82d2cdc8ec2e42ce4a032157d4952989b902"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench/B06/base",
+      "sha": "b3dfd399afb5aa804b2366a27521f67de9c2ae86",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d5b352401e3be1cae0b93610df25fc5df98996d7f9371105cd34db83dec07813",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After accepting attempts and Pay clicks the page remained on Your cart with no order confirmation or order number visible.",
+          "evidence": [
+            "shots/red-05.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER still shows the cart page with the cookie banner and Pay button, with no order confirmation page or order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench/B06/fix",
+      "sha": "eee4994473fe8c51218bbb9769538e03ee81ef0a",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "6a3339b0700be2dcfc889aa6cc959a3ff55e31e926297447b0ea6a2859613eb0",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Order confirmation page shows Order #1042 after accepting banner and paying.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): pass — AFTER shows an order confirmation page with Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench/B06/bad-fix",
+      "sha": "5911bd4fdcdf9d21904d62fb401f25bdf472c1d2",
+      "status": "completed",
+      "error": null,
+      "steps": 8,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b3485ddda753fa60d1d0fec78183cdccfaede7e32f428285f296006ac3b54509",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Accept and Pay, the page stayed on the cart with the cookie banner still visible and no order confirmation or order number appeared.",
+          "evidence": [
+            "shots/break-08.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — The AFTER screenshot still shows the cart page with the cookie banner and Pay button, with no order confirmation page or order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "meta",
+      "model": "muse-wonder-1.0"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:a527e2fb3ee46580122040e2998c82d2cdc8ec2e42ce4a032157d4952989b902",
+    "shots/break-00.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-01.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-02.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-03.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-04.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-05.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-06.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-07.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/break-08.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/green-00.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/green-01.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/green-02.png": "sha256:8b10f8dc6394b3cbd0f2fcb4865d717906b85f9f4dab0244c3b85ee2d8ad8538",
+    "shots/red-00.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/red-01.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/red-02.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/red-03.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/red-04.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab",
+    "shots/red-05.png": "sha256:fa1b281095f474c6c82c9e02934a3f8d400edc9723f5fbc1e352598c73982cab"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:3927085feedbf9543ac74b9adbb47f9599a938e52f3d5563d3a334a3baf6453e",
+    "entries": 60
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "waS1EHK1kNdFb/dTzbmjVUa2QMxxgs5lH2OtOIka5RehkTAvf3Y5mDbBgIqeX2oauG063Oyyhc3kwq/UUfd2Bg=="
+  }
+}

@@ -1,0 +1,413 @@
+[
+  {
+    "id": "B01",
+    "title": "Pay button stays disabled",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B01/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "B02",
+    "title": "Redirect after payment goes to a 404",
+    "category": "navigation",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B02/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "B03",
+    "title": "Discount applied twice",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B03/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "B04",
+    "title": "Pay button is off-screen on desktop",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B04/receipt.json",
+    "reasons": [
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "B05",
+    "title": "Email pattern blocks normal addresses",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B05/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "B06",
+    "title": "Cookie banner covers Pay and never closes",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B06/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "B07",
+    "title": "Payment posts to an endpoint that does not exist",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B07/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "B08",
+    "title": "Pay button is invisible after the cart renders",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "fail",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "pass",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "fail",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B08/receipt.json",
+    "reasons": [
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "B09",
+    "title": "Third-party chat widget covers Pay",
+    "category": "external",
+    "outside_app_dir": true,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "fail",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "pass",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "fail",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B09/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "B10",
+    "title": "Total parses to NaN so Pay does nothing",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-1793402206249/B10/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  }
+]

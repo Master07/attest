@@ -1,0 +1,161 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-10-30T23:23:55.777Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench/B03-double-discount/app",
+    "refs": {
+      "red": {
+        "ref": "bench/B03/base",
+        "sha": "4ba9cd43dcf33e8fad685bba643eb435cb48bdef"
+      },
+      "green": {
+        "ref": "bench/B03/fix",
+        "sha": "50df74e8346310bd77b1850295f1918a54ca4e5b"
+      },
+      "break": {
+        "ref": "bench/B03/bad-fix",
+        "sha": "b355be094cf666ffff4df34d6b070be12d9ff525"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "ca55925a3344d20273239ce7d7d54d2c417a7bd8890f8a692bf388a4f0222bb9"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench/B03/base",
+      "sha": "4ba9cd43dcf33e8fad685bba643eb435cb48bdef",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ed26cbd8cdc09a416039dafd64da27a39e34febb1edd90c5952cbbd86068a6b5",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Pay, the cart still shows Total $72.09 with 'Payment failed' and no order confirmation or order number appeared.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER still shows the cart with total $72.09 and a 'Payment failed' message, not an order confirmation page with $80.10 total and an order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench/B03/fix",
+      "sha": "50df74e8346310bd77b1850295f1918a54ca4e5b",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "4924ab9a3f07fec95d9299636f8c67ab8f1b5d3d5ca28b10ef21474f1b076d98",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Cart total showed $80.10 and after clicking Pay the confirmation page showed Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): pass — The AFTER screenshot shows a confirmed order page with Order #1042 following a cart total of $80.10 with SAVE10 applied."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench/B03/bad-fix",
+      "sha": "b355be094cf666ffff4df34d6b070be12d9ff525",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5099badd5fedc995e2808e2c25fe34c95d9d661413d93e3aefa579c3cd993046",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Pay the total remained $72.09 and the page showed 'Payment failed' with no order confirmation or order number.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER still shows the cart with total $72.09 and a 'Payment failed' message, not $80.10 or an order confirmation with an order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "meta",
+      "model": "muse-wonder-1.0"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:ca55925a3344d20273239ce7d7d54d2c417a7bd8890f8a692bf388a4f0222bb9",
+    "shots/break-00.png": "sha256:4d3b9b79a16a8a46d96cf5b65b2a2d81c3c53ce5e286bf063656021085e735e9",
+    "shots/break-01.png": "sha256:184224cdd7a59568bed73556138fa10b914356597f3cc32f152d6ef4d6b71785",
+    "shots/break-02.png": "sha256:184224cdd7a59568bed73556138fa10b914356597f3cc32f152d6ef4d6b71785",
+    "shots/green-00.png": "sha256:8ac7621aef59a88dce3a7164bc0229342c743d17ef46f58f47394e0b498cb464",
+    "shots/green-01.png": "sha256:8b10f8dc6394b3cbd0f2fcb4865d717906b85f9f4dab0244c3b85ee2d8ad8538",
+    "shots/red-00.png": "sha256:4d3b9b79a16a8a46d96cf5b65b2a2d81c3c53ce5e286bf063656021085e735e9",
+    "shots/red-01.png": "sha256:184224cdd7a59568bed73556138fa10b914356597f3cc32f152d6ef4d6b71785",
+    "shots/red-02.png": "sha256:184224cdd7a59568bed73556138fa10b914356597f3cc32f152d6ef4d6b71785",
+    "shots/red-03.png": "sha256:184224cdd7a59568bed73556138fa10b914356597f3cc32f152d6ef4d6b71785"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:96ddadc6feb1acaf52a77e8f3a6958cedbde5045f70353ff75666ebb5bc48967",
+    "entries": 42
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "iAWwrqEqAdNQCdZ3KktsOis1RJ+xgaxDq1+xqlTqbOvwtZZRYphPracC9L5jaNCo6m4lgm/TdhUYIwnMoLaGAQ=="
+  }
+}

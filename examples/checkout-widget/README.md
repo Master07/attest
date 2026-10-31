@@ -19,7 +19,7 @@ The three branches differ only inside `examples/checkout-widget/`.
 | Branch | Role in the proof |
 |---|---|
 | `demo2/base` | **Red** — the reported bug |
-| `demo2/bad-fix` | **Break** — a plausible fix whose unit test passes |
+| `demo2/bad-fix` | **Break** — a plausible fix whose test passes (it checks the CSS for a `z-index`, not the click) |
 | `demo2/fix` | **Green** — the real fix |
 
 ```bash

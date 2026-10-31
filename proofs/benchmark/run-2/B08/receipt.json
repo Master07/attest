@@ -1,0 +1,173 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-10-31T00:15:10.021Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench/B08-invisible-pay/app",
+    "refs": {
+      "red": {
+        "ref": "bench/B08/base",
+        "sha": "9132593ffe8227263193f95910a30a9cb6326c26"
+      },
+      "green": {
+        "ref": "bench/B08/fix",
+        "sha": "9d6de871dc72cd45aa2e6583d9b8fa4131a13d9c"
+      },
+      "break": {
+        "ref": "bench/B08/bad-fix",
+        "sha": "7792278279597f66c222fa0d63f89f198839779e"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "e9705fe69bc037da1568f7797573e9ed3621d18f2e451c8aadfeea266e7d583c"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench/B08/base",
+      "sha": "9132593ffe8227263193f95910a30a9cb6326c26",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "20ccde2eac22d44c60d51860a8851b71d2ca5bcf0eb0e79da48853ac7609f714",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "fail",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Cart page shows item and order summary but no Pay button is visible anywhere on screen.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "SAM 3.1 (\"button\"): SAM found no \"Pay button\" on screen",
+            "Judge (muse-wonder-1.0): fail — The AFTER screenshot is identical to BEFORE, showing the cart with no visible Pay button and no order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench/B08/fix",
+      "sha": "9d6de871dc72cd45aa2e6583d9b8fa4131a13d9c",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "2d868bb3818e54b1f0fd3132bbd9f742b3352769dd2084474f83cc9b32b0bc1e",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "pass",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicked Pay and order confirmation showed Order #1042.",
+          "evidence": [
+            "shots/green-01.png",
+            "shots/green-reveal.png"
+          ],
+          "notes": [
+            "SAM 3.1 (\"button\"): \"Pay button\" is visible and clicks on it reach it",
+            "Judge (muse-wonder-1.0): pass — BEFORE shows the Pay $89.00 button with one cart item and AFTER shows order confirmation with Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench/B08/bad-fix",
+      "sha": "7792278279597f66c222fa0d63f89f198839779e",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "cf84d981d71b04ef8b4715d597fa9b8f07c3da4f715eb1f9f733bdfbeb20c376",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "fail",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Cart page shows item and order summary but no Pay button is visible to click.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "SAM 3.1 (\"button\"): SAM found no \"Pay button\" on screen",
+            "Judge (muse-wonder-1.0): fail — The AFTER screenshot shows the same cart with no visible Pay button and no order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "ui",
+      "provider": "meta",
+      "model": "sam-3.1"
+    },
+    {
+      "role": "judge",
+      "provider": "meta",
+      "model": "muse-wonder-1.0"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:e9705fe69bc037da1568f7797573e9ed3621d18f2e451c8aadfeea266e7d583c",
+    "shots/break-00.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/break-01.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/break-02.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/break-03.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/green-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/green-01.png": "sha256:8b10f8dc6394b3cbd0f2fcb4865d717906b85f9f4dab0244c3b85ee2d8ad8538",
+    "shots/green-reveal.png": "sha256:80b1ff2d1b98a4efb2b26fd9210e4f344e7d2cdb326354aa9d8300407af93f02",
+    "shots/red-00.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/red-01.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/red-02.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/red-03.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f",
+    "shots/red-04.png": "sha256:4ad98a74aba95151d93df73e2ad3d77d4b836a14ec611aef9b7753c4f889044f"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:12f3954e9bbde21b1832eb3c25dba41b3df264c92401a1feaa2498a0ece1828d",
+    "entries": 49
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "EKc23vkIP5qi6wODS059JPRxDoYZ3kBzbvJEL6QOkmBiOnFSmiF7r6sQqGetlqWyHDSrqfvZEgCLWT6FwffUDQ=="
+  }
+}

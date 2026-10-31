@@ -1,0 +1,159 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-10-31T00:05:16.780Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench/B02-bad-redirect/app",
+    "refs": {
+      "red": {
+        "ref": "bench/B02/base",
+        "sha": "3f5eb45511a0a6e5a6bb5d92fbcdd1c9545f64cf"
+      },
+      "green": {
+        "ref": "bench/B02/fix",
+        "sha": "b8fc4a201fea2cbe7378eb68aea3862332fb46e2"
+      },
+      "break": {
+        "ref": "bench/B02/bad-fix",
+        "sha": "56e73c4ff92be4c945964f3a5b22ec733f07f163"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "85e554a5883279889bbd63b30b479643aa168d5b42b23183751b19b13e624270"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench/B02/base",
+      "sha": "3f5eb45511a0a6e5a6bb5d92fbcdd1c9545f64cf",
+      "status": "error",
+      "error": "HTTP 500 {\"error\":{\"code\":null,\"message\":\"internal server error\",\"param\":null,\"type\":\"server_error\"}}",
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "59e0dc1fcd4545528b774f29a9b5bfe75a6e3b95b494ff99b6a9c0d9c84325d1",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "missing",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-01.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — The AFTER screenshot shows only 'Not found' with no order confirmation page or order number."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: HTTP 500 {\"error\":{\"code\":null,\"message\":\"internal server error\",\"param\":null,\"type\":\"server_error\"}}"
+    },
+    {
+      "phase": "green",
+      "ref": "bench/B02/fix",
+      "sha": "b8fc4a201fea2cbe7378eb68aea3862332fb46e2",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f8e01557ae1407f706ada81fc175c9101580ac51d794305bb09c094a5604bbd9",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Order confirmation page shows Order #1042 after clicking Pay",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): pass — AFTER shows the order confirmation page with Order #1042 following the one-item cart in BEFORE."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench/B02/bad-fix",
+      "sha": "56e73c4ff92be4c945964f3a5b22ec733f07f163",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e96fb7a8e13637aeca2586df5de63e1a00c7d5002262aa2e1af736d517a784e8",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Pay, the page showed 'Not found' with no order confirmation or order number.",
+          "evidence": [
+            "shots/break-01.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER shows 'Not found' instead of an order confirmation page with an order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "meta",
+      "model": "muse-wonder-1.0"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:85e554a5883279889bbd63b30b479643aa168d5b42b23183751b19b13e624270",
+    "shots/break-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/break-01.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-02.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/green-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/green-01.png": "sha256:8b10f8dc6394b3cbd0f2fcb4865d717906b85f9f4dab0244c3b85ee2d8ad8538",
+    "shots/red-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/red-01.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:d49a943795bb2518d95ff6131038e9e2c44ceb06e35f18a525606b15422d48c1",
+    "entries": 38
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "gJu6BFF0O0LSpfT6yTI+zmWe+SEmdEhvBOu9VxTR7fE5keOX5NRpTGDk/yWvpbtSt3K5g9h4FmpQCx7TvYJQBA=="
+  }
+}

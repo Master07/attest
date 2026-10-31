@@ -1,0 +1,176 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-10-31T00:18:01.423Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench/B09-external-overlay/app",
+    "refs": {
+      "red": {
+        "ref": "bench/B09/base",
+        "sha": "50f8387e2937ab64f97cd6b2fc873d1a29ffa306"
+      },
+      "green": {
+        "ref": "bench/B09/fix",
+        "sha": "2322f61d369ee9529294727074501ec11e77eecb"
+      },
+      "break": {
+        "ref": "bench/B09/bad-fix",
+        "sha": "15d6da64f7aae033bdb8d004807a3e2599ce44f9"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "d85ded9ef40690dc094f10f32202ab17ccd8ddbb1475f01c93a99644044f39ae"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench/B09/base",
+      "sha": "50f8387e2937ab64f97cd6b2fc873d1a29ffa306",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "0ed03230eb756fba6ab8b5ab33fe00394b189b7457d3ba84baad61ce7742806f",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "fail",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked Pay twice and page remained on Your cart with no order confirmation or order number shown.",
+          "evidence": [
+            "shots/red-03.png",
+            "shots/red-reveal.png"
+          ],
+          "notes": [
+            "SAM 3.1 (\"button\"): \"Pay button\" is visible, but a click on it at (957, 358) landed on div#hb-root",
+            "Judge (muse-wonder-1.0): fail — The AFTER screenshot still shows the cart page with the Pay button and no order confirmation page or order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench/B09/fix",
+      "sha": "2322f61d369ee9529294727074501ec11e77eecb",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "daa3d2b42485d7dba1e542ac5de577a623e1598dddc7d90c6056b6254489ec58",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "pass",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Pay, the confirmation page showed Thank you — your order is confirmed with Order #1042.",
+          "evidence": [
+            "shots/green-01.png",
+            "shots/green-reveal.png"
+          ],
+          "notes": [
+            "SAM 3.1 (\"button\"): \"Pay button\" is visible and clicks on it reach it",
+            "Judge (muse-wonder-1.0): pass — AFTER shows an order confirmation page with Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench/B09/bad-fix",
+      "sha": "15d6da64f7aae033bdb8d004807a3e2599ce44f9",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a36bed5d7058d4572d17552a4b78af15bd2e42d423ec9fe6950fb2b7b2f0e5e3",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "fail",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Pay $89.00 multiple times the page remained on Your cart with no order confirmation or order number shown.",
+          "evidence": [
+            "shots/break-03.png",
+            "shots/break-reveal.png"
+          ],
+          "notes": [
+            "SAM 3.1 (\"button\"): \"Pay button\" is visible, but a click on it at (957, 357) landed on div#hb-root",
+            "Judge (muse-wonder-1.0): fail — AFTER screenshot still shows the cart page with the Pay button and no order confirmation page or order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "ui",
+      "provider": "meta",
+      "model": "sam-3.1"
+    },
+    {
+      "role": "judge",
+      "provider": "meta",
+      "model": "muse-wonder-1.0"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:d85ded9ef40690dc094f10f32202ab17ccd8ddbb1475f01c93a99644044f39ae",
+    "shots/break-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/break-01.png": "sha256:742240de202f3f7ee6a27ee087fbd88ce2b5486aff1dda46b7493e456b0d0660",
+    "shots/break-02.png": "sha256:742240de202f3f7ee6a27ee087fbd88ce2b5486aff1dda46b7493e456b0d0660",
+    "shots/break-03.png": "sha256:742240de202f3f7ee6a27ee087fbd88ce2b5486aff1dda46b7493e456b0d0660",
+    "shots/break-reveal.png": "sha256:f1e837f2ef78a994c9ea2ec0698095d7b78bff0b38df3117f61b0f6fb4d08a53",
+    "shots/green-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/green-01.png": "sha256:8b10f8dc6394b3cbd0f2fcb4865d717906b85f9f4dab0244c3b85ee2d8ad8538",
+    "shots/green-reveal.png": "sha256:80b1ff2d1b98a4efb2b26fd9210e4f344e7d2cdb326354aa9d8300407af93f02",
+    "shots/red-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/red-01.png": "sha256:742240de202f3f7ee6a27ee087fbd88ce2b5486aff1dda46b7493e456b0d0660",
+    "shots/red-02.png": "sha256:742240de202f3f7ee6a27ee087fbd88ce2b5486aff1dda46b7493e456b0d0660",
+    "shots/red-03.png": "sha256:742240de202f3f7ee6a27ee087fbd88ce2b5486aff1dda46b7493e456b0d0660",
+    "shots/red-reveal.png": "sha256:f1e837f2ef78a994c9ea2ec0698095d7b78bff0b38df3117f61b0f6fb4d08a53"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:366b5155b2c0d14856a3916560d82a825257edc87ffc5321518ec45d0b7a83ce",
+    "entries": 47
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "Z9GYWHKRuNRLNyTWOy/kNgLnRPcLDKYdc87jHn80oteGnV8+tIWdjFSP7ZpTO8/m4qNrJqsiWr6hK4tVPi8LDQ=="
+  }
+}

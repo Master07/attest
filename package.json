@@ -12,7 +12,8 @@
     "smoke": "tsx scripts/smoke-t4.ts",
     "phase": "tsx scripts/run-phase.ts",
     "attest": "tsx src/index.ts",
-    "bench": "tsx scripts/bench.ts"
+    "bench": "tsx scripts/bench.ts",
+    "verify-proofs": "tsx scripts/verify-proofs.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

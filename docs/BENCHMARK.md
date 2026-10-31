@@ -2,7 +2,9 @@
 
 > **Audience:** judges + team · **Status:** draft · **Last updated:** 2026-11-01 · **Related:** [ARCHITECTURE §1, §7](ARCHITECTURE.md) · [examples/bench](../examples/bench/README.md)
 
-Ten planted UI bugs, each in three versions of a tiny checkout app: **base** (the bug), **bad-fix** (a plausible wrong fix whose own unit tests pass) and **fix** (the real fix). Attest runs Red on base, Green on fix and Break on bad-fix, with four votes per phase: the Spark 1.3 verifier, deterministic code checks, SAM 3.1 (where the criterion names a visible element) and a Muse Wonder judge.
+Ten planted UI bugs, each in three versions of a tiny checkout app: **base** (the bug), **bad-fix** (a plausible wrong fix whose tests pass) and **fix** (the real fix). Attest runs Red on base, Green on fix and Break on bad-fix, with four votes per phase: the Spark 1.3 verifier, deterministic code checks, SAM 3.1 (where the criterion names a visible element) and a Muse Wonder judge (the judge at the time; it now runs on Muse Spark Open).
+
+Every receipt is committed in [proofs/benchmark](../proofs/benchmark/); `npm run verify-proofs` checks them without a key.
 
 Scenarios were built by Command Code to a written spec; criteria were written before any run and never changed (`git log -- examples/bench/*/app/criteria.yml`). An AI-free probe (raw mouse clicks, no models) confirms every base is broken, every fix works and every bad-fix is still broken; all ten bad-fix test suites pass.
 
@@ -10,22 +12,22 @@ Scenarios were built by Command Code to a written spec; criteria were written be
 
 Two runs are reported, because the first was hit by Meta Model API outages.
 
-| ID | Bug | Run 1 | Run 2 (re-run of the 6 affected) |
-|---|---|---|---|
-| B01 | Pay disabled (string comparison) | **PROVEN** | — |
-| B02 | Redirect to a 404 after payment | INCONCLUSIVE — API 500 (red, break) | INCONCLUSIVE — API 500 (red), even after stateless fallback |
-| B03 | Discount applied twice | **PROVEN** | — |
-| B04 | Pay pushed off-screen on desktop | INCONCLUSIVE — API 500 (red) | INCONCLUSIVE — **votes disagree on break** (see below) |
-| B05 | Email `pattern` blocks normal addresses | INCONCLUSIVE — API 503 (break) | **PROVEN** |
-| B06 | Cookie banner never closes, covers Pay | **PROVEN** | — |
-| B07 | Payment posts to a missing endpoint | **PROVEN** | — |
-| B08 | Pay invisible (`opacity: 0`) | INCONCLUSIVE — API 500 (red) | **PROVEN** |
-| B09 | Third-party chat widget (served from outside the app dir) covers Pay | INCONCLUSIVE — API 500 (break) | **PROVEN** |
-| B10 | Total parses to NaN | INCONCLUSIVE — API 500 (break) | **PROVEN** |
+| ID | Bug | Wrong fix's test | Run 1 | Run 2 (re-run of the 6 affected) |
+|---|---|---|---|---|
+| B01 | Pay disabled (string comparison) | unit test of the handler | [**PROVEN**](../proofs/benchmark/run-1/B01/) | — |
+| B02 | Redirect to a 404 after payment | unit test of the URL builder | [INCONCLUSIVE](../proofs/benchmark/run-1/B02/) — API 500 (red, break) | [INCONCLUSIVE](../proofs/benchmark/run-2/B02/) — API 500 (red), even after stateless fallback |
+| B03 | Discount applied twice | unit test of the pricing function | [**PROVEN**](../proofs/benchmark/run-1/B03/) | — |
+| B04 | Pay pushed off-screen on desktop | CSS check (`z-index` present) | [INCONCLUSIVE](../proofs/benchmark/run-1/B04/) — API 500 (red) | [INCONCLUSIVE](../proofs/benchmark/run-2/B04/) — **votes disagree on break** (see below) |
+| B05 | Email `pattern` blocks normal addresses | unit test of the validator | [INCONCLUSIVE](../proofs/benchmark/run-1/B05/) — API 503 (break) | [**PROVEN**](../proofs/benchmark/run-2/B05/) |
+| B06 | Cookie banner never closes, covers Pay | CSS check (`z-index` present) | [**PROVEN**](../proofs/benchmark/run-1/B06/) | — |
+| B07 | Payment posts to a missing endpoint | unit test of the payment client | [**PROVEN**](../proofs/benchmark/run-1/B07/) | — |
+| B08 | Pay invisible (`opacity: 0`) | HTML check (`aria-label` present) | [INCONCLUSIVE](../proofs/benchmark/run-1/B08/) — API 500 (red) | [**PROVEN**](../proofs/benchmark/run-2/B08/) |
+| B09 | Third-party chat widget (served from outside the app dir) covers Pay | CSS check (`z-index` present) | [INCONCLUSIVE](../proofs/benchmark/run-1/B09/) — API 500 (break) | [**PROVEN**](../proofs/benchmark/run-2/B09/) |
+| B10 | Total parses to NaN | unit test of the formatter | [INCONCLUSIVE](../proofs/benchmark/run-1/B10/) — API 500 (break) | [**PROVEN**](../proofs/benchmark/run-2/B10/) |
 
 **Latest verdict per scenario:**
 
-- Wrong fixes whose own unit tests passed: **10 / 10**
+- Wrong fixes whose tests passed: **10 / 10** — 6 behavioural unit tests, 4 source checks (CSS or HTML) on the visual bugs
 - **PROVEN: 8 / 10**
 - Real fix accepted (Green = pass): **10 / 10** in both runs — no false rejections
 - Wrong fix certified as working: **0 / 10** — no false passes
@@ -33,7 +35,7 @@ Two runs are reported, because the first was hit by Meta Model API outages.
 
 ## What the numbers mean
 
-**"Tests pass" was not evidence in any scenario.** Every wrong fix shipped with passing unit tests; none of them fixed the running app.
+**"Tests pass" was not evidence in any scenario.** Every wrong fix shipped with passing tests; none of them fixed the running app. Six are real unit tests of the changed function — they pass because the function is fine and the bug is elsewhere. For the four visual bugs (B04, B06, B08, B09), the test checks the CSS or HTML source, because that is the only test you can write without a browser; it passes while the button stays covered, off-screen or invisible. That is the gap Attest fills, not a strong test it beats.
 
 **Attest never certified a wrong fix, and never rejected a real one.** When it lacked evidence it said INCONCLUSIVE instead of guessing.
 
@@ -90,4 +92,4 @@ npm run bench -- run       # live proofs; writes evidence/bench-<id>/results.md
 npm run attest -- verify evidence/bench-<id>/<ID>/receipt.json
 ```
 
-Evidence for the two runs reported above: `evidence/bench-1793402206249/` and `evidence/bench-1793404984909/` (local; `evidence/` is gitignored).
+The two runs reported above are committed as [proofs/benchmark/run-1](../proofs/benchmark/run-1/) and [run-2](../proofs/benchmark/run-2/) (copied unchanged from the local `evidence/` folder); `npm run verify-proofs` checks every receipt.

@@ -1,0 +1,164 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-10-30T23:30:59.766Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench/B05-email-pattern/app",
+    "refs": {
+      "red": {
+        "ref": "bench/B05/base",
+        "sha": "2942f9369ec28af509a06e544b0f9f45cbdbf0e4"
+      },
+      "green": {
+        "ref": "bench/B05/fix",
+        "sha": "61d8aed4282ead82090333e42d28d6362ec9d393"
+      },
+      "break": {
+        "ref": "bench/B05/bad-fix",
+        "sha": "feb39082bc57e2d4f64e164574b476440484f6f0"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "dc63e2e25d4d9938efd21f73d320ce3b6a0356ea3d0bd25931ee766f9073d474"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench/B05/base",
+      "sha": "2942f9369ec28af509a06e544b0f9f45cbdbf0e4",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ff0acd10b01d2f910590f7596f5d443fb4404e1cdf057ce8ce4f6d3d27cbf549",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After entering buyer@example.com and clicking Pay, the cart page remained and showed validation error Please match the requested format with no order confirmation or order number.",
+          "evidence": [
+            "shots/red-05.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER still shows the cart page with a format validation error for buyer@example.com and no order confirmation page or order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench/B05/fix",
+      "sha": "61d8aed4282ead82090333e42d28d6362ec9d393",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "69ed26d264460284b1e2255dc8c08096d7ad6724ef587a8c901115b2439be62a",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Order confirmation page shows Order #1042 after paying.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): pass — AFTER screenshot shows an order confirmation page with Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench/B05/bad-fix",
+      "sha": "feb39082bc57e2d4f64e164574b476440484f6f0",
+      "status": "error",
+      "error": "HTTP 503 {\"error\":{\"code\":null,\"message\":\"persistence service error\",\"param\":null,\"type\":\"server_error\"}}",
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "3a09c08bbcaf9aa46c45f06677ba7475a357cbb50ab8e29e36477c36686795e3",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "missing",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-01.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER still shows the cart page with no order confirmation page or order number visible."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: HTTP 503 {\"error\":{\"code\":null,\"message\":\"persistence service error\",\"param\":null,\"type\":\"server_error\"}}"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "meta",
+      "model": "muse-wonder-1.0"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:dc63e2e25d4d9938efd21f73d320ce3b6a0356ea3d0bd25931ee766f9073d474",
+    "shots/break-00.png": "sha256:38325cba40b46d0e9059f56d3cebbb69a79e53d7455e82f78fecd64f79fe59e6",
+    "shots/break-01.png": "sha256:1993c82bcb5c2886a28683f182ac9b0b6671df744610deb514f58db9b9575849",
+    "shots/green-00.png": "sha256:38325cba40b46d0e9059f56d3cebbb69a79e53d7455e82f78fecd64f79fe59e6",
+    "shots/green-01.png": "sha256:1993c82bcb5c2886a28683f182ac9b0b6671df744610deb514f58db9b9575849",
+    "shots/green-02.png": "sha256:e0b25b56f813019d799122754572081dbf85350c5141c1723dba50c0e9586adf",
+    "shots/green-03.png": "sha256:8b10f8dc6394b3cbd0f2fcb4865d717906b85f9f4dab0244c3b85ee2d8ad8538",
+    "shots/red-00.png": "sha256:38325cba40b46d0e9059f56d3cebbb69a79e53d7455e82f78fecd64f79fe59e6",
+    "shots/red-01.png": "sha256:1993c82bcb5c2886a28683f182ac9b0b6671df744610deb514f58db9b9575849",
+    "shots/red-02.png": "sha256:e0b25b56f813019d799122754572081dbf85350c5141c1723dba50c0e9586adf",
+    "shots/red-03.png": "sha256:63e863c2d5968274959742d96f37fb9b05b1511a31148fe6889fe6870c6fd53f",
+    "shots/red-04.png": "sha256:023ffca59cf789d60bc5d1bf45474a236908d1a784bb05e73f6232c64716e7a3",
+    "shots/red-05.png": "sha256:2ca7d35cb60147dc19c385dc0b7490883fbe8e6a69d92851ecff027b78131b3a"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:def0aa13d0ab1cecc655b79b5c66f01d6ea714c592a3002310937168db1cc95d",
+    "entries": 48
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "sY6xbHdJ9bQ2/lII2+YDDH92bV5lwgJFJZVkJ4SiluSHRn5OmhbTXUyGgcgXGNy+/jMVbSR+qFSio6bfUSxEAA=="
+  }
+}

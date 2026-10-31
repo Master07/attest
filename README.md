@@ -1,16 +1,16 @@
 # Attest
 
-**Proof-of-fix for AI pull requests.** A verifier that never sees the code reproduces the bug, confirms the fix in the running app, proves it would catch a wrong fix, and seals it all into a receipt anyone can check.
+**Proof-of-fix for AI pull requests.** A verifier that never sees the code reproduces the bug, confirms the fix in the running app, shows it would reject a wrong fix, and seals it all into a receipt anyone can check.
 
-*Built entirely during the Meta Global AI Developer Hackathon (Oct 26 – Nov 4, 2026) · Indie track · Push the Frontier.*
+*Built entirely during the Meta Global AI Developer Hackathon (Oct 26 – Nov 4, 2026) · Indie track · Push the Frontier.* <sub>Design docs were written Oct 26–30; git was set up on Oct 31, so the first commit contains them.</sub>
 
 ![SAM 3.1 finds the Pay button; the click actually landed on an invisible chat-widget container](docs/assets/sam-reveal.png)
 
-<sub>A real run. A fix whose unit tests passed; Attest drove the app and found why paying still fails: SAM 3.1 locates the Pay button (green), but the click lands on an invisible 440×560 container from a third-party chat widget (red).</sub>
+<sub>A real run ([receipt](proofs/pr-1-live/)). The wrong fix's test passed — it checks the CSS, not the click; Attest drove the app and found why paying still fails: SAM 3.1 locates the Pay button (green), but the click lands on an invisible 440×560 container from a third-party chat widget (red).</sub>
 
 ## The problem
 
-AI agents now write pull requests faster than anyone can review them, and a green test suite isn't proof: frontier agents' own tests catch **fewer than 55% of logical mutants** ([nielstron, 2026](https://x.com/nielstron/status/2109651666790445209)). Reviewers end up approving changes that pass CI and still don't work.
+AI agents now write pull requests faster than anyone can review them, and a green test suite isn't proof: even from a detailed specification, frontier agents' tests catch **fewer than 55% of logical mutants** (TestSuiteBench, Oct 2026 — [summary by a co-author](https://x.com/nielstron/status/2109651666790445209)). Reviewers end up approving changes that pass CI and still don't work.
 
 ## What Attest does
 
@@ -29,18 +29,20 @@ Each phase gets **four independent votes**, and disagreement is never a pass:
 3. **SAM 3.1** — is the element visible, and did the click actually reach it?
 4. **A Muse Spark Open judge** (open weights, on Baseten) — sees only the requirement and the screenshots in order — no actions, no code.
 
-Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit.
+Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit. Every result below is a committed receipt: `npm run verify-proofs` checks all of them ([proofs/](proofs/)).
 
 ![The evidence page for a PROVEN receipt](docs/assets/evidence-page.png)
 
 ## Results
 
-On a [benchmark of 10 planted UI bugs](docs/BENCHMARK.md), each with a plausible wrong fix:
+**On a real pull request:** Attest proved [Master07/attest#1](https://github.com/Master07/attest/pull/1) live and posted the proof as a comment ([receipt](proofs/pr-1-live/)).
 
-- **10 / 10** wrong fixes passed their own unit tests.
+On a [benchmark of 10 planted UI bugs](docs/BENCHMARK.md), each with a plausible wrong fix ([receipts](proofs/benchmark/)):
+
+- **Every wrong fix passed its tests:** 6 with behavioural unit tests; the 4 visual bugs (covered, off-screen or invisible button) with the CSS or HTML check you can write without a browser — which is exactly why such a check passes while the button stays covered.
 - **8 / 10** real fixes **PROVEN**; the other 2 INCONCLUSIVE (one Meta API outage, one disagreement between voters).
 - **0** wrong fixes certified as working. **0** real fixes rejected.
-- When one verifier run scrolled its way to a pass on a wrong fix, the independent judge disagreed and Attest refused to certify it.
+- When one verifier run scrolled its way to a pass on a wrong fix, the independent judge disagreed and Attest refused to certify it ([B04 receipt](proofs/benchmark/run-2/B04/)).
 
 Ten planted bugs show the mechanism works; they are not a measure of real-world accuracy.
 
@@ -64,6 +66,7 @@ Optional: `npx playwright install ffmpeg` (a few MB) adds a screen recording of 
 ```bash
 npm run attest -- verify evidence/run-<id>/receipt.json     # no key, no model calls
 start evidence/run-<id>/index.html                          # the evidence page (macOS: open)
+npm run verify-proofs                                       # every committed proof in proofs/
 ```
 
 **Live**, with a Meta Model API key: `cp .env.example .env`, set `MODEL_API_KEY` (and `BASETEN_API_KEY` for the open-weights judge; without it the judge uses Muse Wonder), and drop `--replay …`.

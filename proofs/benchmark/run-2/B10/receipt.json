@@ -1,0 +1,161 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-10-31T00:19:41.033Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench/B10-nan-total/app",
+    "refs": {
+      "red": {
+        "ref": "bench/B10/base",
+        "sha": "3a49cb9a3820a57fb19ec7fb06e2ec201311365b"
+      },
+      "green": {
+        "ref": "bench/B10/fix",
+        "sha": "36c53bad5a824043a07040c5ff8397019fa595fa"
+      },
+      "break": {
+        "ref": "bench/B10/bad-fix",
+        "sha": "15c6e9d7be2ab284176c376f3c70ca30da72f215"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "88dcd8714e81e8ec1a921a54736b2a598e62436dbda241ed20f2f73f95ecc58a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench/B10/base",
+      "sha": "3a49cb9a3820a57fb19ec7fb06e2ec201311365b",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f5fbdb8f5661da90258c35916c5c1327a53104152903c0b71db6ffeb5a67508d",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Pay button shows Pay $NaN instead of $89.00 and clicking it shows no order number, cart remains unchanged.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER still shows Pay $NaN instead of $89.00 and no order number is displayed."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench/B10/fix",
+      "sha": "36c53bad5a824043a07040c5ff8397019fa595fa",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b78ec9c848b891704a61b691c0a89bd07b2a860203cedd59369d8535296de8b5",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Pay button showed $89.00 in step 0 and clicking it showed Order #1042 confirmation.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): pass — BEFORE shows the Pay $89.00 button for the $89.00 cart and AFTER shows order confirmation with Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench/B10/bad-fix",
+      "sha": "15c6e9d7be2ab284176c376f3c70ca30da72f215",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "adfd49a7ca8f8fb547b7f887a67c2fa7b791e69178ae2f2b59e62e3d3f985e4f",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Pay button shows 'Pay $NaN' instead of $89.00 and no order number appeared after clicking.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (muse-wonder-1.0): fail — AFTER still shows 'Pay $NaN' instead of $89.00 and displays no order number."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "meta",
+      "model": "muse-wonder-1.0"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:88dcd8714e81e8ec1a921a54736b2a598e62436dbda241ed20f2f73f95ecc58a",
+    "shots/break-00.png": "sha256:307bdeec7569b2bb21437c000810cb9fa6b55222e5ac31086bb32b3e5d6dc0e1",
+    "shots/break-01.png": "sha256:307bdeec7569b2bb21437c000810cb9fa6b55222e5ac31086bb32b3e5d6dc0e1",
+    "shots/break-02.png": "sha256:307bdeec7569b2bb21437c000810cb9fa6b55222e5ac31086bb32b3e5d6dc0e1",
+    "shots/green-00.png": "sha256:9d466b21bec0e67734484b6d7b51eb5aa29934dfded124bda9f025a0efba8a5a",
+    "shots/green-01.png": "sha256:8b10f8dc6394b3cbd0f2fcb4865d717906b85f9f4dab0244c3b85ee2d8ad8538",
+    "shots/red-00.png": "sha256:307bdeec7569b2bb21437c000810cb9fa6b55222e5ac31086bb32b3e5d6dc0e1",
+    "shots/red-01.png": "sha256:307bdeec7569b2bb21437c000810cb9fa6b55222e5ac31086bb32b3e5d6dc0e1",
+    "shots/red-02.png": "sha256:307bdeec7569b2bb21437c000810cb9fa6b55222e5ac31086bb32b3e5d6dc0e1",
+    "shots/red-03.png": "sha256:307bdeec7569b2bb21437c000810cb9fa6b55222e5ac31086bb32b3e5d6dc0e1"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:b08eb2e38d91abb925f416befd4b3942747f7fc2551cfb680b90e6fefe98b85e",
+    "entries": 42
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "FAAANmJaLbkGo2ABMNtUNpHmUa1uAr3cjNDp8MRtWyaNy0AyxIhoH/AMCPDlf5dilzm7kdubyh0pg3EGi5ftCw=="
+  }
+}

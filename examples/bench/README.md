@@ -1,14 +1,14 @@
 # Benchmark
 
 Ten small checkout apps with planted UI bugs, used to measure whether Attest catches a
-wrong fix that the agent's own unit tests pass.
+wrong fix whose tests pass (unit tests, or for visual bugs a CSS/HTML source check).
 
 For each scenario there are three versions of the same app:
 
 | Variant | Role | Requirement |
 |---|---|---|
 | `app/` | Red (base) | Has the bug. The task cannot be completed in the running app. |
-| `bad-fix/` | Break | A plausible wrong fix. Its own unit tests pass, but the bug is still there. |
+| `bad-fix/` | Break | A plausible wrong fix. Its tests pass, but the bug is still there. |
 | `fix/` | Green | The real fix. The task works in the running app. |
 
 The directories `bad-fix/` and `fix/` contain files at paths relative to `app/`; the build step
