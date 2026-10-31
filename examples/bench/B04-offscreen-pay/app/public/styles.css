@@ -72,7 +72,7 @@ h1 { margin: 0 0 24px; font-size: 28px; }
 }
 .order { font-size: 22px; font-weight: 700; }
 
-html, body { overflow-x: hidden; }
+/* The media query was pushing the button off-screen; keep it in the summary. */
 @media (min-width: 1000px) {
-  .pay { margin-left: 2000px; }
+  .pay { margin-left: 0; }
 }
