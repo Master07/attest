@@ -70,6 +70,17 @@ start evidence/run-<id>/index.html                          # the evidence page 
 **Let Muse Code write the fix**, then prove it: `npm run attest -- loop --app examples/checkout-widget --base demo2/base --break demo2/bad-fix --report "I click Pay and nothing happens."`
 **Start from a recorded bug report**: `npm run attest -- draft --video examples/checkout-widget/bug-report/bug.webm --audio examples/checkout-widget/bug-report/narration.wav --out my-draft.yml` drafts criteria from a screen recording and narration for you to review ([sample](examples/checkout-widget/bug-report/README.md)).
 
+### Prove a pull request
+
+With `gh` authenticated, run the proof on a PR's base and head and write a GitHub-Markdown comment:
+
+```bash
+npm run attest -- pr 42 --app examples/checkout-widget --break demo2/bad-fix
+npm run attest -- comment evidence/run-<id>/receipt.json
+```
+
+`attest pr` fetches `attest/pr-42/{base,head}`, runs Red / Green / Break (live, or with `--replay`), verifies the receipt, and writes `pr-comment.md` beside it. Add `--post` to publish it with `gh pr comment`.
+
 ## Built on Meta's models
 
 | Model | Role in Attest |

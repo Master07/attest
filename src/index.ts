@@ -3,6 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { draftCriteria } from "./intake.js";
 import { runLoop } from "./loop.js";
+import { fetchPrRefs, publishComment, readReceipt, viewPr, writePrComment } from "./prcomment.js";
 import { runProof } from "./proof.js";
 import { verifyReceipt } from "./receipt.js";
 import { writeReport } from "./report.js";
@@ -10,6 +11,9 @@ import { writeReport } from "./report.js";
 const USAGE = `usage:
   attest prove --app <path> --base <ref> --pr <ref> [--break <ref>] [--criteria <file>] [--out <dir>]
                [--config-dir <dir>] [--record <cassette.jsonl> | --replay <cassette.jsonl>]
+  attest comment <receipt.json>
+  attest pr <number> --app <path> [--break <ref>] [--criteria <file>] [--config-dir <dir>] [--out <dir>]
+               [--record <f> | --replay <f>] [--post]
   attest loop  --app <path> --base <ref> --report "<bug report>" [--break <ref>] [--max-attempts <n>]
   attest draft --out <criteria.draft.yml> [--video <bug.mp4|.webm>] [--audio <narration.wav>] [--report "<text>"]
   attest verify <receipt.json>
@@ -29,6 +33,19 @@ function flags(args: string[]): Map<string, string> {
   return out;
 }
 
+function applyCassetteFlags(record: string | undefined, replay: string | undefined): void {
+  if (record !== undefined && replay !== undefined) throw new Error("use --record or --replay, not both");
+  if (record !== undefined) {
+    if (existsSync(resolve(record))) throw new Error(`${record} already exists; record into a new file`);
+    process.env.ATTEST_RECORD = resolve(record);
+  }
+  if (replay !== undefined) {
+    if (!existsSync(resolve(replay))) throw new Error(`cassette not found: ${replay}`);
+    process.env.ATTEST_REPLAY = resolve(replay);
+    console.log(`  replaying model responses from ${replay} (no API calls)`);
+  }
+}
+
 const [command, ...rest] = process.argv.slice(2);
 
 try {
@@ -43,18 +60,7 @@ try {
     const criteriaPath = f.get("criteria");
     const outDir = f.get("out");
     const configDir = f.get("config-dir");
-    const record = f.get("record");
-    const replay = f.get("replay");
-    if (record !== undefined && replay !== undefined) throw new Error("use --record or --replay, not both");
-    if (record !== undefined) {
-      if (existsSync(resolve(record))) throw new Error(`${record} already exists; record into a new file`);
-      process.env.ATTEST_RECORD = resolve(record);
-    }
-    if (replay !== undefined) {
-      if (!existsSync(resolve(replay))) throw new Error(`cassette not found: ${replay}`);
-      process.env.ATTEST_REPLAY = resolve(replay);
-      console.log(`  replaying model responses from ${replay} (no API calls)`);
-    }
+    applyCassetteFlags(f.get("record"), f.get("replay"));
     const { receiptPath, receipt } = await runProof({
       repoRoot,
       appPath: app,
@@ -71,6 +77,54 @@ try {
     for (const r of receipt.reasons) console.log(`  - ${r}`);
     console.log(`receipt: ${receiptPath}`);
     console.log(`evidence page: ${join(dirname(receiptPath), "index.html")}`);
+    process.exitCode = receipt.verdict === "PROVEN" || receipt.verdict === "PROVEN_UNCHECKED" ? 0 : 1;
+  } else if (command === "comment") {
+    const path = rest[0];
+    if (path === undefined) throw new Error("comment needs a receipt path");
+    const receiptPath = resolve(path);
+    console.log(writePrComment(receiptPath, readReceipt(receiptPath), repoRoot));
+  } else if (command === "pr") {
+    const post = rest.includes("--post");
+    const [number, ...args] = rest.filter((arg) => arg !== "--post");
+    if (number === undefined) throw new Error("pr needs a pull request number");
+    const f = flags(args);
+    const app = f.get("app");
+    if (app === undefined) throw new Error("pr needs --app");
+
+    const brk = f.get("break");
+    const criteriaPath = f.get("criteria");
+    const outDir = f.get("out");
+    const configDir = f.get("config-dir");
+    applyCassetteFlags(f.get("record"), f.get("replay"));
+
+    const info = viewPr(number, repoRoot);
+    const refs = fetchPrRefs(info, repoRoot);
+    console.log(`PR #${info.number}: ${info.url}`);
+
+    const { receiptPath, receipt } = await runProof({
+      repoRoot,
+      appPath: app,
+      base: refs.base,
+      pr: refs.head,
+      ...(brk !== undefined ? { break: brk } : {}),
+      ...(criteriaPath !== undefined ? { criteriaPath: resolve(criteriaPath) } : {}),
+      ...(outDir !== undefined ? { outDir: resolve(outDir) } : {}),
+      ...(configDir !== undefined ? { configDir: resolve(configDir) } : {}),
+      onProgress: (m) => console.log(`  ${m}`),
+    });
+
+    const verified = verifyReceipt(receiptPath);
+    for (const s of verified.steps) console.log(`${s.ok ? "✔" : "✘"} ${s.check}: ${s.detail}`);
+    if (!verified.ok) throw new Error("receipt did not verify; no comment written or posted");
+
+    const commentPath = writePrComment(receiptPath, receipt, repoRoot);
+    if (post) {
+      publishComment(info.number, commentPath, repoRoot);
+      console.log(`\ncomment posted on PR #${info.number}`);
+    } else {
+      console.log(`\ndry run — comment written to ${commentPath}; add --post to publish`);
+    }
+    console.log(`verdict: ${receipt.verdict}`);
     process.exitCode = receipt.verdict === "PROVEN" || receipt.verdict === "PROVEN_UNCHECKED" ? 0 : 1;
   } else if (command === "loop") {
     const f = flags(rest);

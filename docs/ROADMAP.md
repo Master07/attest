@@ -26,7 +26,7 @@ Items are tagged by how real they are: **Build** (real, demoed), **Show** (thin 
 
 - [ ] Regression mode: re-run previously proven criteria on a new PR
 - [ ] Equivalence mode: old and new builds agree on every criterion
-- [ ] Receipt summary posted as a PR comment via `gh`
+- [x] Receipt summary as a PR comment via `gh` — `attest pr <n>` fetches the PR refs, proves, verifies and writes `pr-comment.md`; `--post` publishes it (the live post is left to the user)
 - [ ] Published receipt JSON schema + standalone `attest verify`
 
 ## Stretch
