@@ -1,6 +1,6 @@
 # 0004 — Route by role: cheap workers, expensive reasoning on demand
 
-- **Status:** Accepted
+- **Status:** Superseded by [ADR 0005](0005-narrow-to-proof-of-fix.md) (2026-10-30)
 - **Date:** 2026-10-27
 - **Related:** [MODEL_STRATEGY](../MODEL_STRATEGY.md)
 

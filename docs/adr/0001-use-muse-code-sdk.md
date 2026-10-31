@@ -1,6 +1,6 @@
 # 0001 — Build on the Muse Code SDK, not a bespoke agent loop
 
-- **Status:** Accepted
+- **Status:** Superseded by [ADR 0005](0005-narrow-to-proof-of-fix.md) (2026-10-30)
 - **Date:** 2026-10-27
 - **Related:** [ARCHITECTURE](../ARCHITECTURE.md) · [MODEL_STRATEGY](../MODEL_STRATEGY.md)
 

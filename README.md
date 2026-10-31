@@ -132,7 +132,9 @@ npm run bench -- check               # AI-free check of the 10 benchmark scenari
 - The bug must reproduce in an app Attest can start locally; production-only bugs are out of scope.
 - "Not reproduced" is not "fake": Attest refuses to certify, it doesn't rule on the report.
 - The verifier is a model and can be inconsistent; the four votes reduce false passes, they don't eliminate them.
-- The receipt proves nothing changed after capture, not that the capture environment was honest.
+- **Break needs a wrong fix you supply.** On someone else's PR, without one the strongest honest verdict is `PROVEN_UNCHECKED` (the fix works; Attest's ability to reject a wrong one wasn't tested). Generating wrong fixes automatically is roadmap.
+- Only fix mode is built; regression and equivalence modes are designed, not implemented.
+- The receipt proves nothing changed after capture, not that the capture environment was honest. It is signed with a key created on the machine that ran it.
 
 More in [ARCHITECTURE §13](docs/ARCHITECTURE.md).
 
@@ -146,7 +148,7 @@ More in [ARCHITECTURE §13](docs/ARCHITECTURE.md).
 | [`tsx`](https://www.npmjs.com/package/tsx) | TypeScript runner (dev) | MIT |
 | [`@types/node`](https://www.npmjs.com/package/@types/node) | Node type definitions (dev) | MIT |
 
-`@muse-code/sdk` is listed as an optional dependency but is not used; Muse Code is driven through its CLI.
+Muse Code is driven through its CLI (`muse exec`); no SDK dependency.
 
 ## License
 

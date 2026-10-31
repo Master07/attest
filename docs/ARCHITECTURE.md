@@ -38,9 +38,9 @@ The engine underneath is "run these criteria against a build and record what hap
 
 - **Regression** reuses criteria files from earlier `PROVEN` receipts, so every proven fix becomes a standing check.
 - **Equivalence** passes when old and new *agree*, whether each criterion passes or fails; any disagreement is `REJECTED`.
-- The receipt records the mode and its expectation table, so `attest verify` recomputes the verdict for any mode.
+- The receipt records the mode, so `attest verify` can recompute the verdict for it.
 
-Fix mode is the build target. Regression and equivalence are shown in a thin version once the core works (§15).
+**Only fix mode is implemented.** Regression and equivalence are designed but **not built**; they are roadmap (§15.2). Receipts today always carry `mode: "fix"`.
 
 ## 1.2 Agentic design: loops, harness, agents
 
@@ -391,9 +391,9 @@ Everything outside the core is labelled by how real it is. The pitch and README 
 
 | Tier | Meaning | Items |
 |---|---|---|
-| **Build** | Real, demoed, in the repo | Fix proof (core) · closed loop with Muse Code · benchmark · proof videos · SAM overlay reveal |
-| **Show** | Thin but real; run once and documented | Regression mode · equivalence mode · GitHub PR comment via `gh` · published receipt JSON schema + standalone `attest verify` |
-| **Tell** | Roadmap only, never presented as built | Desktop apps · production-only bug capture · transparency log for receipts · compliance exports · GitHub Marketplace app · intermittent-bug repeat runs (§13) |
+| **Build** | Real, demoed, in the repo | Fix proof (core) · `attest verify` (no model calls) · benchmark with committed receipts · proof videos · SAM overlay reveal · open-weights judge (Spark Open) · replay mode · proof posted as a GitHub PR comment (`attest pr`) |
+| **Show** | Thin but real; run once and documented | Closed loop with Muse Code (B09 and both demos; Muse Code fixed each on the first attempt) · bug-report intake from a recording (`attest draft`, one sample) · real-world proof on TodoMVC (one bug, four runs) |
+| **Tell** | Roadmap only, never presented as built | Regression mode · equivalence mode · auto-generated wrong fixes (so Break needs no hand-made fix) · published receipt JSON schema · GitHub Marketplace app · desktop apps · production-only bug capture · transparency log for receipts · compliance exports · intermittent-bug repeat runs (§13) |
 
 ### 15.3 Benchmark
 
