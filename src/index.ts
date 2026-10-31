@@ -9,7 +9,7 @@ import { writeReport } from "./report.js";
 
 const USAGE = `usage:
   attest prove --app <path> --base <ref> --pr <ref> [--break <ref>] [--criteria <file>] [--out <dir>]
-               [--record <cassette.jsonl> | --replay <cassette.jsonl>]
+               [--config-dir <dir>] [--record <cassette.jsonl> | --replay <cassette.jsonl>]
   attest loop  --app <path> --base <ref> --report "<bug report>" [--break <ref>] [--max-attempts <n>]
   attest draft --out <criteria.draft.yml> [--video <bug.mp4|.webm>] [--audio <narration.wav>] [--report "<text>"]
   attest verify <receipt.json>
@@ -42,6 +42,7 @@ try {
     const brk = f.get("break");
     const criteriaPath = f.get("criteria");
     const outDir = f.get("out");
+    const configDir = f.get("config-dir");
     const record = f.get("record");
     const replay = f.get("replay");
     if (record !== undefined && replay !== undefined) throw new Error("use --record or --replay, not both");
@@ -62,6 +63,7 @@ try {
       ...(brk !== undefined ? { break: brk } : {}),
       ...(criteriaPath !== undefined ? { criteriaPath: resolve(criteriaPath) } : {}),
       ...(outDir !== undefined ? { outDir: resolve(outDir) } : {}),
+      ...(configDir !== undefined ? { configDir: resolve(configDir) } : {}),
       onProgress: (m) => console.log(`  ${m}`),
     });
 

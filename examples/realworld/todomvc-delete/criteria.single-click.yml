@@ -1,0 +1,8 @@
+id: todomvc-delete-item-single-click
+# v2, written after the first run (see README): the first criterion did not say "single click",
+# and the verifier's retry rule let a second click hide a bug where deleting takes two clicks.
+criteria:
+  - id: delete-first-item-single-click
+    given: The TodoMVC app with two todos added in this order, "Buy milk" then "Walk the dog"
+    when: The user deletes "Buy milk" with a single click on its delete (×) button, which appears when hovering over the item
+    then: Right after that single click, the list shows only "Walk the dog"

@@ -30,7 +30,9 @@ export interface ProofOptions {
   base: string;
   pr: string;
   break?: string;
-  criteriaPath?: string;        // default: <app>/criteria.yml
+  criteriaPath?: string;        // default: <configDir>/criteria.yml
+  configDir?: string;           // where attest.yml (and criteria.yml) live; default: the app dir. Lets a
+                                // third-party app under test keep Attest's config outside its own tree.
   outDir?: string;              // default: <repoRoot>/evidence/run-<timestamp>
   onProgress?: (message: string) => void;
 }
@@ -61,7 +63,7 @@ const rel = (dir: string, path: string): string => relative(dir, path).split(sep
 async function runPhase(
   phase: PhaseName,
   ref: string,
-  ctx: { repoRoot: string; appPath: string; config: AttestConfig; criteria: CriteriaFile; dir: string; log: EventLog; progress: (m: string) => void },
+  ctx: { repoRoot: string; appPath: string; configDir: string; config: AttestConfig; criteria: CriteriaFile; dir: string; log: EventLog; progress: (m: string) => void },
 ): Promise<PhaseRecord> {
   const { log, dir, criteria } = ctx;
   let workspace: Workspace | undefined;
@@ -74,17 +76,21 @@ async function runPhase(
   log.append("phase_start", { ref }, phase);
   try {
     ctx.progress(`${phase}: starting ${ref}`);
-    workspace = await startWorkspace({ repoRoot: ctx.repoRoot, appPath: ctx.appPath, ref, phase, config: ctx.config });
+    workspace = await startWorkspace({
+      repoRoot: ctx.repoRoot, appPath: ctx.appPath, ref, phase, config: ctx.config,
+      env: { ATTEST_CONFIG_DIR: ctx.configDir },
+    });
     record.sha = workspace.sha;
     log.append("workspace_ready", { ref, sha: workspace.sha, port: workspace.port }, phase);
 
     browser = await launchBrowser(ctx.config.browser.viewport, { videoDir: join(dir, "videos", `${phase}-raw`) });
-    await browser.open(`${workspace.url}/`);
+    await browser.open(`${workspace.url}${ctx.config.app.open ?? "/"}`);
 
     ctx.progress(`${phase}: verifier running`);
     const shots = new Map<number, string>();
     let firstPng: Buffer | undefined;
     let lastPng: Buffer | undefined;
+    const allPngs: Buffer[] = [];
     const result = await runVerifier({
       browser,
       criteria,
@@ -96,6 +102,7 @@ async function runPhase(
         shots.set(step, rel(dir, path));
         firstPng ??= png;
         lastPng = png;
+        allPngs.push(png);
         log.append("screenshot", { step, file: rel(dir, path), sha256: sha256File(path) }, phase);
       },
     });
@@ -152,10 +159,8 @@ async function runPhase(
       sam.set(c.id, { vote, notes, reveal });
     }
 
-    // Independent judge: criteria + before/after screenshots only.
-    const judge = ctx.config.verifier.judge && firstPng !== undefined && lastPng !== undefined
-      ? await runJudge(criteria, firstPng, lastPng)
-      : null;
+    // Independent judge: criteria + the screenshots in order — no actions, no verifier reasoning.
+    const judge = ctx.config.verifier.judge && allPngs.length > 0 ? await runJudge(criteria, allPngs) : null;
     if (judge !== null) log.append("judge", { model: judge.model, provider: judge.provider, votes: judge.votes, error: judge.error, prompt_sha256: judge.promptSha256 }, phase);
 
     const lastShot = shots.get(Math.max(...shots.keys()));
@@ -207,9 +212,9 @@ async function runPhase(
 
 export async function runProof(opts: ProofOptions): Promise<ProofResult> {
   const repoRoot = resolve(opts.repoRoot);
-  const appDir = join(repoRoot, opts.appPath);
-  const config = loadConfig(appDir);
-  const criteria = loadCriteria(opts.criteriaPath ?? join(appDir, "criteria.yml"));
+  const configDir = resolve(opts.configDir ?? join(repoRoot, opts.appPath));
+  const config = loadConfig(configDir);
+  const criteria = loadCriteria(opts.criteriaPath ?? join(configDir, "criteria.yml"));
   const dir = resolve(opts.outDir ?? join(repoRoot, "evidence", `run-${Date.now()}`));
   const progress = opts.onProgress ?? (() => undefined);
 
@@ -225,7 +230,7 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
   const replay = replayPath ? { cassette: basename(replayPath), sha256: sha256File(replayPath) } : null;
   log.append("run_start", { mode: "fix", app: opts.appPath, refs, criteria_sha256: criteria.sha256, replay });
 
-  const ctx = { repoRoot, appPath: opts.appPath, config, criteria, dir, log, progress };
+  const ctx = { repoRoot, appPath: opts.appPath, configDir, config, criteria, dir, log, progress };
   const phases: PhaseRecord[] = [];
   for (const phase of ["red", "green", "break"] as const) {
     const ref = refs[phase];

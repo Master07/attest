@@ -1,0 +1,6 @@
+id: todomvc-delete-item
+criteria:
+  - id: delete-first-item
+    given: The TodoMVC app with two todos added in this order, "Buy milk" then "Walk the dog"
+    when: The user deletes "Buy milk" with its delete (×) button, which appears when hovering over the item
+    then: The list shows only "Walk the dog"

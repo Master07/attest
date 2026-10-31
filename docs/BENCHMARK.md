@@ -54,6 +54,19 @@ Two honest conclusions:
 
 Whether B04's bad-fix "works" is genuinely debatable (a determined user can scroll to the button), so B04 is a borderline scenario. The criterion says the user clicks Pay; it doesn't say the button must be visible without scrolling. A sharper criterion (`expect.visible: ["Pay button"]`, checked by SAM on the first screen) would make the intent explicit. It was **not** changed after the run.
 
+## Real-world bug: TodoMVC (2012)
+
+Beyond planted bugs, Attest was run on a **real bug fixed in real history** in a project we didn't write: TodoMVC's vanilla JS example, where deleting a todo took two clicks ([`124b1c9`](https://github.com/tastejs/todomvc/commit/124b1c996171ba14f558ab401da4f986c0ec4239), June 2012, MIT licence). The wrong fix (`==` instead of `===`) is ours. Full details and every run: [examples/realworld/todomvc-delete](../examples/realworld/todomvc-delete/README.md).
+
+| Run | What changed | Verdict |
+|---|---|---|
+| 1 | — (criterion said "deletes", not "single click") | INCONCLUSIVE — a retry click hid the bug |
+| 2 | verifier: judge a single stated action by its first attempt | INCONCLUSIVE — judge saw only before/after |
+| 3 | judge sees the whole screenshot sequence | INCONCLUSIVE — judge inconsistent on Break |
+| 4 | none | **PROVEN** — all voters agree |
+
+No run certified the wrong fix. The first candidate tried (TodoMVC's 2012 "unclickable Clear completed" fix) does not reproduce in today's browser, so it would be "not reproduced in this environment".
+
 ## Limits
 
 - **Ten scenarios, all in one tiny app style.** This shows the mechanism works; it is not a measure of real-world accuracy.

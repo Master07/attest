@@ -8,6 +8,7 @@ export interface AppConfig {
   url: string;
   ready: string;
   timeout_s: number;
+  open?: string;         // path the browser opens first (default "/")
 }
 
 export interface BrowserConfig {
@@ -102,6 +103,7 @@ export function loadConfig(appDir: string): AttestConfig {
 
   const app: AppConfig = { start, url, ready, timeout_s: timeoutRaw };
   if (install !== undefined) app.install = install;
+  if (appRaw["open"] !== undefined) app.open = requireNonEmptyString(appRaw["open"], file, "app.open");
 
   let browser: BrowserConfig = { viewport: { ...DEFAULT_VIEWPORT } };
   if (document["browser"] !== undefined) {

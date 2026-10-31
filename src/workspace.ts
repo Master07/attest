@@ -24,6 +24,7 @@ export interface StartOptions {
   phase: string;
   config: AttestConfig;
   port?: number;
+  env?: Record<string, string>;   // extra environment for install/start (e.g. ATTEST_CONFIG_DIR)
 }
 
 export class WorkspaceError extends Error {
@@ -209,7 +210,7 @@ export async function startWorkspace(opts: StartOptions): Promise<Workspace> {
     if (opts.config.app.install !== undefined) {
       const installed = await spawnOnce(opts.config.app.install, [], {
         cwd: appDir,
-        env: process.env,
+        env: { ...process.env, ...opts.env },
         shell: true,
       });
       if (installed.code !== 0) {
@@ -238,7 +239,7 @@ export async function startWorkspace(opts: StartOptions): Promise<Workspace> {
 
     const app = spawn(opts.config.app.start, [], {
       cwd: appDir,
-      env: { ...process.env, PORT: String(port) },
+      env: { ...process.env, ...opts.env, PORT: String(port) },
       shell: true,
       windowsHide: true,
       detached: process.platform !== "win32",
