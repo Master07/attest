@@ -334,6 +334,7 @@ Judges must be able to run the public repo standalone. Two modes:
 | Criteria changed afterwards | Criteria hash pinned in every prompt and in the receipt |
 | Flaky model or app | Step cap, one retry on transient API errors, `INCONCLUSIVE` instead of a guess; optional repeat runs |
 | API keys leaking | Keys only in `.env` (gitignored); never logged; screenshots come from the synthetic example app |
+| The app under test (possibly someone else's code) reads Attest's secrets | The app's install and start commands get an **allowlisted** environment (`appEnv` in `src/workspace.ts`: PATH, temp and profile dirs, `PORT`, `ATTEST_CONFIG_DIR`) — never API keys, tokens or `.env` contents. Tested with a stand-in app that reports what it can see. It still runs with your user's file access, so run unfamiliar repos in a VM or container |
 | Credit burn | Step cap, `truncation: "auto"`, replay mode for development, Spark Open on Baseten for the judge |
 
 ## 13. Limits

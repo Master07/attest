@@ -34,6 +34,26 @@ export class WorkspaceError extends Error {
   }
 }
 
+// The app under test may be someone else's code, so its install and start commands get only what a
+// shell and package manager need — never our API keys, tokens or .env contents. Names compare
+// case-insensitively because Windows spells them "Path", "SystemRoot" and so on.
+const APP_ENV_ALLOW = new Set([
+  "PATH", "PATHEXT", "SYSTEMROOT", "SYSTEMDRIVE", "WINDIR", "COMSPEC", "OS",
+  "PROCESSOR_ARCHITECTURE", "NUMBER_OF_PROCESSORS",
+  "TEMP", "TMP", "TMPDIR", "HOME", "USERPROFILE", "HOMEDRIVE", "HOMEPATH", "USER", "USERNAME",
+  "APPDATA", "LOCALAPPDATA", "PROGRAMDATA", "PROGRAMFILES", "PROGRAMFILES(X86)", "COMMONPROGRAMFILES",
+  "LANG", "LC_ALL", "TERM", "SHELL", "NODE_ENV",
+]);
+
+/** Environment for the app's install and start commands: the allowlist above plus Attest's own extras. */
+export function appEnv(base: NodeJS.ProcessEnv, extra: Record<string, string> = {}): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = {};
+  for (const [name, value] of Object.entries(base)) {
+    if (value !== undefined && APP_ENV_ALLOW.has(name.toUpperCase())) env[name] = value;
+  }
+  return { ...env, ...extra };
+}
+
 const GIT_FALLBACK = "C:\\Program Files\\Git\\cmd\\git.exe";
 const MAX_LOG_LINES = 200;
 
@@ -210,7 +230,7 @@ export async function startWorkspace(opts: StartOptions): Promise<Workspace> {
     if (opts.config.app.install !== undefined) {
       const installed = await spawnOnce(opts.config.app.install, [], {
         cwd: appDir,
-        env: { ...process.env, ...opts.env },
+        env: appEnv(process.env, opts.env),
         shell: true,
       });
       if (installed.code !== 0) {
@@ -239,7 +259,7 @@ export async function startWorkspace(opts: StartOptions): Promise<Workspace> {
 
     const app = spawn(opts.config.app.start, [], {
       cwd: appDir,
-      env: { ...process.env, ...opts.env, PORT: String(port) },
+      env: appEnv(process.env, { ...opts.env, PORT: String(port) }),
       shell: true,
       windowsHide: true,
       detached: process.platform !== "win32",
