@@ -1,6 +1,6 @@
 # Contributing
 
-> **Audience:** contributors · **Status:** draft · **Last updated:** 2026-10-27 · **Related:** [README](../README.md)
+> **Audience:** contributors · **Status:** draft · **Last updated:** 2026-10-27 · **Related:** [README](README.md)
 
 ## The one rule
 
@@ -10,7 +10,7 @@
 
 1. Branch from `main` (kebab-case name, e.g. `feat/cua-verifier`).
 2. Keep changes scoped — one concern per PR.
-3. If you make an architectural decision, add an [ADR](adr/).
+3. If you make an architectural decision, add an [ADR](docs/adr/).
 4. Update the relevant doc in `docs/` in the same PR — no drift.
 5. Verify: the changed flow runs end-to-end, and any GIF/screenshot you add comes from a **real run**.
 

@@ -43,7 +43,7 @@ Items are tagged by how real they are: **Build** (real, demoed), **Show** (thin 
 - **Transparency log** — publicly anchor receipts so signatures can be audited
 - **CI integration** — `attest prove` as a required check; GitHub Marketplace app
 - **Compliance export** — receipts as audit evidence for regulated teams
-- **Orchestration** — plan, fan-out and merge from the original design ([AGENT_DESIGN](AGENT_DESIGN.md))
+- **Orchestration** — plan, fan-out and merge from the original design
 - **Pricing** — per-proven-change, or receipts-as-a-service
 
 ## Non-goals

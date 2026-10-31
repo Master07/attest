@@ -1,6 +1,6 @@
 # Muse Model Reference
 
-> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-10-27 · **Related:** [MODEL_STRATEGY](../MODEL_STRATEGY.md) · [COST](../COST.md)
+> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-10-27 · **Related:** [MODEL_STRATEGY](../MODEL_STRATEGY.md)
 
 The full Meta Muse lineup, with the numbers Attest's routing depends on. Vendor (Meta) benchmark figures are directional; third-party figures are labelled.
 

@@ -84,31 +84,14 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 
 ## Documentation
 
-| Start here | |
-|---|---|
-| [PITCH](docs/PITCH.md) | The 2-minute narrative |
-| [ARCHITECTURE](docs/ARCHITECTURE.md) | The proof, the blind verifier, vote combining, the receipt, threats and limits |
-| [BENCHMARK](docs/BENCHMARK.md) | Ten planted bugs, two runs, what the numbers do and don't mean |
-| [SUBMISSION](docs/SUBMISSION.md) | Hackathon write-up |
-
-<details><summary>More: design decisions, strategy, project notes</summary>
-
 | Doc | What it covers |
 |---|---|
-| [ADR 0005](docs/adr/0005-narrow-to-proof-of-fix.md) | Why Attest is proof-of-fix, not an orchestrator |
-| [MODEL_STRATEGY](docs/MODEL_STRATEGY.md) | Model routing and providers |
-| [DEMO_SCRIPT](docs/DEMO_SCRIPT.md) | The 3-minute video script |
-| [JUDGING_MAP](docs/JUDGING_MAP.md) | Features mapped to the judging rubric |
-| [GTM_BRIEF](docs/GTM_BRIEF.md) | Who would pay, and how |
-| [COMPETITIVE_LANDSCAPE](docs/COMPETITIVE_LANDSCAPE.md) | The market and where Attest is exposed |
-| [STRATEGIC_OUTLOOK](docs/STRATEGIC_OUTLOOK.md) | The verification gap, and enterprise walls |
+| [ARCHITECTURE](docs/ARCHITECTURE.md) | The proof, the blind verifier, vote combining, the receipt, threats and limits |
+| [BENCHMARK](docs/BENCHMARK.md) | Ten planted bugs, two runs, what the numbers do and don't mean |
+| [Real-world proof](examples/realworld/todomvc-delete/README.md) | A real 2012 TodoMVC bug and its real fix |
+| [MODEL_STRATEGY](docs/MODEL_STRATEGY.md) | Which Meta model does what, and why |
 | [ROADMAP](docs/ROADMAP.md) | Built / shown / planned |
-| [HANDOVER](HANDOVER.md) | Build log and current state |
-| [HACKATHON_RULES](HACKATHON_RULES.md) | Event rules |
-| [FEEDBACK](docs/FEEDBACK.md) · [BRAINSTORM](docs/BRAINSTORM.md) | Early review and idea notes |
-| [AGENT_DESIGN](docs/AGENT_DESIGN.md) · [VERIFICATION](docs/VERIFICATION.md) · [EVENT_LOG_AND_REPLAY](docs/EVENT_LOG_AND_REPLAY.md) · [SETUP](docs/SETUP.md) · [COST](docs/COST.md) | Earlier design docs (partly superseded by ARCHITECTURE) |
-
-</details>
+| [Decision records](docs/adr/) | Including [ADR 0005](docs/adr/0005-narrow-to-proof-of-fix.md): why Attest is proof-of-fix, not an orchestrator |
 
 ## Development
 

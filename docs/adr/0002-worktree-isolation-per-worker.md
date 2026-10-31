@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-10-27
-- **Related:** [AGENT_DESIGN](../AGENT_DESIGN.md) · [ARCHITECTURE](../ARCHITECTURE.md)
+- **Related:** [ARCHITECTURE](../ARCHITECTURE.md)
 
 ## Context
 

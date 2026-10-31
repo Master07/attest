@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-10-27
-- **Related:** [MODEL_STRATEGY](../MODEL_STRATEGY.md) · [COST](../COST.md)
+- **Related:** [MODEL_STRATEGY](../MODEL_STRATEGY.md)
 
 ## Context
 

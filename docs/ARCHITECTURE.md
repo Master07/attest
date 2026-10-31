@@ -1,6 +1,6 @@
 # Architecture
 
-> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-10-31 · **Related:** [ADR 0005](adr/0005-narrow-to-proof-of-fix.md) · [PITCH](PITCH.md) · [MODEL_STRATEGY](MODEL_STRATEGY.md)
+> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-10-31 · **Related:** [ADR 0005](adr/0005-narrow-to-proof-of-fix.md) · [MODEL_STRATEGY](MODEL_STRATEGY.md)
 
 Attest is **proof-of-fix for pull requests**. Given a base build, a PR build, a deliberately wrong build, and human-approved acceptance criteria, it drives each running build with a **blind** computer-use verifier and seals the outcome into a **receipt** anyone can check.
 
@@ -34,7 +34,7 @@ The engine underneath is "run these criteria against a build and record what hap
 |---|---|---|---|---|
 | **Fix** (default) | base · PR · break | fail · pass · fail | All three match | Reviewing AI PRs |
 | **Regression** | PR | Every previously proven criterion passes | All pass | Teams merging many agent PRs |
-| **Equivalence** | old · new | Same result per criterion | Every criterion agrees | Legacy migrations ([GTM_BRIEF](GTM_BRIEF.md)) |
+| **Equivalence** | old · new | Same result per criterion | Every criterion agrees | Legacy migrations |
 
 - **Regression** reuses criteria files from earlier `PROVEN` receipts, so every proven fix becomes a standing check.
 - **Equivalence** passes when old and new *agree*, whether each criterion passes or fails; any disagreement is `REJECTED`.
@@ -412,4 +412,4 @@ Publish the raw runs and receipts alongside the numbers, including the misses. T
 
 - [ADR 0005](adr/0005-narrow-to-proof-of-fix.md) — why the scope is narrow
 - [MODEL_STRATEGY](MODEL_STRATEGY.md) — routing and providers
-- [HANDOVER §4](../HANDOVER.md) — platform facts from the hackathon Discord that this design depends on
+- Platform facts this design depends on come from Meta's computer-use docs (dev.meta.ai/docs/computer-use) and organizer answers in the hackathon Discord

@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-10-30
-- **Related:** [PITCH](../PITCH.md) · [BRAINSTORM](../BRAINSTORM.md) · [FEEDBACK](../FEEDBACK.md) · supersedes the orchestration scope of [0002](0002-worktree-isolation-per-worker.md) for the hackathon build
+- **Related:** Supersedes the orchestration scope of [0002](0002-worktree-isolation-per-worker.md) for the hackathon build
 
 ## Context
 
@@ -38,5 +38,5 @@ Design rules:
 
 - Smaller build: verifier, two builds of one app, receipt, then Break. Fan-out, merge escalation and Muse Image are out of hackathon scope.
 - Model-agnostic in practice: any PR can be verified.
-- ARCHITECTURE, AGENT_DESIGN and the worktree docs describe the broader vision and are no longer the hackathon scope.
+- The earlier orchestrator design (plan, fan-out, merge) and the worktree ADRs describe the broader vision and are no longer the hackathon scope.
 - Red requires the bug to be reproducible in a runnable build; flaky or environment-specific bugs are out of scope.

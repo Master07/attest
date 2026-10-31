@@ -1,8 +1,8 @@
 # Model Strategy
 
-> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-11-01 · **Related:** [AGENT_DESIGN](AGENT_DESIGN.md) · [COST](COST.md) · [reference/muse-models](reference/muse-models.md)
+> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-11-01 · **Related:** [reference/muse-models](reference/muse-models.md)
 
-Attest's quality-per-dollar comes from routing each role to the cheapest Muse model that can do the job. See the [ADR](../adr/0004-model-tier-routing.md).
+Attest's quality-per-dollar comes from routing each role to the cheapest Muse model that can do the job. See the [ADR](adr/0004-model-tier-routing.md).
 
 ## Role → model
 
@@ -54,7 +54,7 @@ From the hackathon Discord (organizer answers):
 
 ## Rules of thumb
 
-1. Default everything to **Spark 1.3**. Escalate only on the events in [AGENT_DESIGN §4](AGENT_DESIGN.md).
+1. Default everything to **Spark 1.3**. Escalate only when a task needs it.
 2. Never run the whole fan-out on **Wonder Full** — it is the cost cliff.
 3. Use `/effort` to dial reasoning down on straightforward tasks (thinking tokens bill as output).
 4. Keep `muse-spark-1.2` handy only if **audio** quality on 1.3 degrades.
@@ -66,4 +66,3 @@ The tier switch is visible in the demo: six workers spin up on Spark in parallel
 ## See also
 
 - [reference/muse-models](reference/muse-models.md) — full model matrix and benchmarks
-- [COST](COST.md) — what this routing actually costs

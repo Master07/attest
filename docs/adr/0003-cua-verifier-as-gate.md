@@ -2,7 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-10-27
-- **Related:** [VERIFICATION](../VERIFICATION.md)
+- **Related:** [ARCHITECTURE](../ARCHITECTURE.md)
 
 ## Context
 
