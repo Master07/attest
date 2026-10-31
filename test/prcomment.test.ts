@@ -216,3 +216,21 @@ test("phase errors are appended and a null sha renders as an em dash", () => {
   assert.match(out, /\| red \| .* \| fail \(bug reproduces\) \| fail \(HTTP 500\) \|/);
   assert.match(out, /\| green \| — \| pass \| pass \|/);
 });
+
+test("model text cannot mention users or link issues", () => {
+  const r = receipt("PROVEN");
+  r.phases[0] = phase("red", "fail", failed, "Banner says: contact @octocat about issue #12");
+  const out = renderPrComment(r, opts);
+  assert.ok(!/@octocat/.test(out), "a bare @mention would notify a real user");
+  assert.ok(!/#12\b/.test(out), "a bare #12 would cross-link an issue");
+  assert.ok(out.includes("@​octocat") && out.includes("#​12"), "the text itself stays readable");
+});
+
+test("the signing key is shown as a fingerprint of the whole key, not its fixed DER prefix", () => {
+  const a = renderPrComment(receipt("PROVEN", { signature: { alg: "ed25519", public_key: "MCowBQYDK2VwAyEAkeyA", value: "S" } }), opts);
+  const b = renderPrComment(receipt("PROVEN", { signature: { alg: "ed25519", public_key: "MCowBQYDK2VwAyEAkeyB", value: "S" } }), opts);
+  const fp = (s: string) => /Signing key fingerprint: `(sha256:[0-9a-f]{16})`/.exec(s)?.[1];
+  assert.ok(fp(a) !== undefined && fp(b) !== undefined);
+  assert.notEqual(fp(a), fp(b));
+  assert.ok(!a.includes("MCowBQYDK2VwAyEA"));
+});

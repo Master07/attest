@@ -1,4 +1,5 @@
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Receipt } from "./receipt.js";
@@ -64,6 +65,16 @@ function cellCode(text: string): string {
   return cell(code(text));
 }
 
+/** Model text quotes the app's page, so it must not ping users (`@name`) or link issues (`#12`) in a public comment. */
+function inert(text: string): string {
+  return text.replace(/@(?=\w)/g, "@​").replace(/#(?=\d)/g, "#​");
+}
+
+/** The Ed25519 SPKI key's first characters are a fixed DER header, so show a hash of the whole key instead. */
+function keyFingerprint(publicKey: string): string {
+  return `sha256:${createHash("sha256").update(publicKey).digest("hex").slice(0, 16)}`;
+}
+
 function truncate(text: string, max: number): string {
   return text.length > max ? `${text.slice(0, max)}…` : text;
 }
@@ -75,7 +86,7 @@ function meaning(receipt: Receipt): string {
   if (receipt.verdict === "PROVEN_UNCHECKED") {
     return "The bug reproduced and the fix works; no wrong fix was supplied, so the verifier's ability to reject one wasn't tested.";
   }
-  return html(oneLine(receipt.reasons[0] ?? "No reason was recorded in the receipt."));
+  return inert(html(oneLine(receipt.reasons[0] ?? "No reason was recorded in the receipt.")));
 }
 
 function replayBanner(receipt: Receipt): string {
@@ -112,7 +123,7 @@ function observations(receipt: Receipt): string {
     const clean =
       text.trim() === ""
         ? "(no observation)"
-        : html(truncate(oneLine(text), 300)).replace(/\|/g, "\\|");
+        : inert(html(truncate(oneLine(text), 300))).replace(/\|/g, "\\|");
     return `- **${cell(phase.phase)}:** ${clean}`;
   });
   return [
@@ -126,7 +137,7 @@ function observations(receipt: Receipt): string {
 }
 
 function checkItYourself(receipt: Receipt, opts: PrCommentOptions): string {
-  const key = `${receipt.signature.public_key.slice(0, 16)}…`;
+  const key = keyFingerprint(receipt.signature.public_key);
   const models = receipt.models
     .map((model) => code(`${model.role}: ${model.provider}/${model.model}`))
     .join(", ");
@@ -135,7 +146,7 @@ function checkItYourself(receipt: Receipt, opts: PrCommentOptions): string {
     "",
     `- Receipt: ${code(opts.receiptRelPath)} (${code(opts.receiptSha256)})`,
     `- Event log: ${code(receipt.log.head)} (${receipt.log.entries} entries)`,
-    `- Signing key: ${code(key)}`,
+    `- Signing key fingerprint: ${code(key)}`,
     `- Models: ${models || "—"}`,
     `- Verify: ${code(`npm run attest -- verify ${opts.receiptRelPath}`)}`,
   ].join("\n");

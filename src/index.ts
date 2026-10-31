@@ -86,7 +86,7 @@ try {
   } else if (command === "pr") {
     const post = rest.includes("--post");
     const [number, ...args] = rest.filter((arg) => arg !== "--post");
-    if (number === undefined) throw new Error("pr needs a pull request number");
+    if (number === undefined || !/^\d+$/.test(number)) throw new Error("pr needs a pull request number first, e.g. `attest pr 42 --app <path>`");
     const f = flags(args);
     const app = f.get("app");
     if (app === undefined) throw new Error("pr needs --app");
