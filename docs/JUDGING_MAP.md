@@ -19,10 +19,14 @@ Track lens (Indie): creativity, ambition, and **does it work**.
 
 | Criterion | Gap | Fix |
 |---|---|---|
-| Use of Meta AI tooling | No real Meta model calls yet; `src/` runs a mock harness. | Wire the Muse Code SDK and Model API. |
-| Demo | No working run yet, and the demo must hold up live. | One small app, one bug, deterministic checks, rehearsed live run, recording as backup. |
-| Technical depth | Hash chain, retry loop and self-test aren't built. | See [FEEDBACK](FEEDBACK.md) and [BRAINSTORM §1](BRAINSTORM.md). |
-| Model routing | Wonder Full needs a Power/Maximum Muse Code plan, not covered by the $150 API credits. | Route the reasoning role to `muse-wonder-1.0` unless a plan is available. |
+*Updated 2026-11-01.* The original gaps (no real model calls, no working run, no hash chain) are closed. Remaining:
+
+| Criterion | Gap | Fix |
+|---|---|---|
+| Demo | The 3-minute video isn't recorded yet | Follow [DEMO_SCRIPT](DEMO_SCRIPT.md); use the per-phase videos as footage |
+| Use of Meta AI tooling | No open-weight model in the runtime path yet | Judge on Muse Spark Open via your own Baseten account (`ATTEST_ROUTE_JUDGE`) |
+| Impact | Agent "fails first, Attest catches, agent retries" hasn't happened honestly — Muse Code fixed every demo bug first try | Say so plainly; the wrong fixes shown are ours; the real-world TodoMVC proof carries the impact story |
+| Technical depth | Verifier and judge are non-deterministic (benchmark B04, TodoMVC run 3) | Disagreement already yields INCONCLUSIVE; repeat-run majority is a roadmap item |
 
 ## The one-screen differentiators
 

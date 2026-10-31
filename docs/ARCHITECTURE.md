@@ -82,7 +82,7 @@ The split is deliberate: **models perceive and act; deterministic code decides.*
 |---|---|---|---|---|
 | Producer | Muse Code | Writes the fix | Code, bug, rejection feedback | Verifier prompts, `expect` checks, judge reasoning |
 | Verifier | Spark 1.3 (computer use) | Drives the app, votes | Criteria + its own screenshots | Code, diff, producer output |
-| Judge | Spark Open (Baseten) | Independent second vote | Criteria + final screenshots | Code, verifier's reasoning and actions |
+| Judge | Muse Wonder (or Spark Open via Baseten) | Independent second vote | Criteria + the screenshot sequence (up to 8 frames) | Code, verifier's reasoning and actions |
 | Perception | SAM 3.1 | Confirms elements are visible and uncovered | Screenshots | Everything else |
 | Drafter *(stretch)* | Spark 1.3 (video) | Bug recording → draft criteria | The recording | Code |
 
@@ -129,7 +129,7 @@ flowchart TB
   CUA <-->|actions / screenshots| BR
   BR --> CHK
   BR --> SAM
-  BR -->|final screenshots| JDG
+  BR -->|screenshot sequence| JDG
   CRIT --> JDG
   CUA & CHK & SAM & JDG --> VERD --> PROOF
   CORE -.->|every event| LOG
@@ -153,7 +153,7 @@ flowchart TB
 | **CUA verifier loop** | `src/cua.ts` | Screenshot → `computer_call` → execute → repeat until a verdict; step cap and retry | `muse-spark-1.3`, Responses API `computer` tool |
 | **Deterministic checks** | `src/checks.ts` | Evaluate each criterion's `expect` block (URL, selector state, network request) | Playwright |
 | **UI confirm** | `src/sam.ts` | Confirm named elements are visible and not covered | SAM 3.1 |
-| **Independent judge** | `src/judge.ts` | Second vote from criteria + final screenshots, no action history and no code | Muse Spark Open via Baseten |
+| **Independent judge** | `src/judge.ts` | Second vote from criteria + the screenshot sequence, no action history and no code | Muse Wonder (Spark Open via Baseten optional) |
 | **Verdict combiner** | `src/verdict.ts` | Combine votes per criterion; combine phases into the final verdict (§1) | Pure function |
 | **Proof runner** | `src/proof.ts` | Run Red, Green, Break; owns retries and timeouts | — |
 | **Event log** | `src/eventlog.ts` | Append-only JSONL; each entry carries the previous entry's hash | `node:crypto` SHA-256 |
@@ -185,7 +185,7 @@ sequenceDiagram
     end
     V-->>P: per-criterion verdict + cited steps
     P->>B: deterministic checks + SAM
-    P->>J: criteria + final screenshots
+    P->>J: criteria + screenshot sequence
     J-->>P: second vote
     P->>L: phase result
     P->>W: stop app
@@ -310,7 +310,7 @@ Kinds: `run_start`, `workspace_ready`, `prompt_sent`, `cua_action`, `cua_verdict
 |---|---|---|---|
 | `verifier` | `muse-spark-1.3` | Meta Model API | Responses API `computer` tool; Wonder rejects it ([DISCORD_NOTES](DISCORD_NOTES.md)) |
 | `ui` | `sam-3.1` | Meta Model API | Element confirmation |
-| `judge` | `meta-models/muse-spark-open-1026` | Baseten | Open weights; use the ID from Baseten's email if it differs |
+| `judge` | `muse-wonder-1.0` | Meta Model API | Default. `ATTEST_ROUTE_JUDGE=baseten:meta-models/muse-spark-open` (own Baseten account) for open weights |
 | `drafter` *(stretch)* | `muse-spark-1.3` | Meta Model API | Video input |
 | Producer *(demo only)* | Muse Code | — | Writes the fix being proven; not part of Attest's runtime |
 

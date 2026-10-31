@@ -27,7 +27,7 @@ Each phase gets **four independent votes**, and disagreement is never a pass:
 1. **Muse Spark 1.3** drives a real browser with computer use. It is **blind**: it never sees the code, diff or the producing agent's reasoning.
 2. **Code checks** — the final URL and network calls, no AI involved.
 3. **SAM 3.1** — is the element visible, and did the click actually reach it?
-4. **A Muse Wonder judge** — sees only the requirement and before/after screenshots.
+4. **A Muse Wonder judge** — sees only the requirement and the screenshots in order — no actions, no code.
 
 Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit.
 
@@ -77,7 +77,7 @@ start evidence/run-<id>/index.html                          # the evidence page 
 | **Muse Spark 1.3** | The blind verifier — Responses API `computer` tool driving the browser — and, with video input, drafts criteria from a bug recording |
 | **Muse Voice Transcribe** | Transcribes the user's spoken bug report for `attest draft` |
 | **SAM 3.1** | Locates on-screen elements; combined with click hit-testing to show what really received a click |
-| **Muse Wonder** | Independent judge from before/after screenshots |
+| **Muse Wonder** | Independent judge from the screenshot sequence (no actions or code) |
 | **Muse Code** | Writes fixes headlessly in `attest loop`; Attest proves or rejects them |
 
 Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](docs/MODEL_STRATEGY.md).

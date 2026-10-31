@@ -82,6 +82,13 @@ function runMuse(args: string[], cwd: string, logFile: string, timeoutMs: number
   });
 }
 
+/** Pure: repo-relative paths (git style) that fall outside `appPath`. An app at the repo root ("." or "") contains everything. */
+export function filesOutside(changed: string[], appPath: string): string[] {
+  const prefix = appPath.replace(/\\/g, "/").replace(/^\.\/?/, "").replace(/\/+$/, "");
+  if (prefix === "") return [];
+  return changed.filter((f) => f !== prefix && !f.startsWith(`${prefix}/`));
+}
+
 function parseMuseLog(text: string): { summary: string; usage: AttemptResult["usage"] } {
   let summary = "";
   let usage: AttemptResult["usage"] = [];
@@ -127,7 +134,7 @@ export async function runProducerAttempt(opts: AttemptOptions): Promise<AttemptR
     result.changed = git(["diff", "--cached", "--name-only"], dir).out.split(/\r?\n/).filter(Boolean);
     if (result.changed.length === 0) return { ...result, error: "the producer made no changes" };
 
-    const outside = result.changed.filter((f) => !f.startsWith(`${opts.appPath.replace(/\\/g, "/")}/`));
+    const outside = filesOutside(result.changed, opts.appPath);
     if (outside.length > 0) return { ...result, error: `the producer changed files outside ${opts.appPath}: ${outside.join(", ")}` };
 
     const subject = (result.summary.split(/(?<=\.)\s/)[0] ?? "Fix attempt").slice(0, 72);

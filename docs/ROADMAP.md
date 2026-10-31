@@ -8,18 +8,19 @@ Items are tagged by how real they are: **Build** (real, demoed), **Show** (thin 
 
 **Gate:** nothing below the line starts until the core runs end to end on the real Spark API.
 
-- [ ] Example app with `base`, `bad-fix` and `fix` branches
-- [ ] Blind CUA verifier on Muse Spark 1.3 (Responses API `computer` tool)
-- [ ] Fix proof: Red / Green / Break with deterministic checks
-- [ ] Hash-chained event log, signed receipt, `attest verify`
-- [ ] Replay mode so judges can run without API keys
+- [x] Example apps with `base`, `bad-fix` and `fix` branches (two demos)
+- [x] Blind CUA verifier on Muse Spark 1.3 (Responses API `computer` tool), with stateless-replay fallback
+- [x] Fix proof: Red / Green / Break with deterministic checks
+- [x] Hash-chained event log, signed receipt, `attest verify`
+- [x] Replay mode so judges can run without API keys
 
 ---
 
-- [ ] Closed loop: Muse Code retries on `REJECTED` until `PROVEN` or the retry limit
-- [ ] Benchmark: 10–15 planted UI bugs; agent tests vs. Attest, misses included
-- [ ] Proof videos per phase + SAM 3.1 overlay reveal
-- [ ] Independent judge on Muse Spark Open (Baseten)
+- [x] Closed loop: Muse Code retries on `REJECTED` until `PROVEN` or the retry limit (built; Muse Code has fixed every demo bug on the first attempt so far)
+- [x] Benchmark: 10 planted UI bugs; agent tests vs. Attest, misses included ([BENCHMARK](BENCHMARK.md))
+- [x] Proof videos per phase + SAM 3.1 visibility check with click hit-testing and reveal images
+- [x] Independent judge (Muse Wonder); [ ] move it to Muse Spark Open via Baseten for open weights
+- [x] Real-world proof: TodoMVC's 2012 delete bug ([examples/realworld](../examples/realworld/todomvc-delete/README.md))
 
 ## Hackathon — Show (only if time remains)
 
@@ -30,7 +31,7 @@ Items are tagged by how real they are: **Build** (real, demoed), **Show** (thin 
 
 ## Stretch
 
-- [ ] Criteria drafted from a voice + screen-recording bug report (Muse Voice Transcribe + Spark video input)
+- [x] Criteria drafted from a voice + screen-recording bug report (Muse Voice Transcribe + Spark video input) — `attest draft`
 - [ ] Recording-vs-reality mismatch check
 - [ ] Auto-generated Break mutants
 

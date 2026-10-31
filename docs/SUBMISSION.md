@@ -29,7 +29,7 @@ The verifier is **blind**: it sees only the criteria and the running app — nev
 | Muse Spark 1.3 | Computer-use verifier (Responses API `computer` tool) |
 | Muse Spark video input | Screen recording of the bug → reproduction steps (stretch) |
 | SAM 3.1 | Confirming UI elements on screen |
-| Muse Spark Open (Baseten) | Independent second judge on open weights |
+| Muse Wonder | Independent judge from the screenshot sequence (Muse Spark Open via your own Baseten account counts for open weights; switch with `ATTEST_ROUTE_JUDGE`) |
 | Muse Code | One of the agents whose PRs Attest verifies |
 
 Detail: [MODEL_STRATEGY](MODEL_STRATEGY.md) · [COST](COST.md).

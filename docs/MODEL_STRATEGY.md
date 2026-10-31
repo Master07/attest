@@ -36,7 +36,7 @@ Each role routes to a **provider** (`meta` = Meta Model API, `baseten` = Meta op
 | `image` | `meta:muse-image-1.0` | |
 | `ui` | `meta:sam-3.1` | Locates `expect.visible` elements; prefers short concepts ("button" works where "Pay button" returns nothing), so Attest falls back to the head noun |
 | `verifier` | `meta:muse-spark-1.3` | Drives the computer-use loop. Must be Spark: Wonder rejects the `computer` tool on the Model API |
-| `judge` | `meta:muse-wonder-1.0` | Independent vote from criteria + before/after screenshots only. With a Baseten key, `ATTEST_ROUTE_JUDGE=baseten:meta-models/muse-spark-open-1026` moves it to open weights |
+| `judge` | `meta:muse-wonder-1.0` | Independent vote from criteria + the screenshot sequence (up to 8 frames), no actions or code. With a Baseten key, `ATTEST_ROUTE_JUDGE=baseten:meta-models/muse-spark-open` moves it to open weights (Meta confirmed this ID via your own Baseten account counts) |
 
 Override any role without code changes: `ATTEST_ROUTE_<ROLE>=provider:model`, e.g. `ATTEST_ROUTE_WORKER=baseten:meta-models/muse-spark-open-1026` to move the fan-out onto Baseten credits. Keys and endpoints come from env vars; see `.env.example`.
 

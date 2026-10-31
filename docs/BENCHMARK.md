@@ -67,8 +67,14 @@ Beyond planted bugs, Attest was run on a **real bug fixed in real history** in a
 
 No run certified the wrong fix. The first candidate tried (TodoMVC's 2012 "unclickable Clear completed" fix) does not reproduce in today's browser, so it would be "not reproduced in this environment".
 
+## Closed loop on B09 (Muse Code as the producer)
+
+After removing every `// BUG:` comment and the vendor script's self-describing banner, `attest loop` ran on B09 (the chat widget served from outside the app dir) with only the customer's words. **Muse Code fixed it on the first attempt → PROVEN** (17 model calls). A log audit found no git access to the `fix`/`bad-fix` branches; it diagnosed the cause by reading the vendor script, as a developer would. **Confound:** it also read `scenario.yml` and the benchmark README, which sit in the base branch and name the bug ("chat widget covers Pay"). Attest's proof is unaffected (the verifier never reads code), but this first-try success is partly hinted.
+
 ## Limits
 
+- **The benchmark runs above used the verifier and judge as of Nov 1 morning.** Two changes came later from the TodoMVC case — the verifier judges a single stated action by its first attempt, and the judge sees the whole screenshot sequence — so a re-run today may differ.
+- **Base branches include scenario metadata** (`scenario.yml`, README) that names each bug. Irrelevant to Attest's blind verifier; strip it before using these scenarios to test agents.
 - **Ten scenarios, all in one tiny app style.** This shows the mechanism works; it is not a measure of real-world accuracy.
 - **Planted bugs.** Real bugs are messier; a real-world proof is the next step.
 - **The verifier is non-deterministic** (B04). Repeat runs and the judge reduce false passes; they don't eliminate them.
