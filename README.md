@@ -55,6 +55,8 @@ git branch demo2/base origin/demo2/base; git branch demo2/bad-fix origin/demo2/b
 npm run attest -- prove --app examples/checkout-widget --base demo2/base --pr demo2/fix --break demo2/bad-fix --replay examples/checkout-widget/cassette.jsonl
 ```
 
+Optional: `npx playwright install ffmpeg` (a few MB) adds a screen recording of every phase to the evidence page; without it, everything else still runs.
+
 `--replay` answers model calls from a cassette recorded in a real run. The app, browser, clicks, code checks and receipt are all real; the receipt and page are marked as a replay. Then:
 
 ```bash

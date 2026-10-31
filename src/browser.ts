@@ -42,6 +42,8 @@ export interface BrowserSession {
   clicks(): ClickRecord[];
   /** Draws labelled boxes over a screenshot (rendered in a separate page) and returns a PNG. */
   annotate(png: Buffer, overlays: Overlay[]): Promise<Buffer>;
+  /** Path of the session video, or null when not recording. The file is complete only after close(). */
+  videoPath(): Promise<string | null>;
   /** Test/debug only. Never expose to the verifier. Centre of the first match, or null. */
   locate(selector: string): Promise<{ x: number; y: number } | null>;
   close(): Promise<void>;
@@ -100,14 +102,28 @@ function pathnameOf(url: string): string {
   }
 }
 
-export async function launchBrowser(viewport: { width: number; height: number }): Promise<BrowserSession> {
+export interface LaunchOptions {
+  /** Record a video of the session into this directory (needs Playwright's ffmpeg; skipped if missing). */
+  videoDir?: string;
+}
+
+export async function launchBrowser(viewport: { width: number; height: number }, opts: LaunchOptions = {}): Promise<BrowserSession> {
   const browser = await chromium.launch({
     channel: process.env.ATTEST_BROWSER_CHANNEL ?? "msedge",
     headless: process.env.ATTEST_HEADLESS !== "0",
   });
 
-  const context = await browser.newContext({ viewport });
-  const page = await context.newPage();
+  // Video is evidence, not a requirement: without ffmpeg (`npx playwright install ffmpeg`) the run continues unrecorded.
+  let context = await browser.newContext({ viewport, ...(opts.videoDir ? { recordVideo: { dir: opts.videoDir, size: viewport } } : {}) });
+  let page;
+  try {
+    page = await context.newPage();
+  } catch (err) {
+    if (!opts.videoDir || !/ffmpeg/i.test(err instanceof Error ? err.message : String(err))) throw err;
+    await context.close().catch(() => undefined);
+    context = await browser.newContext({ viewport });
+    page = await context.newPage();
+  }
 
   const records: NetworkRecord[] = [];
   const urls: string[] = [];
@@ -239,7 +255,9 @@ export async function launchBrowser(viewport: { width: number; height: number })
     },
 
     async annotate(png: Buffer, overlays: Overlay[]): Promise<Buffer> {
-      const canvas = await context.newPage();
+      // A separate, unrecorded context, so drawing the overlay never appears in the proof video.
+      const canvasContext = await browser.newContext();
+      const canvas = await canvasContext.newPage();
       try {
         const esc = (s: string): string => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
         const boxes = overlays
@@ -258,8 +276,13 @@ export async function launchBrowser(viewport: { width: number; height: number })
         );
         return await canvas.locator("div").first().screenshot({ type: "png" });
       } finally {
-        await canvas.close();
+        await canvasContext.close();
       }
+    },
+
+    async videoPath(): Promise<string | null> {
+      const video = page.video();
+      return video ? video.path().catch(() => null) : null;
     },
 
     async locate(selector: string): Promise<{ x: number; y: number } | null> {
@@ -273,6 +296,7 @@ export async function launchBrowser(viewport: { width: number; height: number })
     async close(): Promise<void> {
       if (closed) return;
       closed = true;
+      await context.close().catch(() => undefined);   // finalises the video file, if recording
       await browser.close().catch(() => undefined);
     },
   };

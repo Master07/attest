@@ -46,7 +46,77 @@ function criterionBlock(c: CriterionRecord): string {
     <div class="shots">${images}</div>`;
 }
 
-function phaseCard(p: PhaseRecord): string {
+// ---- Timeline: rebuilt from the hash-chained event log next to the receipt ----
+
+interface LogLine { phase: string | null; kind: string; data: Record<string, unknown> }
+interface ClickHit { x: number; y: number; target: string | null; interactive: boolean }
+
+export interface TimelineStep {
+  step: number;
+  actions: string[];       // human-readable, e.g. "click (957, 426) → div#hb-root (covers the page)"
+  screenshot: string | null;
+  errors: string[];
+}
+
+function describeAction(a: Record<string, unknown>, nextClick: () => ClickHit | undefined): string {
+  const xy = `(${String(a["x"])}, ${String(a["y"])})`;
+  switch (a["type"]) {
+    case "click":
+    case "double_click": {
+      const hit = nextClick();
+      const verb = a["type"] === "click" ? "click" : "double-click";
+      if (hit === undefined) return `${verb} ${xy}`;
+      return `${verb} ${xy} → landed on ${hit.target ?? "nothing"}${hit.interactive ? "" : " (not a control)"}`;
+    }
+    case "type": return `type "${String(a["text"] ?? "")}"`;
+    case "keypress": return `press ${Array.isArray(a["keys"]) ? (a["keys"] as unknown[]).join("+") : ""}`;
+    case "scroll": return `scroll ${xy} by (${String(a["scroll_x"])}, ${String(a["scroll_y"])})`;
+    case "move": return `move to ${xy}`;
+    case "drag": return "drag";
+    case "wait": return "wait";
+    case "screenshot": return "look at the screen";
+    default: return String(a["type"] ?? "action");
+  }
+}
+
+/** Pure: the verifier's steps for one phase, from parsed event-log lines. */
+export function buildTimeline(lines: LogLine[], phase: string): TimelineStep[] {
+  const mine = lines.filter((l) => l.phase === phase);
+  const shots = new Map<number, string>();
+  for (const l of mine) if (l.kind === "screenshot") shots.set(Number(l.data["step"]), String(l.data["file"]));
+  const clicks = (mine.find((l) => l.kind === "clicks")?.data["clicks"] as ClickHit[] | undefined) ?? [];
+  let clickIndex = 0;
+  const nextClick = (): ClickHit | undefined => clicks[clickIndex++];
+
+  const steps: TimelineStep[] = [{ step: 0, actions: ["open the app"], screenshot: shots.get(0) ?? null, errors: [] }];
+  for (const l of mine.filter((x) => x.kind === "cua_step")) {
+    const n = Number(l.data["step"]);
+    const actions = ((l.data["actions"] as Record<string, unknown>[] | undefined) ?? []).map((a) => describeAction(a, nextClick));
+    steps.push({ step: n, actions, screenshot: shots.get(n) ?? null, errors: (l.data["errors"] as string[] | undefined) ?? [] });
+  }
+  return steps;
+}
+
+function readLog(receiptDir: string, receipt: Receipt): LogLine[] {
+  try {
+    return readFileSync(join(receiptDir, receipt.log.path), "utf8")
+      .split(/\r?\n/)
+      .filter((l) => l.trim())
+      .map((l) => JSON.parse(l) as LogLine);
+  } catch {
+    return [];
+  }
+}
+
+function timelineBlock(steps: TimelineStep[]): string {
+  if (steps.length <= 1) return "";
+  const items = steps
+    .map((s) => `<li><span class="stepn">${s.step}</span><div class="stepbody">${s.actions.map((a) => `<div>${esc(a)}</div>`).join("")}${s.errors.map((e) => `<div class="err">${esc(e)}</div>`).join("")}</div>${s.screenshot ? `<a href="${esc(s.screenshot)}"><img src="${esc(s.screenshot)}" alt="step ${s.step}" loading="lazy"></a>` : ""}</li>`)
+    .join("");
+  return `<details class="timeline"><summary>What the verifier did, step by step</summary><ol>${items}</ol></details>`;
+}
+
+function phaseCard(p: PhaseRecord, lines: LogLine[]): string {
   const meta = PHASES[p.phase] ?? { title: p.phase, role: "", expected: "fail" as const };
   const asExpected = p.result === meta.expected;
   const badge = p.result === "pass" ? "s-pass" : p.result === "fail" ? "s-fail" : "s-warn";
@@ -64,6 +134,8 @@ function phaseCard(p: PhaseRecord): string {
     </header>
     ${p.error ? `<p class="err">Phase error: ${esc(p.error)}</p>` : ""}
     ${p.criteria.map(criterionBlock).join("")}
+    ${p.video ? `<figure class="video"><video src="${esc(p.video)}" controls muted preload="metadata"></video><figcaption>Screen recording of this phase · ${esc(p.video)}</figcaption></figure>` : ""}
+    ${timelineBlock(buildTimeline(lines, p.phase))}
     <p class="small">${esc(p.steps)} verifier steps · ${esc(p.model ?? "—")} · prompt ${esc(short(p.prompt_sha256, 12))}</p>
   </article>`;
 }
@@ -79,6 +151,7 @@ export function renderReport(receipt: Receipt, receiptDir: string): string {
     criteriaHtml = `<li>Criteria file unavailable.</li>`;
   }
   const v = VERDICT_TEXT[receipt.verdict] ?? { cls: "warn", line: "" };
+  const lines = readLog(receiptDir, receipt);
   const models = receipt.models.map((m) => `<dt>${esc(m.role)}</dt><dd>${esc(m.model)}</dd>`).join("");
 
   return `<!doctype html>
@@ -120,6 +193,15 @@ ul.crit li{font-size:14.5px}.k{font-size:10.5px;letter-spacing:.08em;text-transf
 .obs{margin:6px 0;font-size:14px}.obs .k{margin-left:0}.notes{margin:4px 0 10px;padding-left:18px;font-size:13px;color:var(--ink-2)}
 .err{color:var(--bad);font-size:13.5px}.small{font-size:12px;color:var(--faint);margin:10px 0 0}
 .shots{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:760px){.shots{grid-template-columns:1fr}}
+.video{margin-top:12px}.video video{display:block;width:100%;background:#111}
+.timeline{margin-top:12px;border:1px solid var(--line-2);border-radius:8px;background:#fff}
+.timeline summary{cursor:pointer;padding:9px 12px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.timeline ol{list-style:none;margin:0;padding:0 12px 6px}
+.timeline li{display:grid;grid-template-columns:28px 1fr 180px;gap:12px;align-items:start;padding:9px 0;border-top:1px solid var(--line)}
+.timeline .stepn{font:600 12px var(--mono);color:var(--faint);padding-top:2px}
+.timeline .stepbody{font:12.5px var(--mono);color:var(--ink-2)}
+.timeline img{width:180px;border:1px solid var(--line);border-radius:4px;display:block}
+@media(max-width:760px){.timeline li{grid-template-columns:24px 1fr}.timeline img{grid-column:2;width:100%}}
 figure{margin:0;border:1px solid var(--line-2);border-radius:8px;overflow:hidden;background:#fff}figure img{display:block;width:100%}
 figcaption{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:7px 10px;border-top:1px solid var(--line)}
 .cmd{background:#241f19;color:#f0e9dd;border-radius:8px;padding:11px 13px;font:12.5px var(--mono);overflow:auto}
@@ -145,7 +227,7 @@ ${receipt.replay ? `<p class="replay"><b>Replay.</b> Model responses came from t
 <h2>Acceptance criteria (human-approved)</h2>
 <ul class="crit">${criteriaHtml}</ul>
 <h2>The proof</h2>
-${receipt.phases.map(phaseCard).join("")}
+${receipt.phases.map((p) => phaseCard(p, lines)).join("")}
 <h2>Check this receipt yourself</h2>
 <div class="cmd">npm run attest -- verify receipt.json</div>
 <p class="small">Verification needs no model calls: it checks the Ed25519 signature, the hash-chained event log and its pinned head, every screenshot's hash, the criteria hash, and re-derives the verdict from the recorded votes.</p>

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { renderReport } from "../src/report.js";
+import { buildTimeline, renderReport } from "../src/report.js";
 import type { Receipt } from "../src/receipt.js";
 
 const receipt = (verdict: Receipt["verdict"], observation: string): Receipt => ({
@@ -22,6 +22,27 @@ test("shows the verdict, votes, notes and the reveal image", () => {
   assert.match(html, /landed on div#hb-root/);
   assert.match(html, /shots\/red-reveal\.png/);
   assert.match(html, /Criteria file unavailable/);
+});
+
+test("timeline pairs each click with what it actually hit, in order", () => {
+  const lines = [
+    { phase: "red", kind: "screenshot", data: { step: 0, file: "shots/red-00.png" } },
+    { phase: "red", kind: "screenshot", data: { step: 1, file: "shots/red-01.png" } },
+    { phase: "red", kind: "screenshot", data: { step: 2, file: "shots/red-02.png" } },
+    { phase: "red", kind: "cua_step", data: { step: 1, actions: [{ type: "click", x: 957, y: 426 }], errors: [] } },
+    { phase: "red", kind: "cua_step", data: { step: 2, actions: [{ type: "wait" }, { type: "click", x: 955, y: 426 }], errors: [] } },
+    { phase: "red", kind: "clicks", data: { clicks: [
+      { x: 957, y: 426, target: "div#hb-root", interactive: false },
+      { x: 955, y: 426, target: "button#pay.pay", interactive: true },
+    ] } },
+    { phase: "green", kind: "cua_step", data: { step: 1, actions: [{ type: "click", x: 1, y: 1 }], errors: [] } },
+  ];
+  const steps = buildTimeline(lines, "red");
+  assert.equal(steps.length, 3);
+  assert.equal(steps[0]?.actions[0], "open the app");
+  assert.equal(steps[1]?.actions[0], "click (957, 426) → landed on div#hb-root (not a control)");
+  assert.deepEqual(steps[2]?.actions, ["wait", "click (955, 426) → landed on button#pay.pay"]);
+  assert.equal(steps[2]?.screenshot, "shots/red-02.png");
 });
 
 test("escapes text from the model so it cannot inject markup", () => {

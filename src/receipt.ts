@@ -34,6 +34,7 @@ export interface PhaseRecord {
   criteria: CriterionRecord[];
   result: CriterionResult;
   reason: string;
+  video?: string;              // artifact path of the phase's screen recording, when recorded
 }
 
 export interface ReceiptBody {

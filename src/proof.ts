@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { copyFileSync, mkdirSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { basename, join, relative, resolve, sep } from "node:path";
 import { launchBrowser } from "./browser.js";
 import type { BrowserSession, Overlay } from "./browser.js";
@@ -78,7 +78,7 @@ async function runPhase(
     record.sha = workspace.sha;
     log.append("workspace_ready", { ref, sha: workspace.sha, port: workspace.port }, phase);
 
-    browser = await launchBrowser(ctx.config.browser.viewport);
+    browser = await launchBrowser(ctx.config.browser.viewport, { videoDir: join(dir, "videos", `${phase}-raw`) });
     await browser.open(`${workspace.url}/`);
 
     ctx.progress(`${phase}: verifier running`);
@@ -183,7 +183,17 @@ async function runPhase(
     record.error = err instanceof Error ? err.message : String(err);
     log.append("phase_error", { error: record.error }, phase);
   } finally {
-    if (browser !== undefined) await browser.close();
+    if (browser !== undefined) {
+      const raw = await browser.videoPath();
+      await browser.close();   // the video file is complete only after close
+      if (raw !== null && existsSync(raw)) {
+        const final = join(dir, "videos", `${phase}.webm`);
+        renameSync(raw, final);
+        rmSync(join(dir, "videos", `${phase}-raw`), { recursive: true, force: true });
+        record.video = rel(dir, final);
+        log.append("video", { file: record.video, sha256: sha256File(final) }, phase);
+      }
+    }
     if (workspace !== undefined) await workspace.stop();
   }
 
