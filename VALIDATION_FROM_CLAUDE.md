@@ -1,7 +1,7 @@
 # Validation from Claude — brief for T2–T4
 
 > **For:** Command Code (DeepSeek Flash v1) or any coding agent taking over from Claude Code.
-> **Written by:** Claude Code, 2026-10-31, at commit `ca44ebf` on `main`.
+> **Written by:** Claude Code, 2026-10-31, at commit `5a5fd30` on `main`.
 > **Scope:** tasks **T2, T3, T4 only**. Then stop and hand back. Claude Code does T5 (the Spark computer-use loop) and validates your work against §7.
 
 Read [HANDOVER.md](HANDOVER.md) §2 (hard rules) and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) §3, §5 before starting. This file is more specific than both; if they disagree, **this file wins for T2–T4**.
@@ -227,9 +227,9 @@ Expected:
 - smoke, exactly this shape (SHAs will be real):
 
   ```
-  {"ref":"demo/base","sha":"d91557d…","finalPath":"/cart","payRequest":null}
-  {"ref":"demo/bad-fix","sha":"f2903f9…","finalPath":"/cart","payRequest":null}
-  {"ref":"demo/fix","sha":"4bc977d…","finalPath":"/order-confirmation","payRequest":200}
+  {"ref":"demo/base","sha":"d83a9d0…","finalPath":"/cart","payRequest":null}
+  {"ref":"demo/bad-fix","sha":"64c4324…","finalPath":"/cart","payRequest":null}
+  {"ref":"demo/fix","sha":"b898ba9…","finalPath":"/order-confirmation","payRequest":200}
   ```
   plus a line showing the `demo/does-not-exist` failure was a `WorkspaceError`.
 - `git worktree list`: only the main checkout. `git status --short`: empty.
@@ -243,8 +243,8 @@ Then update HANDOVER.md §5 (state of `config.ts`, `criteria.ts`, `workspace.ts`
 
 | # | Check | How |
 |---|---|---|
-| 1 | Only allowed paths changed | `git diff --stat ca44ebf..main` |
-| 2 | Only `yaml` added as a dependency | `git diff ca44ebf..main -- package.json` |
+| 1 | Only allowed paths changed | `git diff --stat 5a5fd30..main` |
+| 2 | Only `yaml` added as a dependency | `git diff 5a5fd30..main -- package.json` |
 | 3 | Signatures match §4 | Read the four modules |
 | 4 | No element-targeted actions in `act()` | Search `browser.ts` for `.click(`, `.fill(`, `locator(` outside `locate()` |
 | 5 | No AI/LLM calls or SDKs | Search for `openai`, `anthropic`, `fetch(` to non-localhost, `deepseek` |
@@ -252,7 +252,7 @@ Then update HANDOVER.md §5 (state of `config.ts`, `criteria.ts`, `workspace.ts`
 | 7 | Cleanup on every failure path | Read `startWorkspace`; run the bad-ref case |
 | 8 | Smoke reproduces the table in §6 | `npm run smoke` |
 | 9 | No leftover worktrees or processes | `git worktree list`, `tasklist` |
-| 10 | Demo branches untouched | `git log -1 --format=%h demo/base demo/bad-fix demo/fix` still `d91557d`, `f2903f9`, `4bc977d` |
+| 10 | Demo branches untouched | `git log -1 --format=%h demo/base demo/bad-fix demo/fix` still `d83a9d0`, `64c4324`, `b898ba9` |
 | 11 | No secrets committed | `git grep -nIiE "(api[_-]?key|secret|token)=."` |
 | 12 | HANDOVER updated with real outputs | Read §5 and §9 |
 

@@ -1,7 +1,7 @@
 # Validation from Claude — brief for the benchmark
 
 > **For:** Command Code (DeepSeek Flash v1) or any coding agent.
-> **Written by:** Claude Code, 2026-11-01, at commit `438c4d7` on `main` (repo at `C:\dev\attest`).
+> **Written by:** Claude Code, 2026-11-01, at commit `32550ae` on `main` (repo at `C:\dev\attest`).
 > **Scope:** build a 10-scenario benchmark of planted UI bugs and a script that builds, checks and runs it. Then stop. Claude Code reviews the results and writes them up.
 
 Read [HANDOVER.md](HANDOVER.md) §2–§3 first, then skim [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) §1 (Red/Green/Break). If anything disagrees with this file, **this file wins for the benchmark**.
@@ -168,7 +168,7 @@ Paste into HANDOVER.md §9: the `check` summary, the `results.md` totals verbati
 
 | # | Check |
 |---|---|
-| 1 | Only allowed paths changed (`git diff --stat 438c4d7..main`); no `src/` or `test/` edits; no new dependencies |
+| 1 | Only allowed paths changed (`git diff --stat 32550ae..main`); no `src/` or `test/` edits; no new dependencies |
 | 2 | 10 scenarios, each with `scenario.yml`, `app/`, `bad-fix/`, `fix/` |
 | 3 | `bench/<ID>/base` contains **no** `fix/` or `bad-fix/` directories for any scenario (spot-check with `git ls-tree -r --name-only bench/B03/base`) |
 | 4 | `npm run bench -- check` exits 0 on a fresh run: base fails, fix passes, bad-fix fails the probe, bad-fix unit tests pass |

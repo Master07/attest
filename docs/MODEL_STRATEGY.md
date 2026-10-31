@@ -40,7 +40,7 @@ Each role routes to a **provider** (`meta` = Meta Model API, `baseten` = Meta op
 
 Override any role without code changes: `ATTEST_ROUTE_<ROLE>=provider:model`, e.g. `ATTEST_ROUTE_WORKER=baseten:meta-models/muse-spark-open-1026` to move the fan-out onto Baseten credits. Keys and endpoints come from env vars; see `.env.example`.
 
-From the hackathon Discord (see [DISCORD_NOTES](DISCORD_NOTES.md)):
+From the hackathon Discord (organizer answers):
 
 - `meta-models/muse-spark-open-1026` is the official Baseten model ID, and the hackathon Baseten key **only** serves Muse Spark Open — Glimmer is not available there.
 - Computer use (Responses API, `tools: [{"type": "computer"}]`) works on `muse-spark-1.3` and returns `400 Unsupported tool type` on `muse-wonder-1.0`.

@@ -6,3 +6,4 @@ evidence/
 .commandcode/
 *.log
 .env
+docs/DISCORD_NOTES.md

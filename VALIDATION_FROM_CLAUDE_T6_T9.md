@@ -1,7 +1,7 @@
 # Validation from Claude — brief for T6 and T9
 
 > **For:** Command Code (DeepSeek Flash v1) or any coding agent.
-> **Written by:** Claude Code, 2026-10-31, at commit `5ed51cd` on `main` (repo at `C:\dev\attest`).
+> **Written by:** Claude Code, 2026-10-31, at commit `2a6c81f` on `main` (repo at `C:\dev\attest`).
 > **Scope:** **T6** (deterministic checks), **T9** (hash-chained event log), and retiring the old mock modules that T9 would otherwise break. Then stop. Claude Code does T7, T8 and T10.
 
 Read [HANDOVER.md](HANDOVER.md) §2–§3 and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) §7 and §9 first. If they disagree with this file, **this file wins for T6/T9**.
@@ -195,7 +195,7 @@ Expected: typecheck clean; all tests pass (the earlier 16 plus yours); smoke sti
 
 | # | Check |
 |---|---|
-| 1 | `git diff --stat 5ed51cd..main` shows only the allowed paths (§2) |
+| 1 | `git diff --stat 2a6c81f..main` shows only the allowed paths (§2) |
 | 2 | No dependency changes; `"demo"` script removed |
 | 3 | Signatures match §4 exactly |
 | 4 | `checks.ts` is pure; compares the final URL only; ignores `visible` |

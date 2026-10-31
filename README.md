@@ -104,7 +104,7 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 | [STRATEGIC_OUTLOOK](docs/STRATEGIC_OUTLOOK.md) | The verification gap, and enterprise walls |
 | [ROADMAP](docs/ROADMAP.md) | Built / shown / planned |
 | [HANDOVER](HANDOVER.md) | Build log and current state |
-| [DISCORD_NOTES](docs/DISCORD_NOTES.md) · [HACKATHON_RULES](HACKATHON_RULES.md) | Event facts and rules |
+| [HACKATHON_RULES](HACKATHON_RULES.md) | Event rules |
 | [FEEDBACK](docs/FEEDBACK.md) · [BRAINSTORM](docs/BRAINSTORM.md) | Early review and idea notes |
 | [AGENT_DESIGN](docs/AGENT_DESIGN.md) · [VERIFICATION](docs/VERIFICATION.md) · [EVENT_LOG_AND_REPLAY](docs/EVENT_LOG_AND_REPLAY.md) · [SETUP](docs/SETUP.md) · [COST](docs/COST.md) | Earlier design docs (partly superseded by ARCHITECTURE) |
 

@@ -1,6 +1,6 @@
 # Architecture
 
-> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-10-31 · **Related:** [ADR 0005](adr/0005-narrow-to-proof-of-fix.md) · [PITCH](PITCH.md) · [MODEL_STRATEGY](MODEL_STRATEGY.md) · [DISCORD_NOTES](DISCORD_NOTES.md)
+> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-10-31 · **Related:** [ADR 0005](adr/0005-narrow-to-proof-of-fix.md) · [PITCH](PITCH.md) · [MODEL_STRATEGY](MODEL_STRATEGY.md)
 
 Attest is **proof-of-fix for pull requests**. Given a base build, a PR build, a deliberately wrong build, and human-approved acceptance criteria, it drives each running build with a **blind** computer-use verifier and seals the outcome into a **receipt** anyone can check.
 
@@ -308,7 +308,7 @@ Kinds: `run_start`, `workspace_ready`, `prompt_sent`, `cua_action`, `cua_verdict
 
 | Role | Model | Provider | Notes |
 |---|---|---|---|
-| `verifier` | `muse-spark-1.3` | Meta Model API | Responses API `computer` tool; Wonder rejects it ([DISCORD_NOTES](DISCORD_NOTES.md)) |
+| `verifier` | `muse-spark-1.3` | Meta Model API | Responses API `computer` tool; Wonder rejects it (hackathon Discord, organizer answers) |
 | `ui` | `sam-3.1` | Meta Model API | Element confirmation |
 | `judge` | `muse-wonder-1.0` | Meta Model API | Default. `ATTEST_ROUTE_JUDGE=baseten:meta-models/muse-spark-open` (own Baseten account) for open weights |
 | `drafter` *(stretch)* | `muse-spark-1.3` | Meta Model API | Video input |
@@ -382,7 +382,7 @@ flowchart LR
 - **The verifier stays blind.** Feedback flows only to the producer: failed criterion ids, their plain-language text and the cited screenshots. Never the verifier's prompts, the judge's reasoning or the `expect` checks, so the producer can't optimise against the checks themselves.
 - **Rejected attempts become Break builds.** Each failed attempt is kept as a branch; the last one becomes the Break build for the final proof.
 - **Every attempt is in the receipt**, so a reviewer sees the whole path: rejected, retried, proven.
-- **Muse Code is the producer** because anything Attest invokes at runtime must be a Meta model ([DISCORD_NOTES](DISCORD_NOTES.md)).
+- **Muse Code is the producer** because anything Attest invokes at runtime must be a Meta model (hackathon Discord, organizer answers).
 - **Open risk:** it isn't confirmed that Muse Code can be driven non-interactively (SDK or headless CLI). If it can't, the demo triggers each retry by hand and says so.
 
 ### 15.2 Scope tiers
@@ -412,4 +412,4 @@ Publish the raw runs and receipts alongside the numbers, including the misses. T
 
 - [ADR 0005](adr/0005-narrow-to-proof-of-fix.md) — why the scope is narrow
 - [MODEL_STRATEGY](MODEL_STRATEGY.md) — routing and providers
-- [DISCORD_NOTES](DISCORD_NOTES.md) — platform facts this design depends on
+- [HANDOVER §4](../HANDOVER.md) — platform facts from the hackathon Discord that this design depends on
