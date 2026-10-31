@@ -46,7 +46,7 @@ On a [benchmark of 10 planted UI bugs](docs/BENCHMARK.md), each with a plausible
 
 Ten planted bugs show the mechanism works; they are not a measure of real-world accuracy.
 
-**A real bug, too:** Attest proved TodoMVC's real 2012 fix for "deleting a todo takes two clicks" — in a project we didn't write — after four honestly reported runs: an ambiguous requirement and two blind spots in Attest (a retry hiding the bug, a judge that saw only the final frame) surfaced and were fixed, and no run certified the wrong fix. [Every run →](examples/realworld/todomvc-delete/README.md)
+**A real bug, too:** Attest proved TodoMVC's real 2012 fix for "deleting a todo takes two clicks" — in a project we didn't write — after four honestly reported runs: an ambiguous requirement and two blind spots in Attest (a retry hiding the bug, a judge that saw only the final frame) surfaced and were fixed, and no run certified the wrong fix. [Every run →](examples/realworld/todomvc-delete/README.md) · [signed receipt (release download)](examples/realworld/todomvc-delete/README.md#check-the-receipt)
 
 ## Try it — no API key needed
 

@@ -50,4 +50,18 @@ Takeaways, stated plainly:
 - Two Attest changes came out of this case (both apply to all runs since): the verifier judges a single stated action by its first attempt, and the judge sees the whole screenshot sequence.
 - The judge was inconsistent on the wrong fix in 1 of 2 identical runs. In every run, disagreement produced INCONCLUSIVE — **no run certified the wrong fix**.
 
+## Check the receipt
+
+Run 4's signed bundle (receipt, event log, screenshots, videos) is a [release download](https://github.com/Master07/attest/releases/tag/proofs-2026-11-01): 101 MB, because its three phase videos are hashed into the receipt. It contains Attest's run output only, no TodoMVC code.
+
+```bash
+# from a clone of this repo, after npm install; download todomvc-delete-run-4.zip from the release
+unzip todomvc-delete-run-4.zip            # Windows: Expand-Archive todomvc-delete-run-4.zip .
+npm run attest -- verify todomvc-delete-run-4/receipt.json
+```
+
+Zip SHA-256: `061450dad90c45ea439935c377be3748d3553197834825300b61d3652f5cd32a`. Runs 1–3 are described above, not published.
+
+## The candidate that didn't reproduce
+
 The first candidate we tried — TodoMVC's July 2012 "Fix clear completed button being unclickable" (`98d5b38`) — **does not reproduce in today's Edge**: the click reaches the button on both commits. Attest would report "bug not reproduced in this environment", which is the honest outcome for a bug the browser no longer has.
