@@ -2,8 +2,7 @@ const pay = document.querySelector("#pay");
 const status = document.querySelector("#status");
 
 document.querySelector("#accept-cookies").addEventListener("click", () => {
-  const banner = document.querySelector("#cookie-banner-dismiss");
-  if (banner) banner.remove();
+  document.querySelector("#cookie-banner").remove();
 });
 
 pay.addEventListener("click", async () => {
