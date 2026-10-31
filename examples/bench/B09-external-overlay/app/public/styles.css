@@ -71,3 +71,6 @@ h1 { margin: 0 0 24px; font-size: 28px; }
   background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-size: 28px;
 }
 .order { font-size: 22px; font-weight: 700; }
+
+/* "Fix": raise the button above other layers. */
+.pay { position: relative; z-index: 1000; }
