@@ -36,7 +36,7 @@
         </dl>
         <form id="checkout" class="checkout">
           <label for="email">Email for the receipt</label>
-          <input id="email" name="email" type="email" pattern="[A-Z]+@[A-Z]+" required placeholder="you@example.com" />
+          <input id="email" name="email" type="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required placeholder="you@example.com" />
           <button id="pay" data-test="pay" class="pay" type="submit">Pay $89.00</button>
           <p id="status" class="status" role="status"></p>
         </form>
