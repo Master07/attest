@@ -37,6 +37,7 @@ export interface CuaResult {
   finalText: string;
   model: string;
   promptSha256: string;
+  fallbacks: string[];        // e.g. switches to stateless replay after server errors
   error?: string;
 }
 
@@ -168,6 +169,7 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
   const prompt = buildVerifierPrompt(opts.criteria, opts.appUrl);
 
   const steps: CuaStep[] = [];
+  const fallbacks: string[] = [];
   const result = (status: CuaResult["status"], extra: Partial<CuaResult> = {}): CuaResult => ({
     status,
     verdicts: [],
@@ -175,6 +177,7 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
     finalText: "",
     model: route.model,
     promptSha256: prompt.sha256,
+    fallbacks,
     ...extra,
   });
 
@@ -192,6 +195,10 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
         ],
       },
     ];
+
+    const transcript: unknown[] = [...firstInput];
+    // ATTEST_CUA_STATELESS=1 replays the full history on every turn (no server-side storage).
+    let stateless = env.ATTEST_CUA_STATELESS === "1";
 
     // truncation:"auto" keeps recent screenshots; if the account doesn't allow it, drop it.
     let truncation: "auto" | undefined = "auto";
@@ -242,20 +249,36 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
         return result("error", { error: "response is missing id or call_id" });
       }
 
-      response = await post(baseUrl, apiKey, {
-        ...base,
-        previous_response_id: response.id,
-        ...(truncation ? { truncation } : {}),
-        input: [
-          {
-            type: "computer_call_output",
-            call_id: call.call_id,
-            // Only ever reached for local apps we run ourselves (checked above).
-            acknowledged_safety_checks: safetyChecks,
-            output: { type: "computer_screenshot", image_url: dataUrl(png) },
-          },
-        ],
-      });
+      const callOutput = {
+        type: "computer_call_output",
+        call_id: call.call_id,
+        // Only ever reached for local apps we run ourselves (checked above).
+        acknowledged_safety_checks: safetyChecks,
+        output: { type: "computer_screenshot", image_url: dataUrl(png) },
+      };
+      // History for stateless replay: each computer_call is copied unchanged (keeping any
+      // `meta_safety_replay_receipt`, which replay requires) next to its output. Reasoning items are
+      // not replayed — they can't be resent without server-side storage.
+      transcript.push(call, callOutput);
+
+      if (!stateless) {
+        try {
+          response = await post(baseUrl, apiKey, {
+            ...base,
+            previous_response_id: response.id,
+            ...(truncation ? { truncation } : {}),
+            input: [callOutput],
+          });
+          continue;
+        } catch (err) {
+          // Chained turns depend on the server's stored copy of the conversation; live runs saw
+          // HTTP 500 / 503 "persistence service error" here. Fall back to replaying it ourselves.
+          if (!(err instanceof ApiError && (err.status === null || err.status >= 500))) throw err;
+          stateless = true;
+          fallbacks.push(`step ${step}: chained turn failed (${err.message}); switched to stateless replay`);
+        }
+      }
+      response = await post(baseUrl, apiKey, { ...base, store: false, input: transcript });
     }
   } catch (err) {
     const detail = err instanceof ApiError ? `${err.message} ${err.body}`.trim() : err instanceof Error ? err.message : String(err);

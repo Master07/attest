@@ -104,7 +104,7 @@ async function runPhase(
     for (const s of result.steps) {
       log.append("cua_step", { step: s.step, actions: s.actions, errors: s.errors, safety_checks: s.safetyChecks.map((c) => c.code) }, phase);
     }
-    log.append("cua_result", { status: result.status, verdicts: result.verdicts, error: result.error ?? null, final_text: result.finalText }, phase);
+    log.append("cua_result", { status: result.status, verdicts: result.verdicts, error: result.error ?? null, fallbacks: result.fallbacks, final_text: result.finalText }, phase);
 
     record.status = result.status;
     record.steps = result.steps.length;
