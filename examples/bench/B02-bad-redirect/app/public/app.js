@@ -13,5 +13,5 @@ pay.addEventListener("click", async () => {
   }
 
   const { order } = await res.json();
-  location.assign("/order-confirm?order=" + order);   // BUG: the route is /order-confirmation
+  location.assign("/order-confirm?order=" + order);
 });

@@ -2,7 +2,6 @@ const pay = document.querySelector("#pay");
 const status = document.querySelector("#status");
 
 document.querySelector("#accept-cookies").addEventListener("click", () => {
-  // BUG: the banner's id is "cookie-banner", not "cookie-banner-dismiss".
   const banner = document.querySelector("#cookie-banner-dismiss");
   if (banner) banner.remove();
 });

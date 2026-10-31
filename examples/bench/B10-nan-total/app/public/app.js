@@ -1,7 +1,6 @@
 const pay = document.querySelector("#pay");
 const status = document.querySelector("#status");
 
-// BUG: Number("$89.00") is NaN.
 const price = Number("$89.00");
 pay.textContent = "Pay $" + price.toFixed(2);
 

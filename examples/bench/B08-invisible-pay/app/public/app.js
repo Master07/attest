@@ -1,5 +1,5 @@
 const pay = document.querySelector("#pay");
-pay.classList.add("pay--hidden");   // BUG: hides the button after render
+pay.classList.add("pay--hidden");
 const status = document.querySelector("#status");
 
 pay.addEventListener("click", async () => {

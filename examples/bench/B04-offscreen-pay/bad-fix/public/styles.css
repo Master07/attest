@@ -72,7 +72,6 @@ h1 { margin: 0 0 24px; font-size: 28px; }
 }
 .order { font-size: 22px; font-weight: 700; }
 
-/* BUG: at desktop widths the Pay button is pushed 2000px to the right. */
 html, body { overflow-x: hidden; }
 @media (min-width: 1000px) {
   .pay { margin-left: 2000px; }

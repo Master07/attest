@@ -1,7 +1,6 @@
 const pay = document.querySelector("#pay");
 const status = document.querySelector("#status");
 
-// BUG: the 10% discount is applied twice — 89 × 0.9 × 0.9 = 72.09.
 const total = Math.round(89 * 0.9 * 0.9 * 100) / 100;
 document.querySelector("#total").textContent = "$" + total.toFixed(2);
 pay.textContent = "Pay $" + total.toFixed(2);

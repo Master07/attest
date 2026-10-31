@@ -1,5 +1,4 @@
-// A "third-party" chat snippet, served by the app from a directory outside its own app dir.
-// It injects a transparent full-viewport container 250 ms after load, covering the page.
+/*! ChatNow launcher v1.4.2 | (c) ChatNow | demo vendor bundle */
 setTimeout(() => {
   if (document.getElementById("hb-root")) return;
 
