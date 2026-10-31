@@ -126,12 +126,14 @@ figcaption{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:
 .kvs{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;font-size:13px;background:var(--card);border:1px solid var(--line-2);border-radius:10px;padding:14px 16px}
 .kvs dt{color:var(--muted)}.kvs dd{margin:0;font:12.5px var(--mono);word-break:break-all}
 footer{border-top:1px solid var(--line-2);margin-top:30px;padding:18px 0 40px;color:var(--faint);font-size:12.5px}
+.replay{margin:16px 0 0;padding:10px 14px;border:1px solid #e6dcc0;background:var(--warn-bg);color:#5f4708;border-radius:9px;font-size:13.5px}
 </style></head>
 <body><div class="wrap">
 <div class="mast">
   <div class="brand">Attest<small>Proof-of-fix receipt · ${esc(receipt.subject.app)}</small></div>
   <div class="stamp ${v.cls}">${esc(receipt.verdict.replace("_", " "))}</div>
 </div>
+${receipt.replay ? `<p class="replay"><b>Replay.</b> Model responses came from the recorded cassette <code>${esc(receipt.replay.cassette)}</code> (sha256 ${esc(short(receipt.replay.sha256, 12))}…), not the live API. The app, browser, clicks, code checks and receipt were real; the models' decisions were re-applied, not re-made.</p>` : ""}
 <p class="lede">${esc(v.line)}</p>
 <ul class="reasons">${receipt.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
 <dl class="grid">

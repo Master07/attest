@@ -8,6 +8,7 @@ import { writeReport } from "./report.js";
 
 const USAGE = `usage:
   attest prove --app <path> --base <ref> --pr <ref> [--break <ref>] [--criteria <file>] [--out <dir>]
+               [--record <cassette.jsonl> | --replay <cassette.jsonl>]
   attest loop  --app <path> --base <ref> --report "<bug report>" [--break <ref>] [--max-attempts <n>]
   attest verify <receipt.json>
   attest report <receipt.json>     (re)render the evidence page next to a receipt`;
@@ -39,6 +40,18 @@ try {
     const brk = f.get("break");
     const criteriaPath = f.get("criteria");
     const outDir = f.get("out");
+    const record = f.get("record");
+    const replay = f.get("replay");
+    if (record !== undefined && replay !== undefined) throw new Error("use --record or --replay, not both");
+    if (record !== undefined) {
+      if (existsSync(resolve(record))) throw new Error(`${record} already exists; record into a new file`);
+      process.env.ATTEST_RECORD = resolve(record);
+    }
+    if (replay !== undefined) {
+      if (!existsSync(resolve(replay))) throw new Error(`cassette not found: ${replay}`);
+      process.env.ATTEST_REPLAY = resolve(replay);
+      console.log(`  replaying model responses from ${replay} (no API calls)`);
+    }
     const { receiptPath, receipt } = await runProof({
       repoRoot,
       appPath: app,

@@ -210,7 +210,10 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
   const log = EventLog.create(join(dir, "events.jsonl"));
   const refs: Partial<Record<PhaseName, string>> = { red: opts.base, green: opts.pr };
   if (opts.break !== undefined) refs.break = opts.break;
-  log.append("run_start", { mode: "fix", app: opts.appPath, refs, criteria_sha256: criteria.sha256 });
+  // A replay re-applies recorded model responses to the live app; say so in the log and the receipt.
+  const replayPath = process.env.ATTEST_REPLAY;
+  const replay = replayPath ? { cassette: basename(replayPath), sha256: sha256File(replayPath) } : null;
+  log.append("run_start", { mode: "fix", app: opts.appPath, refs, criteria_sha256: criteria.sha256, replay });
 
   const ctx = { repoRoot, appPath: opts.appPath, config, criteria, dir, log, progress };
   const phases: PhaseRecord[] = [];
@@ -251,6 +254,7 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
     models,
     artifacts,
     log: { path: "events.jsonl", head: log.head, entries: log.length },
+    ...(replay !== null ? { replay } : {}),
   };
 
   const receipt = signReceipt(body);

@@ -53,6 +53,8 @@ export interface ReceiptBody {
   models: { role: string; provider: string; model: string }[];
   artifacts: Record<string, string>;   // relative path → "sha256:<hex>"
   log: { path: string; head: string; entries: number };
+  /** Present only when model responses came from a recorded cassette instead of the live API. */
+  replay?: { cassette: string; sha256: string };
 }
 
 export interface Receipt extends ReceiptBody {

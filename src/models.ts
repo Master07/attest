@@ -72,6 +72,8 @@ export interface ProviderEndpoint {
 }
 
 export function resolveProvider(provider: Provider, env: NodeJS.ProcessEnv = process.env): ProviderEndpoint {
+  // Replays answer from a recorded cassette and never reach the network, so no key is needed.
+  if (env.ATTEST_REPLAY) return { baseUrl: "replay://", apiKey: "replay" };
   const config = PROVIDERS[provider];
   // `||`, not `??`: an empty `KEY=` line in .env must fall back to the default.
   const baseUrl = env[config.baseUrlEnv] || config.defaultBaseUrl;

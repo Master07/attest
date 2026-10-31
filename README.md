@@ -43,7 +43,19 @@ npm run attest -- prove --app examples/checkout-demo --base demo/base --pr demo/
 npm run attest -- verify evidence/run-<id>/receipt.json
 ```
 
-`prove` writes `receipt.json`, the hash-chained `events.jsonl`, the criteria and every screenshot to `evidence/run-<id>/`. The demo branches only exist locally after `git branch demo/base origin/demo/base` (and the same for `demo/bad-fix`, `demo/fix`) in a fresh clone.
+`prove` writes `receipt.json`, the hash-chained `events.jsonl`, the criteria, every screenshot and an evidence page (`index.html`) to `evidence/run-<id>/`. The demo branches only exist locally after `git branch demo/base origin/demo/base` (and the same for `demo/bad-fix`, `demo/fix`, `demo2/*`) in a fresh clone.
+
+### Run it without an API key
+
+Each example ships a recorded **cassette** of the model responses from a real run. Replaying it needs no key and makes no API calls; the app, browser, clicks, code checks and receipt are all real, and the receipt and evidence page are marked as a replay.
+
+```bash
+npm install
+git branch demo2/base origin/demo2/base; git branch demo2/bad-fix origin/demo2/bad-fix; git branch demo2/fix origin/demo2/fix
+npm run attest -- prove --app examples/checkout-widget --base demo2/base --pr demo2/fix --break demo2/bad-fix --replay examples/checkout-widget/cassette.jsonl
+```
+
+To record your own: add `--record my-run.jsonl` to a live `prove`.
 
 ## Documentation
 
