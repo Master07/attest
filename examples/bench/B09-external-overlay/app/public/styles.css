@@ -71,3 +71,6 @@ h1 { margin: 0 0 24px; font-size: 28px; }
   background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-size: 28px;
 }
 .order { font-size: 22px; font-weight: 700; }
+
+/* The widget covers the page with a transparent layer; let clicks through to the app. */
+#hb-root { pointer-events: none; }
