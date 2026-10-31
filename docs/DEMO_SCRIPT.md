@@ -4,7 +4,16 @@
 
 The 3-minute submission video. Every claim in it comes from a real run in this repo; anything sped up says so on screen.
 
-**Hard rules for the video (from the official rules and Discord):** 3 minutes maximum. Open by stating it was built entirely during the event. Show only what was built during the event.
+**Rules for the video** (official rules + organizer answers in Discord, Oct 30–31):
+
+- **3:00 maximum** — judges stop watching at the 3-minute mark.
+- **Open with one line** on what was pre-existing and what was built this week (for Attest: everything was built during the event).
+- **Show the working product**, not slides or unbuilt ideas; you don't need to walk through code.
+- **Understandable in English**: voiceover, subtitles or a transcript.
+- **AI voiceover is allowed**, but organizers prefer a video presented by a person — use your own voice if you can. Showing your face isn't required.
+- **Editing and cuts are fine**, and long-running steps may be sped up if clearly labelled and backed by recorded outputs or traces (our receipts and `events.jsonl` are exactly that).
+- **No hosted version needed**: the project must run from the public repo's setup instructions.
+- Meta has no text-to-speech model; Muse Voice Transcribe (speech → text) can produce the subtitle transcript from your recorded voiceover.
 
 ## The story in one line
 
