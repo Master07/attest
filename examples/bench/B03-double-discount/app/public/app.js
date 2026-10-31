@@ -1,7 +1,9 @@
+import { applyDiscount } from "./pricing.js";
+
 const pay = document.querySelector("#pay");
 const status = document.querySelector("#status");
 
-const total = Math.round(89 * 0.9 * 0.9 * 100) / 100;
+const total = applyDiscount(89);
 document.querySelector("#total").textContent = "$" + total.toFixed(2);
 pay.textContent = "Pay $" + total.toFixed(2);
 
