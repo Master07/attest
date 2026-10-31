@@ -78,7 +78,31 @@ Read, in this order: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (the design �
 
 Each task lists what "done" means. Do them in order; tick them in the Progress log.
 
-> **Status (2026-11-01):** **Gate passed; closed loop, SAM 3.1, Wonder judge and evidence page done.** Both demos return `PROVEN` with all four voters agreeing in every phase. **The benchmark is assigned to Command Code** — spec in **[VALIDATION_FROM_CLAUDE_BENCH.md](VALIDATION_FROM_CLAUDE_BENCH.md)**. Claude Code meanwhile: proof videos → replay mode → README GIF + demo video script. Judge moves to Spark Open if a Baseten key arrives (`ATTEST_ROUTE_JUDGE`).
+> **Status (2026-11-01):** Core, closed loop, SAM 3.1, Wonder judge, evidence page, benchmark (8/10 PROVEN), replay mode, README and demo script are done. **Final-stretch plan below.**
+
+### Final-stretch plan (agreed 2026-11-01)
+
+Deadline **Nov 4, 9:00 PM ET (Nov 5, 7:30 AM IST)**. The repo state at the deadline is what gets judged. Every item has a timebox and a kill rule: if it isn't working by the kill point, it is dropped to the roadmap — nothing half-working ships.
+
+| # | When | Item | Owner | Timebox / kill rule | Done when |
+|---|---|---|---|---|---|
+| 1 | Nov 1 | **Proof videos + action timeline** on the evidence page (Playwright video per phase; each verifier step: action → hit element → screenshot) | Claude | ~3 h | Videos hashed into the receipt; page shows them and the timeline |
+| 2 | Nov 1 | **Video/voice bug-report intake**: screen recording + narration → Muse Voice Transcribe + Spark video input → *draft* criteria → human approves | Claude | 4 h max; **kill at hour 3** if drafts aren't sensible | `attest draft --video bug.mp4` writes a reviewable `criteria.draft.yml` |
+| 3 | Nov 2 | **Real-world bug**: a small, permissively licensed (MIT/Apache) open-source web app with a real historical UI bug and its real fix commit; Red on the parent commit, Green on the fix, Break on a plausible wrong fix | Claude (+ user picks with Claude) | ~½ day; **kill at 2 h** if the app won't start → try the next candidate (max 2 candidates) | `PROVEN` (or an honest INCONCLUSIVE) with a receipt and write-up |
+| 4 | Nov 2 | **Honest Muse Code retry** on B09 (remove `// BUG:` comments first; cause is outside the app dir) | Claude | ~2 h | Loop result reported as-is |
+| 5 | Nov 2 | **Spark Open judge** via the user's own Baseten account (counts for the open-weights bonus) | User creates account; Claude routes + re-records | ~30 min after the key exists | Receipt lists `judge = meta-models/muse-spark-open`; provenance in README |
+| 6 | Nov 2 | Re-record cassettes (with timings) | Claude | ~30 min | Replay still `PROVEN` with no key |
+| 7 | Nov 3 | **Record the demo video** (add the "record a bug" opening if #2 works; the real-world proof if #3 works) | User | full day | ≤ 3:00, English, captions |
+| 8 | Nov 3 | Privacy check of files + history → **make repo public** | Claude + user | ~1 h | Public, nothing private in history |
+| 9 | Nov 4 | **Submit by noon IST**; final X post (Most Viral) | User | — | Submitted; link works in a private window |
+
+Optional (Command Code, only if time): post the receipt as a PR comment via `gh`; majority vote for the verifier on disagreement.
+
+**Real-world bug — technical notes for #3:**
+- Fetch only the needed commits into local refs (e.g. `git fetch <url> <sha>:refs/heads/rw/base`); don't push third-party history to our repo unless its licence clearly allows it — document reproduction steps instead.
+- Attest currently reads `attest.yml` / `criteria.yml` from the app dir inside the checked-out ref, which a third-party commit won't contain. Needs a small `--config-dir` option so config can live in `examples/realworld/<app>/` while the app comes from the fetched ref.
+- Credit the project and licence in the README and the video; it is a test subject, not our code.
+- Report the outcome honestly, including INCONCLUSIVE or a verifier miss.
 
 ### Day 1 (Nov 1) — core plumbing
 
