@@ -1,3 +1,5 @@
+import { confirmationUrl } from "./urls.js";
+
 const pay = document.querySelector("#pay");
 const status = document.querySelector("#status");
 
@@ -13,5 +15,5 @@ pay.addEventListener("click", async () => {
   }
 
   const { order } = await res.json();
-  location.assign("/order-confirm?order=" + order);
+  location.assign(confirmationUrl(order));
 });
