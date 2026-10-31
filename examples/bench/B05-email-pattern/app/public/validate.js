@@ -1,3 +1,3 @@
 export function validateEmail(email) {
-  return /^[A-Z]+@[A-Z]+$/.test(email);
+  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
 }
