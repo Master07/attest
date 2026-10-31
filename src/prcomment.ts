@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
-import { basename, dirname, join, relative, resolve, sep } from "node:path";
+import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Receipt } from "./receipt.js";
 import { sha256File } from "./receipt.js";
 
@@ -182,13 +182,23 @@ export function readReceipt(path: string): Receipt {
   return JSON.parse(readFileSync(resolve(path), "utf8").replace(/^\uFEFF/, "")) as Receipt;
 }
 
+/** A repo-relative, forward-slashed path; a receipt outside the repo (or on another drive) uses its file name. */
+export function repoRelativePath(receiptPath: string, repoRoot: string): string {
+  const absolute = resolve(receiptPath);
+  const relRaw = relative(resolve(repoRoot), absolute);
+  if (relRaw === "" || relRaw.startsWith("..") || isAbsolute(relRaw)) return basename(absolute);
+  return relRaw.split(sep).join("/");
+}
+
 /** Renders and writes `pr-comment.md` beside the receipt. Returns the comment path. */
 export function writePrComment(receiptPath: string, receipt: Receipt, repoRoot: string): string {
   const absolute = resolve(receiptPath);
-  const relRaw = relative(resolve(repoRoot), absolute);
-  const rel = relRaw.startsWith("..") || relRaw === "" ? basename(absolute) : relRaw.split(sep).join("/");
   const out = join(dirname(absolute), "pr-comment.md");
-  writeFileSync(out, renderPrComment(receipt, { receiptRelPath: rel, receiptSha256: sha256File(absolute) }), "utf8");
+  writeFileSync(
+    out,
+    renderPrComment(receipt, { receiptRelPath: repoRelativePath(absolute, repoRoot), receiptSha256: sha256File(absolute) }),
+    "utf8",
+  );
   return out;
 }
 

@@ -1,9 +1,14 @@
 import assert from "node:assert/strict";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import { test } from "node:test";
-import { renderPrComment } from "../src/prcomment.js";
+import { fileURLToPath } from "node:url";
+import { renderPrComment, repoRelativePath } from "../src/prcomment.js";
 import type { PrCommentOptions } from "../src/prcomment.js";
 import type { PhaseRecord, Receipt } from "../src/receipt.js";
 import type { CriterionVotes } from "../src/verdict.js";
+
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 const opts: PrCommentOptions = {
   receiptRelPath: "evidence/run-1/receipt.json",
@@ -177,4 +182,37 @@ test("an oversized comment drops the observations block", () => {
   const out = renderPrComment(huge, opts);
   assert.ok(out.length <= 60_000);
   assert.ok(out.includes("(observations omitted for length)"));
+});
+
+test("a receipt inside the repo becomes a forward-slashed relative path", () => {
+  assert.equal(
+    repoRelativePath(join(repoRoot, "evidence", "run-1", "receipt.json"), repoRoot),
+    "evidence/run-1/receipt.json",
+  );
+});
+
+test("a receipt outside the repo uses its file name, not an absolute path", () => {
+  assert.equal(
+    repoRelativePath(join(tmpdir(), "attest-prcomment-outside", "receipt.json"), repoRoot),
+    "receipt.json",
+  );
+});
+
+if (process.platform === "win32") {
+  test("a receipt on another Windows drive cannot leak an absolute path", () => {
+    assert.equal(repoRelativePath("D:\\evidence\\receipt.json", repoRoot), "receipt.json");
+  });
+}
+
+test("phase errors are appended and a null sha renders as an em dash", () => {
+  const value = receipt("PROVEN");
+  const red = value.phases[0];
+  const green = value.phases[1];
+  assert.ok(red !== undefined && green !== undefined);
+  red.error = "HTTP 500";
+  green.sha = null;
+
+  const out = renderPrComment(value, opts);
+  assert.match(out, /\| red \| .* \| fail \(bug reproduces\) \| fail \(HTTP 500\) \|/);
+  assert.match(out, /\| green \| — \| pass \| pass \|/);
 });
