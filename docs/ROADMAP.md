@@ -19,7 +19,7 @@ Items are tagged by how real they are: **Build** (real, demoed), **Show** (thin 
 - [x] Closed loop: Muse Code retries on `REJECTED` until `PROVEN` or the retry limit (built; Muse Code has fixed every demo bug on the first attempt so far)
 - [x] Benchmark: 10 planted UI bugs; agent tests vs. Attest, misses included ([BENCHMARK](BENCHMARK.md))
 - [x] Proof videos per phase + SAM 3.1 visibility check with click hit-testing and reveal images
-- [x] Independent judge (Muse Wonder); [ ] move it to Muse Spark Open via Baseten for open weights
+- [x] Independent judge on Muse Spark Open (open weights, own Baseten account), Muse Wonder fallback
 - [x] Real-world proof: TodoMVC's 2012 delete bug ([examples/realworld](../examples/realworld/todomvc-delete/README.md))
 
 ## Hackathon — Show (only if time remains)

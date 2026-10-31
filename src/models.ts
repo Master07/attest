@@ -22,8 +22,8 @@ export const MODEL_IDS = {
   wonderFull: "muse-wonder-full",
   image: "muse-image-1.0",
   sam: "sam-3.1",
-  // The hackathon Baseten key only serves Muse Spark Open (ID from the hackathon FAQ).
-  sparkOpen: "meta-models/muse-spark-open-1026",
+  // Muse Spark Open on Baseten. The hackathon FAQ's ID ends in -1026; own Baseten accounts serve this one.
+  sparkOpen: "meta-models/muse-spark-open",
 } as const;
 
 export const ROLE_ROUTE: Record<ModelRole, ModelRoute> = {
@@ -34,8 +34,8 @@ export const ROLE_ROUTE: Record<ModelRole, ModelRoute> = {
   ui: { provider: "meta", model: MODEL_IDS.sam },
   // The Model API's computer tool works on Spark 1.3; Wonder returns 400 Unsupported tool type.
   verifier: { provider: "meta", model: MODEL_IDS.spark },
-  // Independent judge: a different model from the verifier. Muse Wonder needs no computer tool, so it
-  // works here. With a Baseten key, ATTEST_ROUTE_JUDGE=baseten:<spark-open id> moves it to open weights.
+  // Independent judge: a different model from the verifier. Muse Wonder is the fallback; pickRoute moves
+  // the judge to open weights (Muse Spark Open on Baseten) when a Baseten key is set or a cassette replays.
   judge: { provider: "meta", model: MODEL_IDS.wonder },
 };
 
@@ -43,7 +43,7 @@ function isProvider(value: string): value is Provider {
   return Object.hasOwn(PROVIDERS, value);
 }
 
-// ATTEST_ROUTE_<ROLE>="provider:model" overrides a role, e.g. ATTEST_ROUTE_WORKER=baseten:meta-models/muse-spark-open-1026.
+// ATTEST_ROUTE_<ROLE>="provider:model" overrides a role, e.g. ATTEST_ROUTE_WORKER=baseten:meta-models/muse-spark-open.
 function routeOverride(role: ModelRole, env: NodeJS.ProcessEnv): ModelRoute | undefined {
   const name = `ATTEST_ROUTE_${role.toUpperCase()}`;
   const raw = env[name]?.trim();
@@ -59,6 +59,11 @@ function routeOverride(role: ModelRole, env: NodeJS.ProcessEnv): ModelRoute | un
 export function pickRoute(role: ModelRole, contributor = false, env: NodeJS.ProcessEnv = process.env): ModelRoute {
   const override = routeOverride(role, env);
   if (override) return override;
+  // Open weights for the judge whenever Baseten is reachable. Replays need no key, and the committed
+  // cassettes were recorded with Spark Open judging.
+  if (role === "judge" && (env.BASETEN_API_KEY || env.ATTEST_REPLAY)) {
+    return { provider: "baseten", model: MODEL_IDS.sparkOpen };
+  }
   const route = ROLE_ROUTE[role];
   if (role === "worker" && contributor && route.provider === "meta") {
     return { provider: "meta", model: MODEL_IDS.sparkContributor };

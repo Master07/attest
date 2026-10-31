@@ -27,7 +27,7 @@ Each phase gets **four independent votes**, and disagreement is never a pass:
 1. **Muse Spark 1.3** drives a real browser with computer use. It is **blind**: it never sees the code, diff or the producing agent's reasoning.
 2. **Code checks** — the final URL and network calls, no AI involved.
 3. **SAM 3.1** — is the element visible, and did the click actually reach it?
-4. **A Muse Wonder judge** — sees only the requirement and the screenshots in order — no actions, no code.
+4. **A Muse Spark Open judge** (open weights, on Baseten) — sees only the requirement and the screenshots in order — no actions, no code.
 
 Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit.
 
@@ -66,7 +66,7 @@ npm run attest -- verify evidence/run-<id>/receipt.json     # no key, no model c
 start evidence/run-<id>/index.html                          # the evidence page (macOS: open)
 ```
 
-**Live**, with a Meta Model API key: `cp .env.example .env`, set `MODEL_API_KEY`, and drop `--replay …`.
+**Live**, with a Meta Model API key: `cp .env.example .env`, set `MODEL_API_KEY` (and `BASETEN_API_KEY` for the open-weights judge; without it the judge uses Muse Wonder), and drop `--replay …`.
 **Let Muse Code write the fix**, then prove it: `npm run attest -- loop --app examples/checkout-widget --base demo2/base --break demo2/bad-fix --report "I click Pay and nothing happens."`
 **Start from a recorded bug report**: `npm run attest -- draft --video examples/checkout-widget/bug-report/bug.webm --audio examples/checkout-widget/bug-report/narration.wav --out my-draft.yml` drafts criteria from a screen recording and narration for you to review ([sample](examples/checkout-widget/bug-report/README.md)).
 
@@ -88,7 +88,7 @@ npm run attest -- comment evidence/run-<id>/receipt.json
 | **Muse Spark 1.3** | The blind verifier — Responses API `computer` tool driving the browser — and, with video input, drafts criteria from a bug recording |
 | **Muse Voice Transcribe** | Transcribes the user's spoken bug report for `attest draft` |
 | **SAM 3.1** | Locates on-screen elements; combined with click hit-testing to show what really received a click |
-| **Muse Wonder** | Independent judge from the screenshot sequence (no actions or code) |
+| **Muse Spark Open** (open weights, via Baseten) | Independent judge from the screenshot sequence (no actions or code); falls back to **Muse Wonder** without a Baseten key. [Provenance](docs/MODEL_STRATEGY.md#open-weights-provenance) |
 | **Muse Code** | Writes fixes headlessly in `attest loop`; Attest proves or rejects them |
 
 Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](docs/MODEL_STRATEGY.md).

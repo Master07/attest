@@ -1,68 +1,49 @@
 # Model Strategy
 
-> **Audience:** devs + judges · **Status:** draft · **Last updated:** 2026-11-01 · **Related:** [reference/muse-models](reference/muse-models.md)
+> **Audience:** devs + judges · **Status:** current · **Last updated:** 2026-11-01 · **Related:** [ARCHITECTURE](ARCHITECTURE.md) · [reference/muse-models](reference/muse-models.md)
 
-Attest's quality-per-dollar comes from routing each role to the cheapest Muse model that can do the job. See the [ADR](adr/0004-model-tier-routing.md).
+Every model Attest calls at runtime is a Meta model. Each one has a separate job, and the jobs are chosen so that no single model can pass a fix on its own: the verifier acts, and the other voters check what it saw.
 
-## Role → model
+## Who does what
 
-| Role in Attest | Model | Model ID | Why |
-|---|---|---|---|
-| Parallel workers, tight tool loops | Muse Spark 1.3 | `muse-spark-1.3` | Fast, cheap, strong agentic coding; the default |
-| Same, budget-sensitive runs | Spark 1.3 Contributor | `muse-spark-1.3-contributor` | ~12× cheaper input, ~21× cheaper output |
-| Merge / conflict resolution, architecture, hard bugs | Muse Wonder Full | *(picker only)* | Deepest reasoning; Power/Maximum plan only |
-| Optional mid-tier reasoning | Muse Wonder | `muse-wonder-1.0` | Frontier on every plan; preview |
-| App assets / evidence imagery | Muse Image | `muse-image-1.0` | Generation + editing |
-| UI element confirmation | SAM 3.1 | `sam-3.1` | Segment what's actually on screen |
-| Voice intake (stretch) | Muse Voice Transcribe | `muse-voice-transcribe-1.0` | Speech-to-text |
+| Job | Model | Provider | Where in code | Why this model |
+|---|---|---|---|---|
+| **Verifier** — drives the running app with computer use, blind to the code | Muse Spark 1.3 (`muse-spark-1.3`) | Meta Model API | `src/cua.ts` | The Responses API `computer` tool works on Spark 1.3; Muse Wonder returns `400 Unsupported tool type` |
+| **Element check** — is the target visible, and did the click reach it? | SAM 3.1 (`sam-3.1`) | Meta Model API | `src/sam.ts` | Segments what is actually on screen; combined with click hit-testing it shows covered buttons |
+| **Independent judge** — votes from the criteria and the screenshot sequence only | **Muse Spark Open** (`meta-models/muse-spark-open`), open weights | **Baseten** (own account) | `src/judge.ts` | A different model from the verifier, so one model's blind spot can't pass a fix; open weights keep this vote outside the closed API. Falls back to Muse Wonder (`muse-wonder-1.0`) when no Baseten key is set |
+| **Bug intake** — narration to text | Muse Voice Transcribe (`muse-voice-transcribe-1.0`) | Meta Model API | `src/intake.ts` | Speech-to-text for `attest draft` |
+| **Bug intake** — screen recording + transcript to draft criteria | Muse Spark 1.3 | Meta Model API | `src/intake.ts` | Accepts video input |
+| **Producer** — writes fixes in `attest loop` | Muse Code (Spark 1.3) | Muse Code CLI, headless | `src/producer.ts` | Attest proves or rejects whatever it writes |
 
-## Switching models
+## Open weights: provenance
 
-```text
-/model                       # open the picker
-/model muse-wonder-1.0       # since CLI 1.4.5
-```
+The judge runs on **Muse Spark Open**, Meta's open-weights model, served by Baseten from the maintainer's **own Baseten account** (not hackathon partner credits). Meta organizers confirmed in the hackathon Discord that Spark Open through your own Baseten account counts as an open-weights model.
 
-Muse Wonder Full has **no public model ID** — select it from the picker (Power/Maximum plans only).
+- Receipts name the judge model and provider (`judge: baseten/meta-models/muse-spark-open`), so every proof shows which model voted.
+- The committed cassettes (`examples/*/cassette.jsonl`) were recorded from live runs with Spark Open judging; replays use it automatically and need no key.
+- Spark Open is called through Baseten's OpenAI-compatible **Responses API** with screenshots as `input_image` — the same request the Wonder fallback uses, so no code differs between them.
+- The ID `meta-models/muse-spark-open-1026` from the hackathon FAQ is for the hackathon key; own accounts serve `meta-models/muse-spark-open` (check `GET https://inference.baseten.co/v1/models`).
 
-## Providers and routing in code
+## Routing in code
 
-Each role routes to a **provider** (`meta` = Meta Model API, `baseten` = Meta open-weights models on Baseten) and a model. Defaults live in `ROLE_ROUTE` in `src/models.ts`:
+Each role maps to a provider (`meta` = Meta Model API, `baseten` = Meta open-weights models on Baseten) and a model in `src/models.ts`:
 
-| Role | Default route | Note |
+| Role | Route | Note |
 |---|---|---|
-| `worker` | `meta:muse-spark-1.3` | `ATTEST_CONTRIBUTOR=1` switches to the Contributor tier |
-| `reasoning` | `meta:muse-wonder-1.0` | Wonder Full has no API ID, so the API route uses Wonder |
-| `image` | `meta:muse-image-1.0` | |
-| `ui` | `meta:sam-3.1` | Locates `expect.visible` elements; prefers short concepts ("button" works where "Pay button" returns nothing), so Attest falls back to the head noun |
-| `verifier` | `meta:muse-spark-1.3` | Drives the computer-use loop. Must be Spark: Wonder rejects the `computer` tool on the Model API |
-| `judge` | `meta:muse-wonder-1.0` | Independent vote from criteria + the screenshot sequence (up to 8 frames), no actions or code. With a Baseten key, `ATTEST_ROUTE_JUDGE=baseten:meta-models/muse-spark-open` moves it to open weights (Meta confirmed this ID via your own Baseten account counts) |
+| `verifier` | `meta:muse-spark-1.3` | Must be Spark (computer tool) |
+| `ui` | `meta:sam-3.1` | Prefers short concepts ("button" works where "Pay button" returns nothing), so Attest falls back to the head noun |
+| `judge` | `baseten:meta-models/muse-spark-open` when `BASETEN_API_KEY` is set or a cassette replays; otherwise `meta:muse-wonder-1.0` | |
+| `worker`, `reasoning`, `image` | Spark 1.3, Wonder, Muse Image | Defined for the roadmap; not called by the proof today |
 
-Override any role without code changes: `ATTEST_ROUTE_<ROLE>=provider:model`, e.g. `ATTEST_ROUTE_WORKER=baseten:meta-models/muse-spark-open-1026` to move the fan-out onto Baseten credits. Keys and endpoints come from env vars; see `.env.example`.
+Override any role without code changes: `ATTEST_ROUTE_<ROLE>=provider:model`. Keys and endpoints come from environment variables; see `.env.example`.
 
-From the hackathon Discord (organizer answers):
+## Cost controls
 
-- `meta-models/muse-spark-open-1026` is the official Baseten model ID, and the hackathon Baseten key **only** serves Muse Spark Open — Glimmer is not available there.
-- Computer use (Responses API, `tools: [{"type": "computer"}]`) works on `muse-spark-1.3` and returns `400 Unsupported tool type` on `muse-wonder-1.0`.
-- The Baseten base URL in `src/models.ts` (`https://inference.baseten.co/v1`) is unconfirmed; use the one in Baseten's instructions email via `BASETEN_BASE_URL`.
-
-## Contributor vs Standard
-
-- **Contributor mode** is on by default for subscribers: more usage in exchange for Meta training on your content. Toggle in `/settings`.
-- On the API, the split is by model ID (`-contributor` suffix = cheaper, data may be used for training).
-- For a public hackathon repo, Contributor mode is fine; for client/proprietary code, use Standard.
-
-## Rules of thumb
-
-1. Default everything to **Spark 1.3**. Escalate only when a task needs it.
-2. Never run the whole fan-out on **Wonder Full** — it is the cost cliff.
-3. Use `/effort` to dial reasoning down on straightforward tasks (thinking tokens bill as output).
-4. Keep `muse-spark-1.2` handy only if **audio** quality on 1.3 degrades.
-
-## Why this is a demo, not just config
-
-The tier switch is visible in the demo: six workers spin up on Spark in parallel, then a merge conflict escalates to Wonder Full live. It shows the *right* way to spend on agents — cheap by default, expensive where it matters.
+- A step cap on the verifier loop and `truncation: "auto"` keep long runs bounded.
+- The judge sees at most 8 sampled frames.
+- Replay mode (`--replay`) re-runs a recorded proof with no API calls — for development, demos and anyone without a key.
 
 ## See also
 
+- [ADR 0004](adr/0004-model-tier-routing.md) — the original tier-routing decision
 - [reference/muse-models](reference/muse-models.md) — full model matrix and benchmarks
