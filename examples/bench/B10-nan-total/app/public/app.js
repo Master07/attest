@@ -1,12 +1,10 @@
 const pay = document.querySelector("#pay");
 const status = document.querySelector("#status");
 
-const price = Number("$89.00");
+const price = Number("$89.00".replace("$", ""));
 pay.textContent = "Pay $" + price.toFixed(2);
 
 pay.addEventListener("click", async () => {
-  if (!Number.isFinite(price)) return;
-
   pay.disabled = true;
   status.textContent = "Processing…";
 
