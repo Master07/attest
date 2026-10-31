@@ -10,7 +10,13 @@
 
 ## The problem
 
-AI agents now write pull requests faster than anyone can review them, and a green test suite isn't proof: even from a detailed specification, frontier agents' tests catch **fewer than 55% of logical mutants** (TestSuiteBench, Oct 2026 — [summary by a co-author](https://x.com/nielstron/status/2109651666790445209)). Reviewers end up approving changes that pass CI and still don't work.
+AI agents now write pull requests faster than anyone can review them, and a green test suite isn't proof: even from a detailed specification, frontier agents' tests catch **fewer than 55% of logical mutants** (TestSuiteBench, Oct 2026 — [summary by a co-author](https://x.com/nielstron/status/2109651666790445209)). UI bugs are worse: a test without a browser can check the code, not what the user sees, so in CI a fix that works and a fix that doesn't look the same.
+
+The reviewer's real question — *does this actually fix the bug?* — still means pulling the branch, starting the app and clicking through it. That is the step that gets skipped.
+
+**Attest does that step and leaves evidence either way.** If the fix works, the reviewer gets a proof instead of a manual QA session; if it doesn't, they get the screenshot of where the click actually landed. Who wrote the fix doesn't matter — a coding agent, a person, or Muse Code in Attest's own loop.
+
+<sub>Honest note: in our runs Muse Code fixed every demo bug on the first try. The wrong fixes Attest rejects below are ones we wrote, so that the Break phase has something to catch.</sub>
 
 ## What Attest does
 
