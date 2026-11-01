@@ -40,6 +40,8 @@ Every run is reported here in order, whatever its verdict.
 
 **What this proves, and what it doesn't.** The bug Devin described is real in the running app, and Devin's merged one-line fix removes it — shown by two Meta models that never saw the code, agreeing. There is no Break: the PR's history has no wrong attempt, and we did not write one, so the verdict is `PROVEN_UNCHECKED` (the fix works; whether Attest would have rejected a wrong fix wasn't tested on this app).
 
+**Why Attest didn't generate a wrong fix for Break.** We tried deriving one mechanically — the PR's fix minus one changed hunk — and stopped, because here it can't be meaningful. Only `index.html` runs in the app, and it has two hunks: reverting the guard line gives a build that behaves exactly like the base (and fails the PR's own tests, which pin that guard), so Break would just repeat Red; reverting the version bump gives a build that behaves exactly like the fix, so Break would pass and wrongly suggest the verifier can't tell the difference. Either way a "PROVEN" would add nothing over `PROVEN_UNCHECKED`. The one generated wrong fix that would differ from both — guarding only Space, not Enter — is a code mutation, which is roadmap. So the verdict stays `PROVEN_UNCHECKED`.
+
 `proofs/realworld/board-921-run1/pr-comment.md` shows the comment Attest would post on the PR. It was **not** posted to the Board repo.
 
 Re-run it without a key from the recorded responses (after the two `git fetch` lines above): add `--replay examples/realworld/board-enter/cassette.jsonl` — a cassette, not a live run.
