@@ -1,9 +1,8 @@
 import { spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Receipt } from "./receipt.js";
-import { sha256File } from "./receipt.js";
+import { keyFingerprint, sha256File } from "./receipt.js";
 
 // W1: render a signed receipt as a GitHub pull-request comment, and the small gh/git helpers
 // the two CLI commands need. The renderer is pure: no I/O, no clock, no randomness.
@@ -70,10 +69,6 @@ function inert(text: string): string {
   return text.replace(/@(?=\w)/g, "@​").replace(/#(?=\d)/g, "#​");
 }
 
-/** The Ed25519 SPKI key's first characters are a fixed DER header, so show a hash of the whole key instead. */
-function keyFingerprint(publicKey: string): string {
-  return `sha256:${createHash("sha256").update(publicKey).digest("hex").slice(0, 16)}`;
-}
 
 function truncate(text: string, max: number): string {
   return text.length > max ? `${text.slice(0, max)}…` : text;

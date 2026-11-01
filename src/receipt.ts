@@ -65,6 +65,11 @@ export interface Receipt extends ReceiptBody {
 export const sha256File = (path: string): string =>
   `sha256:${createHash("sha256").update(readFileSync(path)).digest("hex")}`;
 
+/** Short identifier for a signing key. The SPKI key's first characters are a fixed Ed25519 DER header,
+ *  so a prefix would be the same for every key; a hash of the whole key is not. */
+export const keyFingerprint = (publicKey: string): string =>
+  `sha256:${createHash("sha256").update(publicKey).digest("hex").slice(0, 16)}`;
+
 /** Loads the local Ed25519 signing key, creating it on first use. Never commit it. */
 export function loadSigningKey(path = process.env.ATTEST_KEY_PATH ?? join(homedir(), ".attest", "signing-key.pem")) {
   if (!existsSync(path)) {
