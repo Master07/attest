@@ -1,0 +1,197 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T23:37:53.304Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/eu54/base",
+        "sha": "80a03c0ac0864533391d9afd301f5f2ecee08727"
+      },
+      "green": {
+        "ref": "rw/eu54/fix",
+        "sha": "227ccfd7264b95445798f22a9b78fa71263273dc"
+      },
+      "break": {
+        "ref": "rw/eu54/bad-fix",
+        "sha": "8316410058c3d9dcc5174f10f22bd3e01edd422a"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "0b5aff911bdc97fd1f4356abce900972a32443535aef0230914755162bf90380"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/eu54/base",
+      "sha": "80a03c0ac0864533391d9afd301f5f2ecee08727",
+      "status": "completed",
+      "error": null,
+      "steps": 13,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b4f5707fdbc702aa4265ecfb37d5cd3c287343cc181028156df0a9bca883548d",
+      "criteria": [
+        {
+          "id": "day-strip-keeps-position",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking day 30 the day strip reset to show days 01-16 with day 30 no longer visible.",
+          "evidence": [
+            "shots/red-10.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — The given state with day 30 visible is shown in Frame 9, but the first effect after the click (Frame 11) shows the strip reset to 01-16 with day 30 not visible; it only becomes visible again after further scrolling in Frames 12-14."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/eu54/fix",
+      "sha": "227ccfd7264b95445798f22a9b78fa71263273dc",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "2665fdcd2bd07583a84c2da8b701371432f6756c38a8dc3332e67a63dee3a0b9",
+      "criteria": [
+        {
+          "id": "day-strip-keeps-position",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After scrolling the day strip to show day 30 and clicking it, day 30 remained visible and selected at the right end of the row.",
+          "evidence": [
+            "shots/green-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 10 shows the strip scrolled to make day 30 visible at the right edge, and the first frame showing the click effect (Frame 11) still shows the strip at 15-30 with day 30 visible and selected, satisfying the stay-in-place requirement."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/eu54/bad-fix",
+      "sha": "8316410058c3d9dcc5174f10f22bd3e01edd422a",
+      "status": "completed",
+      "error": null,
+      "steps": 12,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "314ce2898fc2cf9f6260afd134701127af1a8eef09f3cb3ebb0af28b28e7b9c9",
+      "criteria": [
+        {
+          "id": "day-strip-keeps-position",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking day 30 the day strip reset to show days 01-16 so day 30 was no longer visible, and a repeat click confirmed the same reset.",
+          "evidence": [
+            "shots/break-12.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 7 shows day 30 visible at end of scrolled strip, but the very next Frame 8 after the click shows the strip reset to days 01-16 with day 30 no longer visible, failing to keep scroll position on first attempt."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:0b5aff911bdc97fd1f4356abce900972a32443535aef0230914755162bf90380",
+    "shots/break-00.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/break-01.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/break-02.png": "sha256:3036900a131e38bb256809614acec6edd104ac2ceb242686588195eb381518b5",
+    "shots/break-03.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/break-04.png": "sha256:7cac5f53cc80240fddea748321d21aaf5f34c0cce09de9331da9699f644aad2a",
+    "shots/break-05.png": "sha256:9ee71d2fe368ba9a00171bef09739fc3c7a10310a99bbc2ad340012a2464f3ad",
+    "shots/break-06.png": "sha256:151da64b0856f301d522b7f3faba2cd4b535e997d1511c564d296d0115493033",
+    "shots/break-07.png": "sha256:d1317ec8c5714e688dbe54ebb1382c4228b6e1cc70c35da042359b385d5acbfc",
+    "shots/break-08.png": "sha256:2f97d145e05b65d099b61751e58f3403899ccac721fc3ecf1f2268c3d4a43e3a",
+    "shots/break-09.png": "sha256:4a4f8eae6e5ca888775581c952b24d26a1fd632236f53cd6c255254b97563083",
+    "shots/break-10.png": "sha256:9d122799691f61fa69656b3caf5a63b171471a506b4e7a4563a88b050d4aaaea",
+    "shots/break-11.png": "sha256:d1317ec8c5714e688dbe54ebb1382c4228b6e1cc70c35da042359b385d5acbfc",
+    "shots/break-12.png": "sha256:d1317ec8c5714e688dbe54ebb1382c4228b6e1cc70c35da042359b385d5acbfc",
+    "shots/green-00.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/green-01.png": "sha256:3036900a131e38bb256809614acec6edd104ac2ceb242686588195eb381518b5",
+    "shots/green-02.png": "sha256:d665b4f40781199a52640e0f80935d9e1d5d273ad4893242078bfe5319431a37",
+    "shots/green-03.png": "sha256:f47d63e5eb72ebf8946010335089cbba8d59fee7fbdc0b719351343245c3e11c",
+    "shots/green-04.png": "sha256:cfd2d1cf551db7e761de8f27d1710a45e2744f6436c0a050373c1e7b5078727f",
+    "shots/green-05.png": "sha256:0b96be3d2051b1f5a3fb18025486e644c540752d49ecb1dcbf00c3798235d2a1",
+    "shots/green-06.png": "sha256:0b96be3d2051b1f5a3fb18025486e644c540752d49ecb1dcbf00c3798235d2a1",
+    "shots/green-07.png": "sha256:0b96be3d2051b1f5a3fb18025486e644c540752d49ecb1dcbf00c3798235d2a1",
+    "shots/green-08.png": "sha256:dc08b22fa25f75a15b2f3bab83b3d3bdb9c46eff4e2f69763140b5842887b25f",
+    "shots/green-09.png": "sha256:bf4fe7bf3d7ecf381b35fa998d7a509bb3eb7f60932085f27578ee1cc1d1b1e3",
+    "shots/green-10.png": "sha256:9d122799691f61fa69656b3caf5a63b171471a506b4e7a4563a88b050d4aaaea",
+    "shots/green-11.png": "sha256:9d122799691f61fa69656b3caf5a63b171471a506b4e7a4563a88b050d4aaaea",
+    "shots/red-00.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-01.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-02.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-03.png": "sha256:3878570f4a62a0d65f57cf1754e0269e56ec797f4e36e26b44c172eb6e800401",
+    "shots/red-04.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-05.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-06.png": "sha256:7cac5f53cc80240fddea748321d21aaf5f34c0cce09de9331da9699f644aad2a",
+    "shots/red-07.png": "sha256:9ee71d2fe368ba9a00171bef09739fc3c7a10310a99bbc2ad340012a2464f3ad",
+    "shots/red-08.png": "sha256:151da64b0856f301d522b7f3faba2cd4b535e997d1511c564d296d0115493033",
+    "shots/red-09.png": "sha256:ec7fd7c881e14bda41c7ff4ced4776d2b38510cbc6ebec688ea0fdf3d7422d1c",
+    "shots/red-10.png": "sha256:de570a0021d8e96255990c097f402312d412603a36d84ac13cd7640e38b123d8",
+    "shots/red-11.png": "sha256:900f493da8f58dfd3a832a5ea127845fec1b122c02fba78f05c9852c99b3d0bc",
+    "shots/red-12.png": "sha256:d67f4aa1cef2d337ed37a17e5b1a2adcf669b859857464d5e18379e38d079786",
+    "shots/red-13.png": "sha256:aacb912a62814007290431d662c291fe9839653ef4ab4d4933780db5578b1a8e",
+    "videos/break.webm": "sha256:e33f7d3864a4c5267e7dde095f53c05b20dfa36b7df07dfd299f6e3930f14ad5",
+    "videos/green.webm": "sha256:954d398baba63698eeb2bccc7b736d9e4f33942fd9e9d8ec6e124c872b99df0a",
+    "videos/red.webm": "sha256:ea71778fd3b70fc4a76f7a4b8381e0bf81ffc5baf503b61640288c6513001ebc"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:422ebd2859313c847ba88f61f5660d6837282f9bb1bfea9ef7787d9670e91152",
+    "entries": 105
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "1fvDxNtgi5TP3k8wtBv1fXDLPAAf3H1igPl/Fa1bXj0c+rqVoT+al1FdqAaCp+I4V061b9dQ63hwQ0QUO2mzAg=="
+  }
+}

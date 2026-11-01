@@ -1,0 +1,10 @@
+id: cheshy-type-display-name
+# Frozen before any Attest run (Nov 1), written from the pull request's own description of the bug:
+# kq4cin/cheshy-mess#4 (by GitHub Copilot) — "Fix display name editing and dialog focus": focus the close
+# button only when the dialog opens, rather than after every keystroke.
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: display-name-keeps-typing
+    given: The Cheshy Mess app is open and the user has opened Settings with the gear button in the top bar
+    when: The user clicks at the end of the text in the DISPLAY NAME field and types Bob
+    then: The DISPLAY NAME field now ends with Bob, and the field still has keyboard focus

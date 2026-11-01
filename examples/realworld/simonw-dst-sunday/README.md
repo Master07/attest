@@ -26,6 +26,16 @@ The bug: [issue #247](https://github.com/simonw/tools/issues/247), the page "gen
 
 Each run is reported here whatever its verdict; a re-run would be numbered and reported too.
 
+| # | Criteria | Change before the run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|---|---|
+| 1 | `criteria.yml` (frozen in `532408f`, with the wrong fix) | none | fail | pass | fail | **PROVEN** | [proofs/realworld/simonw-tools-251-run1](../../../proofs/realworld/simonw-tools-251-run1/) |
+
+**Run 1, live, first attempt: PROVEN** (run on 2026-11-01, inside the window this criterion is valid for). Red (the PR's parent): *"most recent change as Sunday, March 15, 2026 and next change as Sunday, November 8, 2026."* Green (the fix): *"most recent change as Sunday, November 1, 2026 and next change clocks springing forward on Sunday, March 14, 2027."* Break (ours: only the March formula fixed): *"most recent as Sunday March 8 2026 and next as Saturday November 7 / Sunday November 8 2026."* The March date is now right and November is still wrong, exactly the half-fix. The judge agreed in every phase.
+
+The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element) and abstained, so each phase rests on the verifier (Muse Spark 1.3, computer use) and the independent judge (Muse Spark Open on Baseten, screenshots only) agreeing.
+
+**What this shows, and what it doesn't.** The fix shows the right dates in the running page, and Attest rejects a fix that corrects one of the two formulas. The result depends on the date it runs on; re-running after March 2027 needs a new criterion. The wrong fix is ours, labelled, and committed before the run.
+
 ## Reproduce
 
 ```bash

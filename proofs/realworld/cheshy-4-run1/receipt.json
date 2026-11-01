@@ -1,0 +1,175 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T23:26:31.542Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/ch4/base",
+        "sha": "cdf7b19f24d83f4dbda8323f34754056280b8aad"
+      },
+      "green": {
+        "ref": "rw/ch4/fix",
+        "sha": "074c3aeaa2d7599eeea0a17fef8055f338354c1e"
+      },
+      "break": {
+        "ref": "rw/ch4/bad-fix",
+        "sha": "200398f416b4c38f11dfa8dbc3cc49c5e4d8ac6f"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "0ce08037ea621506c3c2534b1b98da1ad74efe8877d637567707b7546922cb4b"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/ch4/base",
+      "sha": "cdf7b19f24d83f4dbda8323f34754056280b8aad",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5d72742bde6a4845e1cf49c2115d06e970b8e5783a1b0b37678ca5a08a832501",
+      "criteria": [
+        {
+          "id": "display-name-keeps-typing",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking at end and typing Bob the field showed only Guest 4004B and further typing ob had no effect with focus outline on the close button.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — DISPLAY NAME ends with single 'B' as 'Guest 4004B' not 'Bob' and keyboard focus is on the X close button with blue outline, not the input field with no caret visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/ch4/fix",
+      "sha": "074c3aeaa2d7599eeea0a17fef8055f338354c1e",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "3de10980bf3262c45310c1b41c02f85f4976cd6c899c331e23831a28aa04639b",
+      "criteria": [
+        {
+          "id": "display-name-keeps-typing",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "DISPLAY NAME field shows Guest 5918Bob ending with Bob with blue focus ring indicating keyboard focus",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 4 shows the DISPLAY NAME field contains 'Guest 5918Bob' ending with Bob and retains the blue focus border seen in Frame 3."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/ch4/bad-fix",
+      "sha": "200398f416b4c38f11dfa8dbc3cc49c5e4d8ac6f",
+      "status": "completed",
+      "error": null,
+      "steps": 7,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "cf91a206575231676eb91920a56b8c5a4f2e893522d4027ea9d2b141f658528b",
+      "criteria": [
+        {
+          "id": "display-name-keeps-typing",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "DISPLAY NAME shows Guest 1230Bob but the blue focus ring is on the X close button, not the input field, so focus was lost after typing.",
+          "evidence": [
+            "shots/break-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Final frame shows DISPLAY NAME ends with Bob but keyboard focus is on the close X button (blue outline) not the input, and intermediate frames 3,5,6 show focus leaving the field after each typed character."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:0ce08037ea621506c3c2534b1b98da1ad74efe8877d637567707b7546922cb4b",
+    "shots/break-00.png": "sha256:9b630b9b45a412b15115a6ec37ebcc095dce291b981b5a269678a74c291b1a65",
+    "shots/break-01.png": "sha256:aec808adb4a6331c3bfe87e9445c76bd6e5fb421ef499c06d34b9c62dfbdbcf2",
+    "shots/break-02.png": "sha256:bf7fb25225eafea47c230ba5518fd8ae793839d648a618bd3a2b6400232216c0",
+    "shots/break-03.png": "sha256:65a1d2ed7b8ba8c3efd65289cbfcf74d01467b28fe84bbbba22e62b684db3e67",
+    "shots/break-04.png": "sha256:38e340959c9e06afaf98be76d8ac48ebfbef0a19dab9ad38cb867f50eda4535d",
+    "shots/break-05.png": "sha256:38e340959c9e06afaf98be76d8ac48ebfbef0a19dab9ad38cb867f50eda4535d",
+    "shots/break-06.png": "sha256:3e6190dc430a7809a3155e999ec896af6e9ae9483c64648cd387c259d2af91a1",
+    "shots/break-07.png": "sha256:fd43ae84c0dac66a46cceffba128cb2af1164af1b9cb6494496b090126151dcb",
+    "shots/green-00.png": "sha256:9b630b9b45a412b15115a6ec37ebcc095dce291b981b5a269678a74c291b1a65",
+    "shots/green-01.png": "sha256:4f9b2eb7a0f91b1fdba3d450114463e845ae246234625161f38dbbcb356dfd16",
+    "shots/green-02.png": "sha256:7761f766ee591cc8b72db561bc00e2327684206250f6e21aadcb1a0482259934",
+    "shots/green-03.png": "sha256:40831e910537871355ee2b4a9abfb10f6e5a25b67227f18827a0a4b3c54dd7b6",
+    "shots/red-00.png": "sha256:9b630b9b45a412b15115a6ec37ebcc095dce291b981b5a269678a74c291b1a65",
+    "shots/red-01.png": "sha256:892ae9e2a8e4788302dd9645b817e6c996f5b305f3fe1175db8fcc21a9f1df76",
+    "shots/red-02.png": "sha256:2bcbfa0c805cf82e5885da89d1b48cd2aaf510cc45cecf2365cd482ea062163b",
+    "shots/red-03.png": "sha256:2bcbfa0c805cf82e5885da89d1b48cd2aaf510cc45cecf2365cd482ea062163b",
+    "shots/red-04.png": "sha256:2bcbfa0c805cf82e5885da89d1b48cd2aaf510cc45cecf2365cd482ea062163b",
+    "videos/break.webm": "sha256:ebb44f00450e273a26e8a6938971ad8862ddf51d4248690e3a2e72ba04a1ae80",
+    "videos/green.webm": "sha256:005b927643df26e955d1467c1fbc337c79001bf26f28550ec3956cc750478959",
+    "videos/red.webm": "sha256:af848a5d4901d17a0ec342271d84da5942d07aa19781afad2d771f2a97873c62"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:fb82f1e95ecf179cbb858b0fab24a851baa6a0b579a6c5989aedbdc975e5088c",
+    "entries": 61
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "+GkCeDGX2xhQ7sm3kw3CUzMPQAKnjUCbZd4rKmL7qvxZT4IZWcWveivGr+IZVTEqeYssXe536kZxT7tR1JTQBA=="
+  }
+}

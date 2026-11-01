@@ -1,0 +1,10 @@
+id: eu-reporter-day-strip-keeps-position
+# Frozen before any Attest run (Nov 1), written from the bug report / pull request's own words:
+# g-koziol/eu-reporter#54 (by GitHub Copilot), for issue #53 "Day navigation section resets after each selection":
+# "Selecting a day reset the navigation strip to its starting position."
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: day-strip-keeps-position
+    given: "The EU reporter page is open at the month calendar, and the user has scrolled the row of day buttons near the top of the page sideways until the last day of the month, 30, is visible in that row"
+    when: "The user clicks day 30 in that row"
+    then: "The row stays where it was scrolled: day 30 is still visible in the row"

@@ -1,0 +1,174 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T23:42:17.757Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/jsp311/base",
+        "sha": "00715fb5e506af5a18920a3aa329dc866e50145a"
+      },
+      "green": {
+        "ref": "rw/jsp311/fix",
+        "sha": "98bc20554d97b82f2eae8ee2ad0cea3a7783503f"
+      },
+      "break": {
+        "ref": "rw/jsp311/bad-fix",
+        "sha": "e10dc306b7c17b9036c0e7c0db936595bf6f6531"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "0f916b466d803f088da6eb417815e12bfc7b28e9190fe07b0b132ef95462a602"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/jsp311/base",
+      "sha": "00715fb5e506af5a18920a3aa329dc866e50145a",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ae7b2063328fbe3729cca9ea3d5ec35e1eeb33dd3f8e0b0d509aad873f244dc0",
+      "criteria": [
+        {
+          "id": "click-the-radio-circle",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked the small radio circle for Flip vertical twice and Flip horizontal remained selected with no change.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Flip and Rotate dialog stays on 'Flip horizontal' in frames 3-5 with no frame showing the dot moved to 'Flip vertical'."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/jsp311/fix",
+      "sha": "98bc20554d97b82f2eae8ee2ad0cea3a7783503f",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "efaece560a92665d0a61ea58dad827954be6c546e247c3ab0f53f5e84e878d8e",
+      "criteria": [
+        {
+          "id": "click-the-radio-circle",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicked the small radio circle for Flip vertical and the dot moved from Flip horizontal to Flip vertical.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows Flip horizontal selected and Frame 4 immediately shows the selection dot moved to Flip vertical, confirming the click on the radio circle succeeded."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/jsp311/bad-fix",
+      "sha": "e10dc306b7c17b9036c0e7c0db936595bf6f6531",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "01c26e85c2e48052a2fa1837cebb2caa9a20a9e0902f6394ff4972342522a7ca",
+      "criteria": [
+        {
+          "id": "click-the-radio-circle",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking the small radio circle for Flip vertical twice, Flip horizontal remained selected and the dot did not move.",
+          "evidence": [
+            "shots/break-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Dialog opens in frame 3 with Flip horizontal selected and remains unchanged in frames 4-5, only showing Flip vertical selected in frame 6, so a single click on the small radio circle itself did not immediately move the dot as required."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:0f916b466d803f088da6eb417815e12bfc7b28e9190fe07b0b132ef95462a602",
+    "shots/break-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/break-01.png": "sha256:5465576fc063bdc4b22b65a25ad26aaf1ccd88768fd799eb0313cf25aa9e0037",
+    "shots/break-02.png": "sha256:f3c1b40b482fdd70ce0f2699be0d5f4085e19390279034deb41af5b340893e50",
+    "shots/break-03.png": "sha256:f3c1b40b482fdd70ce0f2699be0d5f4085e19390279034deb41af5b340893e50",
+    "shots/break-04.png": "sha256:f3c1b40b482fdd70ce0f2699be0d5f4085e19390279034deb41af5b340893e50",
+    "shots/break-05.png": "sha256:5de0599187bab56df1b6b8e4eaa619390ce5a9699a8c8b6c45003032067230f6",
+    "shots/green-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/green-01.png": "sha256:5465576fc063bdc4b22b65a25ad26aaf1ccd88768fd799eb0313cf25aa9e0037",
+    "shots/green-02.png": "sha256:f3c1b40b482fdd70ce0f2699be0d5f4085e19390279034deb41af5b340893e50",
+    "shots/green-03.png": "sha256:5de0599187bab56df1b6b8e4eaa619390ce5a9699a8c8b6c45003032067230f6",
+    "shots/green-04.png": "sha256:5de0599187bab56df1b6b8e4eaa619390ce5a9699a8c8b6c45003032067230f6",
+    "shots/red-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/red-01.png": "sha256:5465576fc063bdc4b22b65a25ad26aaf1ccd88768fd799eb0313cf25aa9e0037",
+    "shots/red-02.png": "sha256:f3c1b40b482fdd70ce0f2699be0d5f4085e19390279034deb41af5b340893e50",
+    "shots/red-03.png": "sha256:f3c1b40b482fdd70ce0f2699be0d5f4085e19390279034deb41af5b340893e50",
+    "shots/red-04.png": "sha256:f3c1b40b482fdd70ce0f2699be0d5f4085e19390279034deb41af5b340893e50",
+    "videos/break.webm": "sha256:7bfd6d9031cd3ec6f4358dbbabd275937ff5e7a81922e000769b9c64b889b05f",
+    "videos/green.webm": "sha256:82308a7306dbaa0f8ab62fed34d42561d725c95245e4e03c86aa55e8f3b861ff",
+    "videos/red.webm": "sha256:94c92854145ed3c03c43d5f10067a412ab52fb87f9c99518f6200f7907e372be"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:c7846bde02f00af1536af4c71d8fd4a0e8598863e6f4ac4bb731e9357f623439",
+    "entries": 59
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "/QDcN3XsyA9P8OX81+MXJ7JFzBM5LYYMtkTmYNpnjqENt+CfNWwONqnA+ehBWZzDQfcwIjE3Yi/7KrufFUK1Cg=="
+  }
+}

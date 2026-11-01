@@ -1,0 +1,171 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T23:45:40.832Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/cara2677/base",
+        "sha": "a58b83fca14d9e72d71573e0295d2143d646c3b3"
+      },
+      "green": {
+        "ref": "rw/cara2677/fix",
+        "sha": "8bc1c37ab9d8f7c757c64ce4e4630414ffddf5aa"
+      },
+      "break": {
+        "ref": "rw/cara2677/bad-fix",
+        "sha": "c26a133df69733707c75432f70535e44d26e5207"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "a04bea36634e76c1cd365be2e8feb9765c041e2983b8e61d95b33223e27984fa"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/cara2677/base",
+      "sha": "a58b83fca14d9e72d71573e0295d2143d646c3b3",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b82d84717ad0ac95de2c133d7b513c73c016d5647dfee00e0cf05b266712b104",
+      "criteria": [
+        {
+          "id": "theme-button-switches-to-dark",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked the round theme button once and the page background remained white/light instead of turning dark.",
+          "evidence": [
+            "shots/red-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — The header and page background remain white/light in all frames after the theme button is clicked and never turn dark, so dark mode is not shown."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/cara2677/fix",
+      "sha": "8bc1c37ab9d8f7c757c64ce4e4630414ffddf5aa",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c31f67c03a4558623347fd1b8e0db036caff5076be328f2151af2797fe2203bd",
+      "criteria": [
+        {
+          "id": "theme-button-switches-to-dark",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking the round theme button at top right, the page header and background turned dark with light text.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows light mode with white background and moon icon, Frame 2 shows dark header/search background and theme button changed to sun icon, confirming dark mode was activated."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/cara2677/bad-fix",
+      "sha": "c26a133df69733707c75432f70535e44d26e5207",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "49383b7ece90aa70a993fa14d6abf54a7fc5968a30f66e21d2302ec8de341f43",
+      "criteria": [
+        {
+          "id": "theme-button-switches-to-dark",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking the round theme button the header and page background remained white/light in both first and second clicks, only the button fill changed to teal.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows a dark page background; the header and search area remain white/light in all frames after the theme button is clicked, so dark mode was not achieved."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:a04bea36634e76c1cd365be2e8feb9765c041e2983b8e61d95b33223e27984fa",
+    "shots/break-00.png": "sha256:2a60042c656470f158fab6d8c6e2673c5d0b8dc1b8c1702b72c5f6be2eb7c90d",
+    "shots/break-01.png": "sha256:1947f85760351149fc31ed83ae8e384f840c75f95f078b823a8657d63fef0f2b",
+    "shots/break-02.png": "sha256:77c683b901ce882f1542cf82ab9151c93e94060409ea65deb579bded83533495",
+    "shots/break-03.png": "sha256:7a136a7207aeee1d5966158e65980cd9558357c9503c39ce0c04b32279844065",
+    "shots/break-04.png": "sha256:d7bbfd7cac03c0bf72406ce79dcaf4564cce76652cbe9f590f2d8cc8641a805a",
+    "shots/break-05.png": "sha256:d7bbfd7cac03c0bf72406ce79dcaf4564cce76652cbe9f590f2d8cc8641a805a",
+    "shots/green-00.png": "sha256:2a60042c656470f158fab6d8c6e2673c5d0b8dc1b8c1702b72c5f6be2eb7c90d",
+    "shots/green-01.png": "sha256:4e6302c4c668b2b3d2165d441d9163d9f75166ceaa925b974f425165ee07a924",
+    "shots/red-00.png": "sha256:2a60042c656470f158fab6d8c6e2673c5d0b8dc1b8c1702b72c5f6be2eb7c90d",
+    "shots/red-01.png": "sha256:b255ceac295949d7c666001d1fd5e97d761dd46bbc5acc2fdb341746f939f12a",
+    "shots/red-02.png": "sha256:7f7b9a0f00d1f176ad45a0584969d2011b1cd35bced55c139a73a8ab62a9d833",
+    "shots/red-03.png": "sha256:71be0b2648079da02a50078991dd12de36b141c6410ec86ddf0e17b4d187e309",
+    "shots/red-04.png": "sha256:71be0b2648079da02a50078991dd12de36b141c6410ec86ddf0e17b4d187e309",
+    "videos/break.webm": "sha256:dec3a66e5b2aedc71da785c3dbdd767b5af295a4e6a7d69720cc425f94cff368",
+    "videos/green.webm": "sha256:582465865a37561455aa8e07e776fa6611a64dda8d0a7b15a2835840cfc8a0fc",
+    "videos/red.webm": "sha256:5dc81674cdb188eccb1e572fd7abb8bb69454ce3c2d9f21a226c1e00167c7ce6"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:9c2a405004f0acaced02084063ba4a05556cc53fd56f0ceeb5609f7ebcab1604",
+    "entries": 53
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "IxGMhl3q6/A346ES6TjXDf/hpwTqKfUIs3RMG/4rwXaBFppl+XOws+gCHgGCsamc5zw2XF3uxdGM0OzvFYdGBQ=="
+  }
+}

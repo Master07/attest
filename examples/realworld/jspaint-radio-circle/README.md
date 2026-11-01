@@ -26,6 +26,18 @@ Clicking the **words** works on base too, which is why the criterion names the c
 
 Each run is reported here whatever its verdict; a re-run would be numbered and reported too.
 
+| # | Criteria | Change before the run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|---|---|
+| 1 | `criteria.yml` (frozen in `532408f`, with the wrong fix) | none | fail | pass | fail | **PROVEN** | [proofs/realworld/jspaint-311-run1](../../../proofs/realworld/jspaint-311-run1/) |
+
+**Run 1, live, first attempt: PROVEN.** Red (the PR's parent): *"Clicked the small radio circle for Flip vertical twice and Flip horizontal remained selected."* Green (the maintainer's fix): *"Clicked the small radio circle for Flip vertical and the dot moved."* Break (ours: the rule only on the checked radio): *"After clicking the small radio circle for Flip vertical twice, Flip horizontal remained selected."* The judge agreed in every phase.
+
+The click log shows why. The verifier clicked the same spot, about (504, 341), in every phase. On the parent and on our wrong fix the click landed on the `div.radio-wrapper` behind the circle; on the fix it landed on the `label` that draws the circle. In Break the verifier then clicked the label's text at (556, 341), which does select the option; the judge saw that in frame 6 and still failed the phase, because the criterion is about clicking the circle itself.
+
+The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element) and abstained, so each phase rests on the verifier (Muse Spark 1.3, computer use) and the independent judge (Muse Spark Open on Baseten, screenshots only) agreeing.
+
+**What this shows, and what it doesn't.** The maintainer's fix makes the circle clickable, and Attest rejects a fix that only works for the circle that's already selected. This fix was written by a person; it is reported with the AI-agent proofs but labelled separately. The wrong fix is ours, labelled, and committed before the run.
+
 ## Reproduce
 
 ```bash

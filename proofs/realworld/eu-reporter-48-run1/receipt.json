@@ -1,0 +1,200 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T23:18:20.546Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/eu48/base",
+        "sha": "eab1c90de8cccb4a911ccd3d3c0f668d7b9649e4"
+      },
+      "green": {
+        "ref": "rw/eu48/fix",
+        "sha": "ddb2596f5f8fd24c1a596151b6a29342df9adad1"
+      },
+      "break": {
+        "ref": "rw/eu48/bad-fix",
+        "sha": "27f8cb7c6f98c704373af7353d1e21af0208b5b2"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "2f07bc1f7c7311627701485bc8a2c964fb089c4a011716d04364addf5c41348b"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/eu48/base",
+      "sha": "eab1c90de8cccb4a911ccd3d3c0f668d7b9649e4",
+      "status": "completed",
+      "error": null,
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "80db2bad6138e6dc08857a9d9b926cf92f6f12c7cd61aa56c95d9a4e8f5fca18",
+      "criteria": [
+        {
+          "id": "typing-keeps-text-and-focus",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking the Obszar dzialania textarea for the first day and typing abcd, it shows only a with a thin unfocused border instead of abcd with focus",
+          "evidence": [
+            "shots/red-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows 'abcd' in the Obszar dzialania textarea – at most a single 'a' appears (Frames 19-21) then reverts to placeholder (Frame 23) and ends as 'a' only (Frame 26), never 'abcd' with focus."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/eu48/fix",
+      "sha": "ddb2596f5f8fd24c1a596151b6a29342df9adad1",
+      "status": "completed",
+      "error": null,
+      "steps": 7,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5e90f0f9c1cb63a679bd8b24002f7d77c455a803fff1aa48c217f59b3ac5e250",
+      "criteria": [
+        {
+          "id": "typing-keeps-text-and-focus",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "The Obszar dzialania text area shows abcd with a focused black border",
+          "evidence": [
+            "shots/green-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 6 shows the 'Obszar działania' textarea focused (thick border) with placeholder, and Frame 7 shows it containing 'abcd' while retaining the same focus border, which persists in Frame 8."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/eu48/bad-fix",
+      "sha": "27f8cb7c6f98c704373af7353d1e21af0208b5b2",
+      "status": "completed",
+      "error": null,
+      "steps": 7,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f109f874bc1be110e5c0c8fdcbb603205d26f2521553680e013cbda5a6050b60",
+      "criteria": [
+        {
+          "id": "typing-keeps-text-and-focus",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking the Obszar działania field and typing abcd, it showed only 'a' and lost the focus outline.",
+          "evidence": [
+            "shots/break-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Final frames show only \"a\" in the Obszar działania textarea, not \"abcd\", and the field no longer displays the thick focus border/caret seen in frame 6, indicating focus was not retained."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:2f07bc1f7c7311627701485bc8a2c964fb089c4a011716d04364addf5c41348b",
+    "shots/break-00.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/break-01.png": "sha256:2d6a7a9a4e4f127cf9b8837217a0bfcc32ed1e3dbf23ed9e1af6010687941615",
+    "shots/break-02.png": "sha256:5bdf09fa120bb2304a5ab00b5281798b5e6a215fc94a9c92a722e34cc93b0ea4",
+    "shots/break-03.png": "sha256:92f66107924fa71a893ad4fc2330dd5ca9a1f478d72ef78ced41dfbcfc3fbe1f",
+    "shots/break-04.png": "sha256:60d3eed03a7b37e9a00d75f3656935e6864f9eff5d01c58b89211b5f419dc79c",
+    "shots/break-05.png": "sha256:10923d0b8168fc375aa72879fb1489a1f1d8159cb89c9009182d2c929b4e4bf2",
+    "shots/break-06.png": "sha256:d67a97a58d88919d24014e21b26aee959ddf68a95ff1f283a9d1b0dcc4f7ea3c",
+    "shots/break-07.png": "sha256:d67a97a58d88919d24014e21b26aee959ddf68a95ff1f283a9d1b0dcc4f7ea3c",
+    "shots/green-00.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/green-01.png": "sha256:1932c7f27d58396a393c033a8ea04164ca8c988503f3966e36ab8a1f6d497d8b",
+    "shots/green-02.png": "sha256:8c71b307e15da5e39b10f92de6cdc61f05fe95dd9354aea8198454937a350708",
+    "shots/green-03.png": "sha256:fa6d68115f50300908b50f565d0baa75438cdd81df3856fcd6a8b9e308d64f84",
+    "shots/green-04.png": "sha256:9649dfac1921888af79e89a3610989f9b68713dde649731d47b0efb91df605ed",
+    "shots/green-05.png": "sha256:6e3cec01864ed8eddf37d47906fda5f5adce47d98375ee910c125bb7728a13cb",
+    "shots/green-06.png": "sha256:6901ff39fbb9be87d30d7054c647566d1fbbcbaecb9d7828f5a89614e089df2b",
+    "shots/green-07.png": "sha256:aeba9230577214491c25151c09ec423905aa0fe1d786edb70b8eff0ac6f3793a",
+    "shots/red-00.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-01.png": "sha256:2d6a7a9a4e4f127cf9b8837217a0bfcc32ed1e3dbf23ed9e1af6010687941615",
+    "shots/red-02.png": "sha256:283ff9f110dfa5c23858ee7b281a6b06008ea1c45fcab11de721b877640fd2db",
+    "shots/red-03.png": "sha256:2e598ebe446b002704c2eb45ce35e9bee42f2041d5cfc55ab2fef1a02abd9949",
+    "shots/red-04.png": "sha256:b4e2d75fdc506f7fbdd047e7da7dee88ccdf18d30235abd80710f00541946081",
+    "shots/red-05.png": "sha256:b4e2d75fdc506f7fbdd047e7da7dee88ccdf18d30235abd80710f00541946081",
+    "shots/red-06.png": "sha256:b4e2d75fdc506f7fbdd047e7da7dee88ccdf18d30235abd80710f00541946081",
+    "shots/red-07.png": "sha256:8b32b2d9620e00f9978e98bd6f5ec65b4987f632fa811f8ec036368044441f73",
+    "shots/red-08.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-09.png": "sha256:dd356e6c801a869fbc30b90e903dfd260b9f2ab605bb0f206ae82d9910689048",
+    "shots/red-10.png": "sha256:a8c72acd4d57a5e876a8c0728652d1551a75cb4b2f8bb7f21696e2f162aded2e",
+    "shots/red-11.png": "sha256:b703fd047cbd87fb3cef917def66187f07979cd3a2901cf399f7c41bb991fd3c",
+    "shots/red-12.png": "sha256:3f123a9ec1b8052dccdf96fbf8e10d3d3ebb3b206494c00a433a9a60992d8322",
+    "shots/red-13.png": "sha256:c6f69cb93c2251b2a5dcd64b4410dac81fddae46a56d36adb8c033c0db42a57e",
+    "shots/red-14.png": "sha256:cd15a9c85b3102f73a0778538f3c78fee8b06986d5c7221f83b0eafba19addf1",
+    "shots/red-15.png": "sha256:60cadd5ebee014042223b452baf6f677fdf7420339248ffcd39fb0b6c6515d11",
+    "shots/red-16.png": "sha256:9f5d1a2c2c1d1d76d996d23a4d2ee9a98c9e34ab81aa9014ee748b5e4fcbd0f9",
+    "shots/red-17.png": "sha256:f2269ef842ba0af4cd0e354d1ca11542e60583f3dacedc2dde6367ce8ad4cf6b",
+    "shots/red-18.png": "sha256:18b00ca6f03484aff61f5daf7b3e80d0fd20f14a443932bcb759aab0b3dba967",
+    "shots/red-19.png": "sha256:18b00ca6f03484aff61f5daf7b3e80d0fd20f14a443932bcb759aab0b3dba967",
+    "shots/red-20.png": "sha256:8654766e735f544c005f86efbb45a38eed9b4d8bc49e389faac0f14cedcb687c",
+    "shots/red-21.png": "sha256:3303e0562e5a8e39036afe8638d1dfe4c4434a58df110696bd796590c48e10ec",
+    "shots/red-22.png": "sha256:9f5d1a2c2c1d1d76d996d23a4d2ee9a98c9e34ab81aa9014ee748b5e4fcbd0f9",
+    "shots/red-23.png": "sha256:f2269ef842ba0af4cd0e354d1ca11542e60583f3dacedc2dde6367ce8ad4cf6b",
+    "shots/red-24.png": "sha256:18b00ca6f03484aff61f5daf7b3e80d0fd20f14a443932bcb759aab0b3dba967",
+    "shots/red-25.png": "sha256:18b00ca6f03484aff61f5daf7b3e80d0fd20f14a443932bcb759aab0b3dba967",
+    "videos/break.webm": "sha256:33bf30eea63c296b182ff91995711fba4b9ea1f97c81fd94dd353e6df047b69e",
+    "videos/green.webm": "sha256:ddc4ff208e33b5c89dabfd8400ad5e6b01502eaf4a86f5882bbb25cb14021caf",
+    "videos/red.webm": "sha256:b95c7c95b9fa749ffa7ff8ae8c176a611f22d16a4bf0025d8f53845d3210dd5f"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:2f2e2503596a252bd250f023b434878f4cece23047907f3423f455b22b9c64cb",
+    "entries": 111
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "39JIdnVrX/2SymQCfokNKVhQmOb3edxHr8sqqbOYVUW5Z0WeQFGKlq7eyxVPqY9ea1mJpqdV8Z3emubgNe4QDA=="
+  }
+}

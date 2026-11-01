@@ -1,0 +1,11 @@
+id: board-find-box-escape-closes
+# Frozen before any Attest run (Nov 1), written from the pull requests' own words:
+# shizukutanaka/Board#913 (by Devin, round901) — "Esc in `sqinput` now folds the box";
+# shizukutanaka/Board#914 (by Devin, round902) — #913 "introduced a real regression ... Esc closed then
+# immediately reopened in real browsers". The same criterion is used for both runs (see README).
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: escape-closes-find-box
+    given: The Board whiteboard is open; the user clicks once on the empty canvas, presses Ctrl+F to open the find box at the top of the canvas, and types rect into it
+    when: The user presses the Escape key once and waits a moment
+    then: The find box is closed — no search field is visible at the top of the canvas

@@ -1,0 +1,10 @@
+id: california-clock-change-sunday-first
+# Frozen before any Attest run (Nov 1), written from the bug report / pull request's own words:
+# simonw/tools issue #247: the page "generates the wrong date for months that start on a Sunday";
+# fix in #251 ("showing March 15 instead of March 8, and would have shown November 8 instead of November 1").
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: fall-back-is-november-1
+    given: "The California clock-change page is open, and the user has clicked its \"Pretend I am in California anyway\" button"
+    when: "The page shows its most recent clock change and its next clock change"
+    then: "The most recent change is shown as Sunday, November 1, 2026, and the next change as Sunday, March 14, 2027"

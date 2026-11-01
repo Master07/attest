@@ -1,0 +1,172 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T23:21:59.317Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/b919/base",
+        "sha": "37207f3b8c50d13394815b9404886e18fb50bf31"
+      },
+      "green": {
+        "ref": "rw/b919/fix",
+        "sha": "f8a1303a5fe467ef060ee7395617ee7b5dcf9a72"
+      },
+      "break": {
+        "ref": "rw/b919/bad-fix",
+        "sha": "54769836407740abd879a9b1eaeb306b46e1c915"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "91490ec88b0f519f1768c9f2b057e5cad7155482b35d3f1dc92f6641db500f18"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/b919/base",
+      "sha": "37207f3b8c50d13394815b9404886e18fb50bf31",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "6b705a639f09ae3224d700ef28f14aa16d3c2094b33af266faa0aa5c46f68d9c",
+      "criteria": [
+        {
+          "id": "help-dialog-without-search-field-on-top",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Shortcuts dialog opened but the Search field remained visible overlapping the top edge of the dialog.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 4 (first Shortcuts dialog appearance) shows the dialog but the Search field is still drawn on top of it centered at the top edge, violating the requirement that no Search field be visible over the dialog."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/b919/fix",
+      "sha": "f8a1303a5fe467ef060ee7395617ee7b5dcf9a72",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "33b68424424fb0f8c990e3d66d3a0c06dea6dd3f51da57a59124641658717f6b",
+      "criteria": [
+        {
+          "id": "help-dialog-without-search-field-on-top",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Shortcuts dialog is displayed centered with no Search field visible on top of it.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows the Search field at the top after Ctrl+F, and Frame 4 shows the Shortcuts dialog with no Search field drawn on top of it."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/b919/bad-fix",
+      "sha": "54769836407740abd879a9b1eaeb306b46e1c915",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "32ae78307365117c8f7c692a1d490ac62f7e23d6e6d5bad0acbad75a3e3e1427",
+      "criteria": [
+        {
+          "id": "help-dialog-without-search-field-on-top",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "The Shortcuts dialog is shown but the Search find box remains visible overlapping the top edge of the dialog.",
+          "evidence": [
+            "shots/break-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 3 shows the Search field at top, and Frame 4 (first frame showing Shortcuts dialog after Help click) shows the Shortcuts dialog but the Search field remains visibly drawn overlapping the top border of the dialog."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:91490ec88b0f519f1768c9f2b057e5cad7155482b35d3f1dc92f6641db500f18",
+    "shots/break-00.png": "sha256:d089e9ffb03ebbd28e2714f01b329b6cdfbdc5a3ee4b5cbb99fa5fbdeb49abf3",
+    "shots/break-01.png": "sha256:34899ed78ddffe239f648bd9cf8efd4b75d0451756a909478c95c5cfa7716868",
+    "shots/break-02.png": "sha256:a8520d8b36c384f46058c485196f381fe1d02d9578cc5e768d280f2b209ee35e",
+    "shots/break-03.png": "sha256:4f96ba41f2645b9adb3d4ff98f7349227922309eb31d1d4db4c9829c49d2cd46",
+    "shots/break-04.png": "sha256:4f96ba41f2645b9adb3d4ff98f7349227922309eb31d1d4db4c9829c49d2cd46",
+    "shots/green-00.png": "sha256:d484d8425d2c9fb526d377ccc023613ce931070aa72fec817914b1d1e8344583",
+    "shots/green-01.png": "sha256:34899ed78ddffe239f648bd9cf8efd4b75d0451756a909478c95c5cfa7716868",
+    "shots/green-02.png": "sha256:a8520d8b36c384f46058c485196f381fe1d02d9578cc5e768d280f2b209ee35e",
+    "shots/green-03.png": "sha256:8b69458cf82520e1d6f9cbdb2a2177021f875a49c951be84816a01473fc16060",
+    "shots/red-00.png": "sha256:84db1cb72e9c51824d270d8885949ce66a8367cdba5e2aa3503d301c16cc3633",
+    "shots/red-01.png": "sha256:ea07403c45b36b49ca08a7b12013127493b0e18023f6e946dc04f1539bbb74a1",
+    "shots/red-02.png": "sha256:889da1836f6cdeaa035aef84b2fee5bbf1dd81d83ae121386651a458c8d19081",
+    "shots/red-03.png": "sha256:0910f0895c34a69ecf72175c24ec55746ff1fe414db5fe021c6be11d3f974e06",
+    "shots/red-04.png": "sha256:0910f0895c34a69ecf72175c24ec55746ff1fe414db5fe021c6be11d3f974e06",
+    "videos/break.webm": "sha256:ac89c9521977b580010c12f224127150442448d440c6b876fea475f7ad9ee1f5",
+    "videos/green.webm": "sha256:ffca2f50240246d9aee6c23400ac0cd9f9ce46bfbca57b7ee206edff8d6b68d0",
+    "videos/red.webm": "sha256:d8c7f05eb94c2dea199d604e19d841e49fbf271fcbf2c262b6bf610041bc5e75"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:77fe00c5815c97a5edf0e5078ce58af6b3430f0468eb8d5abad1ef634e71ea93",
+    "entries": 55
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "nIj5Ov8mtImsusmplSSjGD/tbSMFeBVwwjyK0XUqd4aCBk6N1G6eoQEbPjKNF0Mz7RU1WvAMOdEoa+Ly56+HAA=="
+  }
+}

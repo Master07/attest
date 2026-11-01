@@ -28,6 +28,16 @@ The fix: [g-koziol/eu-reporter#48](https://github.com/g-koziol/eu-reporter/pull/
 
 Each run is reported here whatever its verdict; a re-run would be numbered and reported too.
 
+| # | Criteria | Change before the run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|---|---|
+| 1 | `criteria.yml` (frozen in `e95e2bd`, with the wrong fix) | none | fail | pass | fail | **PROVEN** | [proofs/realworld/eu-reporter-48-run1](../../../proofs/realworld/eu-reporter-48-run1/) |
+
+**Run 1, live, first attempt: PROVEN.** Red (the PR's parent): *"After clicking the Obszar dzialania textarea for the first day and typing abcd, it shows only a with a thin unfocused border."* Green (Copilot's fix): *"The Obszar dzialania text area shows abcd with a focused black border."* Break (our wrong fix, the `[data-field]` listener left as it was): *"it showed only 'a' and lost the focus outline."* The judge agreed in every phase. In Green and Break the click hit-test log shows the click landed on the `textarea` itself.
+
+The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element) and abstained, so each phase rests on the verifier (Muse Spark 1.3, computer use) and the independent judge (Muse Spark Open on Baseten, screenshots only) agreeing.
+
+**What this shows, and what it doesn't.** Copilot's fix keeps focus and text while typing in the running app, and Attest tells it apart from a fix that misses one of the listeners. The wrong fix is ours, labelled, and committed before the run; the run says nothing about wrong fixes we didn't think of.
+
 ## Reproduce
 
 ```bash

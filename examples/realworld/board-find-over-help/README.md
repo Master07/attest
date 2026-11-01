@@ -28,6 +28,16 @@ The fix: [shizukutanaka/Board#919](https://github.com/shizukutanaka/Board/pull/9
 
 Each run is reported here whatever its verdict; a re-run would be numbered and reported too.
 
+| # | Criteria | Change before the run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|---|---|
+| 1 | `criteria.yml` (frozen in `ae5ab67`, with the wrong fix) | none | fail | pass | fail | **PROVEN** | [proofs/realworld/board-919-run1](../../../proofs/realworld/board-919-run1/) |
+
+**Run 1, live, first attempt: PROVEN.** Red (the PR's parent): *"Shortcuts dialog opened but the Search field remained visible overlapping the top edge of the dialog."* Green (Devin's fix): *"Shortcuts dialog is displayed centered with no Search field visible on top of it."* Break (ours: no fold on the Help path): *"the Search find box remains visible overlapping the top edge of the dialog."* The judge agreed in every phase.
+
+The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element) and abstained, so each phase rests on the verifier (Muse Spark 1.3, computer use) and the independent judge (Muse Spark Open on Baseten, screenshots only) agreeing.
+
+**What this shows, and what it doesn't.** Devin's fix works in the running app for the path the criterion names (Ctrl+F, then Help), and Attest rejects a fix that misses that path. The wrong fix is ours, labelled, and committed before the run.
+
 ## Reproduce
 
 ```bash

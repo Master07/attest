@@ -26,6 +26,18 @@ Every version, base and fix included, logs `SyntaxError: Identifier 'modalTempla
 
 Each run is reported here whatever its verdict; a re-run would be numbered and reported too.
 
+| # | Criteria | Change before the run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|---|---|
+| 1 | `criteria.yml` (frozen in `532408f`, with the wrong fix) | none | fail | pass | fail | **PROVEN** | [proofs/realworld/cara-2677-run1](../../../proofs/realworld/cara-2677-run1/) |
+
+**Run 1, live, first attempt: PROVEN.** Red (the PR's parent): *"Clicked the round theme button once and the page background remained white/light."* Green (the fix): *"the page header and background turned dark with light text."* Break (ours: `e.target.id` instead of `closest()`): *"the header and page background remained white/light in both first and second clicks, only the button fill changed to teal."* The judge agreed in every phase.
+
+The click log shows the clicks landed on `i#themeIcon`, the icon inside the button, which is exactly the case our wrong fix misses: `e.target` is the icon, not the button.
+
+The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element) and abstained, so each phase rests on the verifier (Muse Spark 1.3, computer use) and the independent judge (Muse Spark Open on Baseten, screenshots only) agreeing.
+
+**What this shows, and what it doesn't.** The contributor's fix works when a user clicks the button where its icon is, and Attest rejects a fix that only works when the click lands on the button's padding. This fix was written by a person; it is reported with the AI-agent proofs but labelled separately. The wrong fix is ours, labelled, and committed before the run.
+
 ## Reproduce
 
 ```bash

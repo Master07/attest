@@ -36,6 +36,23 @@ The bug #913 describes on its parent (Esc leaves the box open) did not show in a
 
 Each run is reported here whatever its verdict; a re-run would be numbered and reported too.
 
+### Results
+
+| Run | Criteria | Change before the run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|---|---|
+| A — #913, run 1 | `criteria.yml` (frozen in `e95e2bd`) | none | pass | **fail** | — | **REJECTED** | [proofs/realworld/board-913-run1](../../../proofs/realworld/board-913-run1/) |
+| B — #914, run 1 | same | none | fail | pass | — | **PROVEN_UNCHECKED** | [proofs/realworld/board-914-run1](../../../proofs/realworld/board-914-run1/) |
+
+**Both came out as pre-registered, on the first run.**
+
+**Run A, #913 (Devin): REJECTED.** On #913's parent, Escape already closed the find box. The verifier: *"After pressing Escape the find box containing rect disappeared."* On Devin's #913 it didn't: *"A single Escape press cleared 'rect' to the Search placeholder but the find box remained visible at the top of the canvas."* The judge agreed from the screenshots alone (*"frames 4-5 still show the Search field at the top of the canvas with only its text cleared"*). A merged AI-agent change that made the behaviour it claimed to fix worse, caught by running the app.
+
+**Run B, #914 (Devin): PROVEN_UNCHECKED.** On #914's parent (= #913) the box stays: *"a second Escape also left it visible."* On #914 it closes: *"Pressed Escape once and the Search field with 'rect' disappeared."* The judge agreed in both phases. No Break check, as pre-registered.
+
+The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element) and abstained, so each phase rests on the verifier (Muse Spark 1.3, computer use) and the independent judge (Muse Spark Open on Baseten, screenshots only) agreeing.
+
+**What this shows, and what it doesn't.** Attest told a merged AI-agent fix that broke the feature apart from the follow-up that repaired it, with the same frozen criterion. It does not say #913's tests were wrong about what they saw; #914's own description explains the mismatch. Two runs, one app, one author.
+
 ## Reproduce
 
 ```bash

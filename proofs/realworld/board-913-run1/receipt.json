@@ -1,0 +1,130 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T23:03:00.531Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/b913/base",
+        "sha": "3aa7dab50f9b83ce306763646364d36f571f930b"
+      },
+      "green": {
+        "ref": "rw/b913/fix",
+        "sha": "1a7d4b13698b5c86b9c1f8d7814224566009224d"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "50f19144a8394279262b64e631384c98f7be165a1256e1e19b92eec8ad0d6250"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/b913/base",
+      "sha": "3aa7dab50f9b83ce306763646364d36f571f930b",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "80cc1d642506801240ce4a270b755e6f5774929075643cc188d547741182ac8a",
+      "criteria": [
+        {
+          "id": "escape-closes-find-box",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After pressing Escape the find box containing rect disappeared and no search field is visible at the top of the canvas.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 4 shows the find box containing 'rect' at the top of the canvas and Frame 5 shows no search field visible, confirming Escape closed it."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/b913/fix",
+      "sha": "1a7d4b13698b5c86b9c1f8d7814224566009224d",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "22058f2fe29b34eec09e0f224a91d7cedc175d0598e7bb21ac1c6c908c67ecf4",
+      "criteria": [
+        {
+          "id": "escape-closes-find-box",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "A single Escape press cleared 'rect' to the Search placeholder but the find box remained visible at the top of the canvas.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After 'rect' was typed the find box should have disappeared on Escape, but frames 4-5 still show the Search field at the top of the canvas with only its text cleared."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:50f19144a8394279262b64e631384c98f7be165a1256e1e19b92eec8ad0d6250",
+    "shots/green-00.png": "sha256:676dd640d46785b95e17f3ccde17ee439b120ec2e722a854dd4eebf10c21abbf",
+    "shots/green-01.png": "sha256:6b1cef15b3d6d68dafc0b4bada166a6a0ec53c7be855e252fbfc3a424fb7f531",
+    "shots/green-02.png": "sha256:4fe6772b1f6c4774b774e9ce87dac91675641ac03228f41af14648a0e534b940",
+    "shots/green-03.png": "sha256:6b1cef15b3d6d68dafc0b4bada166a6a0ec53c7be855e252fbfc3a424fb7f531",
+    "shots/green-04.png": "sha256:6b1cef15b3d6d68dafc0b4bada166a6a0ec53c7be855e252fbfc3a424fb7f531",
+    "shots/red-00.png": "sha256:861bbf05dc355167b60a9a8fc28ad39ee88a96caf96246d0185dbc56fedd616d",
+    "shots/red-01.png": "sha256:427a76e246688306a7263501ec91cd7b36ef1d47a8578ddf7e8aba1b79b0ba90",
+    "shots/red-02.png": "sha256:efc65302ee69264a0976cc36f02f710c543887593025958d63739ac2ba88ff45",
+    "shots/red-03.png": "sha256:d251a402d2b2b6bba9a758ee70dee5b2d9ff6cda14733776c9109a29b74021b8",
+    "shots/red-04.png": "sha256:da8249a794eaacf68b23377c0fc2f94bd0cef651e02c19c915c88275e18b2e49",
+    "videos/green.webm": "sha256:cac821ee576f80273afcf8627357ca246d6875fcc9c9e93afaee64d392f85fa7",
+    "videos/red.webm": "sha256:526a4ddfa30ed5e5e4dbe236d27f2b1f48dde6184ceac24ab8c36d4a36488d8f"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:2b71147a300524e40df056a8d1d3430a58f67d8e956881240e1bcd9e7c1c92f4",
+    "entries": 39
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "NsNmwAhKU61GCIWj2KvnNHlXi48NXOQPGUX1AUOWbryik19mtJvDYzEd4EYJhJiW/Et9u/yXV3AY41NuczCQDA=="
+  }
+}

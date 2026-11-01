@@ -43,13 +43,34 @@ Everything — votes, screenshots, a hash-chained event log — is sealed into a
 
 ## Results
 
-**On real, merged fixes by two different AI agents, in other people's apps** — **PROVEN** live, each with its criterion and wrong fix committed before the run, the verifier and the open-weights judge agreeing in every phase, neither seeing the code. The bugs and the fixes are real; **every wrong fix is one we wrote**:
+**On real, merged pull requests in other people's apps**, each criterion committed before its run, live, the verifier and the open-weights judge agreeing in every phase, neither seeing the code. The bugs and the fixes are real; **every wrong fix (Break) is one we wrote**. Every run is reported, first attempt included:
+
+| Fix (licence) | Written by | Verdict | Receipt · write-up |
+|---|---|---|---|
+| [shizukutanaka/Board#913](https://github.com/shizukutanaka/Board/pull/913) (MIT) | **Devin** | **REJECTED**: Escape closed the find box *before* this change and no longer does after it | [receipt](proofs/realworld/board-913-run1/) · [write-up](examples/realworld/board-find-esc/README.md) |
+| [shizukutanaka/Board#914](https://github.com/shizukutanaka/Board/pull/914) (MIT), the follow-up | **Devin** | **PROVEN_UNCHECKED** (no wrong fix exists for it, so Break was left out) | [receipt](proofs/realworld/board-914-run1/) · same |
+| [pankosmia/roadmap#361](https://github.com/pankosmia/roadmap/pull/361) (MIT) | **GitHub Copilot** | **PROVEN** | [receipt](proofs/realworld/roadmap-361-run1/) · [write-up](examples/realworld/roadmap-pulls/README.md) |
+| [g-koziol/eu-reporter#48](https://github.com/g-koziol/eu-reporter/pull/48) (MIT) | **GitHub Copilot** | **PROVEN** | [receipt](proofs/realworld/eu-reporter-48-run1/) · [write-up](examples/realworld/eu-reporter-typing/README.md) |
+| [g-koziol/eu-reporter#54](https://github.com/g-koziol/eu-reporter/pull/54) (MIT) | **GitHub Copilot** | **PROVEN** | [receipt](proofs/realworld/eu-reporter-54-run1/) · [write-up](examples/realworld/eu-reporter-day-strip/README.md) |
+| [kq4cin/cheshy-mess#4](https://github.com/kq4cin/cheshy-mess/pull/4) (MIT) | **GitHub Copilot** | **PROVEN** | [receipt](proofs/realworld/cheshy-4-run1/) · [write-up](examples/realworld/cheshy-typing/README.md) |
+| [shizukutanaka/Board#919](https://github.com/shizukutanaka/Board/pull/919) (MIT) | **Devin** | **PROVEN** | [receipt](proofs/realworld/board-919-run1/) · [write-up](examples/realworld/board-find-over-help/README.md) |
+| [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT) | **Devin** | run 1 **PROVEN_UNCHECKED** (no wrong fix supplied), run 2 **PROVEN** | [run 1](proofs/realworld/board-921-run1/) · [run 2](proofs/realworld/board-921-run2/) · [write-up](examples/realworld/board-enter/README.md) |
+| [shizukutanaka/Board#918](https://github.com/shizukutanaka/Board/pull/918) (MIT) | **Devin** | run 1 **INCONCLUSIVE**, run 2 PROVEN (verifier only), run 3 **PROVEN** | [release download](https://github.com/Master07/attest/releases/tag/proofs-board918-2026-11-01) · [write-up](examples/realworld/board-focus-trap/README.md) |
+| [simonw/tools#251](https://github.com/simonw/tools/pull/251) (Apache-2.0) | AI-assisted (its commit credits Claude Code) | **PROVEN** | [receipt](proofs/realworld/simonw-tools-251-run1/) · [write-up](examples/realworld/simonw-dst-sunday/README.md) |
+| *Fixed by people:* [1j01/jspaint](https://github.com/1j01/jspaint) issue [#311](https://github.com/1j01/jspaint/issues/311), fix [`98bc205`](https://github.com/1j01/jspaint/commit/98bc20554d97b82f2eae8ee2ad0cea3a7783503f) (MIT) | the maintainer | **PROVEN** | [receipt](proofs/realworld/jspaint-311-run1/) · [write-up](examples/realworld/jspaint-radio-circle/README.md) |
+| *Fixed by people:* [janavipandole/Cara#2677](https://github.com/janavipandole/Cara/pull/2677) (MIT) | a contributor | **PROVEN** | [receipt](proofs/realworld/cara-2677-run1/) · [write-up](examples/realworld/cara-theme-toggle/README.md) |
+
+Every criterion was committed before its first run. For the nine runs of Nov 2 (Board#913, #914, #919, eu-reporter#48, #54, cheshy-mess#4, simonw/tools#251, jspaint, Cara) the expected verdict was committed too, and all nine came out as expected on the first attempt. Code checks and SAM abstain on these (the criteria name no URL, request or element), so each verdict rests on two Meta models agreeing. Twelve fixes in seven apps are not a measure of accuracy; they show what a reviewer gets.
+
+**The REJECTED one matters most.** Devin's Board#913 said Escape left the find box open. In a real browser it already closed; after #913 it didn't. The verifier: *"A single Escape press cleared 'rect' to the Search placeholder but the find box remained visible."* The judge agreed from the screenshots alone. Devin's own follow-up, #914, repaired it, and Attest proved that one with the same frozen criterion.
+
+Details on three of them:
 
 - [pankosmia/roadmap#361](https://github.com/pankosmia/roadmap/pull/361) (MIT), written by **GitHub Copilot**, fixed a "Pull requests" button that did nothing. Attest reproduced the dead button on the PR's parent, showed Copilot's fix opens the dialog, and rejected a wrong fix (**ours**) that silences the console error but leaves the button dead ([receipt](proofs/realworld/roadmap-361-run1/) · [write-up](examples/realworld/roadmap-pulls/README.md)).
 - [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), written by **Devin**, fixed "Enter on a focused toolbar button also stamps a shape". Attest reproduced it on the PR's parent, showed Devin's fix removes it, and rejected a half-fix (Space only, **ours**) ([receipt](proofs/realworld/board-921-run2/) · [write-up](examples/realworld/board-enter/README.md)). An earlier run without a wrong fix gave the honest PROVEN_UNCHECKED ([receipt](proofs/realworld/board-921-run1/)).
 - [shizukutanaka/Board#918](https://github.com/shizukutanaka/Board/pull/918) (MIT), **Devin**'s keyboard fix: Tab past the Share dialog's last control no longer leaves the dialog. **PROVEN on run 3**, verifier and judge agreeing — after run 1 came out **INCONCLUSIVE** (the judge saw 8 of 19 frames and missed the one where focus left the dialog; the votes disagreed, so nothing was certified) and run 2 rested on the verifier alone (the judge's provider rejected more than 8 images). The fix: the judge now sees every frame as labelled contact sheets. All three runs are reported ([write-up](examples/realworld/board-focus-trap/README.md) · [receipts, release download](https://github.com/Master07/attest/releases/tag/proofs-board918-2026-11-01)).
 
-All three were found by searching merged AI-agent pull requests: of 981 PRs in 598 repos, only 4 were in permissively licensed web apps that run locally without accounts or a backend. A second search looked for a merged AI fix that did **not** actually work, so Attest could reject a wrong fix written by an agent rather than by us. It found one, in a repository with no licence, so we did not use it.
+They were found by searching merged pull requests for fixes in permissively licensed web apps that run locally without accounts or a backend; few qualify (the first search: 4 of 981 AI-agent PRs in 598 repos). We also looked for a merged AI fix that did **not** work. The first one found was in a repository with no licence, so we did not use it; Board#913 then turned out to be one, and Attest rejected it. The two fixes by people are labelled as such.
 
 **As a pull-request comment:** on our own demo PR [Master07/attest#1](https://github.com/Master07/attest/pull/1), Attest proved the fix live, rejected a wrong fix, and posted the proof as a comment ([receipt](proofs/pr-1-live/)).
 
@@ -125,6 +146,12 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 | [Real-world: Copilot's roadmap#361 fix](examples/realworld/roadmap-pulls/README.md) | GitHub Copilot's merged fix in someone else's app |
 | [Real-world: Devin's Board#918 keyboard fix](examples/realworld/board-focus-trap/README.md) | Three reported runs: INCONCLUSIVE, then the judge fixed, then PROVEN |
 | [Real-world: Devin's Board#921 fix](examples/realworld/board-enter/README.md) | An AI agent's merged fix in someone else's app, both runs |
+| [Real-world: Devin's Board#913 / #914](examples/realworld/board-find-esc/README.md) | A merged AI change Attest REJECTED, and the follow-up it proved |
+| [Real-world: Devin's Board#919](examples/realworld/board-find-over-help/README.md) | Find box drawn over the Help dialog |
+| [Real-world: Copilot's eu-reporter#48](examples/realworld/eu-reporter-typing/README.md) · [#54](examples/realworld/eu-reporter-day-strip/README.md) | Focus lost while typing; day strip jumping back |
+| [Real-world: Copilot's cheshy-mess#4](examples/realworld/cheshy-typing/README.md) | Focus jumping out of a text field (a Vite app) |
+| [Real-world: simonw/tools#251](examples/realworld/simonw-dst-sunday/README.md) | Wrong clock-change dates (AI-assisted fix) |
+| [Real-world: jspaint](examples/realworld/jspaint-radio-circle/README.md) · [Cara#2677](examples/realworld/cara-theme-toggle/README.md) | Two fixes by people: an unclickable radio circle, a dead theme button |
 | [Real-world: TodoMVC 2012](examples/realworld/todomvc-delete/README.md) | A real historical bug and its real fix, all four runs |
 | [Proofs](proofs/README.md) | Every committed receipt and how to check it |
 | [MODEL_STRATEGY](docs/MODEL_STRATEGY.md) | Which Meta model does what, and why |

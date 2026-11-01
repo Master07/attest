@@ -24,6 +24,16 @@ The fix: [g-koziol/eu-reporter#54](https://github.com/g-koziol/eu-reporter/pull/
 
 Each run is reported here whatever its verdict; a re-run would be numbered and reported too.
 
+| # | Criteria | Change before the run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|---|---|
+| 1 | `criteria.yml` (frozen in `532408f`, with the wrong fix) | none | fail | pass | fail | **PROVEN** | [proofs/realworld/eu-reporter-54-run1](../../../proofs/realworld/eu-reporter-54-run1/) |
+
+**Run 1, live, first attempt: PROVEN.** Red (the PR's parent): *"After clicking day 30 the day strip reset to show days 01-16 with day 30 no longer visible."* Green (Copilot's fix): *"day 30 remained visible and selected at the right end of the row."* Break (ours: Copilot's highlight code added, the full re-render kept): *"the day strip reset to show days 01-16 so day 30 was no longer visible, and a repeat click confirmed the same reset."* The judge agreed in every phase, judging the first frame after the click.
+
+The code checks and SAM had nothing to check (the criterion names no URL, network call or on-screen element) and abstained, so each phase rests on the verifier (Muse Spark 1.3, computer use) and the independent judge (Muse Spark Open on Baseten, screenshots only) agreeing.
+
+**What this shows, and what it doesn't.** Copilot's fix keeps the strip in place, and Attest rejects a fix that adds the right-looking highlight code but still rebuilds the strip. The wrong fix is ours, labelled, and committed before the run.
+
 ## Reproduce
 
 ```bash
