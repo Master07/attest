@@ -41,12 +41,13 @@ Everything — votes, screenshots, a hash-chained event log — is sealed into a
 
 ## Results
 
-**On real, merged fixes by two different AI agents, in other people's apps** — both **PROVEN** live, each with its criterion and wrong fix committed before the run, the verifier and the open-weights judge agreeing in every phase, neither seeing the code:
+**On real, merged fixes by two different AI agents, in other people's apps** — **PROVEN** live, each with its criterion and wrong fix committed before the run, the verifier and the open-weights judge agreeing in every phase, neither seeing the code:
 
 - [pankosmia/roadmap#361](https://github.com/pankosmia/roadmap/pull/361) (MIT), written by **GitHub Copilot**, fixed a "Pull requests" button that did nothing. Attest reproduced the dead button on the PR's parent, showed Copilot's fix opens the dialog, and rejected a wrong fix (**ours**) that silences the console error but leaves the button dead ([receipt](proofs/realworld/roadmap-361-run1/) · [write-up](examples/realworld/roadmap-pulls/README.md)).
 - [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), written by **Devin**, fixed "Enter on a focused toolbar button also stamps a shape". Attest reproduced it on the PR's parent, showed Devin's fix removes it, and rejected a half-fix (Space only, **ours**) ([receipt](proofs/realworld/board-921-run2/) · [write-up](examples/realworld/board-enter/README.md)). An earlier run without a wrong fix gave the honest PROVEN_UNCHECKED ([receipt](proofs/realworld/board-921-run1/)).
+- [shizukutanaka/Board#918](https://github.com/shizukutanaka/Board/pull/918) (MIT), **Devin**'s keyboard fix: Tab past the Share dialog's last control no longer leaves the dialog. **PROVEN on run 3**, verifier and judge agreeing — after run 1 came out **INCONCLUSIVE** (the judge saw 8 of 19 frames and missed the one where focus left the dialog; the votes disagreed, so nothing was certified) and run 2 rested on the verifier alone (the judge's provider rejected more than 8 images). The fix: the judge now sees every frame as labelled contact sheets. All three runs are reported ([write-up](examples/realworld/board-focus-trap/README.md) · [receipts, release download](https://github.com/Master07/attest/releases/tag/proofs-board918-2026-11-01)).
 
-Both were found by searching merged AI-agent pull requests: of 981 PRs in 598 repos, only 4 were in permissively licensed web apps that run locally without accounts or a backend.
+All three were found by searching merged AI-agent pull requests: of 981 PRs in 598 repos, only 4 were in permissively licensed web apps that run locally without accounts or a backend.
 
 **As a pull-request comment:** on our own demo PR [Master07/attest#1](https://github.com/Master07/attest/pull/1), Attest proved the fix live, rejected a wrong fix, and posted the proof as a comment ([receipt](proofs/pr-1-live/)).
 
@@ -120,6 +121,7 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | The proof, the blind verifier, vote combining, the receipt, threats and limits |
 | [BENCHMARK](docs/BENCHMARK.md) | Ten planted bugs, two runs, what the numbers do and don't mean |
 | [Real-world: Copilot's roadmap#361 fix](examples/realworld/roadmap-pulls/README.md) | GitHub Copilot's merged fix in someone else's app |
+| [Real-world: Devin's Board#918 keyboard fix](examples/realworld/board-focus-trap/README.md) | Three reported runs: INCONCLUSIVE, then the judge fixed, then PROVEN |
 | [Real-world: Devin's Board#921 fix](examples/realworld/board-enter/README.md) | An AI agent's merged fix in someone else's app, both runs |
 | [Real-world: TodoMVC 2012](examples/realworld/todomvc-delete/README.md) | A real historical bug and its real fix, all four runs |
 | [Proofs](proofs/README.md) | Every committed receipt and how to check it |
