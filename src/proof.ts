@@ -43,6 +43,11 @@ export interface ProofResult {
   receipt: Receipt;
 }
 
+/** Where the phase video is recorded, or undefined when ATTEST_VIDEO=0 (benchmark runs). */
+export function phaseVideoDir(dir: string, phase: string, env: NodeJS.ProcessEnv = process.env): string | undefined {
+  return env.ATTEST_VIDEO === "0" ? undefined : join(dir, "videos", `${phase}-raw`);
+}
+
 function gitRemote(repoRoot: string): string | null {
   for (const git of ["git", "C:\\Program Files\\Git\\cmd\\git.exe"]) {
     const r = spawnSync(git, ["remote", "get-url", "origin"], { cwd: repoRoot, encoding: "utf8" });
@@ -83,7 +88,13 @@ async function runPhase(
     record.sha = workspace.sha;
     log.append("workspace_ready", { ref, sha: workspace.sha, port: workspace.port }, phase);
 
-    browser = await launchBrowser(ctx.config.browser.viewport, { videoDir: join(dir, "videos", `${phase}-raw`) });
+    browser = await launchBrowser(
+      ctx.config.browser.viewport,
+      (() => {
+        const videoDir = phaseVideoDir(dir, phase);
+        return videoDir === undefined ? {} : { videoDir };
+      })(),
+    );
     await browser.open(`${workspace.url}${ctx.config.app.open ?? "/"}`);
 
     ctx.progress(`${phase}: verifier running`);
