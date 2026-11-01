@@ -1,0 +1,20 @@
+id: G-settings-wrong-element
+title: "settings: Handler bound to the wrong element"
+category: events
+shell: settings
+recipe: wrong-element
+bad_fix_test: unit
+bug_report: Clicking the button does nothing.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

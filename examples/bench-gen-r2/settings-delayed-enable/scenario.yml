@@ -1,0 +1,20 @@
+id: G-settings-delayed-enable
+title: "settings: Control disabled shortly after load"
+category: state
+shell: settings
+recipe: delayed-enable
+bad_fix_test: source
+bug_report: The button goes grey after the page loads and I can't click it.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

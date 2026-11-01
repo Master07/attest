@@ -1,0 +1,9 @@
+id: gen-signup
+criteria:
+  - id: signup-completes
+    given: The sign-up form at /signup
+    when: The user enters the name "Ada" and the email "ada@example.com" and clicks "Create account"
+    then: A welcome page greets the user as "Ada"
+    expect:
+      url: /welcome
+      network: { method: POST, path: /api/signup, status: 201 }

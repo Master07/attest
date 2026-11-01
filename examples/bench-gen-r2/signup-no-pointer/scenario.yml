@@ -1,0 +1,23 @@
+id: G-signup-no-pointer
+title: "signup: Container ignores the pointer"
+category: layout
+shell: signup
+recipe: no-pointer
+bad_fix_test: source
+bug_report: Clicking the button does nothing.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

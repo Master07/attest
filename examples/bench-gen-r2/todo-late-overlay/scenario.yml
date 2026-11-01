@@ -1,0 +1,21 @@
+id: G-todo-late-overlay
+title: "todo: Late third-party overlay"
+category: events
+shell: todo
+recipe: late-overlay
+bad_fix_test: source
+bug_report: Something covers the button a moment after the page loads.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#new"
+      text: Buy milk
+    - click: "#add"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#items li:last-child"
+      equals: Buy milk

@@ -1,0 +1,16 @@
+id: G-checkout-delayed-enable
+title: "checkout: Control disabled shortly after load"
+category: state
+shell: checkout
+recipe: delayed-enable
+bad_fix_test: source
+bug_report: The button goes grey after the page loads and I can't click it.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

@@ -1,0 +1,23 @@
+id: G-signup-double-apply
+title: "signup: Update applied twice"
+category: state
+shell: signup
+recipe: double-apply
+bad_fix_test: unit
+bug_report: I submit the form and the result is wrong.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

@@ -1,0 +1,16 @@
+id: G-checkout-stale-render
+title: "checkout: State updates but the page does not"
+category: state
+shell: checkout
+recipe: stale-render
+bad_fix_test: unit
+bug_report: I submit and the page never changes.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

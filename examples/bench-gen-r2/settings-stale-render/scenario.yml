@@ -1,0 +1,20 @@
+id: G-settings-stale-render
+title: "settings: State updates but the page does not"
+category: state
+shell: settings
+recipe: stale-render
+bad_fix_test: unit
+bug_report: I submit and the page never changes.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

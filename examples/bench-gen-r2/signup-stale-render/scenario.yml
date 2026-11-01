@@ -1,0 +1,23 @@
+id: G-signup-stale-render
+title: "signup: State updates but the page does not"
+category: state
+shell: signup
+recipe: stale-render
+bad_fix_test: unit
+bug_report: I submit and the page never changes.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

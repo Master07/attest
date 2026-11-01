@@ -1,0 +1,20 @@
+id: G-settings-clipped
+title: "settings: Control clipped by its panel"
+category: layout
+shell: settings
+recipe: clipped
+bad_fix_test: source
+bug_report: The button is cut off and I can't click it.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

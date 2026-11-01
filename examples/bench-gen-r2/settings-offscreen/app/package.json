@@ -1,0 +1,11 @@
+{
+  "name": "bench-gen-settings",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Generated benchmark shell: settings",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create your account</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">Northwind Supply</span>
+  </header>
+
+  <main class="page">
+    <div id="toolbar" class="toolbar"></div>
+    <section class="panel">
+      <h1>Create your account</h1>
+      <form id="task" data-amount="$1.00">
+        <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" value="" /></div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" value="" /></div>
+        <div class="field">
+          <label for="qty">Seats</label>
+          <input id="qty" name="qty" type="number" value="9" min="1" max="10" />
+        </div>
+        <div class="actions">
+          <button id="create" class="control" type="submit">Create account</button>
+        </div>
+        <p id="status" class="status" role="status"></p>
+      </form>
+
+    </section>
+  </main>
+    <div class="banner" id="banner">
+      <p>We use cookies to keep the shop working.</p>
+    </div>
+    <button id="banner-close" type="button">Close</button>
+  
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

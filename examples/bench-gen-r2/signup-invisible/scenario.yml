@@ -1,0 +1,23 @@
+id: G-signup-invisible
+title: "signup: Control invisible"
+category: layout
+shell: signup
+recipe: invisible
+bad_fix_test: source
+bug_report: The button is there but I can't see it.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

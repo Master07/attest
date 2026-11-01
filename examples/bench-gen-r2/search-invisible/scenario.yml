@@ -1,0 +1,21 @@
+id: G-search-invisible
+title: "search: Control invisible"
+category: layout
+shell: search
+recipe: invisible
+bad_fix_test: source
+bug_report: The button is there but I can't see it.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#q"
+      text: lamp
+    - click: "#go"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#results li:first-child"
+      equals: Desk lamp

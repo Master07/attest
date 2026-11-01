@@ -1,0 +1,23 @@
+id: G-signup-string-compare
+title: "signup: Action disabled by a type mismatch"
+category: state
+shell: signup
+recipe: string-compare
+bad_fix_test: unit
+bug_report: The button is greyed out and I can't click it.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

@@ -1,0 +1,20 @@
+id: G-settings-fixed-banner
+title: "settings: Fixed banner covers the control"
+category: overlay
+shell: settings
+recipe: fixed-banner
+bad_fix_test: source
+bug_report: A banner covers the page and I can't use the button.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

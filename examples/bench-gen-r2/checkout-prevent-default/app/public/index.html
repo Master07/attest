@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your cart</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">Northwind Supply</span>
+  </header>
+
+  <main class="page">
+    <div id="toolbar" class="toolbar"></div>
+    <section class="panel">
+      <h1>Your cart</h1>
+      <form id="task" data-amount="$1.00">
+        <div class="field"><p class="muted">Trail Runner Shoes · $89.00</p></div>
+        <div class="field">
+          <label for="qty">Quantity</label>
+          <input id="qty" name="qty" type="number" value="1" min="1" max="10" />
+        </div>
+        <div class="actions">
+          <button id="pay" class="control" type="submit">Pay $89.00</button>
+        </div>
+        <p id="status" class="status" role="status"></p>
+      </form>
+
+    </section>
+  </main>
+  
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

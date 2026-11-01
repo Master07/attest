@@ -1,0 +1,20 @@
+id: G-settings-bad-redirect
+title: "settings: Success goes to a missing page"
+category: navigation
+shell: settings
+recipe: bad-redirect
+bad_fix_test: unit
+bug_report: After submitting I land on a page that doesn't exist.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

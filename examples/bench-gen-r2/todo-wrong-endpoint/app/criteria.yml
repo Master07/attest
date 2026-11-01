@@ -1,0 +1,8 @@
+id: gen-todo
+criteria:
+  - id: todo-adds
+    given: An empty to-do list at /
+    when: The user types "Buy milk" into the new-item field and clicks "Add"
+    then: The list shows "Buy milk"
+    expect:
+      network: { method: POST, path: /api/todos, status: 201 }

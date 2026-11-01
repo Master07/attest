@@ -1,0 +1,14 @@
+id: checkout
+ready: /cart
+control: "#pay"
+field: null
+api: { method: POST, path: /api/pay }
+success: navigate
+probe:
+  path: /cart
+  steps:
+    - { wait: 600 }
+    - { click: "#pay" }
+    - { wait: 1500 }
+  expect:
+    url: /order-confirmation

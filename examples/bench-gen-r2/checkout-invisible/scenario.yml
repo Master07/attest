@@ -1,0 +1,16 @@
+id: G-checkout-invisible
+title: "checkout: Control invisible"
+category: layout
+shell: checkout
+recipe: invisible
+bad_fix_test: source
+bug_report: The button is there but I can't see it.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

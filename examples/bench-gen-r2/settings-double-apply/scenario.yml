@@ -1,0 +1,20 @@
+id: G-settings-double-apply
+title: "settings: Update applied twice"
+category: state
+shell: settings
+recipe: double-apply
+bad_fix_test: unit
+bug_report: I submit the form and the result is wrong.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

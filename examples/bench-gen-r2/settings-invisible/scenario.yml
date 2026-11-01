@@ -1,0 +1,20 @@
+id: G-settings-invisible
+title: "settings: Control invisible"
+category: layout
+shell: settings
+recipe: invisible
+bad_fix_test: source
+bug_report: The button is there but I can't see it.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

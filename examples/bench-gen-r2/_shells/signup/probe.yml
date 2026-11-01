@@ -1,0 +1,17 @@
+id: signup
+ready: /signup
+control: "#create"
+field: "#name"
+api: { method: POST, path: /api/signup }
+success: navigate
+probe:
+  path: /signup
+  steps:
+    - { wait: 600 }
+    - { fill: "#name", text: "Ada" }
+    - { fill: "#email", text: "ada@example.com" }
+    - { click: "#create" }
+    - { wait: 1500 }
+  expect:
+    url: /welcome
+    text: { selector: "#greeting", equals: "Welcome, Ada" }

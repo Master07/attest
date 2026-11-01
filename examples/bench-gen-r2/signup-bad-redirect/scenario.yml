@@ -1,0 +1,23 @@
+id: G-signup-bad-redirect
+title: "signup: Success goes to a missing page"
+category: navigation
+shell: signup
+recipe: bad-redirect
+bad_fix_test: unit
+bug_report: After submitting I land on a page that doesn't exist.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

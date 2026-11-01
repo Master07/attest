@@ -1,0 +1,16 @@
+id: G-checkout-wrong-element
+title: "checkout: Handler bound to the wrong element"
+category: events
+shell: checkout
+recipe: wrong-element
+bad_fix_test: unit
+bug_report: Clicking the button does nothing.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

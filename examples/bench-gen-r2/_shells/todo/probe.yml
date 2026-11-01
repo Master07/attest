@@ -1,0 +1,16 @@
+id: todo
+ready: /
+control: "#add"
+field: "#new"
+api: { method: POST, path: /api/todos }
+success: render
+probe:
+  path: /
+  steps:
+    - { wait: 600 }
+    - { fill: "#new", text: "Buy milk" }
+    - { click: "#add" }
+    - { wait: 1200 }
+  expect:
+    url: /
+    text: { selector: "#items li:last-child", equals: "Buy milk" }

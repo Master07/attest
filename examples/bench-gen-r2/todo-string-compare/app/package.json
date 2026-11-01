@@ -1,0 +1,11 @@
+{
+  "name": "bench-gen-todo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Generated benchmark shell: todo",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}

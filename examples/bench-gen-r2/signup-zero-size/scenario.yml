@@ -1,0 +1,23 @@
+id: G-signup-zero-size
+title: "signup: Control rendered at zero size"
+category: layout
+shell: signup
+recipe: zero-size
+bad_fix_test: source
+bug_report: I can't see or click the button.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

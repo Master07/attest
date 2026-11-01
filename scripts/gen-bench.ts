@@ -8,7 +8,10 @@ import { parse, stringify } from "yaml";
 // change a recipe here, then `npm run gen-bench`.
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const benchRoot = join(repoRoot, "examples", "bench-gen");
+// --root <dir> generates into another folder (with its own _shells), e.g. a later pre-registered run;
+// without it the output is examples/bench-gen, unchanged.
+const rootFlag = process.argv.indexOf("--root");
+const benchRoot = rootFlag === -1 ? join(repoRoot, "examples", "bench-gen") : resolve(repoRoot, process.argv[rootFlag + 1] ?? "");
 const shellsRoot = join(benchRoot, "_shells");
 
 type Layer = Record<string, string>;

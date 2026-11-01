@@ -1,0 +1,16 @@
+id: search
+ready: /
+control: "#go"
+field: "#q"
+api: { method: GET, path: /api/search }
+success: render
+probe:
+  path: /
+  steps:
+    - { wait: 600 }
+    - { fill: "#q", text: "lamp" }
+    - { click: "#go" }
+    - { wait: 1200 }
+  expect:
+    url: /
+    text: { selector: "#results li:first-child", equals: "Desk lamp" }

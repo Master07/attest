@@ -1,0 +1,20 @@
+id: G-settings-string-compare
+title: "settings: Action disabled by a type mismatch"
+category: state
+shell: settings
+recipe: string-compare
+bad_fix_test: unit
+bug_report: The button is greyed out and I can't click it.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

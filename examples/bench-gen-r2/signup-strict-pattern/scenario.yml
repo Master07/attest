@@ -1,0 +1,23 @@
+id: G-signup-strict-pattern
+title: "signup: Over-strict input pattern"
+category: validation
+shell: signup
+recipe: strict-pattern
+bad_fix_test: unit
+bug_report: It won't let me submit the form.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada
