@@ -66,7 +66,7 @@ Requires Node 22+ and git; step 2 also needs Microsoft Edge or Chrome (`ATTEST_B
 git clone https://github.com/Master07/attest.git && cd attest
 npm install
 npm run verify-proofs
-start proofs/realworld/board-921-run1/index.html            # one evidence page (macOS: open)
+start proofs/index.html                                     # dashboard of every proof (macOS: open)
 ```
 
 **2. Re-run a proof yourself — about 2 minutes, from a cassette.** The app, browser, clicks, code checks and receipt are real; the model answers come from a **cassette recorded in a live run**, so no key is needed. The receipt and evidence page are marked as a replay.

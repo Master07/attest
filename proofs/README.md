@@ -8,7 +8,7 @@ Every result the README and BENCHMARK quote is a signed receipt in this folder. 
 npm run verify-proofs
 ```
 
-For each receipt it checks the Ed25519 signature, the hash-chained event log (and its pinned length), the hash of every screenshot and video, the criteria hash, and recomputes the verdict from the recorded votes. Change one byte in a bundle and it fails. One receipt at a time: `npm run attest -- verify <path>/receipt.json`. Each bundle also has an `index.html` evidence page (not signed; rendered from the receipt).
+For each receipt it checks the Ed25519 signature, the hash-chained event log (and its pinned length), the hash of every screenshot and video, the criteria hash, and recomputes the verdict from the recorded votes. Change one byte in a bundle and it fails. One receipt at a time: `npm run attest -- verify <path>/receipt.json`. Each bundle also has an `index.html` evidence page, and [index.html](index.html) here is a dashboard of all of them (both unsigned views, rendered from the receipts; regenerate with `npm run verify-proofs -- --write-index`).
 
 What a receipt does **not** prove: it shows nothing was changed after capture, not that the capture environment was honest (see [ARCHITECTURE §13](../docs/ARCHITECTURE.md)). Receipts are signed with a key created on the machine that ran them.
 
