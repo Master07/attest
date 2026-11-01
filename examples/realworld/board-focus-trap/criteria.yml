@@ -1,0 +1,10 @@
+id: board-share-dialog-focus-trap
+# Frozen before any Attest run (Nov 1), written from the pull request's own description of the bug:
+# shizukutanaka/Board#918 (by Devin) — the Share dialog's focus trap counted controls inside a closed
+# "Direct peer connection" section, so Tab past the last visible control left the dialog.
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: tab-wraps-inside-share-dialog
+    given: The Board whiteboard is open and the user has opened the Share dialog with the "Share" button in the top bar
+    when: Using only the Tab key, the user moves keyboard focus through every control in the Share dialog, one Tab at a time, until the "Direct peer connection (experimental)" row has focus, then presses Tab exactly once more
+    then: After that last Tab, the visible focus outline is on a control inside the Share dialog (it wraps back to the dialog's first control, the × close button); focus does not leave the dialog
