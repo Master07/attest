@@ -1,0 +1,10 @@
+id: board-find-box-folds-before-help
+# Frozen before any Attest run (Nov 1), written from the pull request's own description of the bug:
+# shizukutanaka/Board#919 (by Devin) — the find box "was never folded when a modal ... opened, so it
+# rendered above the .help-overlay modals ... as an unreachable ghost".
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: help-dialog-without-search-field-on-top
+    given: The Board whiteboard is open; the user clicks once on the empty canvas and presses Ctrl+F, so the find box (a "Search" field) appears at the top of the canvas
+    when: The user clicks the Help button (the "?" icon at the right end of the top bar)
+    then: The Shortcuts dialog is shown, and no "Search" field is drawn on top of the dialog
