@@ -28,32 +28,34 @@ A person approves one plain-language requirement (*given a cart, when the user c
 | **Green** | The fix | It now works |
 | **Break** | A wrong fix | Attest rejects it — otherwise its "yes" means nothing |
 
-Each phase gets **four independent votes**, and disagreement is never a pass:
+Each phase gets **up to four independent votes**, and disagreement is never a pass:
 
 1. **Muse Spark 1.3** drives a real browser with computer use. It is **blind**: it never sees the code, diff or the producing agent's reasoning.
 2. **Code checks** — the final URL and network calls, no AI involved.
 3. **SAM 3.1** — is the element visible, and did the click actually reach it?
 4. **A Muse Spark Open judge** (open weights, on Baseten) — sees only the requirement and the screenshots in order — no actions, no code.
 
-Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit. Every result below is a committed receipt: `npm run verify-proofs` checks all of them ([proofs/](proofs/)).
+Code checks and SAM vote only when the criterion names a URL, a network call or a visible element; otherwise they record `n/a`. On the real-world proofs below they don't apply, so those verdicts rest on **two Meta models agreeing** (Spark 1.3 and Spark Open). All four vote on the planted benchmark bugs.
+
+Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit made after sealing. The signature shows the receipt wasn't changed; it doesn't prove who ran the proof (the key is created on the machine that ran it). Every result below is a committed receipt: `npm run verify-proofs` checks all of them ([proofs/](proofs/)).
 
 ![The evidence page for the PROVEN receipt on Devin's Board#921 fix: verdict, three phases as expected, integrity panel](docs/assets/evidence-page.png)
 
 ## Results
 
-**On real, merged fixes by two different AI agents, in other people's apps** — **PROVEN** live, each with its criterion and wrong fix committed before the run, the verifier and the open-weights judge agreeing in every phase, neither seeing the code:
+**On real, merged fixes by two different AI agents, in other people's apps** — **PROVEN** live, each with its criterion and wrong fix committed before the run, the verifier and the open-weights judge agreeing in every phase, neither seeing the code. The bugs and the fixes are real; **every wrong fix is one we wrote**:
 
 - [pankosmia/roadmap#361](https://github.com/pankosmia/roadmap/pull/361) (MIT), written by **GitHub Copilot**, fixed a "Pull requests" button that did nothing. Attest reproduced the dead button on the PR's parent, showed Copilot's fix opens the dialog, and rejected a wrong fix (**ours**) that silences the console error but leaves the button dead ([receipt](proofs/realworld/roadmap-361-run1/) · [write-up](examples/realworld/roadmap-pulls/README.md)).
 - [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), written by **Devin**, fixed "Enter on a focused toolbar button also stamps a shape". Attest reproduced it on the PR's parent, showed Devin's fix removes it, and rejected a half-fix (Space only, **ours**) ([receipt](proofs/realworld/board-921-run2/) · [write-up](examples/realworld/board-enter/README.md)). An earlier run without a wrong fix gave the honest PROVEN_UNCHECKED ([receipt](proofs/realworld/board-921-run1/)).
 - [shizukutanaka/Board#918](https://github.com/shizukutanaka/Board/pull/918) (MIT), **Devin**'s keyboard fix: Tab past the Share dialog's last control no longer leaves the dialog. **PROVEN on run 3**, verifier and judge agreeing — after run 1 came out **INCONCLUSIVE** (the judge saw 8 of 19 frames and missed the one where focus left the dialog; the votes disagreed, so nothing was certified) and run 2 rested on the verifier alone (the judge's provider rejected more than 8 images). The fix: the judge now sees every frame as labelled contact sheets. All three runs are reported ([write-up](examples/realworld/board-focus-trap/README.md) · [receipts, release download](https://github.com/Master07/attest/releases/tag/proofs-board918-2026-11-01)).
 
-All three were found by searching merged AI-agent pull requests: of 981 PRs in 598 repos, only 4 were in permissively licensed web apps that run locally without accounts or a backend.
+All three were found by searching merged AI-agent pull requests: of 981 PRs in 598 repos, only 4 were in permissively licensed web apps that run locally without accounts or a backend. A second search looked for a merged AI fix that did **not** actually work, so Attest could reject a wrong fix written by an agent rather than by us. It found one, in a repository with no licence, so we did not use it.
 
 **As a pull-request comment:** on our own demo PR [Master07/attest#1](https://github.com/Master07/attest/pull/1), Attest proved the fix live, rejected a wrong fix, and posted the proof as a comment ([receipt](proofs/pr-1-live/)).
 
 On a [benchmark of 10 planted UI bugs](docs/BENCHMARK.md), each with a plausible wrong fix ([receipts](proofs/benchmark/)):
 
-- **Every wrong fix passed its tests:** 6 with behavioural unit tests; the 4 visual bugs (covered, off-screen or invisible button) with the CSS or HTML check you can write without a browser — which is exactly why such a check passes while the button stays covered.
+- **Every wrong fix came with a passing check:** 6 with behavioural unit tests; for the 4 visual bugs (covered, off-screen or invisible button), a source check on the CSS or HTML — not a behavioural test, but the kind of check you can write without a browser, which is exactly why it passes while the button stays covered.
 - **8 / 10** real fixes **PROVEN**; the other 2 INCONCLUSIVE (one Meta API outage, one disagreement between voters).
 - **0** wrong fixes certified as working. **0** real fixes rejected.
 - When one verifier run scrolled its way to a pass on a wrong fix, the independent judge disagreed and Attest refused to certify it ([B04 receipt](proofs/benchmark/run-2/B04/)).
@@ -155,7 +157,7 @@ npm run bench -- check               # AI-free check of the 10 benchmark scenari
 
 - The bug must reproduce in an app Attest can start locally; production-only bugs are out of scope.
 - "Not reproduced" is not "fake": Attest refuses to certify, it doesn't rule on the report.
-- The verifier is a model and can be inconsistent; the four votes reduce false passes, they don't eliminate them.
+- The verifier is a model and can be inconsistent; the independent votes reduce false passes, they don't eliminate them.
 - **Break needs a wrong fix you supply.** On someone else's PR, without one the strongest honest verdict is `PROVEN_UNCHECKED` (the fix works; Attest's ability to reject a wrong one wasn't tested). Generating wrong fixes automatically is roadmap.
 - Only fix mode is built; regression and equivalence modes are designed, not implemented.
 - If a voter can't vote — say the judge's endpoint is down — it abstains (`n/a`, with the error recorded in the receipt) and the remaining votes decide; disagreement is still never a pass.

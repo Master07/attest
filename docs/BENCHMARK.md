@@ -2,7 +2,7 @@
 
 > **Audience:** judges + team · **Status:** draft · **Last updated:** 2026-11-01 · **Related:** [ARCHITECTURE §1, §7](ARCHITECTURE.md) · [examples/bench](../examples/bench/README.md)
 
-Ten planted UI bugs, each in three versions of a tiny checkout app: **base** (the bug), **bad-fix** (a plausible wrong fix whose tests pass) and **fix** (the real fix). Attest runs Red on base, Green on fix and Break on bad-fix, with four votes per phase: the Spark 1.3 verifier, deterministic code checks, SAM 3.1 (where the criterion names a visible element) and a Muse Wonder judge (the judge at the time; it now runs on Muse Spark Open).
+Ten planted UI bugs, each in three versions of a tiny checkout app: **base** (the bug), **bad-fix** (a plausible wrong fix whose own check passes: a behavioural unit test, or a source check for the visual bugs) and **fix** (the real fix). Attest runs Red on base, Green on fix and Break on bad-fix, with four votes per phase: the Spark 1.3 verifier, deterministic code checks, SAM 3.1 (where the criterion names a visible element) and a Muse Wonder judge (the judge at the time; it now runs on Muse Spark Open).
 
 Every receipt is committed in [proofs/benchmark](../proofs/benchmark/); `npm run verify-proofs` checks them without a key.
 
