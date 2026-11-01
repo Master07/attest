@@ -1,6 +1,6 @@
-# Attest
+# Attest — proof-of-fix for AI pull requests
 
-**Proof-of-fix for AI pull requests.** A verifier that never sees the code reproduces the bug, confirms the fix in the running app, shows it would reject a wrong fix, and seals it all into a receipt anyone can check.
+A verifier that never sees the code reproduces the bug, confirms the fix in the running app, shows it would reject a wrong fix, and seals it all into a receipt anyone can check.
 
 *Built entirely during the Meta Global AI Developer Hackathon (Oct 26 – Nov 4, 2026) · Indie track · Push the Frontier.* <sub>Design docs were written Oct 26–30; git was set up on Oct 31, so the first commit contains them.</sub>
 
@@ -105,6 +105,8 @@ npm run attest -- comment evidence/run-<id>/receipt.json
 | **Muse Code** | Writes fixes headlessly in `attest loop`; Attest proves or rejects them |
 
 Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](docs/MODEL_STRATEGY.md).
+
+**Open-weights provenance:** Muse Spark Open runs from the maintainer's own Baseten account. Its use is on record, not just claimed: each live receipt names the judge (`judge: baseten/meta-models/muse-spark-open`) and keeps its verbatim vote and reason per phase — see [Board#921 run 2](proofs/realworld/board-921-run2/), [Board run 1](proofs/realworld/board-921-run1/) and [PR #1](proofs/pr-1-live/) — and the committed cassettes (`examples/checkout-demo/`, `examples/checkout-widget/`, `examples/realworld/board-enter/`) hold its recorded responses.
 
 ## Documentation
 

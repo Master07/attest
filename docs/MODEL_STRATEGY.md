@@ -20,7 +20,7 @@ Every model Attest calls at runtime is a Meta model. Each one has a separate job
 The judge runs on **Muse Spark Open**, Meta's open-weights model, served by Baseten from the maintainer's **own Baseten account** (not hackathon partner credits). Meta organizers confirmed in the hackathon Discord that Spark Open through your own Baseten account counts as an open-weights model.
 
 - Receipts name the judge model and provider (`judge: baseten/meta-models/muse-spark-open`), so every proof shows which model voted.
-- The committed cassettes (`examples/*/cassette.jsonl`) were recorded from live runs with Spark Open judging; replays use it automatically and need no key.
+- The committed cassettes (`examples/checkout-demo/`, `examples/checkout-widget/`, `examples/realworld/board-enter/` — each `cassette.jsonl`) were recorded from live runs with Spark Open judging; replays use it automatically and need no key. Each live receipt in `proofs/pr-1-live` and `proofs/realworld/` keeps the judge's verbatim vote and reason per phase.
 - Spark Open is called through Baseten's OpenAI-compatible **Responses API** with screenshots as `input_image` — the same request the Wonder fallback uses, so no code differs between them.
 - The ID `meta-models/muse-spark-open-1026` from the hackathon FAQ is for the hackathon key; own accounts serve `meta-models/muse-spark-open` (check `GET https://inference.baseten.co/v1/models`).
 
