@@ -1,0 +1,16 @@
+id: settings
+ready: /settings
+control: "#save"
+field: null
+api: { method: PUT, path: /api/settings }
+success: render
+probe:
+  path: /settings
+  steps:
+    - { wait: 600 }
+    - { click: "#notify" }
+    - { click: "#save" }
+    - { wait: 1200 }
+  expect:
+    url: /settings
+    text: { selector: "#status", equals: "Settings saved" }
