@@ -8,7 +8,8 @@ The fix: [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/9
 |---|---|---|
 | base (Red) | [`d896961`](https://github.com/shizukutanaka/Board/commit/d896961a8262e635d38dfd8174168aca6418a104) | The PR's parent — has the bug |
 | fix (Green) | [`f05983d`](https://github.com/shizukutanaka/Board/commit/f05983dd3c1a5a7fab3c93ad9ba21981fb5e48a3) | Devin's fix: one guard line in `index.html` (plus tests and docs) |
-| Break | none | No wrong fix exists in the PR's history, so the honest ceiling is `PROVEN_UNCHECKED` |
+| Break, run 1 | none | No wrong fix exists in the PR's history, so the honest ceiling is `PROVEN_UNCHECKED` |
+| Break, run 2 | local commit on top of base | A plausible half-fix **we wrote** (not Devin, not from the Board repo): Devin's guard in the same place, but for **Space only** — `if(e.target.matches?.('button')&&k===' ')return;`. The PR describes two broken keys; this fixes one. Defined and committed here **before** run 2 |
 
 **The bug, in the PR's words:** with a toolbar button focused, Enter "suppressed the button's native click" while the canvas shortcut ran `createShapeKbd()` — a shape "stamped at view center". So a user who activates a toolbar button from the keyboard gets a shape they never drew.
 
@@ -25,6 +26,15 @@ git fetch --depth 1 https://github.com/shizukutanaka/Board f05983dd3c1a5a7fab3c9
 npm run attest -- prove --app . --config-dir examples/realworld/board-enter \
   --base rw/board921/base --pr rw/board921/fix
 ```
+
+Run 2 adds the Break build. Create it on top of base: in `index.html`, right after the dialog block of the window keydown handler (`if(_dlg&&k!==_ES){ … return; }`, line 5987), insert the two lines below and commit as `rw/board921/bad-fix`; then add `--break rw/board921/bad-fix`.
+
+```js
+  // A focused button owns Space — do not arm the temporary hand tool over it.
+  if(e.target.matches?.('button')&&k===' ')return;
+```
+
+Checked by hand before the run: on this build, Enter on the focused Ellipse button still stamps a shape ("Created: Ellipse @ 231,68").
 
 `attest.yml` serves the checked-out tree with `serve.cjs` (a dependency-free static server kept here, outside the third-party tree) and opens `/index.html`. Nothing is installed from the third-party repo, and the app gets no API keys (see ARCHITECTURE §12).
 
