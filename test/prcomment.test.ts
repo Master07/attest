@@ -234,3 +234,13 @@ test("the signing key is shown as a fingerprint of the whole key, not its fixed 
   assert.notEqual(fp(a), fp(b));
   assert.ok(!a.includes("MCowBQYDK2VwAyEA"));
 });
+
+test("an errored judge is labelled in the votes table and above it", () => {
+  const r = receipt("PROVEN");
+  const p = r.phases[0] as Receipt["phases"][number];
+  r.phases[0] = { ...p, criteria: [{ ...(p.criteria[0] as Receipt["phases"][number]["criteria"][number]), votes: { cua: "fail", checks: "fail", sam: "n/a", judge: "n/a" }, notes: ["Judge could not vote: HTTP 400"] }] };
+  const out = renderPrComment(r, opts);
+  assert.match(out, /\| red \| `pay-completes` \| fail \| fail \| n\/a \| no vote \(error\) \| fail \|/);
+  assert.match(out, /Judge did not vote in 1 of 3 phases/);
+  assert.ok(!renderPrComment(receipt("PROVEN"), opts).includes("Judge did not vote"));
+});

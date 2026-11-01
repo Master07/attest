@@ -159,3 +159,18 @@ test("criteria from the file are escaped and laid out as given/when/then", () =>
 test("rendering is deterministic", () => {
   assert.equal(renderReport(full(), "/nonexistent"), renderReport(full(), "/nonexistent"));
 });
+
+test("a judge that errored reads 'no vote — error', not 'not applicable', with a summary line", () => {
+  const errored = phase("red", "fail", { criteria: [{ id: "c", votes: { cua: "fail", checks: "n/a", sam: "n/a", judge: "n/a" }, result: "fail", reason: "", observation: "o", evidence: [], notes: ["Judge could not vote: HTTP 400 Too many images"] }] });
+  const html = renderReport(full({ phases: [errored, phase("green", "pass"), phase("break", "fail")] }), "/nonexistent");
+  assert.match(html, /Judge · Muse Spark Open<\/span><span class="vv"><span class="mark" aria-hidden="true">!<\/span>no vote — error/);
+  assert.match(html, /Judge did not vote in 1 of 3 phases\./);
+  const clean = renderReport(full(), "/nonexistent");
+  assert.ok(!clean.includes("Judge did not vote"));
+});
+
+test("a judge vote that was simply not applicable still reads 'not applicable'", () => {
+  const html = renderReport(full({ phases: [phase("red", "fail", { criteria: [{ id: "c", votes: { cua: "fail", checks: "n/a", sam: "n/a", judge: "n/a" }, result: "fail", reason: "", observation: "o", evidence: [] }] })] }), "/nonexistent");
+  assert.ok(!html.includes("Judge did not vote"));
+  assert.ok(!/Judge · Muse Spark Open<\/span><span class="vv"><span class="mark" aria-hidden="true">!/.test(html));
+});

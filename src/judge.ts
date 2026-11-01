@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { outputText, pngDataUrl, postResponses } from "./api.js";
 import type { CriteriaFile } from "./criteria.js";
+import { composeSheets, planSheets } from "./frames.js";
 import { pickRoute, resolveProvider } from "./models.js";
 
 // The independent judge (ARCHITECTURE §7): a different model from the verifier, given strictly less —
@@ -67,7 +68,7 @@ export async function runJudge(
   screenshots: Buffer[],
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<JudgeResult> {
-  const frames = sampleFrames(screenshots);
+  const plan = planSheets(screenshots.length);
   const route = pickRoute("judge", false, env);
   const task = [
     "Acceptance criteria:",
@@ -78,19 +79,24 @@ export async function runJudge(
 
   try {
     const { baseUrl, apiKey } = resolveProvider(route.provider, env);
+    const total = screenshots.length;
+    const last = (plan.at(-1) ?? [0]).at(-1) ?? 0;
+    // ≤ 8 frames: one image per frame, exactly as before. More: contact sheets, so no frame is dropped.
+    const images = plan.every((g) => g.length === 1)
+      ? plan.map(([i]) => screenshots[i as number] as Buffer)
+      : await composeSheets(screenshots, plan);
+    const content = plan.flatMap((group, j) => {
+      const first = (group[0] ?? 0) + 1;
+      const end = group.includes(last) ? " (end)" : "";
+      const label = group.length === 1
+        ? `FRAME ${first} of ${total}${end}:`
+        : `IMAGE ${j + 1} of ${plan.length} — FRAMES ${group.map((i) => i + 1).join(", ")} of ${total}${end}, laid out left to right, then top to bottom, each labelled with its frame number:`;
+      return [{ type: "input_text", text: label }, { type: "input_image", image_url: pngDataUrl(images[j] as Buffer) }];
+    });
     const response = await postResponses(baseUrl, apiKey, {
       model: route.model,
       instructions: INSTRUCTIONS,
-      input: [{
-        role: "user",
-        content: [
-          { type: "input_text", text: task },
-          ...frames.flatMap((png, i) => [
-            { type: "input_text", text: `FRAME ${i + 1} of ${frames.length}${i === frames.length - 1 ? " (end)" : ""}:` },
-            { type: "input_image", image_url: pngDataUrl(png) },
-          ]),
-        ],
-      }],
+      input: [{ role: "user", content: [{ type: "input_text", text: task }, ...content] }],
     });
     const { votes, error } = parseJudgeReply(outputText(response), criteria);
     return { ...base, votes, error };

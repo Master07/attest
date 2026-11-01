@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { loadCriteria } from "./criteria.js";
 import type { CriterionRecord, PhaseRecord, Receipt } from "./receipt.js";
-import { keyFingerprint } from "./receipt.js";
+import { judgeErrored, keyFingerprint } from "./receipt.js";
 import type { Vote } from "./verdict.js";
 
 // Evidence page: a self-contained index.html rendered from receipt.json (no scripts, no network).
@@ -85,7 +85,7 @@ function criterionBlock(c: CriterionRecord, labels: VoterLabels, showId: boolean
         ${voteCell(labels.verifier, c.votes.cua)}
         ${voteCell("Code checks", c.votes.checks)}
         ${voteCell(labels.ui, c.votes.sam)}
-        ${voteCell(labels.judge, c.votes.judge)}
+        ${voteCell(labels.judge, judgeErrored(c) ? "missing" : c.votes.judge)}
       </div>
       ${c.observation ? `<blockquote class="obs"><span class="k">Verifier saw</span>${esc(c.observation)}</blockquote>` : ""}
       ${notes ? `<div class="notes"><span class="k">Other voters</span><ul>${notes}</ul></div>` : ""}
@@ -319,6 +319,7 @@ export function renderReport(receipt: Receipt, receiptDir: string): string {
   const lines = readLog(receiptDir, receipt);
   const labels = voterLabels(receipt);
   const matched = receipt.phases.filter((p) => phaseOutcome(p).match).length;
+  const judgeMissing = receipt.phases.filter((p) => p.criteria.some(judgeErrored)).length;
   const app = receipt.subject.app === "." ? "repository root" : receipt.subject.app;
   const models = receipt.models
     .map((m) => `<dt>${esc(m.role)}</dt><dd>${esc(modelName(m.model))} <span class="sub">${esc(providerName(m.provider))} · <span class="mono">${esc(m.model)}</span></span>${m.provider === "baseten" ? ` <span class="badge">open weights</span>` : ""}</dd>`)
@@ -348,7 +349,7 @@ ${receipt.replay ? `<p class="replay"><b>Replay.</b> Model responses came from t
   <div class="card verdict">
     <div class="label">Verdict</div>
     <div class="vrow"><span class="vword ${v.cls}">${esc(v.word)}</span><span class="chip">${matched} of ${receipt.phases.length} phases as expected</span></div>
-    <p class="lede">${esc(v.line)}</p>
+    <p class="lede">${esc(v.line)}</p>${judgeMissing ? `<p class="replay"><b>Judge did not vote in ${judgeMissing} of ${receipt.phases.length} phases.</b> Its error is recorded in the receipt; this verdict rests on the remaining votes.</p>` : ""}
     <ul class="reasons">${receipt.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
     <div class="tiles">${receipt.phases.map(phaseTile).join("")}</div>
   </div>

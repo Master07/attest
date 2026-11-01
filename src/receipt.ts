@@ -65,6 +65,11 @@ export interface Receipt extends ReceiptBody {
 export const sha256File = (path: string): string =>
   `sha256:${createHash("sha256").update(readFileSync(path)).digest("hex")}`;
 
+/** True when the judge was asked but could not vote (its error is recorded in the notes), as opposed to
+ *  a vote that was not applicable. The verdict treats both as an abstention; the views must not. */
+export const judgeErrored = (c: CriterionRecord): boolean =>
+  c.votes.judge === "n/a" && (c.notes ?? []).some((n) => n.startsWith("Judge could not vote"));
+
 /** Short identifier for a signing key. The SPKI key's first characters are a fixed Ed25519 DER header,
  *  so a prefix would be the same for every key; a hash of the whole key is not. */
 export const keyFingerprint = (publicKey: string): string =>
