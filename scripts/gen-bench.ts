@@ -550,7 +550,10 @@ function removeOwned(shells: Shell[]): void {
   for (const name of readdirSync(benchRoot)) {
     const path = join(benchRoot, name);
     if (!statSync(path).isDirectory()) continue;
-    if ([...prefixes].some((prefix) => name.startsWith(prefix))) rmSync(path, { recursive: true, force: true });
+    if (![...prefixes].some((prefix) => name.startsWith(prefix))) continue;
+    // Only delete generated scenario folders, never an arbitrary look-alike directory.
+    if (!existsSync(join(path, "scenario.yml"))) continue;
+    rmSync(path, { recursive: true, force: true });
   }
 }
 

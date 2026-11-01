@@ -424,7 +424,7 @@ async function check(options: BenchOptions): Promise<void> {
   const scenarios = loadScenarios(abs);
   const checks: ScenarioCheck[] = [];
   const violations: string[] = [];
-  const cache: Record<string, { badfix_tests_passed: boolean }> = {};
+  const cache: Record<string, { badfix_tests_passed: boolean; valid?: boolean }> = {};
 
   for (const scenario of scenarios) {
     const app = appPath(scenario, rel);
@@ -492,7 +492,7 @@ async function check(options: BenchOptions): Promise<void> {
     outcome.valid = outcome.failures.length === 0;
     checks.push(outcome);
     for (const failure of outcome.failures) violations.push(`${scenario.id}: ${failure}`);
-    cache[scenario.id] = { badfix_tests_passed: tests.ok };
+    cache[scenario.id] = { badfix_tests_passed: tests.ok, valid: outcome.valid };
   }
 
   mkdirSync(dirname(cachePath(options.prefix)), { recursive: true });
@@ -529,11 +529,11 @@ async function check(options: BenchOptions): Promise<void> {
   if (!summary.ok) process.exitCode = 1;
 }
 
-function readCheckCache(prefix: string): Record<string, { badfix_tests_passed: boolean }> {
+function readCheckCache(prefix: string): Record<string, { badfix_tests_passed: boolean; valid?: boolean }> {
   const path = cachePath(prefix);
   if (!existsSync(path)) return {};
   try {
-    return JSON.parse(readFileSync(path, "utf8")) as Record<string, { badfix_tests_passed: boolean }>;
+    return JSON.parse(readFileSync(path, "utf8")) as Record<string, { badfix_tests_passed: boolean; valid?: boolean }>;
   } catch {
     return {};
   }
@@ -596,6 +596,12 @@ async function run(options: BenchOptions, rest: string[]): Promise<void> {
   }
 
   const cache = readCheckCache(options.prefix);
+  const dropped = selected.filter((scenario) => cache[scenario.id]?.valid === false);
+  if (dropped.length > 0) {
+    console.log(`skipping ${dropped.length} scenario(s) dropped by the check: ${dropped.map((s) => s.id).join(", ")}`);
+    selected = selected.filter((scenario) => cache[scenario.id]?.valid !== false);
+  }
+
   const dir = join(repoRoot, "evidence", `${options.prefix}-${Date.now()}`);
   mkdirSync(dir, { recursive: true });
 
