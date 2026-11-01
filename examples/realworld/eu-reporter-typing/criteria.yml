@@ -1,0 +1,10 @@
+id: eu-reporter-type-in-day-field
+# Frozen before any Attest run (Nov 1), written from the pull request's own description of the bug:
+# g-koziol/eu-reporter#48 (by GitHub Copilot) — "Fix focus loss while typing in editable fields".
+# The app's interface is in Polish; the label is quoted as shown on screen, with an English gloss.
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: typing-keeps-text-and-focus
+    given: The EU reporter page is open showing the month calendar
+    when: The user scrolls down to the first day of the month, clicks into its text area labelled "Obszar działania" (area of activity; placeholder "Ogólny obszar działań w tym dniu"), and types abcd
+    then: That text area shows abcd and still has keyboard focus
