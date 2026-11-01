@@ -12,6 +12,7 @@
 ## Totals
 
 - wrong fixes whose unit tests passed: 6 / 6
+  - *Note added 2026-11-01, not part of the script's output:* 3 of these are unit tests; for B04, B08 and B09 the test is a source check (CSS or HTML) — the only test you can write without a browser.
 - Attest verdict `PROVEN`: 4 / 6
 - wrong fix rejected (Break = fail): 5 / 6
 - real fix accepted (Green = pass): 6 / 6

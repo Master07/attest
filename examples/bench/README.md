@@ -19,12 +19,12 @@ copies them over the base app. A branch contains only that variant's app, with e
 
 ```bash
 npm run bench -- build           # create local bench/<ID>/<variant> branches
-npm run bench -- check           # deterministic probe + bad-fix unit tests (no model calls)
+npm run bench -- check           # deterministic probe + bad-fix tests (no model calls)
 npm run bench -- run [--ids B01,B03]   # run Attest on the branches (calls the Meta API)
 ```
 
 `check` exits non-zero if a base passes the probe, a fix fails the probe, a bad-fix passes
-the probe, or a bad-fix's unit tests fail. Results from `run` go to `evidence/bench-<ts>/`
+the probe, or a bad-fix's tests fail. Results from `run` go to `evidence/bench-<ts>/`
 (gitignored).
 
 ## Honesty

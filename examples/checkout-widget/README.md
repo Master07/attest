@@ -5,7 +5,7 @@ The same tiny checkout app as `checkout-demo`, with a different, runtime-only bu
 ```bash
 cd examples/checkout-widget
 npm start            # http://localhost:4100/cart  (set PORT to change)
-npm test             # unit tests, where a branch has them
+npm test             # the branch's tests, where it has them (demo2/bad-fix: a CSS source check)
 ```
 
 ## The bug

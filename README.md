@@ -58,26 +58,28 @@ Ten planted bugs show the mechanism works; they are not a measure of real-world 
 
 ## Try it — no API key needed
 
-Requires Node 22+, git, and Microsoft Edge or Chrome (`ATTEST_BROWSER_CHANNEL=chrome` for Chrome).
+Requires Node 22+ and git; step 2 also needs Microsoft Edge or Chrome (`ATTEST_BROWSER_CHANNEL=chrome` for Chrome).
+
+**1. Check the proofs — seconds, no key, no model calls.** Every result above is a signed receipt from a **live** run, committed in [proofs/](proofs/) (TodoMVC's, at 101 MB, is a release download). This checks each signature, hash chain, screenshot and video, and recomputes each verdict from the recorded votes:
 
 ```bash
 git clone https://github.com/Master07/attest.git && cd attest
 npm install
+npm run verify-proofs
+start proofs/realworld/board-921-run1/index.html            # one evidence page (macOS: open)
+```
+
+**2. Re-run a proof yourself — about 2 minutes, from a cassette.** The app, browser, clicks, code checks and receipt are real; the model answers come from a **cassette recorded in a live run**, so no key is needed. The receipt and evidence page are marked as a replay.
+
+```bash
 git branch demo2/base origin/demo2/base; git branch demo2/bad-fix origin/demo2/bad-fix; git branch demo2/fix origin/demo2/fix
 npm run attest -- prove --app examples/checkout-widget --base demo2/base --pr demo2/fix --break demo2/bad-fix --replay examples/checkout-widget/cassette.jsonl
+npm run attest -- verify evidence/run-<id>/receipt.json
 ```
 
 Optional: `npx playwright install ffmpeg` (a few MB) adds a screen recording of every phase to the evidence page; without it, everything else still runs.
 
-`--replay` answers model calls from a cassette recorded in a real run. The app, browser, clicks, code checks and receipt are all real; the receipt and page are marked as a replay. Then:
-
-```bash
-npm run attest -- verify evidence/run-<id>/receipt.json     # no key, no model calls
-start evidence/run-<id>/index.html                          # the evidence page (macOS: open)
-npm run verify-proofs                                       # every committed proof in proofs/
-```
-
-**Live**, with a Meta Model API key: `cp .env.example .env`, set `MODEL_API_KEY` (and `BASETEN_API_KEY` for the open-weights judge; without it the judge uses Muse Wonder), and drop `--replay …`.
+**3. Live, with your own keys:** `cp .env.example .env`, set `MODEL_API_KEY` (and `BASETEN_API_KEY` for the open-weights judge; without it the judge uses Muse Wonder), and drop `--replay …`.
 **Let Muse Code write the fix**, then prove it: `npm run attest -- loop --app examples/checkout-widget --base demo2/base --break demo2/bad-fix --report "I click Pay and nothing happens."`
 **Start from a recorded bug report**: `npm run attest -- draft --video examples/checkout-widget/bug-report/bug.webm --audio examples/checkout-widget/bug-report/narration.wav --out my-draft.yml` drafts criteria from a screen recording and narration for you to review ([sample](examples/checkout-widget/bug-report/README.md)).
 
@@ -142,9 +144,15 @@ npm run bench -- check               # AI-free check of the 10 benchmark scenari
 - The verifier is a model and can be inconsistent; the four votes reduce false passes, they don't eliminate them.
 - **Break needs a wrong fix you supply.** On someone else's PR, without one the strongest honest verdict is `PROVEN_UNCHECKED` (the fix works; Attest's ability to reject a wrong one wasn't tested). Generating wrong fixes automatically is roadmap.
 - Only fix mode is built; regression and equivalence modes are designed, not implemented.
-- The receipt proves nothing changed after capture, not that the capture environment was honest. It is signed with a key created on the machine that ran it.
+- If a voter can't vote — say the judge's endpoint is down — it abstains (`n/a`, with the error recorded in the receipt) and the remaining votes decide; disagreement is still never a pass.
+- The receipt proves nothing changed after capture, not that the capture environment was honest. The signature detects a later edit; it is made with a key created on the machine that ran the proof.
+- The app under test never sees Attest's API keys, but it does run as your user — run unfamiliar repos in a VM or container.
 
-More in [ARCHITECTURE §13](docs/ARCHITECTURE.md).
+More in [ARCHITECTURE §12–13](docs/ARCHITECTURE.md).
+
+## How it was built
+
+One developer, during the hackathon, with AI coding agents: **Claude Code** and **Command Code** wrote much of the code under the developer's design and review, and commits they co-wrote carry `Co-authored-by` trailers. Their work was checked the way Attest checks any agent's work — against written acceptance criteria, with tests and independent validation, misses recorded. At runtime, every model Attest calls is a Meta model.
 
 ## Open-source dependencies
 

@@ -14,7 +14,7 @@ import { startWorkspace } from "../src/workspace.js";
 import type { Workspace } from "../src/workspace.js";
 
 // Benchmark driver (examples/bench). `build` creates one branch per variant,
-// `check` runs the deterministic probe and the bad-fix unit tests (no model calls),
+// `check` runs the deterministic probe and the bad-fix tests (no model calls),
 // and `run` executes Attest over every scenario (the only command that calls the API).
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -353,7 +353,7 @@ async function check(): Promise<void> {
       if (variant === "base" && probe.ok) violations.push(`${scenario.id}: base passed the probe`);
       if (variant === "fix" && !probe.ok) violations.push(`${scenario.id}: fix failed the probe`);
       if (variant === "bad-fix" && probe.ok) violations.push(`${scenario.id}: bad-fix passed the probe`);
-      if (variant === "bad-fix" && !tests.ok) violations.push(`${scenario.id}: bad-fix unit tests failed`);
+      if (variant === "bad-fix" && !tests.ok) violations.push(`${scenario.id}: bad-fix tests failed`);
     }
 
     cache[scenario.id] = { badfix_tests_passed: tests.ok };
@@ -408,7 +408,7 @@ function renderMarkdown(results: ScenarioResult[], dir: string): string {
     "",
     "## Totals",
     "",
-    `- wrong fixes whose unit tests passed: ${testsPassed} / ${total}`,
+    `- wrong fixes whose tests passed: ${testsPassed} / ${total} (unit tests, or for the visual bugs B04, B06, B08, B09 a CSS/HTML source check)`,
     `- Attest verdict \`PROVEN\`: ${proven} / ${total}`,
     `- wrong fix rejected (Break = fail): ${breakFailed} / ${total}`,
     `- real fix accepted (Green = pass): ${greenPassed} / ${total}`,
