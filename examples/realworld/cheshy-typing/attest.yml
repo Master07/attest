@@ -1,0 +1,13 @@
+app:
+  # The app under test is kq4cin/cheshy-mess (MIT), a React + Vite chess app, checked out from a fetched ref.
+  # Third-party packages are installed with install scripts disabled; the app gets no API keys.
+  install: npm ci --ignore-scripts --no-audit --no-fund
+  start: node -e "require(process.env.ATTEST_CONFIG_DIR + '/start-vite.cjs')"
+  url: http://127.0.0.1:$PORT
+  ready: /
+  timeout_s: 60
+browser:
+  viewport: { width: 1280, height: 720 }
+verifier:
+  max_steps: 25
+  judge: true
