@@ -1,0 +1,10 @@
+id: jspaint-flip-rotate-radio-circle
+# Frozen before any Attest run (Nov 1), written from the bug report / pull request's own words:
+# 1j01/jspaint issues #311 "Unable to Flip Vertical" and #312 "Unable to Rotate By Angle": "the radio button and option does not get selected";
+# fixed by the maintainer in 98bc205 "Fix clicking radio buttons directly".
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: click-the-radio-circle
+    given: "JS Paint is open with a blank image, and the user has opened Image > Flip/Rotate (Ctrl+Alt+R); \"Flip horizontal\" is selected"
+    when: "The user clicks the small round radio button to the left of the words \"Flip vertical\" — the circle itself, not the words"
+    then: "\"Flip vertical\" becomes the selected option (the dot moves to Flip vertical)"

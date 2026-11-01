@@ -1,0 +1,10 @@
+id: cara-desktop-theme-toggle
+# Frozen before any Attest run (Nov 1), written from the bug report / pull request's own words:
+# janavipandole/Cara issue #2629: "A floating theme toggle button ... is visible ... but clicking it does nothing. The page stays in light mode.";
+# fixed in PR #2677.
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: theme-button-switches-to-dark
+    given: "The Cara shop home page is open in light mode (white background)"
+    when: "The user clicks the round theme button at the top right of the header"
+    then: "The page switches to dark mode: the page background turns dark"

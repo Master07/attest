@@ -1,0 +1,13 @@
+app:
+  # The app under test is 1j01/jspaint (MIT), JS Paint, static files (index.html + src/ + lib/),
+  # checked out from a fetched ref. serve.cjs lives here, in Attest's config dir, not in their tree.
+  start: node -e "require(process.env.ATTEST_CONFIG_DIR + '/serve.cjs')"
+  url: http://localhost:$PORT
+  ready: /index.html
+  open: /index.html
+  timeout_s: 30
+browser:
+  viewport: { width: 1280, height: 720 }
+verifier:
+  max_steps: 25
+  judge: true
