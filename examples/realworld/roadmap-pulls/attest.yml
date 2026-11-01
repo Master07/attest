@@ -1,0 +1,14 @@
+app:
+  # The app under test is pankosmia/roadmap (MIT), a static issue board, checked out from a fetched ref.
+  # serve.cjs lives here, in Attest's config dir, not in their tree. The page loads its UI components
+  # from a CDN and public issues from the GitHub API, so the run needs internet access.
+  start: node -e "require(process.env.ATTEST_CONFIG_DIR + '/serve.cjs')"
+  url: http://localhost:$PORT
+  ready: /index.html
+  open: /index.html
+  timeout_s: 30
+browser:
+  viewport: { width: 1280, height: 720 }
+verifier:
+  max_steps: 25
+  judge: true

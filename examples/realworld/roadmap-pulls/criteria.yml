@@ -1,0 +1,10 @@
+id: roadmap-pull-requests-button
+# Frozen before any Attest run (Nov 1), written from the pull request's own description of the bug:
+# pankosmia/roadmap#361 (by GitHub Copilot) — "Clicking the Pull requests button did nothing."
+# Keyed on the dialog only: the issue list depends on GitHub's public API rate limit and is not part of the bug.
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: pull-requests-button-opens-dialog
+    given: The Pankosmia roadmap page is open, not connected to GitHub
+    when: The user clicks the "Pull requests" button in the toolbar at the top of the page
+    then: A dialog titled "Open pull requests" opens, with a "Close" button
