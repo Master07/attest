@@ -1,0 +1,21 @@
+id: G-todo-hidden-required
+title: "todo: Hidden required field blocks submit"
+category: validation
+shell: todo
+recipe: hidden-required
+bad_fix_test: source
+bug_report: It won't let me submit the form.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#new"
+      text: Buy milk
+    - click: "#add"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#items li:last-child"
+      equals: Buy milk

@@ -1,0 +1,20 @@
+id: G-settings-late-overlay
+title: "settings: Late third-party overlay"
+category: events
+shell: settings
+recipe: late-overlay
+bad_fix_test: source
+bug_report: Something covers the button a moment after the page loads.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

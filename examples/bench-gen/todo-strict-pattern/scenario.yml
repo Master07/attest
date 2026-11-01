@@ -1,0 +1,21 @@
+id: G-todo-strict-pattern
+title: "todo: Over-strict input pattern"
+category: validation
+shell: todo
+recipe: strict-pattern
+bad_fix_test: unit
+bug_report: It won't let me submit the form.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#new"
+      text: Buy milk
+    - click: "#add"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#items li:last-child"
+      equals: Buy milk

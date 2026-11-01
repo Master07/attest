@@ -1,0 +1,23 @@
+id: G-signup-navigate-early
+title: "signup: Navigation before the save finishes"
+category: network
+shell: signup
+recipe: navigate-early
+bad_fix_test: unit
+bug_report: It sends me away before anything happens.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

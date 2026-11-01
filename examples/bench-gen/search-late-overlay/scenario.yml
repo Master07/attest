@@ -1,0 +1,21 @@
+id: G-search-late-overlay
+title: "search: Late third-party overlay"
+category: events
+shell: search
+recipe: late-overlay
+bad_fix_test: source
+bug_report: Something covers the button a moment after the page loads.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#q"
+      text: lamp
+    - click: "#go"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#results li:first-child"
+      equals: Desk lamp

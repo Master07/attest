@@ -1,0 +1,23 @@
+id: G-signup-delayed-enable
+title: "signup: Control disabled shortly after load"
+category: state
+shell: signup
+recipe: delayed-enable
+bad_fix_test: source
+bug_report: The button goes grey after the page loads and I can't click it.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

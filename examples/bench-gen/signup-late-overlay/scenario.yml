@@ -1,0 +1,23 @@
+id: G-signup-late-overlay
+title: "signup: Late third-party overlay"
+category: events
+shell: signup
+recipe: late-overlay
+bad_fix_test: source
+bug_report: Something covers the button a moment after the page loads.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

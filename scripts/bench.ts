@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
 import type { SpawnSyncReturns } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
-import { dirname, join, relative, resolve, sep } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse } from "yaml";
 import { launchBrowser } from "../src/browser.js";
@@ -13,18 +13,24 @@ import type { Receipt } from "../src/receipt.js";
 import { startWorkspace } from "../src/workspace.js";
 import type { Workspace } from "../src/workspace.js";
 
-// Benchmark driver (examples/bench). `build` creates one branch per variant,
-// `check` runs the deterministic probe and the bad-fix tests (no model calls),
-// and `run` executes Attest over every scenario (the only command that calls the API).
+// Benchmark driver. `build` creates one branch per variant, `check` runs the deterministic
+// probe and the bad-fix tests (no model calls), and `run` executes Attest (the only API command).
+// --root/--prefix let the generated set live beside the hand-written one without touching it.
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const benchRoot = join(repoRoot, "examples", "bench");
 if (existsSync(join(repoRoot, ".env"))) process.loadEnvFile(join(repoRoot, ".env"));
 
 const GIT_FALLBACK = "C:\\Program Files\\Git\\cmd\\git.exe";
+const DEFAULT_ROOT = "examples/bench";
+const DEFAULT_PREFIX = "bench";
 
 type Variant = "base" | "bad-fix" | "fix";
 const VARIANTS: Variant[] = ["base", "bad-fix", "fix"];
+
+interface BenchOptions {
+  root: string;      // relative to repoRoot
+  prefix: string;    // branch prefix
+}
 
 type ProbeStep =
   | { kind: "wait"; ms: number }
@@ -43,6 +49,9 @@ interface Scenario {
   title: string;
   category: string;
   outside: boolean;
+  shell: string | null;
+  recipe: string | null;
+  badFixTest: "unit" | "source" | null;
   probe: Probe;
 }
 
@@ -69,6 +78,16 @@ interface ScenarioResult {
   reasons: string[];
 }
 
+interface ScenarioCheck {
+  scenario: Scenario;
+  basePass: boolean;
+  fixPass: boolean;
+  badFixPass: boolean;
+  testsPass: boolean;
+  valid: boolean;
+  failures: string[];
+}
+
 function message(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
@@ -90,13 +109,47 @@ function parseStep(raw: unknown): ProbeStep {
   throw new Error(`unsupported probe step: ${JSON.stringify(raw)}`);
 }
 
-function loadScenarios(): Scenario[] {
-  const dirs = readdirSync(benchRoot)
-    .filter((name) => /^B\d{2}-/.test(name) && statSync(join(benchRoot, name)).isDirectory())
+function parseOptions(args: string[]): { options: BenchOptions; rest: string[] } {
+  let root = DEFAULT_ROOT;
+  let prefix = DEFAULT_PREFIX;
+  const rest: string[] = [];
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === "--root") {
+      const value = args[++i];
+      if (value === undefined || value === "") throw new Error("--root needs a directory");
+      root = value;
+    } else if (arg === "--prefix") {
+      const value = args[++i];
+      if (value === undefined || value === "") throw new Error("--prefix needs a name");
+      prefix = value;
+    } else {
+      rest.push(arg ?? "");
+    }
+  }
+  if (!/^[A-Za-z0-9._-]+$/.test(prefix)) throw new Error(`--prefix must be a simple name, got "${prefix}"`);
+  return { options: { root, prefix }, rest };
+}
+
+function rootPaths(options: BenchOptions): { abs: string; rel: string } {
+  const abs = resolve(repoRoot, options.root);
+  const rel = relative(repoRoot, abs).split(sep).join("/");
+  if (rel === "" || rel.startsWith("..") || isAbsolute(rel)) {
+    throw new Error(`--root must be inside the repo, got "${options.root}"`);
+  }
+  return { abs, rel };
+}
+
+function loadScenarios(rootAbs: string): Scenario[] {
+  const dirs = readdirSync(rootAbs)
+    .filter((name) => {
+      const path = join(rootAbs, name);
+      return statSync(path).isDirectory() && existsSync(join(path, "scenario.yml"));
+    })
     .sort();
 
   const scenarios = dirs.map((dir): Scenario => {
-    const doc = asRecord(parse(readFileSync(join(benchRoot, dir, "scenario.yml"), "utf8")));
+    const doc = asRecord(parse(readFileSync(join(rootAbs, dir, "scenario.yml"), "utf8")));
     const id = doc["id"];
     const title = doc["title"];
     const category = doc["category"];
@@ -123,12 +176,16 @@ function loadScenarios(): Scenario[] {
       text = { selector, equals };
     }
 
+    const badFixTestRaw = doc["bad_fix_test"];
     return {
       dir,
       id,
       title,
       category,
       outside: doc["outside_app_dir"] === true,
+      shell: typeof doc["shell"] === "string" ? doc["shell"] : null,
+      recipe: typeof doc["recipe"] === "string" ? doc["recipe"] : null,
+      badFixTest: badFixTestRaw === "unit" || badFixTestRaw === "source" ? badFixTestRaw : null,
       probe: {
         path: typeof probeRaw["path"] === "string" ? probeRaw["path"] : "/",
         steps: stepsRaw.map(parseStep),
@@ -142,8 +199,12 @@ function loadScenarios(): Scenario[] {
   return scenarios;
 }
 
-function appPath(scenario: Scenario): string {
-  return `examples/bench/${scenario.dir}/app`;
+function appPath(scenario: Scenario, rootRel: string): string {
+  return `${rootRel}/${scenario.dir}/app`;
+}
+
+function cachePath(prefix: string): string {
+  return join(repoRoot, ".attest", prefix, "check.json");
 }
 
 function git(args: string[], cwd: string): SpawnSyncReturns<string> {
@@ -178,25 +239,32 @@ function copyOverlay(from: string, to: string): void {
   }
 }
 
-function removeOverlayDirs(worktree: string): void {
-  const root = join(worktree, "examples", "bench");
+function removeOverlayDirs(worktree: string, rootRel: string): void {
+  const root = join(worktree, rootRel);
   for (const name of readdirSync(root)) {
-    if (!/^B\d{2}-/.test(name)) continue;
+    const dir = join(root, name);
+    if (!statSync(dir).isDirectory()) continue;
     for (const overlay of ["fix", "bad-fix"]) {
-      rmSync(join(root, name, overlay), { recursive: true, force: true });
+      rmSync(join(dir, overlay), { recursive: true, force: true });
     }
   }
 }
 
 let worktreeCounter = 0;
 
-function buildBranch(scenario: Scenario, variant: Variant, mainSha: string): void {
+function buildBranch(
+  scenario: Scenario,
+  variant: Variant,
+  mainSha: string,
+  rootRel: string,
+  prefix: string,
+): void {
   worktreeCounter += 1;
   const worktree = join(
     repoRoot,
     ".attest",
     "bench-build",
-    `${scenario.id}-${variant}-${Date.now()}-${worktreeCounter}`,
+    `${prefix}-${scenario.id}-${variant}-${Date.now()}-${worktreeCounter}`,
   );
   mkdirSync(dirname(worktree), { recursive: true });
 
@@ -205,16 +273,16 @@ function buildBranch(scenario: Scenario, variant: Variant, mainSha: string): voi
 
     if (variant !== "base") {
       copyOverlay(
-        join(worktree, "examples", "bench", scenario.dir, variant),
-        join(worktree, "examples", "bench", scenario.dir, "app"),
+        join(worktree, rootRel, scenario.dir, variant),
+        join(worktree, rootRel, scenario.dir, "app"),
       );
     }
-    removeOverlayDirs(worktree);
+    removeOverlayDirs(worktree, rootRel);
 
     gitOk(["add", "-A"], worktree);
-    gitOk(["commit", "-m", `bench ${scenario.id} ${variant}`], worktree);
+    gitOk(["commit", "-m", `${prefix} ${scenario.id} ${variant}`], worktree);
     const sha = gitOk(["rev-parse", "HEAD"], worktree).trim();
-    gitOk(["branch", "-f", `bench/${scenario.id}/${variant}`, sha], repoRoot);
+    gitOk(["branch", "-f", `${prefix}/${scenario.id}/${variant}`, sha], repoRoot);
   } finally {
     git(["worktree", "remove", "--force", worktree], repoRoot);
     rmSync(worktree, { recursive: true, force: true });
@@ -222,19 +290,20 @@ function buildBranch(scenario: Scenario, variant: Variant, mainSha: string): voi
   }
 }
 
-async function build(): Promise<void> {
-  const scenarios = loadScenarios();
+async function build(options: BenchOptions): Promise<void> {
+  const { abs, rel } = rootPaths(options);
+  const scenarios = loadScenarios(abs);
   const mainSha = gitOk(["rev-parse", "--verify", "main^{commit}"], repoRoot).trim();
 
-  const existing = gitOk(["for-each-ref", "--format=%(refname:short)", "refs/heads/bench"], repoRoot)
+  const existing = gitOk(["for-each-ref", "--format=%(refname:short)", `refs/heads/${options.prefix}/`], repoRoot)
     .split(/\r?\n/)
     .filter((line) => line.trim() !== "");
   for (const ref of existing) gitOk(["branch", "-D", ref], repoRoot);
 
   for (const scenario of scenarios) {
     for (const variant of VARIANTS) {
-      buildBranch(scenario, variant, mainSha);
-      console.log(`built bench/${scenario.id}/${variant}`);
+      buildBranch(scenario, variant, mainSha, rel, options.prefix);
+      console.log(`built ${options.prefix}/${scenario.id}/${variant}`);
     }
   }
   console.log(`done: ${scenarios.length * VARIANTS.length} branches from ${mainSha.slice(0, 12)}`);
@@ -304,15 +373,72 @@ function runTests(cwd: string): { ok: boolean; detail: string } {
   return { ok, detail: ok ? "" : output };
 }
 
-async function check(): Promise<void> {
-  const scenarios = loadScenarios();
+function validationMarkdown(checks: ScenarioCheck[]): string {
+  const total = checks.length;
+  const valid = checks.filter((c) => c.valid).length;
+  const dropped = checks.filter((c) => !c.valid);
+
+  const countBy = (key: (c: ScenarioCheck) => string): string[] => {
+    const counts = new Map<string, { valid: number; total: number }>();
+    for (const check of checks) {
+      const name = key(check);
+      const entry = counts.get(name) ?? { valid: 0, total: 0 };
+      entry.total += 1;
+      if (check.valid) entry.valid += 1;
+      counts.set(name, entry);
+    }
+    return [...counts.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([name, count]) => `| ${name} | ${count.valid} / ${count.total} |`);
+  };
+
+  const lines = [
+    "# Generated benchmark validation",
+    "",
+    "> Generated by `npm run bench -- check --root examples/bench-gen --prefix bench-gen`. Do not edit by hand.",
+    "",
+    `- generated: ${total}`,
+    `- valid: ${valid}`,
+    `- dropped: ${dropped.length}`,
+    "",
+    "A scenario is valid when the base fails the probe, the fix passes it, the bad-fix fails it, and the bad-fix's own test passes.",
+    "",
+  ];
+
+  if (dropped.length > 0) {
+    lines.push("## Dropped", "");
+    for (const check of dropped.sort((a, b) => a.scenario.id.localeCompare(b.scenario.id))) {
+      lines.push(`- ${check.scenario.id}: ${check.failures.join("; ")}`);
+    }
+    lines.push("");
+  }
+
+  lines.push("## By shell", "", "| Shell | Valid / generated |", "|---|---|", ...countBy((c) => c.scenario.shell ?? "(none)"), "");
+  lines.push("## By class", "", "| Class | Valid / generated |", "|---|---|", ...countBy((c) => c.scenario.category), "");
+  lines.push("## By wrong-fix test kind", "", "| Kind | Valid / generated |", "|---|---|", ...countBy((c) => c.scenario.badFixTest ?? "(none)"), "");
+  return lines.join("\n") + "\n";
+}
+
+async function check(options: BenchOptions): Promise<void> {
+  const { abs, rel } = rootPaths(options);
+  const scenarios = loadScenarios(abs);
+  const checks: ScenarioCheck[] = [];
   const violations: string[] = [];
   const cache: Record<string, { badfix_tests_passed: boolean }> = {};
 
   for (const scenario of scenarios) {
-    const app = appPath(scenario);
-    const config = loadConfig(join(repoRoot, app));
+    const app = appPath(scenario, rel);
+    const config = loadConfig(join(abs, scenario.dir, "app"));
     let tests = { ok: false, detail: "" };
+    const outcome: ScenarioCheck = {
+      scenario,
+      basePass: false,
+      fixPass: false,
+      badFixPass: false,
+      testsPass: false,
+      valid: false,
+      failures: [],
+    };
 
     for (const variant of VARIANTS) {
       let workspace: Workspace | undefined;
@@ -323,7 +449,7 @@ async function check(): Promise<void> {
         workspace = await startWorkspace({
           repoRoot,
           appPath: app,
-          ref: `bench/${scenario.id}/${variant}`,
+          ref: `${options.prefix}/${scenario.id}/${variant}`,
           phase: `${scenario.id}-${variant}`,
           config,
         });
@@ -335,6 +461,13 @@ async function check(): Promise<void> {
       } finally {
         if (browser !== undefined) await browser.close();
         if (workspace !== undefined) await workspace.stop();
+      }
+
+      if (variant === "base") outcome.basePass = probe.ok;
+      if (variant === "fix") outcome.fixPass = probe.ok;
+      if (variant === "bad-fix") {
+        outcome.badFixPass = probe.ok;
+        outcome.testsPass = tests.ok;
       }
 
       const line: Record<string, unknown> = {
@@ -350,32 +483,54 @@ async function check(): Promise<void> {
       }
       console.log(JSON.stringify(line));
 
-      if (variant === "base" && probe.ok) violations.push(`${scenario.id}: base passed the probe`);
-      if (variant === "fix" && !probe.ok) violations.push(`${scenario.id}: fix failed the probe`);
-      if (variant === "bad-fix" && probe.ok) violations.push(`${scenario.id}: bad-fix passed the probe`);
-      if (variant === "bad-fix" && !tests.ok) violations.push(`${scenario.id}: bad-fix tests failed`);
+      if (variant === "base" && probe.ok) outcome.failures.push("base passed the probe");
+      if (variant === "fix" && !probe.ok) outcome.failures.push("fix failed the probe");
+      if (variant === "bad-fix" && probe.ok) outcome.failures.push("bad-fix passed the probe");
+      if (variant === "bad-fix" && !tests.ok) outcome.failures.push("bad-fix test failed");
     }
 
+    outcome.valid = outcome.failures.length === 0;
+    checks.push(outcome);
+    for (const failure of outcome.failures) violations.push(`${scenario.id}: ${failure}`);
     cache[scenario.id] = { badfix_tests_passed: tests.ok };
   }
 
-  mkdirSync(join(repoRoot, ".attest", "bench"), { recursive: true });
-  writeFileSync(join(repoRoot, ".attest", "bench", "check.json"), `${JSON.stringify(cache, null, 2)}\n`);
+  mkdirSync(dirname(cachePath(options.prefix)), { recursive: true });
+  writeFileSync(cachePath(options.prefix), `${JSON.stringify(cache, null, 2)}\n`);
 
-  const summary = {
-    summary: true,
-    scenarios: scenarios.length,
-    variants: scenarios.length * VARIANTS.length,
-    badfix_tests_passed: Object.values(cache).filter((entry) => entry.badfix_tests_passed).length,
-    violations,
-    ok: violations.length === 0,
-  };
+  const isDefault = rel === DEFAULT_ROOT && options.prefix === DEFAULT_PREFIX;
+  const valid = checks.filter((c) => c.valid).length;
+
+  if (!isDefault) {
+    writeFileSync(join(abs, "VALIDATION.md"), validationMarkdown(checks));
+  }
+
+  const summary = isDefault
+    ? {
+        summary: true,
+        scenarios: scenarios.length,
+        variants: scenarios.length * VARIANTS.length,
+        badfix_tests_passed: Object.values(cache).filter((entry) => entry.badfix_tests_passed).length,
+        violations,
+        ok: violations.length === 0,
+      }
+    : {
+        summary: true,
+        scenarios: scenarios.length,
+        variants: scenarios.length * VARIANTS.length,
+        generated: scenarios.length,
+        valid,
+        dropped: scenarios.length - valid,
+        badfix_tests_passed: Object.values(cache).filter((entry) => entry.badfix_tests_passed).length,
+        violations,
+        ok: valid >= 60,
+      };
   console.log(JSON.stringify(summary));
-  if (violations.length > 0) process.exitCode = 1;
+  if (!summary.ok) process.exitCode = 1;
 }
 
-function readCheckCache(): Record<string, { badfix_tests_passed: boolean }> {
-  const path = join(repoRoot, ".attest", "bench", "check.json");
+function readCheckCache(prefix: string): Record<string, { badfix_tests_passed: boolean }> {
+  const path = cachePath(prefix);
   if (!existsSync(path)) return {};
   try {
     return JSON.parse(readFileSync(path, "utf8")) as Record<string, { badfix_tests_passed: boolean }>;
@@ -408,7 +563,7 @@ function renderMarkdown(results: ScenarioResult[], dir: string): string {
     "",
     "## Totals",
     "",
-    `- wrong fixes whose tests passed: ${testsPassed} / ${total} (unit tests, or for the visual bugs B04, B06, B08, B09 a CSS/HTML source check)`,
+    `- wrong fixes whose tests passed: ${testsPassed} / ${total}`,
     `- Attest verdict \`PROVEN\`: ${proven} / ${total}`,
     `- wrong fix rejected (Break = fail): ${breakFailed} / ${total}`,
     `- real fix accepted (Green = pass): ${greenPassed} / ${total}`,
@@ -425,8 +580,9 @@ function renderMarkdown(results: ScenarioResult[], dir: string): string {
   return `${lines.join("\n")}\n`;
 }
 
-async function run(rest: string[]): Promise<void> {
-  const all = loadScenarios();
+async function run(options: BenchOptions, rest: string[]): Promise<void> {
+  const { abs, rel } = rootPaths(options);
+  const all = loadScenarios(abs);
   let selected = all;
 
   const idsFlag = rest.indexOf("--ids");
@@ -439,8 +595,8 @@ async function run(rest: string[]): Promise<void> {
     selected = all.filter((scenario) => wanted.has(scenario.id));
   }
 
-  const cache = readCheckCache();
-  const dir = join(repoRoot, "evidence", `bench-${Date.now()}`);
+  const cache = readCheckCache(options.prefix);
+  const dir = join(repoRoot, "evidence", `${options.prefix}-${Date.now()}`);
   mkdirSync(dir, { recursive: true });
 
   const results: ScenarioResult[] = [];
@@ -454,10 +610,10 @@ async function run(rest: string[]): Promise<void> {
     try {
       const proof = await runProof({
         repoRoot,
-        appPath: appPath(scenario),
-        base: `bench/${scenario.id}/base`,
-        pr: `bench/${scenario.id}/fix`,
-        break: `bench/${scenario.id}/bad-fix`,
+        appPath: appPath(scenario, rel),
+        base: `${options.prefix}/${scenario.id}/base`,
+        pr: `${options.prefix}/${scenario.id}/fix`,
+        break: `${options.prefix}/${scenario.id}/bad-fix`,
         outDir: join(dir, scenario.id),
         onProgress: (progress) => console.log(`[${scenario.id}] ${progress}`),
       });
@@ -500,14 +656,15 @@ async function run(rest: string[]): Promise<void> {
 const [command, ...rest] = process.argv.slice(2);
 
 try {
+  const { options, rest: remaining } = parseOptions(rest);
   if (command === "build") {
-    await build();
+    await build(options);
   } else if (command === "check") {
-    await check();
+    await check(options);
   } else if (command === "run") {
-    await run(rest);
+    await run(options, remaining);
   } else {
-    console.log("usage: npm run bench -- <build|check|run> [--ids B01,B03]");
+    console.log("usage: npm run bench -- <build|check|run> [--root <dir>] [--prefix <name>] [--ids A,B]");
     process.exitCode = 1;
   }
 } catch (err) {

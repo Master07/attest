@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar"><span class="brand">Northwind Supply</span></header>
+  <main class="page">
+    <section class="panel">
+      <h1 id="greeting">Welcome</h1>
+      <p>Your account is ready.</p>
+    </section>
+  </main>
+  <script>
+    const name = new URLSearchParams(location.search).get("name") || "";
+    document.getElementById("greeting").textContent = "Welcome, " + name;
+  </script>
+</body>
+</html>

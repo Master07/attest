@@ -1,0 +1,16 @@
+id: G-checkout-zero-size
+title: "checkout: Control rendered at zero size"
+category: layout
+shell: checkout
+recipe: zero-size
+bad_fix_test: source
+bug_report: I can't see or click the button.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

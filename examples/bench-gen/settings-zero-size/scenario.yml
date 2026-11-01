@@ -1,0 +1,20 @@
+id: G-settings-zero-size
+title: "settings: Control rendered at zero size"
+category: layout
+shell: settings
+recipe: zero-size
+bad_fix_test: source
+bug_report: I can't see or click the button.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

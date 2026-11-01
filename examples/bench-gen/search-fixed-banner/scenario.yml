@@ -1,0 +1,21 @@
+id: G-search-fixed-banner
+title: "search: Fixed banner covers the control"
+category: overlay
+shell: search
+recipe: fixed-banner
+bad_fix_test: source
+bug_report: A banner covers the page and I can't use the button.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#q"
+      text: lamp
+    - click: "#go"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#results li:first-child"
+      equals: Desk lamp

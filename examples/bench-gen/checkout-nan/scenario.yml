@@ -1,0 +1,16 @@
+id: G-checkout-nan
+title: "checkout: Parsed amount becomes NaN"
+category: state
+shell: checkout
+recipe: nan
+bad_fix_test: unit
+bug_report: The button does nothing.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

@@ -1,0 +1,16 @@
+id: G-checkout-late-overlay
+title: "checkout: Late third-party overlay"
+category: events
+shell: checkout
+recipe: late-overlay
+bad_fix_test: source
+bug_report: Something covers the button a moment after the page loads.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

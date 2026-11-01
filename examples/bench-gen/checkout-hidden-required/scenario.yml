@@ -1,0 +1,16 @@
+id: G-checkout-hidden-required
+title: "checkout: Hidden required field blocks submit"
+category: validation
+shell: checkout
+recipe: hidden-required
+bad_fix_test: source
+bug_report: It won't let me submit the form.
+outside_app_dir: false
+probe:
+  path: /cart
+  steps:
+    - wait: 600
+    - click: "#pay"
+    - wait: 1500
+  expect:
+    url: /order-confirmation

@@ -1,0 +1,21 @@
+id: G-todo-delayed-enable
+title: "todo: Control disabled shortly after load"
+category: state
+shell: todo
+recipe: delayed-enable
+bad_fix_test: source
+bug_report: The button goes grey after the page loads and I can't click it.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#new"
+      text: Buy milk
+    - click: "#add"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#items li:last-child"
+      equals: Buy milk

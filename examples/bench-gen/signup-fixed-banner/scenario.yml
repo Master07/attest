@@ -1,0 +1,23 @@
+id: G-signup-fixed-banner
+title: "signup: Fixed banner covers the control"
+category: overlay
+shell: signup
+recipe: fixed-banner
+bad_fix_test: source
+bug_report: A banner covers the page and I can't use the button.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

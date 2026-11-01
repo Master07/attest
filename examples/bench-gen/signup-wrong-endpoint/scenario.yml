@@ -1,0 +1,23 @@
+id: G-signup-wrong-endpoint
+title: "signup: Request to a missing path"
+category: network
+shell: signup
+recipe: wrong-endpoint
+bad_fix_test: unit
+bug_report: I submit and get an error.
+outside_app_dir: false
+probe:
+  path: /signup
+  steps:
+    - wait: 600
+    - fill: "#name"
+      text: Ada
+    - fill: "#email"
+      text: ada@example.com
+    - click: "#create"
+    - wait: 1500
+  expect:
+    url: /welcome
+    text:
+      selector: "#greeting"
+      equals: Welcome, Ada

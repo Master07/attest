@@ -1,0 +1,11 @@
+app:
+  install: npm install --no-audit --no-fund
+  start: node server.js
+  url: http://localhost:$PORT
+  ready: /settings
+  timeout_s: 30
+browser:
+  viewport: { width: 1280, height: 720 }
+verifier:
+  max_steps: 25
+  judge: true

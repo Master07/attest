@@ -1,0 +1,20 @@
+id: G-settings-transparent-overlay
+title: "settings: Transparent layer over the control"
+category: overlay
+shell: settings
+recipe: transparent-overlay
+bad_fix_test: source
+bug_report: I can see the button but clicking it does nothing.
+outside_app_dir: false
+probe:
+  path: /settings
+  steps:
+    - wait: 600
+    - click: "#notify"
+    - click: "#save"
+    - wait: 1200
+  expect:
+    url: /settings
+    text:
+      selector: "#status"
+      equals: Settings saved

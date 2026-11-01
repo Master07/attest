@@ -1,0 +1,21 @@
+id: G-search-transparent-overlay
+title: "search: Transparent layer over the control"
+category: overlay
+shell: search
+recipe: transparent-overlay
+bad_fix_test: source
+bug_report: I can see the button but clicking it does nothing.
+outside_app_dir: false
+probe:
+  path: /
+  steps:
+    - wait: 600
+    - fill: "#q"
+      text: lamp
+    - click: "#go"
+    - wait: 1200
+  expect:
+    url: /
+    text:
+      selector: "#results li:first-child"
+      equals: Desk lamp
