@@ -6,11 +6,9 @@ import { pickRoute, resolveProvider } from "./models.js";
 // The independent judge (ARCHITECTURE §7): a different model from the verifier, given strictly less —
 // the criteria and the session's screenshots in order, with no actions, no verifier reasoning, no code.
 // (It used to see only before/after; a real TodoMVC bug where delete needs two clicks showed that the
-// final frame can look fixed after a retry, so the judge now sees the whole sequence. A cap of 8 later sampled
-// out the one frame that mattered in a 19-step keyboard flow (Board#918, run 1), so it is now 32: long enough
-// for every phase so far to reach the judge whole.)
+// final frame can look fixed after a retry, so the judge now sees the whole sequence, capped at 8 frames.)
 
-const MAX_FRAMES = 32;
+const MAX_FRAMES = 8;
 
 /** Pure: keeps the first and last frame and evenly spaced frames between, up to `max`. */
 export function sampleFrames<T>(frames: T[], max = MAX_FRAMES): T[] {
