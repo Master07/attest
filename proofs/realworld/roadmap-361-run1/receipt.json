@@ -1,0 +1,169 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T09:06:24.213Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/pr361/base",
+        "sha": "c6d7849dc3cfd25e27f2a788b037e842618ff201"
+      },
+      "green": {
+        "ref": "rw/pr361/fix",
+        "sha": "66951deca3fe558f87bd06c901b527c3ca9f1bbd"
+      },
+      "break": {
+        "ref": "rw/pr361/bad-fix",
+        "sha": "299d53d70432a3df4c86421128f2ead7894738a8"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "e5bfe4697604b728b96d4c5b7ced1cd744e05eb7313652bd3968f9560b673172"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/pr361/base",
+      "sha": "c6d7849dc3cfd25e27f2a788b037e842618ff201",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b27b1fd0a2a2079f4bf5bb3596dc5b2c039128f70dd3d4aa9571ebdd4e408d9b",
+      "criteria": [
+        {
+          "id": "pull-requests-button-opens-dialog",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked the Pull requests button twice and waited, but no Open pull requests dialog appeared.",
+          "evidence": [
+            "shots/red-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows a dialog titled \"Open pull requests\" with a Close button; the UI remains on the roadmap board with the Pull requests button visible but no dialog opened."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/pr361/fix",
+      "sha": "66951deca3fe558f87bd06c901b527c3ca9f1bbd",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f3968133710c4708736f4d2787be3aa8bba5a42802c61b8ae9609d352646575d",
+      "criteria": [
+        {
+          "id": "pull-requests-button-opens-dialog",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Dialog titled 'Open pull requests' opened with visible 'Close' button after clicking 'Pull requests'.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 clearly shows a dialog titled 'Open pull requests' with a 'Close' button visible at the bottom right, appearing after the initial roadmap page in Frame 1."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/pr361/bad-fix",
+      "sha": "299d53d70432a3df4c86421128f2ead7894738a8",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "4364fb0f2edd1e8597197948924ca8889bb9982183426d490b41dc9462e9c63a",
+      "criteria": [
+        {
+          "id": "pull-requests-button-opens-dialog",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click from loading state loaded the board with no dialog and second click on Pull requests left the board unchanged with no Open pull requests dialog.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No dialog titled \"Open pull requests\" with a \"Close\" button appears in any frame after the roadmap loads; frames 2-3 show only the issue board without any dialog overlay."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:e5bfe4697604b728b96d4c5b7ced1cd744e05eb7313652bd3968f9560b673172",
+    "shots/break-00.png": "sha256:19f79f5b28a21ddf0c679b5a26c5450c1e9d6b290c27bf7d3ad24f981d7e8020",
+    "shots/break-01.png": "sha256:2e9765bc229be532f9c7be30abb5e5467acdbcf2bbbffab827b1664788bc9bb5",
+    "shots/break-02.png": "sha256:2e9765bc229be532f9c7be30abb5e5467acdbcf2bbbffab827b1664788bc9bb5",
+    "shots/green-00.png": "sha256:c65decaf42d01bb0190461d06e6053a8624cd091451dbe3a6995f6b6f87dd2d1",
+    "shots/green-01.png": "sha256:487e8262edc981556bde3861b7321e8130348ac34900b6171d52be151eab8c21",
+    "shots/red-00.png": "sha256:f10080dcacd3f8692eb63af1d524d7e536e48347cc0701c831ac3661a0f59062",
+    "shots/red-01.png": "sha256:f5490d5e0d46216410491303c7d7cc74603b7f9b16b6afdecbf5a77b0c4e55bb",
+    "shots/red-02.png": "sha256:6cedf6c49b888286b1a95129d96c8106314eea26ee66278b0088fa88ceadc81d",
+    "shots/red-03.png": "sha256:a356170644c53e843ba068122f30d04252434272a49c2fbfae0d7c68f401d1d7",
+    "shots/red-04.png": "sha256:6cedf6c49b888286b1a95129d96c8106314eea26ee66278b0088fa88ceadc81d",
+    "shots/red-05.png": "sha256:6cedf6c49b888286b1a95129d96c8106314eea26ee66278b0088fa88ceadc81d",
+    "videos/break.webm": "sha256:87fa2b8bec8e37e5889e40c6c30f2de73dfafe2670243225a2f4960fcad33cd0",
+    "videos/green.webm": "sha256:fe2499501c8e196378ec0a9a4600b4832416a7e6711a70984faac3f8abda9bfd",
+    "videos/red.webm": "sha256:7e198ec1f186d61f1d792d7701971b267adafc493a8620a50f1ade8f92430bc0"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:c367cce96f2e4c73a1f11056ffc8879b982bef38bd4c6959c7ba7dd8c8018d33",
+    "entries": 49
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "x4NfHVdmhJfMY5sDbXmCjMniWXivTEUJK9Zl9wIjpfMbXxM2mLgqn5V4W2uL688336+ZNG538BLwggaRDTbtDw=="
+  }
+}

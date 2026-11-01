@@ -56,6 +56,10 @@ Two honest conclusions:
 
 Whether B04's bad-fix "works" is genuinely debatable (a determined user can scroll to the button), so B04 is a borderline scenario. The criterion says the user clicks Pay; it doesn't say the button must be visible without scrolling. A sharper criterion (`expect.visible: ["Pay button"]`, checked by SAM on the first screen) would make the intent explicit. It was **not** changed after the run.
 
+## Real-world: GitHub Copilot's merged fix (pankosmia/roadmap#361)
+
+Found by a second, wider search of merged AI-agent pull requests (981 PRs in 598 repos; 52 of the 148 repos with bug-fix-like titles permissively licensed; 4 runnable locally without accounts or a backend). [pankosmia/roadmap#361](https://github.com/pankosmia/roadmap/pull/361) (MIT), by **GitHub Copilot**: the "Pull requests" button did nothing because a load-time call threw before its click listener was attached; Copilot deleted the call. Criterion and a wrong fix (ours: `try`/`catch` around both lines, which silences the error but still never attaches the listener) were committed before the run. **Run 1, first attempt: PROVEN** — Red fail, Green pass, Break fail, verifier and Muse Spark Open judge agreeing in every phase, every click on the real button. Receipt: [proofs/realworld/roadmap-361-run1](../proofs/realworld/roadmap-361-run1/); write-up: [examples/realworld/roadmap-pulls](../examples/realworld/roadmap-pulls/README.md).
+
 ## Real-world: an AI agent's merged fix (shizukutanaka/Board#921)
 
 Found by searching merged pull requests written by AI coding agents (GitHub Copilot's coding agent, Devin) for UI-interaction fixes, then keeping only permissively licensed web apps that run locally without accounts or a backend: of 291 PRs in 237 repos, about 81 repos were permissively licensed and one candidate passed every filter. [Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), by Devin: Enter on a focused toolbar button also stamped a shape on the canvas.
@@ -84,7 +88,7 @@ After removing every `// BUG:` comment and the vendor script's self-describing b
 - **The benchmark runs above used the verifier and judge as of Nov 1 morning.** Two changes came later from the TodoMVC case — the verifier judges a single stated action by its first attempt, and the judge sees the whole screenshot sequence — so a re-run today may differ.
 - **Base branches include scenario metadata** (`scenario.yml`, README) that names each bug. Irrelevant to Attest's blind verifier; strip it before using these scenarios to test agents.
 - **Ten scenarios, all in one tiny app style.** This shows the mechanism works; it is not a measure of real-world accuracy.
-- **Planted bugs.** Real bugs are messier; the two real-world proofs above (Board, TodoMVC) are single cases, not a measure of accuracy.
+- **Planted bugs.** Real bugs are messier; the real-world proofs above (roadmap, Board, TodoMVC) are single cases, not a measure of accuracy.
 - **The verifier is non-deterministic** (B04). Repeat runs and the judge reduce false passes; they don't eliminate them.
 - **Scenario metadata names the bug.** The `// BUG:` comments and the vendor banner are gone (branches rebuilt and pushed 2026-11-01), but `scenario.yml` and the benchmark README still sit in each base branch. Harmless for the verifier, which never reads code; an agent under test can read them (see the B09 loop confound above).
 - **Costs:** check the Meta billing page for the exact spend of both runs before quoting a cost per proof.

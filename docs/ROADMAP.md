@@ -21,6 +21,7 @@ Items are tagged by how real they are: **Build** (real, demoed), **Show** (thin 
 - [x] Proof videos per phase + SAM 3.1 visibility check with click hit-testing and reveal images
 - [x] Independent judge on Muse Spark Open (open weights, own Baseten account), Muse Wonder fallback
 - [x] Real-world proof: TodoMVC's 2012 delete bug ([examples/realworld](../examples/realworld/todomvc-delete/README.md))
+- [x] Real-world proof on GitHub Copilot's merged fix: pankosmia/roadmap#361 — PROVEN on the first live run ([examples/realworld/roadmap-pulls](../examples/realworld/roadmap-pulls/README.md))
 - [x] Real-world proof on an AI agent's merged fix: Devin's shizukutanaka/Board#921 — PROVEN, criterion frozen before the run ([examples/realworld/board-enter](../examples/realworld/board-enter/README.md))
 - [x] Every reported result committed as a signed receipt; `npm run verify-proofs` checks them all; evidence pages and a proofs dashboard ([proofs](../proofs/README.md))
 - [x] The app under test never receives Attest's API keys (allowlisted environment)

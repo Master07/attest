@@ -41,7 +41,12 @@ Everything — votes, screenshots, a hash-chained event log — is sealed into a
 
 ## Results
 
-**On an AI agent's real, merged fix in someone else's app:** [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), written by **Devin**, fixed "Enter on a focused toolbar button also stamps a shape". With the criterion frozen before any run, Attest reproduced the bug on the PR's parent, showed Devin's fix removes it, and rejected a half-fix (Space only, **written by us** and committed before the run) — **PROVEN**, live, the verifier and the open-weights judge agreeing in every phase, neither seeing the code ([receipt](proofs/realworld/board-921-run2/) · [write-up](examples/realworld/board-enter/README.md)). An earlier run without a wrong fix gave the honest PROVEN_UNCHECKED ([receipt](proofs/realworld/board-921-run1/)).
+**On real, merged fixes by two different AI agents, in other people's apps** — both **PROVEN** live, each with its criterion and wrong fix committed before the run, the verifier and the open-weights judge agreeing in every phase, neither seeing the code:
+
+- [pankosmia/roadmap#361](https://github.com/pankosmia/roadmap/pull/361) (MIT), written by **GitHub Copilot**, fixed a "Pull requests" button that did nothing. Attest reproduced the dead button on the PR's parent, showed Copilot's fix opens the dialog, and rejected a wrong fix (**ours**) that silences the console error but leaves the button dead ([receipt](proofs/realworld/roadmap-361-run1/) · [write-up](examples/realworld/roadmap-pulls/README.md)).
+- [shizukutanaka/Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), written by **Devin**, fixed "Enter on a focused toolbar button also stamps a shape". Attest reproduced it on the PR's parent, showed Devin's fix removes it, and rejected a half-fix (Space only, **ours**) ([receipt](proofs/realworld/board-921-run2/) · [write-up](examples/realworld/board-enter/README.md)). An earlier run without a wrong fix gave the honest PROVEN_UNCHECKED ([receipt](proofs/realworld/board-921-run1/)).
+
+Both were found by searching merged AI-agent pull requests: of 981 PRs in 598 repos, only 4 were in permissively licensed web apps that run locally without accounts or a backend.
 
 **As a pull-request comment:** on our own demo PR [Master07/attest#1](https://github.com/Master07/attest/pull/1), Attest proved the fix live, rejected a wrong fix, and posted the proof as a comment ([receipt](proofs/pr-1-live/)).
 
@@ -114,6 +119,7 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 |---|---|
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | The proof, the blind verifier, vote combining, the receipt, threats and limits |
 | [BENCHMARK](docs/BENCHMARK.md) | Ten planted bugs, two runs, what the numbers do and don't mean |
+| [Real-world: Copilot's roadmap#361 fix](examples/realworld/roadmap-pulls/README.md) | GitHub Copilot's merged fix in someone else's app |
 | [Real-world: Devin's Board#921 fix](examples/realworld/board-enter/README.md) | An AI agent's merged fix in someone else's app, both runs |
 | [Real-world: TodoMVC 2012](examples/realworld/todomvc-delete/README.md) | A real historical bug and its real fix, all four runs |
 | [Proofs](proofs/README.md) | Every committed receipt and how to check it |
