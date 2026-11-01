@@ -60,7 +60,7 @@ Whether B04's bad-fix "works" is genuinely debatable (a determined user can scro
 
 Found by searching merged pull requests written by AI coding agents (GitHub Copilot's coding agent, Devin) for UI-interaction fixes, then keeping only permissively licensed web apps that run locally without accounts or a backend: of 291 PRs in 237 repos, about 81 repos were permissively licensed and one candidate passed every filter. [Board#921](https://github.com/shizukutanaka/Board/pull/921) (MIT), by Devin: Enter on a focused toolbar button also stamped a shape on the canvas.
 
-The criterion was written from the PR's description and committed before any run. **Run 1, first attempt: PROVEN_UNCHECKED** — Red fail, Green pass, verifier and Muse Spark Open judge agreeing in both phases; no Break, because no wrong fix exists. Receipt: [proofs/realworld/board-921-run1](../proofs/realworld/board-921-run1/); write-up: [examples/realworld/board-enter](../examples/realworld/board-enter/README.md).
+The criterion was written from the PR's description and committed before any run. **Run 1: PROVEN_UNCHECKED** — Red fail, Green pass, verifier and Muse Spark Open judge agreeing; no Break, because the PR has no wrong attempt ([receipt](../proofs/realworld/board-921-run1/)). **Run 2: PROVEN** — same criterion, plus a Break build: a Space-only half-fix written by us and committed before the run; Red fail, Green pass, Break fail, all voters agreeing in every phase ([receipt](../proofs/realworld/board-921-run2/)). Both first attempts. Write-up: [examples/realworld/board-enter](../examples/realworld/board-enter/README.md).
 
 ## Real-world bug: TodoMVC (2012)
 

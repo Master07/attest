@@ -1,0 +1,169 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T00:22:20.794Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/board921/base",
+        "sha": "d896961a8262e635d38dfd8174168aca6418a104"
+      },
+      "green": {
+        "ref": "rw/board921/fix",
+        "sha": "f05983dd3c1a5a7fab3c93ad9ba21981fb5e48a3"
+      },
+      "break": {
+        "ref": "rw/board921/bad-fix",
+        "sha": "9eee9e86b267985351f4be373b87c61526ebe4cb"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "b47cc439b060fcbbbf0d631d4718bf1c7e2f136b93a59a00dfad91d81797b577"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/board921/base",
+      "sha": "d896961a8262e635d38dfd8174168aca6418a104",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "fdca73c3e6662afcbd618ad89a8b00c620ecf0df341d90d6f49a89e416e4245e",
+      "criteria": [
+        {
+          "id": "enter-activates-focused-button-only",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Pressing Enter after clicking the Ellipse tool created a centered ellipse with Shapes 1 instead of leaving the canvas empty.",
+          "evidence": [
+            "shots/red-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 2 shows Ellipse tool selected with empty canvas (Shapes 0), but Frame 3 shows an ellipse was created (Shapes 1, 'Created: Ellipse @ 554,279' with selection handles), proving pressing Enter on the focused button did create a shape instead of leaving the canvas empty."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/board921/fix",
+      "sha": "f05983dd3c1a5a7fab3c93ad9ba21981fb5e48a3",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ab0d8c7709963b576ec8a49605b8e70cfea4e0975255adac6b98094fd5095453",
+      "criteria": [
+        {
+          "id": "enter-activates-focused-button-only",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Ellipse tool is highlighted as selected with its options visible while the canvas shows the empty prompt and Shapes 0, so no shape was created.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows Ellipse tool selected (cyan highlight) and canvas still empty with Shapes 0 and placeholder text, so pressing Enter did not create a shape."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/board921/bad-fix",
+      "sha": "9eee9e86b267985351f4be373b87c61526ebe4cb",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b651ab4a41d9520318d51954483f2f54beedfd1cf2c4220f56b294d6234ca98c",
+      "criteria": [
+        {
+          "id": "enter-activates-focused-button-only",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Ellipse then pressing Enter once, an ellipse appeared on the canvas with Shapes 1 instead of staying empty.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 2 shows Ellipse tool selected with empty canvas (Shapes 0), but Frame 3 immediately after shows an ellipse created on the canvas with Shapes 1 and 'Created: Ellipse @ 554,279', so pressing Enter created a shape instead of leaving the canvas empty."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:b47cc439b060fcbbbf0d631d4718bf1c7e2f136b93a59a00dfad91d81797b577",
+    "shots/break-00.png": "sha256:11e5f0a160523578908e28f7b1520512801e34165a90efc968edb2cde6212d4c",
+    "shots/break-01.png": "sha256:553e027baea1bf986ca7877a1b4809708b60a3518ac18b7f82b87fc7d6993f9a",
+    "shots/break-02.png": "sha256:7781e09355e63feefe18fa897292352f16d37df433a6f7b57f0256325653a4d4",
+    "shots/break-03.png": "sha256:4dd26210774e49bb12e64181f00c09ea93fafc44f1373c7cb8e5ab62276d0951",
+    "shots/break-04.png": "sha256:ff25fe56909bb8e0844b1cee104ecd3fc76e61512abbce5e409aa5d66388e287",
+    "shots/green-00.png": "sha256:6204bc5c13f51594f039f3484ab6512e274c2d5256e6df5ddfccdfb35f0c0dda",
+    "shots/green-01.png": "sha256:fc0366c45bcc1ee8a072e73afc6aacd783a814e4fe48adc87e5be7c88951c545",
+    "shots/red-00.png": "sha256:6911d6194e493aba379a22a4424ff696d524a189254ab51ddcb1d1ca36d31361",
+    "shots/red-01.png": "sha256:553e027baea1bf986ca7877a1b4809708b60a3518ac18b7f82b87fc7d6993f9a",
+    "shots/red-02.png": "sha256:7781e09355e63feefe18fa897292352f16d37df433a6f7b57f0256325653a4d4",
+    "shots/red-03.png": "sha256:8ebfdc304e1ec7645cfb3b7e4ad75a7247dbf1f5f0630adc4dc5cac58a4ecb2b",
+    "videos/break.webm": "sha256:a3724053be9408de22d16dfb8f0c6eef488a3fe6ee19ab68cd93cb524844118b",
+    "videos/green.webm": "sha256:761861e9bba975e9064a1cb987f8b9a96add54b4d70c5485190a5b1e3f1835d8",
+    "videos/red.webm": "sha256:7c71f79a3a668d6036442e285df6e4b6a3890cafde31ddde406d5d00f3c5d07b"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:d878c83f81347699b02a98f6d53a2bc6792bf2aafec7a82167fba801b00343b7",
+    "entries": 49
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "egvSilQ43DNi2rEFFQzk5KRKuUz3RtYIGucQp7DvjsKX62hn7YG2w4fSbxW+vTAt4oy49OGg1TwUt1b6K14KDA=="
+  }
+}
