@@ -95,6 +95,10 @@ async function runPhase(
         return videoDir === undefined ? {} : { videoDir };
       })(),
     );
+    if (browser.videoError !== null) {
+      log.append("video_unavailable", { error: browser.videoError }, phase);
+      ctx.progress(`${phase}: video recording unavailable — continuing without video`);
+    }
     await browser.open(`${workspace.url}${ctx.config.app.open ?? "/"}`);
 
     ctx.progress(`${phase}: verifier running`);

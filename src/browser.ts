@@ -44,9 +44,18 @@ export interface BrowserSession {
   annotate(png: Buffer, overlays: Overlay[]): Promise<Buffer>;
   /** Path of the session video, or null when not recording. The file is complete only after close(). */
   videoPath(): Promise<string | null>;
+  /** Why a requested recording could not start; null when recording or when none was requested. */
+  videoError: string | null;
   /** Test/debug only. Never expose to the verifier. Centre of the first match, or null. */
   locate(selector: string): Promise<{ x: number; y: number } | null>;
   close(): Promise<void>;
+}
+
+/** The reason a requested recording could not start, or null when the error is something else. */
+export function videoUnavailableReason(err: unknown): string | null {
+  const message = err instanceof Error ? err.message : String(err);
+  if (!/ffmpeg/i.test(message)) return null;
+  return message.split("\n")[0] ?? message;
 }
 
 const KEY_NAMES = new Map<string, string>([
@@ -113,13 +122,21 @@ export async function launchBrowser(viewport: { width: number; height: number },
     headless: process.env.ATTEST_HEADLESS !== "0",
   });
 
-  // Video is evidence, not a requirement: without ffmpeg (`npx playwright install ffmpeg`) the run continues unrecorded.
+  // Video is evidence, not a requirement: if the recorder is missing the run continues, but it
+  // says so loudly — a warning here, and `video_unavailable` in the sealed event log (proof.ts).
+  let videoError: string | null = null;
   let context = await browser.newContext({ viewport, ...(opts.videoDir ? { recordVideo: { dir: opts.videoDir, size: viewport } } : {}) });
   let page;
   try {
     page = await context.newPage();
   } catch (err) {
-    if (!opts.videoDir || !/ffmpeg/i.test(err instanceof Error ? err.message : String(err))) throw err;
+    const reason = opts.videoDir ? videoUnavailableReason(err) : null;
+    if (reason === null) throw err;
+    videoError = reason;
+    console.warn(
+      `attest: video recording unavailable — ${reason}\n` +
+        "attest: continuing without video. Install the recorder with `node node_modules/playwright/cli.js install ffmpeg`.",
+    );
     await context.close().catch(() => undefined);
     context = await browser.newContext({ viewport });
     page = await context.newPage();
@@ -279,6 +296,8 @@ export async function launchBrowser(viewport: { width: number; height: number },
         await canvasContext.close();
       }
     },
+
+    videoError,
 
     async videoPath(): Promise<string | null> {
       const video = page.video();
