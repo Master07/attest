@@ -56,7 +56,7 @@ test("escapes text from the model so it cannot inject markup", () => {
   assert.match(html, /class="stamp bad">REJECTED</);
 });
 
-// ---- Evidence UI (WINNING_PLAN §U): corrections C1–C8 and the no-script / escaping guarantees ----
+// ---- Evidence UI: content corrections and the no-script / escaping guarantees ----
 
 const phase = (name: "red" | "green" | "break", result: "pass" | "fail" | "inconclusive", over: Partial<Receipt["phases"][number]> = {}): Receipt["phases"][number] => ({
   phase: name, ref: `demo/${name}`, sha: "abcdef1234567", status: "completed", error: null, steps: 2, model: "muse-spark-1.3", prompt_sha256: "p",
