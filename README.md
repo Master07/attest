@@ -37,7 +37,7 @@ Each phase gets **four independent votes**, and disagreement is never a pass:
 
 Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit. Every result below is a committed receipt: `npm run verify-proofs` checks all of them ([proofs/](proofs/)).
 
-![The evidence page for a PROVEN receipt](docs/assets/evidence-page.png)
+![The evidence page for the PROVEN receipt on Devin's Board#921 fix: verdict, three phases as expected, integrity panel](docs/assets/evidence-page.png)
 
 ## Results
 
@@ -114,7 +114,9 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 |---|---|
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | The proof, the blind verifier, vote combining, the receipt, threats and limits |
 | [BENCHMARK](docs/BENCHMARK.md) | Ten planted bugs, two runs, what the numbers do and don't mean |
-| [Real-world proof](examples/realworld/todomvc-delete/README.md) | A real 2012 TodoMVC bug and its real fix |
+| [Real-world: Devin's Board#921 fix](examples/realworld/board-enter/README.md) | An AI agent's merged fix in someone else's app, both runs |
+| [Real-world: TodoMVC 2012](examples/realworld/todomvc-delete/README.md) | A real historical bug and its real fix, all four runs |
+| [Proofs](proofs/README.md) | Every committed receipt and how to check it |
 | [MODEL_STRATEGY](docs/MODEL_STRATEGY.md) | Which Meta model does what, and why |
 | [ROADMAP](docs/ROADMAP.md) | Built / shown / planned |
 | [Decision records](docs/adr/) | Including [ADR 0005](docs/adr/0005-narrow-to-proof-of-fix.md): why Attest is proof-of-fix, not an orchestrator |
@@ -137,6 +139,8 @@ npm run bench -- check               # AI-free check of the 10 benchmark scenari
 | `src/eventlog.ts`, `src/receipt.ts`, `src/report.ts` | Hash-chained log, signed receipt + `verify`, evidence page |
 | `src/workspace.ts`, `src/browser.ts` | A git worktree per ref; Playwright with raw mouse/keyboard and click hit-testing |
 | `src/producer.ts`, `src/loop.ts` | Muse Code headless producer and the closed loop |
+| `src/prcomment.ts` | `attest pr` / `attest comment`: the proof as a GitHub pull-request comment |
+| `scripts/verify-proofs.ts` | Verifies every committed receipt; `--write-index` writes the proofs dashboard |
 | `src/api.ts` | Responses API client with retries and record/replay |
 
 ## Limits
