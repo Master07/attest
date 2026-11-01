@@ -39,5 +39,6 @@ function success(data) {
 }
 
 function renderSuccess(state) {
+  if (state.order === undefined) return;
   location.assign("/order-confirmation?order=" + state.order);
 }

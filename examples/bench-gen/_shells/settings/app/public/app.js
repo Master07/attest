@@ -39,5 +39,5 @@ function success(data) {
 }
 
 function renderSuccess(state) {
-  status.textContent = notify.checked ? "Settings saved" : "Settings off";
+  status.textContent = state.notify ? "Settings saved" : "Settings off";
 }
