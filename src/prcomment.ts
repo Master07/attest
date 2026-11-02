@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Receipt } from "./receipt.js";
+import { inconclusiveCauses } from "./causes.js";
 import { judgeAbstained, judgeErrored, keyFingerprint, sha256File } from "./receipt.js";
 
 // W1: render a signed receipt as a GitHub pull-request comment, and the small gh/git helpers
@@ -152,6 +153,7 @@ function build(receipt: Receipt, opts: PrCommentOptions, includeObservations: bo
     `## Attest: ${receipt.verdict} ${EMOJI[receipt.verdict]}`,
     "",
     meaning(receipt),
+    ...inconclusiveCauses(receipt).flatMap((c, i) => [...(i === 0 ? ["", "**Why it's inconclusive**", ""] : []), `- **${c.title}** (${code(c.detail)}). Next: ${c.next}`]),
     ...(receipt.phases.some((p) => p.criteria.some(judgeErrored)) ? ["", `> **Judge did not vote in ${receipt.phases.filter((p) => p.criteria.some(judgeErrored)).length} of ${receipt.phases.length} phases** (error recorded in the receipt); ${judgeAbstained(receipt) ? "this verdict rests on the remaining votes" : "a required judge that gives no vote makes those criteria inconclusive"}.`] : []),
     "",
   ];

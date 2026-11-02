@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { loadCriteria } from "./criteria.js";
 import type { CriterionRecord, PhaseRecord, Receipt } from "./receipt.js";
+import { inconclusiveCauses } from "./causes.js";
 import { judgeAbstained, judgeErrored, keyFingerprint } from "./receipt.js";
 import type { Vote } from "./verdict.js";
 
@@ -67,6 +68,13 @@ const VOTE_TEXT: Record<string, { cls: string; mark: string; text: string }> = {
   "n/a": { cls: "v-na", mark: "–", text: "not applicable" },
   missing: { cls: "v-missing", mark: "!", text: "no vote — error" },
 };
+
+function causesBlock(receipt: Receipt): string {
+  const causes = inconclusiveCauses(receipt);
+  if (causes.length === 0) return "";
+  const items = causes.map((c) => `<li><b>${esc(c.title)}</b> · <span class="mono">${esc(c.detail)}</span><br><span class="sub">Next: ${esc(c.next)}</span></li>`).join("");
+  return `<div class="replay"><b>Why it's inconclusive</b><ul class="reasons">${items}</ul></div>`;
+}
 
 function voteCell(label: string, vote: Vote | "missing"): string {
   const v = VOTE_TEXT[vote] ?? { cls: "v-na", mark: "–", text: String(vote) };
@@ -350,7 +358,7 @@ ${receipt.replay ? `<p class="replay"><b>Replay.</b> Model responses came from t
     <div class="label">Verdict</div>
     <div class="vrow"><span class="vword ${v.cls}">${esc(v.word)}</span><span class="chip">${matched} of ${receipt.phases.length} phases as expected</span></div>
     <p class="lede">${esc(v.line)}</p>${judgeMissing ? `<p class="replay"><b>Judge did not vote in ${judgeMissing} of ${receipt.phases.length} phases.</b> Its error is recorded in the receipt; ${judgeAbstained(receipt) ? "this verdict rests on the remaining votes" : "a required judge that gives no vote makes those criteria inconclusive"}.</p>` : ""}
-    <ul class="reasons">${receipt.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+    <ul class="reasons">${receipt.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>${causesBlock(receipt)}
     <div class="tiles">${receipt.phases.map(phaseTile).join("")}</div>
   </div>
   <aside class="card integrity" aria-label="Integrity">
