@@ -1,5 +1,9 @@
 # Held-out presentation selection
 
+## Readiness: BLOCKED
+
+A post-seal audit by the original selector found incomplete oracle coverage and supplemental behavioral checks that do not fully agree with the retained label mapping. **Do not freeze or evaluate this selection until the discrepancy is resolved.** This was original-selector revalidation, not independent reviewer verification. The original app source refs, sealed archive, commitment and labels are preserved.
+
 This pilot contains 12 randomized candidate IDs across six historical UI bugs in three MIT-licensed projects. It contains source refs and reports only; behavioral tests, candidate labels and source-change provenance are sealed separately. No Attest evaluations have been run for this selection.
 
 ## Scope and startup
