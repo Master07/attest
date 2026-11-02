@@ -1,0 +1,163 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T20:48:19.848Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/signup-wrong-endpoint/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-signup-wrong-endpoint/base",
+        "sha": "7ba0b9bf5329536c840f78405c64ce052e4357b6"
+      },
+      "green": {
+        "ref": "bench-gen/G-signup-wrong-endpoint/fix",
+        "sha": "33c378910122a0ec53d71ae040f224eb67994382"
+      },
+      "break": {
+        "ref": "bench-gen/G-signup-wrong-endpoint/bad-fix",
+        "sha": "7a30bf43b1e2264cb2b917628ff5a471fc2501a7"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "e3311ef5498f4817d11fc515b78067e527f24ef27b0a1aea9e73e0800d69a9f3"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-signup-wrong-endpoint/base",
+      "sha": "7ba0b9bf5329536c840f78405c64ce052e4357b6",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "86ccbce6be35a3f06e54e0605ae47e3531a3c8f02bca8847f759e3f936ca251e",
+      "criteria": [
+        {
+          "id": "signup-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Both the first click and the retry showed 'Something went wrong. Please try again.' with no welcome page greeting Ada.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No welcome page greeting \"Ada\" ever appears; frames 3-5 after entering Ada/ada@example.com and clicking Create account still show the signup form with error \"Something went wrong. Please try again.\""
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-signup-wrong-endpoint/fix",
+      "sha": "33c378910122a0ec53d71ae040f224eb67994382",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c63d3aed88d5fea10549f446fdfcc39f651f4a11822f23a8ead0ee396ed04416",
+      "criteria": [
+        {
+          "id": "signup-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After entering Ada and ada@example.com and clicking Create account, the page showed Welcome, Ada.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows a welcome page greeting the user as 'Welcome, Ada' after the form in Frame 2 was filled with Ada and ada@example.com."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-signup-wrong-endpoint/bad-fix",
+      "sha": "7a30bf43b1e2264cb2b917628ff5a471fc2501a7",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "0fa2cb831b42fa4453a63c0ff0929088643aa4652c7712fffb6ccfb481b1b1a4",
+      "criteria": [
+        {
+          "id": "signup-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Entered Ada and ada@example.com and clicked Create account twice, but both times the form showed 'Something went wrong. Please try again.' with no welcome page greeting Ada.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows a welcome page greeting \"Ada\"; Frames 2-3 remain on the \"Create your account\" form with error \"Something went wrong. Please try again.\""
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:e3311ef5498f4817d11fc515b78067e527f24ef27b0a1aea9e73e0800d69a9f3",
+    "shots/break-00.png": "sha256:a2bf94477f7097cb756a1207adb9c95b1dd63ac8061525dc5a99b7ce7bae3fe4",
+    "shots/break-01.png": "sha256:658b1080e845bec850e58d96545609068bdd5d4d470a7c7f10200bf83343c975",
+    "shots/break-02.png": "sha256:658b1080e845bec850e58d96545609068bdd5d4d470a7c7f10200bf83343c975",
+    "shots/green-00.png": "sha256:a2bf94477f7097cb756a1207adb9c95b1dd63ac8061525dc5a99b7ce7bae3fe4",
+    "shots/green-01.png": "sha256:b9b6d775dabbafad47edbc3a7b2bb361eee563acb41605e9a4b4a0483cc97628",
+    "shots/green-02.png": "sha256:4bbbd657e8dbe723325d88ca500828657302b1f4d8f51c3c9c7e7e9576abc0ef",
+    "shots/red-00.png": "sha256:a2bf94477f7097cb756a1207adb9c95b1dd63ac8061525dc5a99b7ce7bae3fe4",
+    "shots/red-01.png": "sha256:b9b6d775dabbafad47edbc3a7b2bb361eee563acb41605e9a4b4a0483cc97628",
+    "shots/red-02.png": "sha256:658b1080e845bec850e58d96545609068bdd5d4d470a7c7f10200bf83343c975",
+    "shots/red-03.png": "sha256:658b1080e845bec850e58d96545609068bdd5d4d470a7c7f10200bf83343c975",
+    "shots/red-04.png": "sha256:658b1080e845bec850e58d96545609068bdd5d4d470a7c7f10200bf83343c975"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:1ca9293470c01d57fe4421855915a4e18205c01b06c66782347d9d0897922a4e",
+    "entries": 46
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "6bKDY8KB7ye+DIB70hOak9Hk9PrfpFFnD3XhqiC81RdGsHYif8JWruIzBzIc80OhPNCPuMe8nBAhqMb1GXVlCA=="
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T21:36:38.532Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-clipped/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-clipped/base",
+        "sha": "c0ac66b90d88c0584af762a8c73ffb702d55cc93"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-clipped/fix",
+        "sha": "cc268cbc45d085ee36e49c3df79347092bbb2da5"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-clipped/bad-fix",
+        "sha": "234ac651b8182c0877114ed26e5d4920ca35a317"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-clipped/base",
+      "sha": "c0ac66b90d88c0584af762a8c73ffb702d55cc93",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "57d9d9da7fb47335e98e3ba0f900448b50714b890d05506b73d46684136b24e7",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "missing",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows the list containing \"Buy milk\" as an item; the phrase only appears inside the input field and the list area remains empty after the Add button interaction."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-clipped/fix",
+      "sha": "cc268cbc45d085ee36e49c3df79347092bbb2da5",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "70c6f52e8468ad488acc2d0051a107b9544ac98b1452167ee6736670634b4020",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the list below shows Buy milk",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 and Frame 3 clearly show 'Buy milk' displayed in the list below the Add button after it was typed."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-clipped/bad-fix",
+      "sha": "234ac651b8182c0877114ed26e5d4920ca35a317",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8f562e6f4903e1a5b393e6e8616168ddbd422c3b4f5fd6ff95f8c287aab786c1",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "missing",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows the to-do list displaying \"Buy milk\" as an added item; frames 8-26 only show \"Buy milk\" inside the input field and never show it rendered in the list after the Add action."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive",
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:7400a61ef87acb720da34c8ea66f7671e233564e4fb1b0b9320724d58ea1dc74",
+    "shots/break-01.png": "sha256:7400a61ef87acb720da34c8ea66f7671e233564e4fb1b0b9320724d58ea1dc74",
+    "shots/break-02.png": "sha256:7400a61ef87acb720da34c8ea66f7671e233564e4fb1b0b9320724d58ea1dc74",
+    "shots/break-03.png": "sha256:7400a61ef87acb720da34c8ea66f7671e233564e4fb1b0b9320724d58ea1dc74",
+    "shots/break-04.png": "sha256:7400a61ef87acb720da34c8ea66f7671e233564e4fb1b0b9320724d58ea1dc74",
+    "shots/break-05.png": "sha256:7400a61ef87acb720da34c8ea66f7671e233564e4fb1b0b9320724d58ea1dc74",
+    "shots/break-06.png": "sha256:76950c161e43aae3d7325b525d96b294aa42119373a62f8c2466c584d7cd68c9",
+    "shots/break-07.png": "sha256:c5e446dd8adbbdf3c4151c71ef633ec992b761f7531f010fda55427a6a5ba571",
+    "shots/break-08.png": "sha256:f80b818ff9ede4caadf3e071ff97dd513671c2a93b897bb397724468d63476d1",
+    "shots/break-09.png": "sha256:a8dcdd72a36524cb7223b61be18ba64b7222b2920e3c251f28c3f6ecca5c5b65",
+    "shots/break-10.png": "sha256:15c3fa61ba4424398417e13452582fe0f9698a83b9f9e5306d1aed9d5e80936d",
+    "shots/break-11.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-12.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-13.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-14.png": "sha256:2b01e7a67dcbac57bcbb904425187c9faed530d7d51ee9d0cdd374dbd95071eb",
+    "shots/break-15.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-16.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-17.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-18.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-19.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-20.png": "sha256:5479f39bafdc974e35658786bb925d18ba6e05d8f147b1a3c8f78938965431f4",
+    "shots/break-21.png": "sha256:2b01e7a67dcbac57bcbb904425187c9faed530d7d51ee9d0cdd374dbd95071eb",
+    "shots/break-22.png": "sha256:c3af2102a45b30e086fb5ecc954e8d86f3b30c729db47ebb8ce26ef11edcb808",
+    "shots/break-23.png": "sha256:5479f39bafdc974e35658786bb925d18ba6e05d8f147b1a3c8f78938965431f4",
+    "shots/break-24.png": "sha256:f7e6d8b80b62fdea48612b9bb6a7521b09a8c0245d40d286f333d40cfc4e5e74",
+    "shots/break-25.png": "sha256:f148287f6b62923e7179ef4570b7ca52b37c5347055f02ffeac890f32ffe2393",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/green-02.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:06b984553bf8fc558f52c74ff2be74b99a2d1adfd45e5a457a194092f00a1770",
+    "shots/red-01.png": "sha256:2437c7348e27afd519f64c34f4c856abad14e04a1f2e41061aa7767592db7726",
+    "shots/red-02.png": "sha256:0e6346b65653eefcbd8f5feee95bb7bf982241a04da93bfcc8b846741342644d",
+    "shots/red-03.png": "sha256:0e6346b65653eefcbd8f5feee95bb7bf982241a04da93bfcc8b846741342644d",
+    "shots/red-04.png": "sha256:0e6346b65653eefcbd8f5feee95bb7bf982241a04da93bfcc8b846741342644d",
+    "shots/red-05.png": "sha256:0e6346b65653eefcbd8f5feee95bb7bf982241a04da93bfcc8b846741342644d",
+    "shots/red-06.png": "sha256:5373f34b22fd5ef7159d0ae5491b553d86d7585b29a7e524ec8020e81347ad72",
+    "shots/red-07.png": "sha256:5373f34b22fd5ef7159d0ae5491b553d86d7585b29a7e524ec8020e81347ad72",
+    "shots/red-08.png": "sha256:fc72bb6addb72865c5b3880cbf7649ab7bd8fa0626d7032ef35fa9889873f5e1",
+    "shots/red-09.png": "sha256:fc72bb6addb72865c5b3880cbf7649ab7bd8fa0626d7032ef35fa9889873f5e1",
+    "shots/red-10.png": "sha256:2a24ae79989cf08eeaa7453f3a58b1475de4b3ab9065fd6cfd7a6996c3561469",
+    "shots/red-11.png": "sha256:42d057d1898c3a9576b7513b555aaf6a7a82ad5d96d2194ea03324bfbbdc7cfd",
+    "shots/red-12.png": "sha256:42d057d1898c3a9576b7513b555aaf6a7a82ad5d96d2194ea03324bfbbdc7cfd",
+    "shots/red-13.png": "sha256:42d057d1898c3a9576b7513b555aaf6a7a82ad5d96d2194ea03324bfbbdc7cfd",
+    "shots/red-14.png": "sha256:42d057d1898c3a9576b7513b555aaf6a7a82ad5d96d2194ea03324bfbbdc7cfd",
+    "shots/red-15.png": "sha256:e33d1b0c291e115e1f171c3edc7791a674bd44a71a3ad40d0ca45bb5c68de049",
+    "shots/red-16.png": "sha256:5a0bfe695134efc3e14399936e1b66133831716116a517e9dfadb34b140d7a0c",
+    "shots/red-17.png": "sha256:929f048f81bd3af0081811615e433b6f83375ca620f49877d4c3a1c782f8cc62",
+    "shots/red-18.png": "sha256:f699a890386008a1cdf438b1cab27ccc0e051d4dbd7c30aa1fcee311aa223fc0",
+    "shots/red-19.png": "sha256:e1bf9b367488fdacbd1faeb0da0a43fb66c8e30b3e0f485151ce4d5200dc1c84",
+    "shots/red-20.png": "sha256:929f048f81bd3af0081811615e433b6f83375ca620f49877d4c3a1c782f8cc62",
+    "shots/red-21.png": "sha256:f699a890386008a1cdf438b1cab27ccc0e051d4dbd7c30aa1fcee311aa223fc0",
+    "shots/red-22.png": "sha256:e1bf9b367488fdacbd1faeb0da0a43fb66c8e30b3e0f485151ce4d5200dc1c84",
+    "shots/red-23.png": "sha256:938b5c2b7798ae1f31d93437461e9cecb13a0b9a0adf88cfb85ba9b36bc99fd6",
+    "shots/red-24.png": "sha256:b73ac6a3987ade8a8bedd483126ff92ff1848ddd5f2dabb73f2fe4cfc48e6ae7",
+    "shots/red-25.png": "sha256:e1bf9b367488fdacbd1faeb0da0a43fb66c8e30b3e0f485151ce4d5200dc1c84"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:eb2f4958dfbdb518e4197c524cab1e9a90f6e569b254096a9ecde686fc2cf380",
+    "entries": 134
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "DLsnNuZXU26n3fYUWUhWR37/jLTDz7fJpX+HAgvgnffXp2Ovp3VwTcwr+gwbHatss0WrjxTqWr3Bk8RvmCP+Cg=="
+  }
+}

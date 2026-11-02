@@ -1,0 +1,204 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T16:34:57.088Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/settings-clipped/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-settings-clipped/base",
+        "sha": "85f803a1913e9f866fefc887102981e536231bdd"
+      },
+      "green": {
+        "ref": "bench-gen/G-settings-clipped/fix",
+        "sha": "a90c67e9cd11126875081154d3cacd4574d306dd"
+      },
+      "break": {
+        "ref": "bench-gen/G-settings-clipped/bad-fix",
+        "sha": "d46755162fce5e4130eac6a708826472ac34b6c4"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-settings-clipped/base",
+      "sha": "85f803a1913e9f866fefc887102981e536231bdd",
+      "status": "completed",
+      "error": null,
+      "steps": 20,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f73dfee3cd5d230795d23bf2665616aefd8edc26a85837a4ae126aa7e094a491",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier failed but checks passed",
+          "observation": "After turning email notifications on and clicking the Save button area twice, no 'Settings saved' message appeared.",
+          "evidence": [
+            "shots/red-20.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows \"Settings saved\" text after the checkbox is turned on, and frames 4-21 navigate to an unrelated Interval form with no confirmation message."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-settings-clipped/fix",
+      "sha": "a90c67e9cd11126875081154d3cacd4574d306dd",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "dcc43ec73bcfa9918f208307b8e374bf6d99d96958c7a2507a7408adbd5d989f",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Page shows 'Settings saved' with email notifications checkbox checked on.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 and 4 show 'Settings saved' text with the Email notifications checkbox checked, confirming the save succeeded and notifications are on after the toggle and Save action."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-settings-clipped/bad-fix",
+      "sha": "d46755162fce5e4130eac6a708826472ac34b6c4",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e3fb423fb0aab572fc3fa06984c682489af45e57d3862ef4212d5faa998ea9ca",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "missing",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows \"Settings saved\" text and email notifications is unchecked in final frames, so the required saved confirmation and persistent on-state are not demonstrated."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive",
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628",
+    "shots/break-00.png": "sha256:29df38aa880afd2ae355f9429035fe3fe2f91e9d87f03b3ff9a8de14d501b973",
+    "shots/break-01.png": "sha256:29df38aa880afd2ae355f9429035fe3fe2f91e9d87f03b3ff9a8de14d501b973",
+    "shots/break-02.png": "sha256:29df38aa880afd2ae355f9429035fe3fe2f91e9d87f03b3ff9a8de14d501b973",
+    "shots/break-03.png": "sha256:29df38aa880afd2ae355f9429035fe3fe2f91e9d87f03b3ff9a8de14d501b973",
+    "shots/break-04.png": "sha256:29df38aa880afd2ae355f9429035fe3fe2f91e9d87f03b3ff9a8de14d501b973",
+    "shots/break-05.png": "sha256:29df38aa880afd2ae355f9429035fe3fe2f91e9d87f03b3ff9a8de14d501b973",
+    "shots/break-06.png": "sha256:29df38aa880afd2ae355f9429035fe3fe2f91e9d87f03b3ff9a8de14d501b973",
+    "shots/break-07.png": "sha256:f09ba8b00a6cb2da546212f1cff444315d179fba9a067278c754698c1e0fb06a",
+    "shots/break-08.png": "sha256:918618909ce5116765c9af3ec5bb1330bc40b6c8d44852842a09d86f0bff6d70",
+    "shots/break-09.png": "sha256:66fdc3fb800fb6be51585eb4e6f813fb5b10dddb6f0f540a0c02d8df87cff4f1",
+    "shots/break-10.png": "sha256:9c0001772b26dc37448113e97fb910907cac5bdf8a3300cc86e55f9b6f64ddc6",
+    "shots/break-11.png": "sha256:9c0001772b26dc37448113e97fb910907cac5bdf8a3300cc86e55f9b6f64ddc6",
+    "shots/break-12.png": "sha256:9c0001772b26dc37448113e97fb910907cac5bdf8a3300cc86e55f9b6f64ddc6",
+    "shots/break-13.png": "sha256:a05163306749269c6fb83999db199875bb26b2b1b4d5f6a5f5ed3a25e7249d5e",
+    "shots/break-14.png": "sha256:29ad591b53e1317f285b4c42bdf7b343c7a21d342bea440225134ae9c951eca3",
+    "shots/break-15.png": "sha256:66b52a6230d2ee824374e518c007d44c6aae50102a4fe33ee7051a279bf1d603",
+    "shots/break-16.png": "sha256:9b017df98d1755e632c2bbe87ecd6982bb7eb034ef9e6c8a994e291b3a48e4c7",
+    "shots/break-17.png": "sha256:29ad591b53e1317f285b4c42bdf7b343c7a21d342bea440225134ae9c951eca3",
+    "shots/break-18.png": "sha256:9b017df98d1755e632c2bbe87ecd6982bb7eb034ef9e6c8a994e291b3a48e4c7",
+    "shots/break-19.png": "sha256:49e2d5a10806944fc796ed0155ce7ddfb5144ff6fa88f05eb55d5786088f7358",
+    "shots/break-20.png": "sha256:49e2d5a10806944fc796ed0155ce7ddfb5144ff6fa88f05eb55d5786088f7358",
+    "shots/break-21.png": "sha256:66b52a6230d2ee824374e518c007d44c6aae50102a4fe33ee7051a279bf1d603",
+    "shots/break-22.png": "sha256:52e15f2b95fae051e63c8a3463cb9d48f1c81f25d01c172a91ae1d8cb3629798",
+    "shots/break-23.png": "sha256:5c4d0e959efcdd1d9898eece19268e4fe0bac088a4159115b68ec96bb9478ec2",
+    "shots/break-24.png": "sha256:9b017df98d1755e632c2bbe87ecd6982bb7eb034ef9e6c8a994e291b3a48e4c7",
+    "shots/break-25.png": "sha256:5c4d0e959efcdd1d9898eece19268e4fe0bac088a4159115b68ec96bb9478ec2",
+    "shots/green-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/green-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/green-02.png": "sha256:1ba94088a7ed50e56f7b1988e2330d815aa5d7ebf49bcc78f311c19461ca1698",
+    "shots/green-03.png": "sha256:ba35c9c443b3cb6b57e96933dfaa193a8d2c552de4b802d2de2069810704352e",
+    "shots/red-00.png": "sha256:8f5ccf877f9f1c0250175126ba33dedeaf726d5ad399cbfdeb0d3a0082be8ce5",
+    "shots/red-01.png": "sha256:15f568c3ad8600d393c965a192dfefe8bd7b8e2bc3a6866ca18360f0bbe00f90",
+    "shots/red-02.png": "sha256:d10a3bea1304b8669f3d4be2cf2f4ab4a5a71c3146bd2b71a7516d32230c721b",
+    "shots/red-03.png": "sha256:f90e7277050e4bd0098a35203b911d35d5eb5a73b6204331aba94b9c9d628680",
+    "shots/red-04.png": "sha256:f90e7277050e4bd0098a35203b911d35d5eb5a73b6204331aba94b9c9d628680",
+    "shots/red-05.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-06.png": "sha256:a258a90a85a452c1f49278110bf351291d1bcb312a6cc072a427f2219414aaa9",
+    "shots/red-07.png": "sha256:a258a90a85a452c1f49278110bf351291d1bcb312a6cc072a427f2219414aaa9",
+    "shots/red-08.png": "sha256:a258a90a85a452c1f49278110bf351291d1bcb312a6cc072a427f2219414aaa9",
+    "shots/red-09.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-10.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-11.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-12.png": "sha256:2bd406e294ca7e74a6870bdd7c47c0474d9f69f03c5c9237e217f37b0e3ac3b1",
+    "shots/red-13.png": "sha256:2bd406e294ca7e74a6870bdd7c47c0474d9f69f03c5c9237e217f37b0e3ac3b1",
+    "shots/red-14.png": "sha256:2bd406e294ca7e74a6870bdd7c47c0474d9f69f03c5c9237e217f37b0e3ac3b1",
+    "shots/red-15.png": "sha256:2bd406e294ca7e74a6870bdd7c47c0474d9f69f03c5c9237e217f37b0e3ac3b1",
+    "shots/red-16.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-17.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-18.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-19.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a",
+    "shots/red-20.png": "sha256:b8330aaf296baba97efaa0e47a8ae199bed3adb60d0bd2819ca3be64878de42a"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:d71eaf63c95516730f6009f99139be332c9d4ed3d66470ba673d4ce2f95e22c0",
+    "entries": 126
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "ckFeXIvJF4HwYrA88l5AYIt3poDHsm9NcjR/DoCAiTLvvAuTpr3IlZpEM7ADabs6f+lssYamNozviOshuXr9Dw=="
+  }
+}

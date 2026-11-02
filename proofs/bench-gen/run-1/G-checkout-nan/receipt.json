@@ -1,0 +1,161 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T12:47:49.060Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-nan/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-nan/base",
+        "sha": "6c83d05143f72cb17a2ec95062df5a956185ac81"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-nan/fix",
+        "sha": "e3a613944510d8e2c752eb3090e1f197673a3c06"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-nan/bad-fix",
+        "sha": "c1356205861ad1795c8a0f48535d44bdc4a200c9"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-nan/base",
+      "sha": "6c83d05143f72cb17a2ec95062df5a956185ac81",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "1348dccc0da1c83c0cab28bf718a9943ce6eadf33e9ef2651be93922246f0998",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click on Pay did nothing and second confirming click after waiting also left the Your cart page unchanged with no order confirmation shown.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No order confirmation or order number is shown in any frame after the Pay button; all frames remain on the cart view unchanged."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-nan/fix",
+      "sha": "e3a613944510d8e2c752eb3090e1f197673a3c06",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a316cb86260d665cd30fb77cb69c3af89bfb1f7c47e71e793415ad698616cb2b",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted fail, others pass",
+          "observation": "After clicking Pay, the page showed Thank you with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 1 shows quantity 9, not one item as required by the given, so the starting state does not match the precondition even though Frame 2 shows an order number."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-nan/bad-fix",
+      "sha": "c1356205861ad1795c8a0f48535d44bdc4a200c9",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "3d94694acabe31bea87b5090651d0b52e0e81d74933c5201bf8631010cc7a9f2",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Both clicks on Pay left the Your cart page unchanged with no order confirmation shown.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All three frames still show the cart view with the Pay $89.00 button and no order confirmation or order number ever appears."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "green: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-01.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-02.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-01.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-02.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-03.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:9869b528655b3201408b935b1aba4e5307eab06ff2f3c8fcac37530d1416ffc2",
+    "entries": 42
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "aHWyC5CYflyil/T6B5kDEJx17tLdLPdy+1BX7VFqQ9PJv9i8HH6+7avf68Uyb5TQS5eeP1UBNeo8uEkXdE5qCw=="
+  }
+}

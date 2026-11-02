@@ -1,0 +1,4211 @@
+[
+  {
+    "id": "G-checkout-bad-redirect",
+    "title": "checkout: Success goes to a missing page",
+    "category": "navigation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-bad-redirect/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-clipped",
+    "title": "checkout: Control clipped by its panel",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-clipped/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-checkout-delayed-enable",
+    "title": "checkout: Control disabled shortly after load",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-delayed-enable/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-double-apply",
+    "title": "checkout: Update applied twice",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-double-apply/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-fixed-banner",
+    "title": "checkout: Fixed banner covers the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-fixed-banner/receipt.json",
+    "reasons": [
+      "green: inconclusive",
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-hidden-required",
+    "title": "checkout: Hidden required field blocks submit",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-hidden-required/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-invisible",
+    "title": "checkout: Control invisible",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-invisible/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-late-overlay",
+    "title": "checkout: Late third-party overlay",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-late-overlay/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-nan",
+    "title": "checkout: Parsed amount becomes NaN",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-nan/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-navigate-early",
+    "title": "checkout: Navigation before the save finishes",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-navigate-early/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-no-pointer",
+    "title": "checkout: Container ignores the pointer",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-no-pointer/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-offscreen",
+    "title": "checkout: Control pushed off-screen",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-offscreen/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-checkout-prevent-default",
+    "title": "checkout: Default action prevented",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-prevent-default/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-stale-render",
+    "title": "checkout: State updates but the page does not",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-stale-render/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-string-compare",
+    "title": "checkout: Action disabled by a type mismatch",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-string-compare/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-transparent-overlay",
+    "title": "checkout: Transparent layer over the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-transparent-overlay/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-wrong-element",
+    "title": "checkout: Handler bound to the wrong element",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-wrong-element/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-wrong-endpoint",
+    "title": "checkout: Request to a missing path",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-wrong-endpoint/receipt.json",
+    "reasons": [
+      "green: inconclusive"
+    ]
+  },
+  {
+    "id": "G-checkout-wrong-method",
+    "title": "checkout: Request uses the wrong method",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-wrong-method/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-checkout-zero-size",
+    "title": "checkout: Control rendered at zero size",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-checkout-zero-size/receipt.json",
+    "reasons": [
+      "green: inconclusive",
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "G-search-bad-redirect",
+    "title": "search: Success goes to a missing page",
+    "category": "navigation",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-bad-redirect/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-search-clipped",
+    "title": "search: Control clipped by its panel",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-clipped/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-search-delayed-enable",
+    "title": "search: Control disabled shortly after load",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-delayed-enable/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-double-apply",
+    "title": "search: Update applied twice",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-double-apply/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-search-fixed-banner",
+    "title": "search: Fixed banner covers the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-fixed-banner/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-hidden-required",
+    "title": "search: Hidden required field blocks submit",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-hidden-required/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-invisible",
+    "title": "search: Control invisible",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-invisible/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-search-late-overlay",
+    "title": "search: Late third-party overlay",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-late-overlay/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment"
+    ]
+  },
+  {
+    "id": "G-search-nan",
+    "title": "search: Parsed amount becomes NaN",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-nan/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-navigate-early",
+    "title": "search: Navigation before the save finishes",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-navigate-early/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-no-pointer",
+    "title": "search: Container ignores the pointer",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-no-pointer/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-search-offscreen",
+    "title": "search: Control pushed off-screen",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-offscreen/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-search-prevent-default",
+    "title": "search: Default action prevented",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-prevent-default/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-stale-render",
+    "title": "search: State updates but the page does not",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-stale-render/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-search-strict-pattern",
+    "title": "search: Over-strict input pattern",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-strict-pattern/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-string-compare",
+    "title": "search: Action disabled by a type mismatch",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-string-compare/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-transparent-overlay",
+    "title": "search: Transparent layer over the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-transparent-overlay/receipt.json",
+    "reasons": [
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-search-wrong-element",
+    "title": "search: Handler bound to the wrong element",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-wrong-element/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-wrong-endpoint",
+    "title": "search: Request to a missing path",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-wrong-endpoint/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-wrong-method",
+    "title": "search: Request uses the wrong method",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-wrong-method/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-search-zero-size",
+    "title": "search: Control rendered at zero size",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-search-zero-size/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-settings-bad-redirect",
+    "title": "settings: Success goes to a missing page",
+    "category": "navigation",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-bad-redirect/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-settings-clipped",
+    "title": "settings: Control clipped by its panel",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-clipped/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-settings-delayed-enable",
+    "title": "settings: Control disabled shortly after load",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-delayed-enable/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-double-apply",
+    "title": "settings: Update applied twice",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-double-apply/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-fixed-banner",
+    "title": "settings: Fixed banner covers the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-fixed-banner/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-settings-hidden-required",
+    "title": "settings: Hidden required field blocks submit",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-hidden-required/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-invisible",
+    "title": "settings: Control invisible",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-invisible/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-late-overlay",
+    "title": "settings: Late third-party overlay",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-late-overlay/receipt.json",
+    "reasons": [
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-settings-nan",
+    "title": "settings: Parsed amount becomes NaN",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-nan/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-navigate-early",
+    "title": "settings: Navigation before the save finishes",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-navigate-early/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-no-pointer",
+    "title": "settings: Container ignores the pointer",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-no-pointer/receipt.json",
+    "reasons": [
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "G-settings-offscreen",
+    "title": "settings: Control pushed off-screen",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-offscreen/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-settings-prevent-default",
+    "title": "settings: Default action prevented",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-prevent-default/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-stale-render",
+    "title": "settings: State updates but the page does not",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-stale-render/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-settings-string-compare",
+    "title": "settings: Action disabled by a type mismatch",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-string-compare/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-transparent-overlay",
+    "title": "settings: Transparent layer over the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-transparent-overlay/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-wrong-element",
+    "title": "settings: Handler bound to the wrong element",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-wrong-element/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-wrong-endpoint",
+    "title": "settings: Request to a missing path",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-wrong-endpoint/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-wrong-method",
+    "title": "settings: Request uses the wrong method",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-wrong-method/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-settings-zero-size",
+    "title": "settings: Control rendered at zero size",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-settings-zero-size/receipt.json",
+    "reasons": [
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "G-signup-bad-redirect",
+    "title": "signup: Success goes to a missing page",
+    "category": "navigation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-bad-redirect/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-clipped",
+    "title": "signup: Control clipped by its panel",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-clipped/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-signup-delayed-enable",
+    "title": "signup: Control disabled shortly after load",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-delayed-enable/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-double-apply",
+    "title": "signup: Update applied twice",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-double-apply/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-signup-fixed-banner",
+    "title": "signup: Fixed banner covers the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-fixed-banner/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-signup-hidden-required",
+    "title": "signup: Hidden required field blocks submit",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-hidden-required/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-invisible",
+    "title": "signup: Control invisible",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-invisible/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-signup-late-overlay",
+    "title": "signup: Late third-party overlay",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-late-overlay/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-signup-nan",
+    "title": "signup: Parsed amount becomes NaN",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-nan/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-navigate-early",
+    "title": "signup: Navigation before the save finishes",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-navigate-early/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-no-pointer",
+    "title": "signup: Container ignores the pointer",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-no-pointer/receipt.json",
+    "reasons": [
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "G-signup-offscreen",
+    "title": "signup: Control pushed off-screen",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-offscreen/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-signup-prevent-default",
+    "title": "signup: Default action prevented",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-prevent-default/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-stale-render",
+    "title": "signup: State updates but the page does not",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-stale-render/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-signup-string-compare",
+    "title": "signup: Action disabled by a type mismatch",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-string-compare/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-transparent-overlay",
+    "title": "signup: Transparent layer over the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-transparent-overlay/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-wrong-element",
+    "title": "signup: Handler bound to the wrong element",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-wrong-element/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-wrong-endpoint",
+    "title": "signup: Request to a missing path",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-wrong-endpoint/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-wrong-method",
+    "title": "signup: Request uses the wrong method",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-wrong-method/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-signup-zero-size",
+    "title": "signup: Control rendered at zero size",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-signup-zero-size/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-todo-bad-redirect",
+    "title": "todo: Success goes to a missing page",
+    "category": "navigation",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-bad-redirect/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-todo-clipped",
+    "title": "todo: Control clipped by its panel",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "missing",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-clipped/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-todo-delayed-enable",
+    "title": "todo: Control disabled shortly after load",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-delayed-enable/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-double-apply",
+    "title": "todo: Update applied twice",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-double-apply/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-todo-fixed-banner",
+    "title": "todo: Fixed banner covers the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-fixed-banner/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-hidden-required",
+    "title": "todo: Hidden required field blocks submit",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-hidden-required/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-invisible",
+    "title": "todo: Control invisible",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-invisible/receipt.json",
+    "reasons": [
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "G-todo-late-overlay",
+    "title": "todo: Late third-party overlay",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-late-overlay/receipt.json",
+    "reasons": [
+      "red: inconclusive"
+    ]
+  },
+  {
+    "id": "G-todo-nan",
+    "title": "todo: Parsed amount becomes NaN",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-nan/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-navigate-early",
+    "title": "todo: Navigation before the save finishes",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-navigate-early/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-no-pointer",
+    "title": "todo: Container ignores the pointer",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-no-pointer/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-offscreen",
+    "title": "todo: Control pushed off-screen",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-offscreen/receipt.json",
+    "reasons": [
+      "red: bug not reproduced in this environment",
+      "break: the wrong fix passed — the verifier cannot tell them apart"
+    ]
+  },
+  {
+    "id": "G-todo-prevent-default",
+    "title": "todo: Default action prevented",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-prevent-default/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-stale-render",
+    "title": "todo: State updates but the page does not",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-stale-render/receipt.json",
+    "reasons": [
+      "red: inconclusive",
+      "break: inconclusive"
+    ]
+  },
+  {
+    "id": "G-todo-strict-pattern",
+    "title": "todo: Over-strict input pattern",
+    "category": "validation",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-strict-pattern/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-string-compare",
+    "title": "todo: Action disabled by a type mismatch",
+    "category": "state",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-string-compare/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-transparent-overlay",
+    "title": "todo: Transparent layer over the control",
+    "category": "overlay",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-transparent-overlay/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-wrong-element",
+    "title": "todo: Handler bound to the wrong element",
+    "category": "events",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-wrong-element/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-wrong-endpoint",
+    "title": "todo: Request to a missing path",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-wrong-endpoint/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-wrong-method",
+    "title": "todo: Request uses the wrong method",
+    "category": "network",
+    "outside_app_dir": false,
+    "verdict": "PROVEN",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-wrong-method/receipt.json",
+    "reasons": [
+      "red failed, green passed, break failed"
+    ]
+  },
+  {
+    "id": "G-todo-zero-size",
+    "title": "todo: Control rendered at zero size",
+    "category": "layout",
+    "outside_app_dir": false,
+    "verdict": "INCONCLUSIVE",
+    "phases": {
+      "red": {
+        "result": "fail",
+        "votes": {
+          "cua": "fail",
+          "checks": "fail",
+          "sam": "n/a",
+          "judge": "fail"
+        }
+      },
+      "green": {
+        "result": "pass",
+        "votes": {
+          "cua": "pass",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      },
+      "break": {
+        "result": "inconclusive",
+        "votes": {
+          "cua": "fail",
+          "checks": "pass",
+          "sam": "n/a",
+          "judge": "pass"
+        }
+      }
+    },
+    "badfix_tests_passed": true,
+    "receipt": "evidence/bench-gen-1793533731925/G-todo-zero-size/receipt.json",
+    "reasons": [
+      "break: inconclusive"
+    ]
+  }
+]

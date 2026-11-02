@@ -1,0 +1,166 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T22:11:17.280Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-navigate-early/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-navigate-early/base",
+        "sha": "557f79ef55a81c595fb16d0dbb3524e2feca7a4e"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-navigate-early/fix",
+        "sha": "9bef718a8f215da0e74b0fb2eb2e5cd7ce6ce840"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-navigate-early/bad-fix",
+        "sha": "8800a09940cae21219b59f32e5c5d6e7ef1e9ace"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-navigate-early/base",
+      "sha": "557f79ef55a81c595fb16d0dbb3524e2feca7a4e",
+      "status": "completed",
+      "error": null,
+      "steps": 6,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "edac5580526f79ddc4767b5814062dd870f0f03ef2461ed6bb4077f574fc61b9",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Both the first and second Add clicks cleared the input but the list never showed Buy milk.",
+          "evidence": [
+            "shots/red-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After typing 'Buy milk' and the input clearing (implied Add click) in frames 4 and 7, the to-do list area remains empty and never shows 'Buy milk'."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-navigate-early/fix",
+      "sha": "9bef718a8f215da0e74b0fb2eb2e5cd7ce6ce840",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "672d6c9a9cec2b4770417a025495663d14bbb89252407950102af7e996d9634b",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing 'Buy milk' and clicking Add, the list below the form shows 'Buy milk'",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows the to-do list containing \"Buy milk\" after \"Buy milk\" was entered in the new-item field."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-navigate-early/bad-fix",
+      "sha": "8800a09940cae21219b59f32e5c5d6e7ef1e9ace",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c53fad95277136143d130e1ff487ce59442562f8e4121ca84eb3904c001722d8",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing Buy milk and clicking Add the input cleared but no Buy milk item appeared in the list.",
+          "evidence": [
+            "shots/break-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After typing \"Buy milk\" in Frame 2 and the Add action clearing the input in Frame 3, no frame shows a to-do list entry for \"Buy milk\"—the list area remains empty through Frame 5."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-01.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/break-02.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-03.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-04.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-01.png": "sha256:20a21cf220649a1146e7a08f25ccff813c95b5c825953fa51a4e23d82f4a2f4f",
+    "shots/red-02.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/red-03.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-04.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-05.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/red-06.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:9d499fe64816a75cf5d5a761cf3731ba0e4463a1c681b25246e4f28a9d8d4882",
+    "entries": 52
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "prnEFY9fpv5u4rZ+/mvDtxyfvO73+tu/TimXspKtcUDZG+Fc0x6xxy/4q3few8zeGsAF7QtRPjUZ+VhhHrnvDQ=="
+  }
+}

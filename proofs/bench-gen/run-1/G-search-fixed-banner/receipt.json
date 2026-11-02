@@ -1,0 +1,185 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:41:42.637Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/search-fixed-banner/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-search-fixed-banner/base",
+        "sha": "7e6aa429ceed31b964c8da24cac680134f2fb0d0"
+      },
+      "green": {
+        "ref": "bench-gen/G-search-fixed-banner/fix",
+        "sha": "2f41756109a9fd685e1ff24e6269bfde4eb8784a"
+      },
+      "break": {
+        "ref": "bench-gen/G-search-fixed-banner/bad-fix",
+        "sha": "6f5895abd363d991754432eb098d61de12b52dd3"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-search-fixed-banner/base",
+      "sha": "7e6aa429ceed31b964c8da24cac680134f2fb0d0",
+      "status": "completed",
+      "error": null,
+      "steps": 14,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ce160fed3a82e0384a9f3dc43c009fa74ae74706cb71cb64da613cd58b0614de",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking the search field, typing lamp and pressing Enter, the page still shows only the header and cookie text with no results and no Desk lamp.",
+          "evidence": [
+            "shots/red-14.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows search results or the text \"Desk lamp\"; all frames 1-15 show only a blank page with a cookie notice and no product listing."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-search-fixed-banner/fix",
+      "sha": "2f41756109a9fd685e1ff24e6269bfde4eb8784a",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a3f82ecc1cec8a878bbdefefb49f88427fe7edf5919dc88d3eb3f19a79fe6ed2",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After searching for lamp, the results list shows Desk lamp",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 4 shows 'Desk lamp' listed in the results after 'lamp' was entered and Search was triggered."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-search-fixed-banner/bad-fix",
+      "sha": "6f5895abd363d991754432eb098d61de12b52dd3",
+      "status": "completed",
+      "error": null,
+      "steps": 13,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c4bb5b856d190fc26a3655c6b7a41c0fee1cf888eb4ba179c08d4e14bff5c721",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking the search field, typing lamp and pressing Enter, no results appeared and Desk lamp was not listed, only the cookie notice remained visible.",
+          "evidence": [
+            "shots/break-13.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows search results for \"lamp\" - all 14 frames display only a cookie banner and blank content with no \"Desk lamp\" text visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d",
+    "shots/break-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-08.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-09.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-10.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-11.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-12.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-13.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/green-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/green-01.png": "sha256:b1d85e58d2123a402701f552deb2a1137140e06397034140a97dda428893be86",
+    "shots/green-02.png": "sha256:e64cda11a5d00d5dc90767fb19647c1919e8d4a8ccb69f318b337b24199d1e7e",
+    "shots/green-03.png": "sha256:013447ca79eeb4bb8dd13b2db8b73b5ce7ca145015d4fffcb2dbb949cb3948d5",
+    "shots/red-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-08.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-09.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-10.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-11.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-12.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-13.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-14.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:6924ee227e7d3ac1caa1fc3fce04e26fda7e4af0587eb89a00d160318a8f67f0",
+    "entries": 90
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "eZ63ZingGnF6SLjoY9YqUT3eUacNkCmcu46U+pYyZzeR0zUz9bpik9z7CAi9tk8MI7xtTQJ+PG8hr6cGysutDQ=="
+  }
+}

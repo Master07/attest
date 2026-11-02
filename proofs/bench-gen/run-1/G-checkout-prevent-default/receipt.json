@@ -1,0 +1,162 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T12:59:13.497Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-prevent-default/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-prevent-default/base",
+        "sha": "078aa60e581c3eeede895b3af7558bbc8f43cc31"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-prevent-default/fix",
+        "sha": "870da8e8810b358f493c3e64fe020fba6e0f104a"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-prevent-default/bad-fix",
+        "sha": "676b832befdfb8720a2aa3d2e8a97354a3f7c4fe"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-prevent-default/base",
+      "sha": "078aa60e581c3eeede895b3af7558bbc8f43cc31",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "9693755a817b8f64bb95a7652af871b4273849948f94ba2f269c171c267937aa",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click on Pay had no effect and second confirmatory click also left the cart unchanged with no order confirmation shown.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All four frames remain on the 'Your cart' page with the 'Pay $89.00' button; no order confirmation or order number is ever shown."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-prevent-default/fix",
+      "sha": "870da8e8810b358f493c3e64fe020fba6e0f104a",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "9210561c8288bf3c8f98564340b8c882bccc224e6ebcd5040ddcee87d368eaa4",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted fail, others pass",
+          "observation": "After clicking Pay, the page showed Thank you with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 2 does show Order #1042 but Frame 1 does not match the given state of one item because the quantity input shows 9, not 1."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-prevent-default/bad-fix",
+      "sha": "676b832befdfb8720a2aa3d2e8a97354a3f7c4fe",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "fc7a6c35371a24dbf3a506e573edc8b881cec4c7116a7eff3752d92819530373",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked Pay twice and page still shows Your cart with no order confirmation or order number.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All four frames show the same cart view with the Pay button and no order confirmation or order number ever appears."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "green: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-01.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-02.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-03.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-01.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-02.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-03.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:454a5f0939059a8bee6775d4dc01745836ae04abc2a4b783d341e59e25bd1c45",
+    "entries": 44
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "Uz4JmKKdYoQye1mAlsBckYRTsLoquscacCOK7fnCkOXHabdFCAnAPGplVWJRNmS6QbQq1VdVyPPjztNrkdDmCA=="
+  }
+}

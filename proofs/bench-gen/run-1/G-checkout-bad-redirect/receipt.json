@@ -1,0 +1,163 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T11:51:19.564Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-bad-redirect/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-bad-redirect/base",
+        "sha": "08dcb65c818187bb0d72ba368ddd22a2ff072a27"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-bad-redirect/fix",
+        "sha": "c51bf0975e58d4ad2212c5c23780132316ff6437"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-bad-redirect/bad-fix",
+        "sha": "ea9337843c60046475f92314666cee1991fd596b"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-bad-redirect/base",
+      "sha": "08dcb65c818187bb0d72ba368ddd22a2ff072a27",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a5c4e6670329502cea0a1c4e00c37aa3d7df9869fc0b5ec1865f484564f30e54",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "A single click on Pay left the cart and showed only 'Not found' with no order confirmation or order number.",
+          "evidence": [
+            "shots/red-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 2-4 after the cart show only 'Not found' with no order confirmation or order number displayed."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-bad-redirect/fix",
+      "sha": "c51bf0975e58d4ad2212c5c23780132316ff6437",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "32554a029fbebb3a0921ee94ffb31a36511dc6a5bc4e7874b4c5c7af0f9f4ad0",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Single click on Pay replaced the cart with Thank you Order #1042 confirmation.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the cart with Pay $89.00 and Frame 2 immediately shows the 'Thank you' order confirmation with Order #1042, fulfilling the then outcome after the Pay click."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-bad-redirect/bad-fix",
+      "sha": "ea9337843c60046475f92314666cee1991fd596b",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "883a469e655922527d34b1776b33705ec4ad53ad2deb9ac9d0ff0f0080cdac1f",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Single click on Pay left the cart and showed only 'Not found' with no order confirmation or order number.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After the Pay button state in Frame 1, Frames 2-4 show only 'Not found' with no order confirmation or order number visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-01.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-02.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-03.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/green-02.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-01.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-02.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-03.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:682b6204168662469af87a1a407c5b685aa66c999645dfc2b2810621ea592bc7",
+    "entries": 46
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "n9kOKiNoM+e2ny16jZclH2nop+VAFiL2XF3uffiFicxcKTor2OOExlzh6d+Dy+ck1RrJHayBzNZ+mSwh6GdADA=="
+  }
+}

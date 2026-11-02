@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Attest receipt · Inconclusive · examples/bench-gen/search-double-apply/app</title>
+<style>
+:root{--bg:#f6f6f3;--surface:#ffffff;--surface-2:#f1f1ed;--ink:#15171c;--ink-2:#3a3e46;--muted:#686d77;--faint:#959aa4;--line:#e3e3dd;--line-2:#d3d3cc;
+--accent:#245b57;--ok:#1d6b47;--ok-bg:#e7f2eb;--ok-line:#bcdcc8;--bad:#b02a1f;--bad-bg:#fcebe8;--bad-line:#efc3bd;--warn:#875700;--warn-bg:#faf0dc;--warn-line:#ead6a8;
+--code-bg:#1b1e24;--code-ink:#e6e8ec;
+--sans:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+--mono:"Cascadia Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1014;--surface:#161920;--surface-2:#1c2028;--ink:#e8eaee;--ink-2:#c3c7cf;--muted:#929aa6;--faint:#6c7380;--line:#252a33;--line-2:#323844;
+--accent:#83c9c1;--ok:#62c793;--ok-bg:#11251b;--ok-line:#22533a;--bad:#f2928a;--bad-bg:#2b1513;--bad-line:#5b2924;--warn:#e9b75e;--warn-bg:#2a2110;--warn-line:#5a4520;--code-bg:#0a0c10}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.mono{font-family:var(--mono);font-size:.88em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.01em}
+.brand .logo{width:22px;height:22px;color:var(--ink)}
+.brand .sub{font-weight:400;color:var(--muted)}
+.top-meta{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}
+.stamp{display:inline-block;border:1px solid currentColor;border-radius:6px;padding:3px 9px;font:600 11.5px var(--mono);letter-spacing:.08em}
+.stamp.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}.stamp.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line)}.stamp.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.toc{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+.toc a{color:var(--ink-2);text-decoration:none;font-size:13px;padding:5px 10px;border-radius:6px;white-space:nowrap}
+.toc a:hover{background:var(--surface-2)}
+main.wrap{padding-top:28px;padding-bottom:48px}
+h2{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:36px 0 12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.replay{margin:0 0 16px;padding:12px 16px;border:1px solid var(--warn-line);background:var(--warn-bg);color:var(--ink);border-radius:10px;font-size:14px}
+.summary{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:16px}
+.verdict{padding:22px 24px}
+.label{font-size:12.5px;color:var(--muted)}
+.vrow{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:4px 0 8px}
+.vword{font-size:30px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.vword.ok{color:var(--ok)}.vword.bad{color:var(--bad)}.vword.warn{color:var(--warn)}
+.chip{font-size:12.5px;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.lede{margin:0 0 6px;color:var(--ink-2);font-size:16px}
+.reasons{margin:0 0 16px;padding-left:18px;color:var(--muted);font-size:13.5px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink);text-decoration:none}
+.tile:hover{border-color:var(--line-2)}
+.tile-name{font-weight:600}.tile-role{font-size:12.5px;color:var(--muted)}.tile-io{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.tile-match{font-size:12.5px;font-weight:600;margin-top:2px}.tile-match.ok{color:var(--ok)}.tile-match.bad{color:var(--bad)}.tile-match.warn{color:var(--warn)}
+.integrity{padding:20px 22px}
+.integrity h3{margin:0 0 12px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.kv{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 14px;margin:0;font-size:13.5px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.cmd{margin:14px 0 0;background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:10px 12px;font:12.5px/1.5 var(--mono);overflow-x:auto;white-space:pre}
+.panel{padding:18px 22px}
+.sub{color:var(--muted);font-size:12.5px}
+.badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;padding:1px 7px;border-radius:999px;background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line);vertical-align:1px}
+.subject{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.crit-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.crit-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px}
+.crit-id{color:var(--muted);margin-bottom:6px}
+.gwt{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 16px;margin:0}
+.gwt dt{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.gwt dd{margin:0}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:16px}
+.phase-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.phase-head h3{margin:0;font-size:18px;font-weight:600}
+.phase-head .role{font-weight:400;color:var(--muted);font-size:15px}
+.ref{color:var(--muted);margin-top:4px}
+.outcome{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.io{font-size:13px;color:var(--ink-2)}
+.pill{font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid}
+.pill.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}.pill.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line)}.pill.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.phase-error{margin:0 0 14px;padding:10px 14px;border-radius:8px;background:var(--bad-bg);border:1px solid var(--bad-line);font-size:14px}
+.crit-result+.crit-result{margin-top:18px;padding-top:18px;border-top:1px dashed var(--line)}
+.votes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.vote{border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vote .vl{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.vote .vv{font-weight:600;font-size:14px;display:flex;gap:6px;align-items:baseline}
+.v-pass .vv{color:var(--ok)}.v-fail .vv{color:var(--bad)}.v-na .vv{color:var(--faint);font-weight:400}.v-missing{border-color:var(--warn-line);background:var(--warn-bg)}.v-missing .vv{color:var(--warn)}
+.obs{margin:0 0 12px;padding:2px 0 2px 14px;border-left:3px solid var(--line-2);font-size:15px;color:var(--ink)}
+.k{display:block;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.notes{margin:0 0 14px;font-size:13.5px;color:var(--ink-2)}.notes ul{margin:2px 0 0;padding-left:18px}.notes li+li{margin-top:4px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:6px}.shots figure:only-child{max-width:760px}
+figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface-2)}
+figure img{display:block;width:100%;height:auto}
+figcaption{font-size:12px;color:var(--muted);padding:8px 12px;border-top:1px solid var(--line);background:var(--surface)}
+.video{margin-top:14px}.video video{display:block;width:100%;background:#000}
+.timeline{margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.timeline summary{cursor:pointer;padding:10px 14px;font-size:13.5px;font-weight:600;color:var(--ink-2);display:flex;justify-content:space-between;gap:12px}
+.timeline .count{font-weight:400;color:var(--muted)}
+.timeline ol{list-style:none;margin:0;padding:4px 14px 10px}
+.timeline li{display:grid;grid-template-columns:30px minmax(0,1fr) 168px;gap:14px;align-items:start;padding:10px 0;border-top:1px solid var(--line);position:relative}
+.timeline .stepn{width:24px;height:24px;border-radius:50%;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;font:600 11.5px var(--mono);color:var(--muted);background:var(--surface-2)}
+.timeline .stepbody{font:12.5px/1.55 var(--mono);color:var(--ink-2);min-width:0;overflow-wrap:anywhere}
+.timeline .err{color:var(--bad)}
+.stepshot img{width:168px;display:block;border:1px solid var(--line);border-radius:6px}
+.meta-line{margin:12px 0 0;font-size:12.5px;color:var(--faint)}
+.verify{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.verify ul{margin:6px 0 0;padding-left:18px;font-size:14px}.verify li+li{margin-top:4px}
+.verify h3{margin:0;font-size:14px;font-weight:600}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:18px 0 40px;color:var(--faint);font-size:12.5px}
+.tablewrap{overflow-x:auto}.ptable{width:100%;min-width:900px;table-layout:fixed;border-collapse:collapse;font-size:13.5px}.ptable .stamp,.ptable .pill,.ptable .nw{white-space:nowrap}.ptable td a{overflow-wrap:anywhere}.ptable th{text-align:left;font-size:12px;font-weight:600;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap}.ptable td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}.ptable tr:last-child td{border-bottom:0}.phs{white-space:nowrap}.ph{display:inline-block;font-size:12px;padding:1px 7px;border-radius:999px;border:1px solid;margin-right:4px}.ph.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}.ph.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line)}.ph.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+@media (max-width:820px){.summary,.subject,.verify{grid-template-columns:minmax(0,1fr)}.votes{grid-template-columns:repeat(2,minmax(0,1fr))}.outcome{align-items:flex-start}
+.timeline li{grid-template-columns:30px minmax(0,1fr)}.stepshot{grid-column:2}.stepshot img{width:100%}.vword{font-size:26px}.wrap{padding:0 16px}}
+@media print{.toc,.video video{display:none}body{background:#fff;font-size:12px}.card,.phase,.crit-card,.timeline{break-inside:avoid;border-color:#ccc}main{padding:0}.top{border:0}.cmd{background:#f3f3f3;color:#111}a{color:inherit;text-decoration:none}}
+</style></head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 4 5.6v6.1c0 4.8 3.3 8.6 8 9.8 4.7-1.2 8-5 8-9.8V5.6L12 2.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.6 12.2 2.4 2.4 4.6-4.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Attest</span><span class="sub">Proof-of-fix receipt · examples/bench-gen/search-double-apply/app</span></div>
+  <div class="top-meta"><span title="2026-11-01T14:29:59.406Z">1 Nov 2026, 14:29 UTC</span><span class="stamp warn">INCONCLUSIVE</span></div>
+</div></header>
+<nav class="toc" aria-label="Sections"><div class="wrap"><a href="#summary">Summary</a><a href="#subject">Subject</a><a href="#criteria">Criteria</a><a href="#phase-red">Red</a><a href="#phase-green">Green</a><a href="#phase-break">Break</a><a href="#verify">Verify</a></div></nav>
+<main class="wrap">
+
+<section id="summary" class="summary">
+  <div class="card verdict">
+    <div class="label">Verdict</div>
+    <div class="vrow"><span class="vword warn">Inconclusive</span><span class="chip">1 of 3 phases as expected</span></div>
+    <p class="lede">Attest could not establish a proof, so it certifies nothing.</p>
+    <ul class="reasons"><li>red: inconclusive</li><li>break: inconclusive</li></ul>
+    <div class="tiles"><a class="tile" href="#phase-red"><span class="tile-name">Red</span><span class="tile-role">Original code</span><span class="tile-io">expects <b>fail</b> · observed <b>inconclusive</b></span><span class="tile-match warn">! inconclusive</span></a><a class="tile" href="#phase-green"><span class="tile-name">Green</span><span class="tile-role">The fix</span><span class="tile-io">expects <b>pass</b> · observed <b>pass</b></span><span class="tile-match ok">✓ as expected</span></a><a class="tile" href="#phase-break"><span class="tile-name">Break</span><span class="tile-role">A wrong fix</span><span class="tile-io">expects <b>fail</b> · observed <b>inconclusive</b></span><span class="tile-match warn">! inconclusive</span></a></div>
+  </div>
+  <aside class="card integrity" aria-label="Integrity">
+    <h3>Integrity</h3>
+    <dl class="kv">
+      <dt>Signature</dt><dd>Ed25519 · <span class="mono" title="MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=">sha256:627c0d375ff77cc2</span></dd>
+      <dt>Event log</dt><dd>126 entries · <span class="mono" title="sha256:f317d9536c5342dabfcef2614a569173734b5f376a9cbe02d9890d30746103d8">f317d9536c53…</span></dd>
+      <dt>Artifacts</dt><dd>52 files, each hashed</dd>
+      <dt>Criteria</dt><dd><span class="mono" title="2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d">2e791f04fc90…</span></dd>
+      <dt>Run</dt><dd>live</dd>
+    </dl>
+    <div class="cmd">npm run attest -- verify receipt.json</div>
+  </aside>
+</section>
+<h2 id="subject">Subject</h2>
+<section class="subject">
+  <div class="card panel"><dl class="kv">
+    <dt>Run from</dt><dd class="mono">https://github.com/Master07/attest.git</dd>
+    <dt>App</dt><dd>examples/bench-gen/search-double-apply/app</dd>
+    <dt>Red</dt><dd class="mono" title="b12b5ed74621aa4117dd45507f6642cad3b5f6e9">bench-gen/G-search-double-apply/base @ b12b5ed</dd><dt>Green</dt><dd class="mono" title="7423ce4785fedf4ad23e5bda8e7addfd1d93c9a7">bench-gen/G-search-double-apply/fix @ 7423ce4</dd><dt>Break</dt><dd class="mono" title="d886bc1a390ad6aa95da8d3ac28988c43ab6cb5e">bench-gen/G-search-double-apply/bad-fix @ d886bc1</dd>
+  </dl></div>
+  <div class="card panel"><dl class="kv"><dt>verifier</dt><dd>Muse Spark 1.3 <span class="sub">Meta Model API · <span class="mono">muse-spark-1.3</span></span></dd><dt>judge</dt><dd>Muse Spark Open <span class="sub">Baseten · <span class="mono">meta-models/muse-spark-open</span></span> <span class="badge">open weights</span></dd></dl></div>
+</section>
+<h2 id="criteria">Acceptance criteria · human-approved</h2>
+<ul class="crit-list"><li class="crit-card"><dl class="gwt"><dt>Given</dt><dd>The product search page at /</dd><dt>When</dt><dd>The user searches for &#34;lamp&#34;</dd><dt>Then</dt><dd>The results list &#34;Desk lamp&#34;</dd></dl></li></ul>
+<h2>The proof</h2>
+
+  <section class="phase" id="phase-red">
+    <header class="phase-head">
+      <div>
+        <h3>Red <span class="role">· Original code — the bug should reproduce</span></h3>
+        <div class="ref mono" title="b12b5ed74621aa4117dd45507f6642cad3b5f6e9">bench-gen/G-search-double-apply/base @ b12b5ed</div>
+      </div>
+      <div class="outcome">
+        <span class="io">expected <b>fail</b> · observed <b>inconclusive</b></span>
+        <span class="pill warn">! inconclusive</span>
+      </div>
+    </header>
+    
+    
+    <div class="crit-result">
+      
+      <div class="votes" role="list">
+        <div class="vote v-fail"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+        <div class="vote v-pass"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-fail"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>Searched for lamp and waited, but page stayed on Working... with no Desk lamp listed.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): fail — After searching &#39;lamp&#39; (Frame 2) the UI stays on &#39;Working...&#39; through Frame 21 with no results list ever displayed, so &#39;Desk lamp&#39; never appears.</li></ul></div>
+      <div class="shots"><figure><a href="shots/red-15.png"><img src="shots/red-15.png" alt="shots/red-15.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    
+    <details class="timeline" open><summary>What the verifier did, step by step <span class="count">20 steps</span></summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a class="stepshot" href="shots/red-00.png"><img src="shots/red-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (637, 216) → landed on input#q</div><div>type &#34;lamp&#34;</div><div>click (640, 358) → landed on button#go.control</div></div><a class="stepshot" href="shots/red-01.png"><img src="shots/red-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-02.png"><img src="shots/red-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-03.png"><img src="shots/red-03.png" alt="step 3" loading="lazy"></a></li><li><span class="stepn">4</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-04.png"><img src="shots/red-04.png" alt="step 4" loading="lazy"></a></li><li><span class="stepn">5</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-05.png"><img src="shots/red-05.png" alt="step 5" loading="lazy"></a></li><li><span class="stepn">6</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-06.png"><img src="shots/red-06.png" alt="step 6" loading="lazy"></a></li><li><span class="stepn">7</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-07.png"><img src="shots/red-07.png" alt="step 7" loading="lazy"></a></li><li><span class="stepn">8</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-08.png"><img src="shots/red-08.png" alt="step 8" loading="lazy"></a></li><li><span class="stepn">9</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-09.png"><img src="shots/red-09.png" alt="step 9" loading="lazy"></a></li><li><span class="stepn">10</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-10.png"><img src="shots/red-10.png" alt="step 10" loading="lazy"></a></li><li><span class="stepn">11</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-11.png"><img src="shots/red-11.png" alt="step 11" loading="lazy"></a></li><li><span class="stepn">12</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-12.png"><img src="shots/red-12.png" alt="step 12" loading="lazy"></a></li><li><span class="stepn">13</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-13.png"><img src="shots/red-13.png" alt="step 13" loading="lazy"></a></li><li><span class="stepn">14</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-14.png"><img src="shots/red-14.png" alt="step 14" loading="lazy"></a></li><li><span class="stepn">15</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-15.png"><img src="shots/red-15.png" alt="step 15" loading="lazy"></a></li><li><span class="stepn">16</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-16.png"><img src="shots/red-16.png" alt="step 16" loading="lazy"></a></li><li><span class="stepn">17</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-17.png"><img src="shots/red-17.png" alt="step 17" loading="lazy"></a></li><li><span class="stepn">18</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-18.png"><img src="shots/red-18.png" alt="step 18" loading="lazy"></a></li><li><span class="stepn">19</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-19.png"><img src="shots/red-19.png" alt="step 19" loading="lazy"></a></li><li><span class="stepn">20</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/red-20.png"><img src="shots/red-20.png" alt="step 20" loading="lazy"></a></li></ol></details>
+    <p class="meta-line">20 verifier steps · Muse Spark 1.3 · prompt <span class="mono" title="0bf5917a258235fbbdb2e0db0233448caf4e7f896506892d08b7cc425f910c13">0bf5917a2582</span></p>
+  </section>
+  <section class="phase" id="phase-green">
+    <header class="phase-head">
+      <div>
+        <h3>Green <span class="role">· The fix — the criteria should pass</span></h3>
+        <div class="ref mono" title="7423ce4785fedf4ad23e5bda8e7addfd1d93c9a7">bench-gen/G-search-double-apply/fix @ 7423ce4</div>
+      </div>
+      <div class="outcome">
+        <span class="io">expected <b>pass</b> · observed <b>pass</b></span>
+        <span class="pill ok">✓ as expected</span>
+      </div>
+    </header>
+    
+    
+    <div class="crit-result">
+      
+      <div class="votes" role="list">
+        <div class="vote v-pass"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+        <div class="vote v-pass"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-pass"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>Searched for lamp and the results list shows Desk lamp</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): pass — Frames 3 and 4 show &#39;Desk lamp&#39; listed in the results area after &#39;lamp&#39; was entered in the Search field and the search was executed.</li></ul></div>
+      <div class="shots"><figure><a href="shots/green-03.png"><img src="shots/green-03.png" alt="shots/green-03.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    
+    <details class="timeline" open><summary>What the verifier did, step by step <span class="count">3 steps</span></summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a class="stepshot" href="shots/green-00.png"><img src="shots/green-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (638, 218) → landed on input#q</div><div>type &#34;lamp&#34;</div></div><a class="stepshot" href="shots/green-01.png"><img src="shots/green-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>click (637, 358) → landed on button#go.control</div></div><a class="stepshot" href="shots/green-02.png"><img src="shots/green-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-03.png"><img src="shots/green-03.png" alt="step 3" loading="lazy"></a></li></ol></details>
+    <p class="meta-line">3 verifier steps · Muse Spark 1.3 · prompt <span class="mono" title="0216f8b5692ff32deaf0e8f7bbea938dda9fa78fc61d20d93fc39bbe4ff13faa">0216f8b5692f</span></p>
+  </section>
+  <section class="phase" id="phase-break">
+    <header class="phase-head">
+      <div>
+        <h3>Break <span class="role">· A wrong fix — Attest should reject it</span></h3>
+        <div class="ref mono" title="d886bc1a390ad6aa95da8d3ac28988c43ab6cb5e">bench-gen/G-search-double-apply/bad-fix @ d886bc1</div>
+      </div>
+      <div class="outcome">
+        <span class="io">expected <b>fail</b> · observed <b>inconclusive</b></span>
+        <span class="pill warn">! inconclusive</span>
+      </div>
+    </header>
+    
+    
+    <div class="crit-result">
+      
+      <div class="votes" role="list">
+        <div class="vote v-fail"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+        <div class="vote v-pass"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-fail"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>After searching for lamp the page stayed on Working... with no results and never listed Desk lamp.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): fail — No frame shows a results list; after searching for &#34;lamp&#34; the UI remains stuck on &#34;Working...&#34; with no &#34;Desk lamp&#34; result visible through frame 26.</li></ul></div>
+      <div class="shots"><figure><a href="shots/break-17.png"><img src="shots/break-17.png" alt="shots/break-17.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    
+    <details class="timeline" open><summary>What the verifier did, step by step <span class="count">25 steps</span></summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a class="stepshot" href="shots/break-00.png"><img src="shots/break-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (637, 217) → landed on input#q</div></div><a class="stepshot" href="shots/break-01.png"><img src="shots/break-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>type &#34;lamp&#34;</div></div><a class="stepshot" href="shots/break-02.png"><img src="shots/break-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>click (637, 358) → landed on button#go.control</div></div><a class="stepshot" href="shots/break-03.png"><img src="shots/break-03.png" alt="step 3" loading="lazy"></a></li><li><span class="stepn">4</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-04.png"><img src="shots/break-04.png" alt="step 4" loading="lazy"></a></li><li><span class="stepn">5</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-05.png"><img src="shots/break-05.png" alt="step 5" loading="lazy"></a></li><li><span class="stepn">6</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-06.png"><img src="shots/break-06.png" alt="step 6" loading="lazy"></a></li><li><span class="stepn">7</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-07.png"><img src="shots/break-07.png" alt="step 7" loading="lazy"></a></li><li><span class="stepn">8</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-08.png"><img src="shots/break-08.png" alt="step 8" loading="lazy"></a></li><li><span class="stepn">9</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-09.png"><img src="shots/break-09.png" alt="step 9" loading="lazy"></a></li><li><span class="stepn">10</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-10.png"><img src="shots/break-10.png" alt="step 10" loading="lazy"></a></li><li><span class="stepn">11</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-11.png"><img src="shots/break-11.png" alt="step 11" loading="lazy"></a></li><li><span class="stepn">12</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-12.png"><img src="shots/break-12.png" alt="step 12" loading="lazy"></a></li><li><span class="stepn">13</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-13.png"><img src="shots/break-13.png" alt="step 13" loading="lazy"></a></li><li><span class="stepn">14</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-14.png"><img src="shots/break-14.png" alt="step 14" loading="lazy"></a></li><li><span class="stepn">15</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-15.png"><img src="shots/break-15.png" alt="step 15" loading="lazy"></a></li><li><span class="stepn">16</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-16.png"><img src="shots/break-16.png" alt="step 16" loading="lazy"></a></li><li><span class="stepn">17</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-17.png"><img src="shots/break-17.png" alt="step 17" loading="lazy"></a></li><li><span class="stepn">18</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-18.png"><img src="shots/break-18.png" alt="step 18" loading="lazy"></a></li><li><span class="stepn">19</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-19.png"><img src="shots/break-19.png" alt="step 19" loading="lazy"></a></li><li><span class="stepn">20</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-20.png"><img src="shots/break-20.png" alt="step 20" loading="lazy"></a></li><li><span class="stepn">21</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-21.png"><img src="shots/break-21.png" alt="step 21" loading="lazy"></a></li><li><span class="stepn">22</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-22.png"><img src="shots/break-22.png" alt="step 22" loading="lazy"></a></li><li><span class="stepn">23</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-23.png"><img src="shots/break-23.png" alt="step 23" loading="lazy"></a></li><li><span class="stepn">24</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-24.png"><img src="shots/break-24.png" alt="step 24" loading="lazy"></a></li><li><span class="stepn">25</span><div class="stepbody"><div>wait</div></div><a class="stepshot" href="shots/break-25.png"><img src="shots/break-25.png" alt="step 25" loading="lazy"></a></li></ol></details>
+    <p class="meta-line">25 verifier steps · Muse Spark 1.3 · prompt <span class="mono" title="ae1773573faf86c9e011ff214f46cf0dec54866837bc52c664dc485bb919de92">ae1773573faf</span></p>
+  </section>
+<h2 id="verify">Check this receipt yourself</h2>
+<section class="card panel verify">
+  <div><h3>What <span class="mono">attest verify</span> checks — no model calls</h3><ul>
+    <li>The Ed25519 signature over the receipt</li>
+    <li>The hash-chained event log, its head and its length</li>
+    <li>The hash of every screenshot, video and the criteria copy</li>
+    <li>That the verdict follows from the recorded votes</li></ul></div>
+  <div><h3>What a receipt does not prove</h3><ul>
+    <li>That the capture environment was honest — it shows nothing changed after capture; the signature detects a later edit</li>
+    <li>Who ran it — the key is created on the machine that ran the proof</li>
+    <li>Anything beyond the stated criteria</li></ul></div>
+</section>
+</main>
+<footer><div class="wrap">This page is generated from <span class="mono">receipt.json</span> and is not itself signed. The receipt is the source of truth — if they ever disagree, trust <span class="mono">attest verify</span>.</div></footer>
+</body></html>

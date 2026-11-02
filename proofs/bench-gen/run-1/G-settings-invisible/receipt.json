@@ -1,0 +1,176 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T17:15:43.138Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/settings-invisible/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-settings-invisible/base",
+        "sha": "06ebb305e0361a631b5c133a36021b3bb0af95db"
+      },
+      "green": {
+        "ref": "bench-gen/G-settings-invisible/fix",
+        "sha": "0c33b22d3ce30f122bf750b9ee1a8c96cd00e0cf"
+      },
+      "break": {
+        "ref": "bench-gen/G-settings-invisible/bad-fix",
+        "sha": "b8c903cdbd8f38160417437ffba7057bcc7663f8"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-settings-invisible/base",
+      "sha": "06ebb305e0361a631b5c133a36021b3bb0af95db",
+      "status": "completed",
+      "error": null,
+      "steps": 8,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e680f98ed3e43968691fcc50105841d613460a7b14975cf52183400481f727f6",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Turned email notifications on but no Save button exists on the settings page and no Settings saved message appears.",
+          "evidence": [
+            "shots/red-08.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Email notifications are checked from Frame 2 onward but no frame ever displays the required 'Settings saved' confirmation text."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-settings-invisible/fix",
+      "sha": "0c33b22d3ce30f122bf750b9ee1a8c96cd00e0cf",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "de8f182b948f33dec1545d6d1dbabc9968635415ed55a64479e464ab8d8805d8",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Page shows 'Settings saved' text with email notifications checkbox checked on.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Final frame shows 'Settings saved' text and the email notifications checkbox is checked (on) after Save."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-settings-invisible/bad-fix",
+      "sha": "b8c903cdbd8f38160417437ffba7057bcc7663f8",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a73a5c66c7b984336e203c61956d0ef8eb9552b19c99aefbeaf6c0ec7bea6222",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After turning email notifications on, no Save button and no 'Settings saved' text are visible on the Settings page.",
+          "evidence": [
+            "shots/break-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows the text \"Settings saved\" after the checkbox is turned on, though the checkbox does end checked in Frame 12."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628",
+    "shots/break-00.png": "sha256:0bc09e2f687ac66d08c0f1e2bf7febd992265ce231b90acb75adb09549b53ff1",
+    "shots/break-01.png": "sha256:0bc09e2f687ac66d08c0f1e2bf7febd992265ce231b90acb75adb09549b53ff1",
+    "shots/break-02.png": "sha256:912702ab131f3d7bda3f067d1a02d27f99df82a7ba6fdb4310ba0a9b64ef05ff",
+    "shots/break-03.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/break-04.png": "sha256:a52f9d91e2b9c2ad49d91e41f898b5ba3643d8d2aa63ba3eea47fd267b508154",
+    "shots/break-05.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/break-06.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/break-07.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/break-08.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/break-09.png": "sha256:0c4aba590e7e5b3cd55231480acae106ae363cda0aa938ccf881c3c33cc643ca",
+    "shots/break-10.png": "sha256:912702ab131f3d7bda3f067d1a02d27f99df82a7ba6fdb4310ba0a9b64ef05ff",
+    "shots/break-11.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/green-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/green-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/green-02.png": "sha256:1ba94088a7ed50e56f7b1988e2330d815aa5d7ebf49bcc78f311c19461ca1698",
+    "shots/red-00.png": "sha256:0bc09e2f687ac66d08c0f1e2bf7febd992265ce231b90acb75adb09549b53ff1",
+    "shots/red-01.png": "sha256:912702ab131f3d7bda3f067d1a02d27f99df82a7ba6fdb4310ba0a9b64ef05ff",
+    "shots/red-02.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/red-03.png": "sha256:a52f9d91e2b9c2ad49d91e41f898b5ba3643d8d2aa63ba3eea47fd267b508154",
+    "shots/red-04.png": "sha256:ed30a73f805c95c41ef49a6e43da6689ee9c833c8fa763639e75c8036ea2a159",
+    "shots/red-05.png": "sha256:c5fe066a4bf407fda1ee6e639a44743a7deb962bf61f741d62f6aa9aa9b3189b",
+    "shots/red-06.png": "sha256:c5fe066a4bf407fda1ee6e639a44743a7deb962bf61f741d62f6aa9aa9b3189b",
+    "shots/red-07.png": "sha256:c5fe066a4bf407fda1ee6e639a44743a7deb962bf61f741d62f6aa9aa9b3189b",
+    "shots/red-08.png": "sha256:c5fe066a4bf407fda1ee6e639a44743a7deb962bf61f741d62f6aa9aa9b3189b"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:76f69911f1e2a00720321892972873f8e37e6e4d4b8051cddfd989e2019e1aca",
+    "entries": 72
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "Jl2sJmAwVibzFt/yZUMJRdMH2ez+Xkhwc9UmA2P9LygcB3DDoKOLCUfBkmJr9Tt3jRXiXVesu82AuPQ8JkwLCw=="
+  }
+}

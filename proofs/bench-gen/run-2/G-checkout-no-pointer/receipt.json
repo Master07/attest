@@ -1,0 +1,162 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-02T01:47:02.197Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen-r2/checkout-no-pointer/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen-r2/G-checkout-no-pointer/base",
+        "sha": "dfab65683582577520a07931c7a5cc6c6573fcf9"
+      },
+      "green": {
+        "ref": "bench-gen-r2/G-checkout-no-pointer/fix",
+        "sha": "7768ae4f6820a052630cc1d2ac5f0c4bbe5ba020"
+      },
+      "break": {
+        "ref": "bench-gen-r2/G-checkout-no-pointer/bad-fix",
+        "sha": "332cf77f8957c6a37cf6ff0b3b70d64fb63d3ac5"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen-r2/G-checkout-no-pointer/base",
+      "sha": "dfab65683582577520a07931c7a5cc6c6573fcf9",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "85c26d765cc5bf4fe8dd092395110c4f5c822dd89590f15eb052a481a5ad8f6d",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked Pay twice with a wait in between and the page remained on Your cart with no order confirmation shown.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All four frames show the same cart page with Pay $89.00 button and no order confirmation or order number ever appears."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen-r2/G-checkout-no-pointer/fix",
+      "sha": "7768ae4f6820a052630cc1d2ac5f0c4bbe5ba020",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ae7f24b6995c492c07eff2073d4aacbf0af506ed151da082fda6f20446a8dbc6",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Pay, the page showed Thank you with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the cart with one item and Pay button, and Frame 2 shows order confirmation 'Thank you' with order number '#1042'."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen-r2/G-checkout-no-pointer/bad-fix",
+      "sha": "332cf77f8957c6a37cf6ff0b3b70d64fb63d3ac5",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a97f7d491538055e0b70950ea6b51552f8081f8bbae02e78d6f87c1490cb6758",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked Pay twice with a wait in between and the page stayed on Your cart with no order confirmation or order number shown.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All four frames show the identical cart page with the Pay button and no order confirmation with an order number ever appears."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/break-01.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/break-02.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/break-03.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/green-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-01.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-02.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-03.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:e8b9980e5865e9d186d6fe6e2cf4294e4ad5b0f374570cc00f437635ce098023",
+    "entries": 44
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "weGlt27Nl1selnuoe2XupW1NkH7ZPIJ6HdEhnjGnu2npPQU4cMq1pL9xFz2fpfvSHKYZi9pVKJsoTRDphiOyBQ=="
+  }
+}

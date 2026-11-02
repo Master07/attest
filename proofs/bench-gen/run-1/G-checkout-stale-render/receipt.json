@@ -1,0 +1,173 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T13:04:39.238Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-stale-render/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-stale-render/base",
+        "sha": "d296735792ad222d8cfd168e544f3bf8615c4d3c"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-stale-render/fix",
+        "sha": "23e0f0d79253bf943cff06b495932268cd735b1f"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-stale-render/bad-fix",
+        "sha": "313fd3c0e838fb48d12201a0dd6cb6e3c171eddc"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-stale-render/base",
+      "sha": "d296735792ad222d8cfd168e544f3bf8615c4d3c",
+      "status": "completed",
+      "error": null,
+      "steps": 8,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "161b9e6c766a74f2117b4a03343d75606382ee7cc1b9780e5e8825587a11811c",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked Pay once and waited; page only shows Working... with no order confirmation or order number.",
+          "evidence": [
+            "shots/red-08.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No order confirmation with order number appears in any frame; after the initial cart view, frames 2-9 only show a persistent \"Working...\" state with the Pay button still visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-stale-render/fix",
+      "sha": "23e0f0d79253bf943cff06b495932268cd735b1f",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f5e0eeb6031c6c6a6440b672e14f8a2c4a09f245362cb38a401501326caeb2f2",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Pay, the page showed Thank you with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the cart with one product and Pay button, and Frame 2 immediately shows the order confirmation containing Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-stale-render/bad-fix",
+      "sha": "313fd3c0e838fb48d12201a0dd6cb6e3c171eddc",
+      "status": "completed",
+      "error": null,
+      "steps": 9,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8fa97d7c6dab270b0d645c3e6367fe92b96eba3958d781be707a830d88e48cc0",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked Pay once and waited, page stayed on Your cart showing Working... with no order confirmation or order number.",
+          "evidence": [
+            "shots/break-08.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After clicking Pay (Frame 2 shows 'Working...'), no order confirmation with an order number ever appears; Frames 2-10 remain stuck on 'Your cart' view."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-01.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-02.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-03.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-04.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-05.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-06.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-07.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-08.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/break-09.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-01.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/red-02.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/red-03.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/red-04.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/red-05.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/red-06.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/red-07.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1",
+    "shots/red-08.png": "sha256:757541a09b91348ac33f50b6b66153f207643b9264ef90b39a9ba9886846fbc1"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:15fa1ba22967beac083cc00dbe0bec20787a2579faaa7a71c15a7ab68a533e24",
+    "entries": 66
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "S+2NEoUIw6VMo0xgXyuvx6pPn4G7ro+8Axyu9pVsHC8RBqPXY7vziT2D4oHBv5CHDT8JNr5WlewX//N4F3kHBg=="
+  }
+}

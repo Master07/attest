@@ -1,0 +1,163 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-02T02:05:21.526Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen-r2/checkout-wrong-element/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen-r2/G-checkout-wrong-element/base",
+        "sha": "b593e00231f8c5f9a3de3c4109299e41b737e9c4"
+      },
+      "green": {
+        "ref": "bench-gen-r2/G-checkout-wrong-element/fix",
+        "sha": "c5eceedae0081e60b97a785104dc04d0b003a7a0"
+      },
+      "break": {
+        "ref": "bench-gen-r2/G-checkout-wrong-element/bad-fix",
+        "sha": "054450e30496d2f20b06235f3991371085982ad2"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen-r2/G-checkout-wrong-element/base",
+      "sha": "b593e00231f8c5f9a3de3c4109299e41b737e9c4",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "2f7cfc49b1ce5b32f35741e1dab96b413e01f9bfb4b891ee31a0fd9fabb78d3f",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click on Pay had no visible effect, and after waiting and a second confirming click the page still showed Your cart with Pay $89.00 and no order confirmation.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No order confirmation with order number is shown in any frame; all 5 frames remain on the cart view with the Pay button unchanged."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen-r2/G-checkout-wrong-element/fix",
+      "sha": "c5eceedae0081e60b97a785104dc04d0b003a7a0",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "22e709333c82da8eea16a6e1465ed32ba227b8c3407843ac28a352e2cb528108",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicked Pay and a Thank you page showing Order #1042 appeared.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the cart with one item and Pay button, and Frame 2 shows order confirmation with order number #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen-r2/G-checkout-wrong-element/bad-fix",
+      "sha": "054450e30496d2f20b06235f3991371085982ad2",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "107adb71eda2ab44da1e0029e7056c790daf14e0f6155dccf4225d3dc954436c",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click on Pay had no visible effect and a second confirming click still left the cart with Pay $89.00 and no order confirmation.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All four frames show the cart page with the Pay button and no order confirmation or order number is ever displayed."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/break-01.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/break-02.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/break-03.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/green-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-01.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-02.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-03.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-04.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:f97036ea85b6b695d94bdb2aaabc7b55bb3c4007b5ca144afb3da37584653258",
+    "entries": 46
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "VpTGqYtOtGpUZucz7jeCwWYALl2cCrxRenFf+zVslI4R0yS6YGEEnS+aa9TQ6JtQuLIa/L7CybwjcUkiN0uyCQ=="
+  }
+}

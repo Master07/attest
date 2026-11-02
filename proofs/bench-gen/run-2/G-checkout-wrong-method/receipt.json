@@ -1,0 +1,160 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-02T02:08:41.362Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen-r2/checkout-wrong-method/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen-r2/G-checkout-wrong-method/base",
+        "sha": "3b1e92f60e086e4fd642440a260444a815ee2a34"
+      },
+      "green": {
+        "ref": "bench-gen-r2/G-checkout-wrong-method/fix",
+        "sha": "410a124f74d22cf204428c52b6b8a90164961d19"
+      },
+      "break": {
+        "ref": "bench-gen-r2/G-checkout-wrong-method/bad-fix",
+        "sha": "aab93c566d44b6f8bc787ad18637ec050b0907fd"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen-r2/G-checkout-wrong-method/base",
+      "sha": "3b1e92f60e086e4fd642440a260444a815ee2a34",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c92652a9038477ec0a47a0ef0f1f925033c79931b0935074420f92012af1cb00",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicking Pay showed 'Something went wrong. Please try again.' on both attempts with no order confirmation or order number.",
+          "evidence": [
+            "shots/red-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No order confirmation or order number is shown; Frame 2 (the effect of clicking Pay) displays 'Something went wrong. Please try again.' with no confirmation."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen-r2/G-checkout-wrong-method/fix",
+      "sha": "410a124f74d22cf204428c52b6b8a90164961d19",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "378be50271f95716d09e5c5aeb0b1cdddf8daeed41bde549163217735bfa2810",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicked Pay and saw Thank you page showing Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows order confirmation 'Thank you' with order number '#1042' after the cart shown in Frame 1."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen-r2/G-checkout-wrong-method/bad-fix",
+      "sha": "aab93c566d44b6f8bc787ad18637ec050b0907fd",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "86fb9dbd8c7d667d341a8115b31fb725f67ba06ead4a0ac7419f7c6048cf445d",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click on Pay showed 'Something went wrong. Please try again.' instead of order confirmation, and a second click showed the same error.",
+          "evidence": [
+            "shots/break-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No order confirmation with order number is shown; frames 2-3 display 'Something went wrong. Please try again.' instead of a confirmation."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/break-01.png": "sha256:0ee8f8d8f290b6a713b6bb525deb21262e3775b5a339cb1f38b96b6a9e4491c0",
+    "shots/break-02.png": "sha256:0ee8f8d8f290b6a713b6bb525deb21262e3775b5a339cb1f38b96b6a9e4491c0",
+    "shots/green-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/red-01.png": "sha256:0ee8f8d8f290b6a713b6bb525deb21262e3775b5a339cb1f38b96b6a9e4491c0",
+    "shots/red-02.png": "sha256:0ee8f8d8f290b6a713b6bb525deb21262e3775b5a339cb1f38b96b6a9e4491c0"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:a4b72b5deaaa472dbe9e2ca8f737d1ef6a24394de8c336d0acb8d7a69641db1d",
+    "entries": 40
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "VX30ykHiPqlnYIS2wOI02Cwyi/Ve5T0Sz43t4vtQ+dblAqWBv7cnNLP089iqWYinj6Y+tmq1z8KGoiI+FsXtCg=="
+  }
+}

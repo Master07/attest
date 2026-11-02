@@ -1,0 +1,176 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T21:58:02.614Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-invisible/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-invisible/base",
+        "sha": "0f7ce2e1c1fc0d673b6a20fd019cd294299e2e3b"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-invisible/fix",
+        "sha": "817e4cec057af8d5b1a84236a321524a6b8ebaef"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-invisible/bad-fix",
+        "sha": "5e66c28aeefcefe8263b8cf6e2bd69fd76d4ff40"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-invisible/base",
+      "sha": "0f7ce2e1c1fc0d673b6a20fd019cd294299e2e3b",
+      "status": "completed",
+      "error": null,
+      "steps": 12,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d31770bdd76776dc058fb4ed58816778aafcbf012c396a3a0f44a587804cad82",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "verifier failed but checks passed",
+          "observation": "Typed Buy milk into New item but no Add button is visible and tab cycles only between inputs, so Add cannot be clicked.",
+          "evidence": [
+            "shots/red-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — From Frame 9 through Frame 13 the to-do list area below 'Working…' displays 'Buy milk', confirming the item was added after typing 'Buy milk'."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-invisible/fix",
+      "sha": "817e4cec057af8d5b1a84236a321524a6b8ebaef",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f5a2034be5922fd3d271a21f2876a26016143311cd408a524f28180186cfb287",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the list below the form shows Buy milk.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows the list area below the form contains 'Buy milk', confirming the item was added after typing and clicking Add."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-invisible/bad-fix",
+      "sha": "5e66c28aeefcefe8263b8cf6e2bd69fd76d4ff40",
+      "status": "completed",
+      "error": null,
+      "steps": 8,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "33de6685ff1635ae04a7f359649c1070f3c68b841dfec394350e9f7696858cf1",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "The input shows 'Buy milk' but no Add button is visible and no to-do list item appears.",
+          "evidence": [
+            "shots/break-08.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After typing 'Buy milk' the text remains only in the New item input and no list entry appears in any of frames 1-9; the to-do list never displays the added item."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:28580725911804a1faef5c09acff8f0a90c295722a0592d156cfd86505abcd18",
+    "shots/break-01.png": "sha256:45daa519f157f6c8e530424fd7fb4982140a00d1b88a88817b0dd21e0d57a2b9",
+    "shots/break-02.png": "sha256:6d7dbbd66b78db9776b07f268eadb0389a6168f47909e22aa8ce8df0e7b11c00",
+    "shots/break-03.png": "sha256:518f0459ce0a4e2d68aa3d23d71c1e93ffda4d41420e800cfc4a687e26ca0134",
+    "shots/break-04.png": "sha256:fff49bcfaae4144a3e854c30b2c717dfac6a2ca408dd6e2b0d4cadb464a8c7eb",
+    "shots/break-05.png": "sha256:fff49bcfaae4144a3e854c30b2c717dfac6a2ca408dd6e2b0d4cadb464a8c7eb",
+    "shots/break-06.png": "sha256:fff49bcfaae4144a3e854c30b2c717dfac6a2ca408dd6e2b0d4cadb464a8c7eb",
+    "shots/break-07.png": "sha256:5551a325875b0b0a85fb566a97c466e11cb10772caf68ebec2d574536a641903",
+    "shots/break-08.png": "sha256:5551a325875b0b0a85fb566a97c466e11cb10772caf68ebec2d574536a641903",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:28580725911804a1faef5c09acff8f0a90c295722a0592d156cfd86505abcd18",
+    "shots/red-01.png": "sha256:9cd5b67edcef85001c291f14099d3d936736c068825074e6c61f7ff3ab5b4055",
+    "shots/red-02.png": "sha256:45daa519f157f6c8e530424fd7fb4982140a00d1b88a88817b0dd21e0d57a2b9",
+    "shots/red-03.png": "sha256:6d7dbbd66b78db9776b07f268eadb0389a6168f47909e22aa8ce8df0e7b11c00",
+    "shots/red-04.png": "sha256:518f0459ce0a4e2d68aa3d23d71c1e93ffda4d41420e800cfc4a687e26ca0134",
+    "shots/red-05.png": "sha256:fff49bcfaae4144a3e854c30b2c717dfac6a2ca408dd6e2b0d4cadb464a8c7eb",
+    "shots/red-06.png": "sha256:dd8d9aad17d29290955a70d2de61d76a2a311294f5e5abf2e85b7e1034b6fc01",
+    "shots/red-07.png": "sha256:dd8d9aad17d29290955a70d2de61d76a2a311294f5e5abf2e85b7e1034b6fc01",
+    "shots/red-08.png": "sha256:09dcc57002daa030a0f0eecde06396bc4cea870d5870124b2e912976784c4f73",
+    "shots/red-09.png": "sha256:09dcc57002daa030a0f0eecde06396bc4cea870d5870124b2e912976784c4f73",
+    "shots/red-10.png": "sha256:09dcc57002daa030a0f0eecde06396bc4cea870d5870124b2e912976784c4f73",
+    "shots/red-11.png": "sha256:56706afa2377d7385d392cc04c925ceaf0b6eb67058794c9a5311c67a620221a",
+    "shots/red-12.png": "sha256:56706afa2377d7385d392cc04c925ceaf0b6eb67058794c9a5311c67a620221a"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:3dce8ec49c81d24f1d4e5b42bd88d02bda15218639c01ffefc0c35be74ced09c",
+    "entries": 72
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "6ocM/4+qKoRDqBNsyZaiUnXXBJMbebH8T6k1l3SYEP/L4gXiHnqpKJnjHGESl/WSBc+ajPjKoPwr8N8Uh96HBg=="
+  }
+}

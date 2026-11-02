@@ -1,0 +1,181 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T12:43:03.021Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-invisible/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-invisible/base",
+        "sha": "39bea698dcb66ba0323e756d531f845ceb8ca5cd"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-invisible/fix",
+        "sha": "143e1eaaf59dd7b992002716d29b8367e570a9bf"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-invisible/bad-fix",
+        "sha": "5531a118d43ca12eda3e7f3bc46d1ca0de9c4d55"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-invisible/base",
+      "sha": "39bea698dcb66ba0323e756d531f845ceb8ca5cd",
+      "status": "completed",
+      "error": null,
+      "steps": 13,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "37e1c03cf6302df30aaa2e5921aa92dd0d65680a7973fcbdf42bc5374481bc7b",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "The cart shows one item with quantity but no Pay button and no order confirmation with order number is visible.",
+          "evidence": [
+            "shots/red-13.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No order confirmation with an order number is shown in any frame; all 14 frames only display the unchanged cart view."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-invisible/fix",
+      "sha": "143e1eaaf59dd7b992002716d29b8367e570a9bf",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "1e5378fb7439961d758de10899d41bc661f38a83c8b98555aad23112fa62695b",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted fail, others pass",
+          "observation": "Clicked Pay and page showed Thank you with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 1 shows Quantity 9 instead of the required one item, so the given precondition at /cart was not met; Frame 2's Order #1042 confirmation therefore does not demonstrate the specified scenario."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-invisible/bad-fix",
+      "sha": "5531a118d43ca12eda3e7f3bc46d1ca0de9c4d55",
+      "status": "completed",
+      "error": null,
+      "steps": 12,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "2659b2f39c1278640faab16c73170c7362d2aeaf3235705f95e7dde99ed7d553",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Cart page shows product and quantity but no Pay button and no order confirmation is visible",
+          "evidence": [
+            "shots/break-12.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows an order confirmation with an order number; all 13 frames remain on the 'Your cart' view with no change after the Pay action."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "green: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-01.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-02.png": "sha256:54e327b875ce20c894d256a6dc52ca64b70def5b6269ea06dd9686d4ee55f848",
+    "shots/break-03.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-04.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-05.png": "sha256:1e05de9d73615ebca48e02cdbba4ac4123a55a0dcab16d4d66f219f257755b2a",
+    "shots/break-06.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-07.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-08.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-09.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-10.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-11.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/break-12.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-01.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-02.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-03.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-04.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-05.png": "sha256:1e05de9d73615ebca48e02cdbba4ac4123a55a0dcab16d4d66f219f257755b2a",
+    "shots/red-06.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-07.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-08.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-09.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-10.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-11.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-12.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6",
+    "shots/red-13.png": "sha256:34c287d26b527418ebfd228b0b4cefb887ad7e40ad16d0b6f53d4d2af290c5d6"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:4831f18ffcd79cef41e787f67999c6b6c540438c21d0713a463f74bcbc48f2bd",
+    "entries": 82
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "yWS1+NWuNdZly1H22gbN/znuiSPYbQrFE9OS/DHAOk254ugOsdiJk/UUNonHEVvKZzisKotzSwIqUwSFaUA7CA=="
+  }
+}

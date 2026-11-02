@@ -1,0 +1,162 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T13:11:40.484Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-wrong-element/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-wrong-element/base",
+        "sha": "1c6194ea2a0ae3bba06c42acf96b8367846a9878"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-wrong-element/fix",
+        "sha": "4c1c27c51023db0c091496ac69aaca72bf8c9f44"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-wrong-element/bad-fix",
+        "sha": "ff5067749dcf7be99e522b485e9c3b90b3b8eb15"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-wrong-element/base",
+      "sha": "1c6194ea2a0ae3bba06c42acf96b8367846a9878",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e1a3a47bcbe53fedda0a963c3180762945af79a5e3c61ec374990e42bc057581",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click on Pay had no visible effect and a second confirming click also left the page on Your cart with no order confirmation or order number.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All four frames show only the cart page with Pay button and no navigation; no order confirmation with an order number ever appears after clicking Pay."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-wrong-element/fix",
+      "sha": "4c1c27c51023db0c091496ac69aaca72bf8c9f44",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e437cae54a30b18015227cadb62dc6dae71e8eceb08acff6283311bd57d6f24a",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Single click on Pay showed Thank you page with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the cart at /cart with Trail Runner Shoes and Pay button, and Frame 2 immediately shows the then outcome 'Thank you' with Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-wrong-element/bad-fix",
+      "sha": "ff5067749dcf7be99e522b485e9c3b90b3b8eb15",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "27a46eeb5ebd6f2b54836871d032f4bc8f07f404dd8823cbb9f18ea1ef783dda",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked Pay twice and page still shows Your cart with no order confirmation or order number.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — All 4 frames show only the 'Your cart' page with the Pay button; no order confirmation or order number ever appears."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-01.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-02.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-03.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-01.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-02.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-03.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:b2843e3f8dc02cbf4b8f64d32204c2cb22a1606eb0e62caaa42e3e4c07299847",
+    "entries": 44
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "8LqeC7zM33T3QpFx7A4X6lhx+bWM+c+K+w0LAitdlBoY3bhEUg9wADqw8LgZdgHGlv/fnDTX9xVe6IXDiWGmCQ=="
+  }
+}

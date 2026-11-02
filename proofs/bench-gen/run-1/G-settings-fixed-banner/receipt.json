@@ -1,0 +1,208 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T17:05:17.546Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/settings-fixed-banner/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-settings-fixed-banner/base",
+        "sha": "4e4503e590ee844543ab4a026804199ccb453c57"
+      },
+      "green": {
+        "ref": "bench-gen/G-settings-fixed-banner/fix",
+        "sha": "afffbcab2f286ac79b498376cd12f31f01553b64"
+      },
+      "break": {
+        "ref": "bench-gen/G-settings-fixed-banner/bad-fix",
+        "sha": "bc96540c222858efc30193534bb95db3065fa450"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-settings-fixed-banner/base",
+      "sha": "4e4503e590ee844543ab4a026804199ccb453c57",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "094cbf6204fda37bed87b7b84356d2a6b45883449bc765e1c5ae158d79d8f7b2",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "missing",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows the /settings page, the 'Settings saved' confirmation, or an email notifications toggle/state - all 26 frames only display a blank page with a cookie banner."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-settings-fixed-banner/fix",
+      "sha": "afffbcab2f286ac79b498376cd12f31f01553b64",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5dcde1e078c2724d472d620e3a07aa5396a52e764607033207220109ee31827d",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After turning the checkbox on and clicking Save, the page shows 'Settings saved' with email notifications checked.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows \"Settings saved\" text and the Email notifications checkbox checked/on after being off in Frame 1."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-settings-fixed-banner/bad-fix",
+      "sha": "bc96540c222858efc30193534bb95db3065fa450",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "4f6bd1d8e18bde71ebb1db825503a1ee890e7c9aad37e2e2600b3168cbf0cf4b",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "missing",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows \"Settings saved\" or email notifications on; all 26 frames show only a blank/loading page with \"We use cookies to keep the shop working\" and no settings interface."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive",
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628",
+    "shots/break-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-08.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-09.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-10.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-11.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-12.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-13.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-14.png": "sha256:9ef483dabd81834033d08f585c2347c26d93e8f40726b60f077106c5a3817383",
+    "shots/break-15.png": "sha256:9ef483dabd81834033d08f585c2347c26d93e8f40726b60f077106c5a3817383",
+    "shots/break-16.png": "sha256:9ef483dabd81834033d08f585c2347c26d93e8f40726b60f077106c5a3817383",
+    "shots/break-17.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-18.png": "sha256:9ef483dabd81834033d08f585c2347c26d93e8f40726b60f077106c5a3817383",
+    "shots/break-19.png": "sha256:9ef483dabd81834033d08f585c2347c26d93e8f40726b60f077106c5a3817383",
+    "shots/break-20.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-21.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-22.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-23.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-24.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-25.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/green-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/green-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/green-02.png": "sha256:1ba94088a7ed50e56f7b1988e2330d815aa5d7ebf49bcc78f311c19461ca1698",
+    "shots/red-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-08.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-09.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-10.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-11.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-12.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-13.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/red-14.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/red-15.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-16.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-17.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-18.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-19.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-20.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-21.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-22.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-23.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-24.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-25.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:40e8d900677626aaed52bd678a2055a91bc764475c5e27a10bc769c227aff06a",
+    "entries": 134
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "0cZRkrm67l4vz1Kn1zzzL3dc9fW9woN6FmtQcrzDT9CbjLwEhO2kXmwAilcQ4A0eWEld34sGtasw+bXsoi/RBQ=="
+  }
+}

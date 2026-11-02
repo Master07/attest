@@ -1,0 +1,163 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T22:08:16.393Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-nan/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-nan/base",
+        "sha": "ff284911f2700103627efdc91fd70f0f9fcf55fc"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-nan/fix",
+        "sha": "04e3fdf90cf6d72b31d2dff960e62463542c46ff"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-nan/bad-fix",
+        "sha": "9e77d5ee7481c296cd9d6b9e9d9e3d343dd425cf"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-nan/base",
+      "sha": "ff284911f2700103627efdc91fd70f0f9fcf55fc",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "02d6129e45f953220bd9066e48a808a50e456e4662d6079ae9da9f57b0988b40",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing 'Buy milk' and clicking 'Add' twice, the field retains 'Buy milk' but no list item appears below.",
+          "evidence": [
+            "shots/red-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No to-do list items are rendered in any frame; \"Buy milk\" appears only inside the New item input field and the list area remains empty after the Add action."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-nan/fix",
+      "sha": "04e3fdf90cf6d72b31d2dff960e62463542c46ff",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "1c5548bca07e42b5ac44b37a7f2304a89dda73035516f3d5f1158be9ac877470",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Typed 'Buy milk' and clicked Add, and the list below shows 'Buy milk'.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows 'Buy milk' displayed in the list area below the Add button with Working indicator, confirming the item was added."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-nan/bad-fix",
+      "sha": "9e77d5ee7481c296cd9d6b9e9d9e3d343dd425cf",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "526dd473a3c912eb65d20fce6c7c84b099cab725716ed7feadcf471def15e645",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First Add click had no visible effect and second confirmatory click also left only Buy milk in the input with no list item shown.",
+          "evidence": [
+            "shots/break-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 3-6 show \"Buy milk\" only remaining in the New item input field with no list rendered below; no to-do list entry displaying \"Buy milk\" ever appears after the Add action."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-01.png": "sha256:20a21cf220649a1146e7a08f25ccff813c95b5c825953fa51a4e23d82f4a2f4f",
+    "shots/break-02.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/break-03.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/break-04.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/break-05.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-01.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/red-02.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:0b1c5b5a1ec21bb7fcca40b5fe1d137d9887c89f42456c5f719c1a7e87c514a3",
+    "entries": 46
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "bPw/sWxNQUmqleIhk7FpqFFguXLqourDLnqi5lZgacjlalcVVRLsMVyUEwrPdUH8giPoC5mFOmDSc5ha5W/MCw=="
+  }
+}

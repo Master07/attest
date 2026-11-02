@@ -1,0 +1,165 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T22:39:17.120Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-string-compare/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-string-compare/base",
+        "sha": "7fe64f349adf2da3b540ffcbcf5dea9a0d527ea9"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-string-compare/fix",
+        "sha": "ca1961b87b73caff15d5de6c1d505b7b8dd885ea"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-string-compare/bad-fix",
+        "sha": "6e2d7b8f27664de039ee27c54add19a1d043b75e"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-string-compare/base",
+      "sha": "7fe64f349adf2da3b540ffcbcf5dea9a0d527ea9",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f76611345400e574efe0ef693ef6f3cea04381d65e8b8e455be8cfe84a3ea7c9",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing 'Buy milk' and clicking Add twice, no list item appeared and only the unchanged form was visible.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — The text 'Buy milk' only appears inside the New item input field and no list item is rendered below the Add button in any frame after the typing action."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-string-compare/fix",
+      "sha": "ca1961b87b73caff15d5de6c1d505b7b8dd885ea",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "27c72d80d61264ad9634c9a5ed397d9c33fe898cf6db5589ac4042c2dad536dd",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the list below the form shows Buy milk.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 (first effect after clicking Add) shows \"Buy milk\" listed below the divider, confirming the item was added."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-string-compare/bad-fix",
+      "sha": "6e2d7b8f27664de039ee27c54add19a1d043b75e",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5d7720b8b10623a738b6f58b302b14c5c6b59026466e79be8200245dc1c18c4a",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing 'Buy milk' and clicking 'Add' twice with a wait, the input still shows 'Buy milk' and no list item appears.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows a rendered list item for \"Buy milk\" - the text only remains in the New item input field and no list appears below the Add button."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:765cbb4cfc836322ea41f408b6e464b7060a0b5e5e377ebcf2601cc5355bb3f6",
+    "shots/break-01.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/break-02.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/break-03.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/green-02.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/green-03.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:765cbb4cfc836322ea41f408b6e464b7060a0b5e5e377ebcf2601cc5355bb3f6",
+    "shots/red-01.png": "sha256:a5c5d6d1a04c8c4d811dd81060c277adbe92098c98c9bbfebc6cf44bef6bea80",
+    "shots/red-02.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/red-03.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/red-04.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:02f503e534d7765acd81af0fe170229ae1a056c59b60e4d507ccf83416e35050",
+    "entries": 50
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "S4C0eSsO5W3cAq37755JCZYEf66l1lOcevpYoTeM7i1gzrgPCrpNDG9g43AFJKrujJV0u3zL+YcSp+UDLKpDDw=="
+  }
+}

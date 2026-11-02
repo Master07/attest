@@ -85,6 +85,12 @@ On a [benchmark of 10 planted UI bugs](docs/BENCHMARK.md), each with a plausible
 
 Ten planted bugs show the mechanism works; they are not a measure of real-world accuracy.
 
+**A larger, pre-registered benchmark: 102 generated planted bugs** in five small apps, each with a real fix and a wrong fix that comes with a passing check, frozen and checked without AI before any model ran ([write-up](docs/BENCHMARK_GENERATED.md) · [receipts](proofs/bench-gen/)):
+
+- **Run 1: 55 PROVEN, 47 INCONCLUSIVE, 0 REJECTED.** No real fix was rejected and **no wrong fix was certified**. Of the 47 wrong fixes that came with a passing behavioural test, Attest certified none.
+- **Every INCONCLUSIVE is listed with its reason.** 10 were our own mistake: the checkout page showed quantity 9 against a criterion saying "one item", and the judge rightly refused. The weak spot is layout bugs (clipped, off-screen, invisible or zero-size controls): 3 of 25 PROVEN. On those, Attest refused to certify rather than pass a wrong fix.
+- **Run 2**, pre-registered with only the quantity fixed, re-ran checkout: **17 of 19 PROVEN** (run 1: 8 of 20). Both runs are reported.
+
 **A real bug, too:** Attest proved TodoMVC's real 2012 fix for "deleting a todo takes two clicks" — in a project we didn't write — after four honestly reported runs: an ambiguous requirement and two blind spots in Attest (a retry hiding the bug, a judge that saw only the final frame) surfaced and were fixed, and no run certified the wrong fix. [Every run →](examples/realworld/todomvc-delete/README.md) · [signed receipt (release download)](examples/realworld/todomvc-delete/README.md#check-the-receipt)
 
 ## Try it — no API key needed
@@ -145,6 +151,7 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 |---|---|
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | The proof, the blind verifier, vote combining, the receipt, threats and limits |
 | [BENCHMARK](docs/BENCHMARK.md) | Ten planted bugs, two runs, what the numbers do and don't mean |
+| [BENCHMARK_GENERATED](docs/BENCHMARK_GENERATED.md) | 102 pre-registered generated bugs: every result, every INCONCLUSIVE with its reason, run 2 side by side |
 | [Real-world: Copilot's roadmap#361 fix](examples/realworld/roadmap-pulls/README.md) | GitHub Copilot's merged fix in someone else's app |
 | [Real-world: Devin's Board#918 keyboard fix](examples/realworld/board-focus-trap/README.md) | Three reported runs: INCONCLUSIVE, then the judge fixed, then PROVEN |
 | [Real-world: Devin's Board#921 fix](examples/realworld/board-enter/README.md) | An AI agent's merged fix in someone else's app, both runs |

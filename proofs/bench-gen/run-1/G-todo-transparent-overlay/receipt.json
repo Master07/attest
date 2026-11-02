@@ -1,0 +1,179 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T22:45:13.043Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-transparent-overlay/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-transparent-overlay/base",
+        "sha": "c5f15b0ec04c3dd3555d0b7c7e18597b81540b85"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-transparent-overlay/fix",
+        "sha": "561d7fc7416c37033dd02c9bc191fa0d43c4667e"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-transparent-overlay/bad-fix",
+        "sha": "148d1c8d36e684777e0265bcb3aa1f32b72ef208"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-transparent-overlay/base",
+      "sha": "c5f15b0ec04c3dd3555d0b7c7e18597b81540b85",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f707bdb92b6a1af16df0fe11389350b19126f7add620cce4dfa87450bbc6c0c8",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing Buy milk and clicking Add twice, the field still contained Buy milk and no list item appeared.",
+          "evidence": [
+            "shots/red-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 9-12 show 'Buy milk' only inside the New item input field, never as a displayed list item, and the to-do list area remains empty through Frame 12."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-transparent-overlay/fix",
+      "sha": "561d7fc7416c37033dd02c9bc191fa0d43c4667e",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "3c5b77eb686e713b55eddee44f36e7ca66bb0271c2c9c83f3d7dc925d523b45a",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the list below the form shows Buy milk.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows empty list, Frame 2 shows 'Buy milk' typed and 'Buy milk' appears in the list area after Add, persisting through Frame 3."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-transparent-overlay/bad-fix",
+      "sha": "148d1c8d36e684777e0265bcb3aa1f32b72ef208",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e7c20cadc9e4ce695cde5a86146f71f616648e0a7dc991852c6a9ae288d8b1e9",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing Buy milk and clicking Add twice, the input retains Buy milk but no list item appears.",
+          "evidence": [
+            "shots/break-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows \"Buy milk\" as a rendered to-do list item; it only appears typed inside the New item input field through Frame 12 with no list entry displayed."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-01.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-02.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-03.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-04.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-05.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-06.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-07.png": "sha256:20a21cf220649a1146e7a08f25ccff813c95b5c825953fa51a4e23d82f4a2f4f",
+    "shots/break-08.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/break-09.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/break-10.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/break-11.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/green-02.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-01.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-02.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-03.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-04.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-05.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-06.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-07.png": "sha256:20a21cf220649a1146e7a08f25ccff813c95b5c825953fa51a4e23d82f4a2f4f",
+    "shots/red-08.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/red-09.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/red-10.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a",
+    "shots/red-11.png": "sha256:feade30780a3e26e88d88b8b99783ae8c3245d3bfd49acb0aa71cc8563bb657a"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:fefb38a2e327ae50c4fd5b65a4a4c9f1b6c3b63639d18e3d4f1ccc5e2687358b",
+    "entries": 78
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "5Jvfko+WfC6Mufalg3r8zDKARKuBqj/O9z8URNpN5kDb0akApfkrt/71UIb9r6tLUAbuB8+r5lkRTld5a7wwCQ=="
+  }
+}

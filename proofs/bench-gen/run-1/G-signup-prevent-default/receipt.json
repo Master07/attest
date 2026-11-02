@@ -1,0 +1,169 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T20:20:51.755Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/signup-prevent-default/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-signup-prevent-default/base",
+        "sha": "f3c78bb9214e4e0109137b3d4687d80f1ce349cf"
+      },
+      "green": {
+        "ref": "bench-gen/G-signup-prevent-default/fix",
+        "sha": "064c10ef00c32f657f458f5e35cacdd6ee8072ff"
+      },
+      "break": {
+        "ref": "bench-gen/G-signup-prevent-default/bad-fix",
+        "sha": "13a4292e9a9f410452b9bdeb39492d8373a4436e"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "e3311ef5498f4817d11fc515b78067e527f24ef27b0a1aea9e73e0800d69a9f3"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-signup-prevent-default/base",
+      "sha": "f3c78bb9214e4e0109137b3d4687d80f1ce349cf",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8d71e43ef09d21808820a79b105b7ed4bde66e69da8e146d71b5d99d0d275127",
+      "criteria": [
+        {
+          "id": "signup-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Entered Ada and ada@example.com then clicked Create account twice with no navigation, still on Create your account form with no welcome greeting.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No welcome page appears; all four frames still show the 'Create your account' form with no greeting for Ada."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-signup-prevent-default/fix",
+      "sha": "064c10ef00c32f657f458f5e35cacdd6ee8072ff",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "3b59573a8f660d99c881f49f454ddc6057b1f6c060932e000d0168a189a576bd",
+      "criteria": [
+        {
+          "id": "signup-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Welcome page displays 'Welcome, Ada' after submitting the signup form.",
+          "evidence": [
+            "shots/green-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 6 shows welcome page greeting 'Welcome, Ada' after frames 3 and 5 show 'Ada' and 'ada@example.com' entered and Create account presumably clicked."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-signup-prevent-default/bad-fix",
+      "sha": "13a4292e9a9f410452b9bdeb39492d8373a4436e",
+      "status": "completed",
+      "error": null,
+      "steps": 6,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "de153e93952322bb8dec970fcbaeb73686017d4fa12cbabf22aff567693644c2",
+      "criteria": [
+        {
+          "id": "signup-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After entering Ada and ada@example.com, both clicks on Create account left the form unchanged with no welcome page greeting Ada.",
+          "evidence": [
+            "shots/break-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows a welcome page greeting \"Ada\"; all frames remain on the \"Create your account\" form with Ada/ada@example.com entered and no navigation or greeting appears."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:e3311ef5498f4817d11fc515b78067e527f24ef27b0a1aea9e73e0800d69a9f3",
+    "shots/break-00.png": "sha256:a2bf94477f7097cb756a1207adb9c95b1dd63ac8061525dc5a99b7ce7bae3fe4",
+    "shots/break-01.png": "sha256:02882c0667e3a240eea547e472a0cb349c4cc866553f6aed12330597ec2e72f6",
+    "shots/break-02.png": "sha256:b9b6d775dabbafad47edbc3a7b2bb361eee563acb41605e9a4b4a0483cc97628",
+    "shots/break-03.png": "sha256:5d28fef80ee995c8cc1d3803c494ee3642e3d51cacadf3933ded6040d784cdb1",
+    "shots/break-04.png": "sha256:5d28fef80ee995c8cc1d3803c494ee3642e3d51cacadf3933ded6040d784cdb1",
+    "shots/break-05.png": "sha256:5d28fef80ee995c8cc1d3803c494ee3642e3d51cacadf3933ded6040d784cdb1",
+    "shots/break-06.png": "sha256:5d28fef80ee995c8cc1d3803c494ee3642e3d51cacadf3933ded6040d784cdb1",
+    "shots/green-00.png": "sha256:a2bf94477f7097cb756a1207adb9c95b1dd63ac8061525dc5a99b7ce7bae3fe4",
+    "shots/green-01.png": "sha256:7c61ea9b13aa09f41a7195fbcc87c0f9ecfadb48c3e3747d7a58532ade4553c5",
+    "shots/green-02.png": "sha256:02882c0667e3a240eea547e472a0cb349c4cc866553f6aed12330597ec2e72f6",
+    "shots/green-03.png": "sha256:eefff89ab3a86ff09466d7ce971f4847522e0ff6dd2d1a2e9302758f1a05e886",
+    "shots/green-04.png": "sha256:b9b6d775dabbafad47edbc3a7b2bb361eee563acb41605e9a4b4a0483cc97628",
+    "shots/green-05.png": "sha256:4bbbd657e8dbe723325d88ca500828657302b1f4d8f51c3c9c7e7e9576abc0ef",
+    "shots/red-00.png": "sha256:a2bf94477f7097cb756a1207adb9c95b1dd63ac8061525dc5a99b7ce7bae3fe4",
+    "shots/red-01.png": "sha256:5d28fef80ee995c8cc1d3803c494ee3642e3d51cacadf3933ded6040d784cdb1",
+    "shots/red-02.png": "sha256:5d28fef80ee995c8cc1d3803c494ee3642e3d51cacadf3933ded6040d784cdb1",
+    "shots/red-03.png": "sha256:5d28fef80ee995c8cc1d3803c494ee3642e3d51cacadf3933ded6040d784cdb1"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:df7b0b4df962d2d42fd7f752415aa134deb42f4fc9d108174d936ee6610cb95a",
+    "entries": 58
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "2lxx4TQSDe8G15rXRBuY8saxgL9PtfH8oJoLcVPIMAEKObE29gSwxYwGqb7nXL5XYXUrgiJWzdTaQVh9sByCDg=="
+  }
+}

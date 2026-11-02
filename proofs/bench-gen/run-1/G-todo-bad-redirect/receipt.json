@@ -1,0 +1,175 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T21:16:55.201Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-bad-redirect/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-bad-redirect/base",
+        "sha": "13747464b0fd972d31774bd31dbfad0016f27272"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-bad-redirect/fix",
+        "sha": "c7dee69e0e9e736b4753d29e0b1a0c1b39621076"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-bad-redirect/bad-fix",
+        "sha": "8db262ca59a29ad03871ac68966f36160083ca56"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-bad-redirect/base",
+      "sha": "13747464b0fd972d31774bd31dbfad0016f27272",
+      "status": "completed",
+      "error": null,
+      "steps": 9,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b1974a22f3895dd2c52870a829bcba6abda06d98cf1a6e79de4fab5baea71793",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier failed but checks passed",
+          "observation": "After typing Buy milk and clicking Add, the page showed Not found instead of the to-do list with Buy milk.",
+          "evidence": [
+            "shots/red-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows 'Buy milk' in the list; Frame 1 shows empty inputs and Frames 2-10 are blank white screens with no list visible."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-bad-redirect/fix",
+      "sha": "c7dee69e0e9e736b4753d29e0b1a0c1b39621076",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "7328b1c818e05b6b9c31eaae2a6b2ab44b31ff5c4476824642576804118e4901",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Add, the list below the form shows 'Buy milk'.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Buy milk' rendered in the list below the form after 'Buy milk' was typed into the new-item field in Frame 2 and Add was activated (button disabled with 'Working...')."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-bad-redirect/bad-fix",
+      "sha": "8db262ca59a29ad03871ac68966f36160083ca56",
+      "status": "completed",
+      "error": null,
+      "steps": 8,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8fd085b5f461156dc837e5f9a7a598e3cdb27f3996f9ae452a2b0b6380b0813c",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier failed but checks passed",
+          "observation": "After typing Buy milk and clicking Add the page showed Not found instead of the list showing Buy milk.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows the list containing \"Buy milk\" — Frames 1-2 show an empty New item field and Frames 3-9 are blank white pages with no to-do list visible."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive",
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-01.png": "sha256:20a21cf220649a1146e7a08f25ccff813c95b5c825953fa51a4e23d82f4a2f4f",
+    "shots/break-02.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-03.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-04.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-05.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-06.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-07.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/break-08.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/green-02.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-01.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-02.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-03.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-04.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-05.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-06.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-07.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-08.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08",
+    "shots/red-09.png": "sha256:fc59a9a1f0a62f7360f1a03f5d9f592c1afac02437c05f33e86a2f9bc4b9de08"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:da74d82871a6ea5a5c43e116e5bf7bc7402549fde5642f939b688d0d4360a727",
+    "entries": 68
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "TQRQYFrwaEQJi6z2FZzNmhWNPbZHRW0e3t45DF6fIQLVcVqqtD+GVM2iF2lq9H8hHiRmj7E4nvJSKCWcj+ijDw=="
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T17:08:41.529Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/settings-hidden-required/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-settings-hidden-required/base",
+        "sha": "8cbb9dfcedde3d1274b56c6505a36bd80b35aadc"
+      },
+      "green": {
+        "ref": "bench-gen/G-settings-hidden-required/fix",
+        "sha": "58c3ad2114023a792230b1c489b21abf06eee581"
+      },
+      "break": {
+        "ref": "bench-gen/G-settings-hidden-required/bad-fix",
+        "sha": "722b059fc3223c5ea9a97b6874e520565256d6c5"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-settings-hidden-required/base",
+      "sha": "8cbb9dfcedde3d1274b56c6505a36bd80b35aadc",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "952239ba385332af9c933a68873bf64cec7ee1ddf8621fc709bcd70a009474f9",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Email notifications checkbox is on but no 'Settings saved' message appears after clicking Save.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No 'Settings saved' confirmation appears in any frame after the checkbox is checked and Save is presumably clicked, though the checkbox remains on."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-settings-hidden-required/fix",
+      "sha": "58c3ad2114023a792230b1c489b21abf06eee581",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e33f8b50e0f8cd90393b136a67868b6b4af86aef2ae8ff92e57aada77d383d66",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Page shows 'Settings saved' with email notifications checkbox checked on.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Settings saved' text and the Email notifications checkbox is checked (on) after Save."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-settings-hidden-required/bad-fix",
+      "sha": "722b059fc3223c5ea9a97b6874e520565256d6c5",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "66b5d128487378e965340859c01b59e8275c2b1bca4ae189a73af45c50ae211b",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After turning email notifications on, both the first Save click and a retry left the checkbox checked but never displayed 'Settings saved'.",
+          "evidence": [
+            "shots/break-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Email notifications become checked but no frame displays the required 'Settings saved' message."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628",
+    "shots/break-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/break-02.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd",
+    "shots/break-03.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd",
+    "shots/break-04.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd",
+    "shots/green-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/green-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/green-02.png": "sha256:1ba94088a7ed50e56f7b1988e2330d815aa5d7ebf49bcc78f311c19461ca1698",
+    "shots/red-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/red-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/red-02.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd",
+    "shots/red-03.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd",
+    "shots/red-04.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:71a60b528e933c4ec7136ecb039760deee3beaf1d7a1ec6b435ab5f80418c039",
+    "entries": 50
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "l3+v7ypSYsEnnf91cTva7+ep9jOW0fUfPxcg/Z/r4Sli/W3XEfH3jFzS10lNDIyfeDlWLMHw70SUwMPPtfyACw=="
+  }
+}

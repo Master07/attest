@@ -1,0 +1,208 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:02:46.468Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/search-clipped/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-search-clipped/base",
+        "sha": "53446aac3d113489fdb8cb14bed607737f4a2225"
+      },
+      "green": {
+        "ref": "bench-gen/G-search-clipped/fix",
+        "sha": "e7070cbabf3f6497bd9b73274ba931bf2979738e"
+      },
+      "break": {
+        "ref": "bench-gen/G-search-clipped/bad-fix",
+        "sha": "ba5439ebbcd2bcb4e9899a3c0b98f88b61195f4f"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-search-clipped/base",
+      "sha": "53446aac3d113489fdb8cb14bed607737f4a2225",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "9a026e302949a80a73e1c43ce6b5c9ee91cc9d3034b50596cbd136c756bb45d8",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "missing",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame clearly shows a results list containing \"Desk lamp\" after searching for \"lamp\"; frames 3-5 show \"lamp\" entered but all subsequent frames show only Search/Max results inputs with no product results visible."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-search-clipped/fix",
+      "sha": "e7070cbabf3f6497bd9b73274ba931bf2979738e",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a3486ea8cf518c43df279e4c1770c403c9dd8aa5dc4789608f3b4ff085a485ad",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Searched for lamp and the results list shows Desk lamp",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Desk lamp' displayed in the results area after 'lamp' was entered in the search field."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-search-clipped/bad-fix",
+      "sha": "ba5439ebbcd2bcb4e9899a3c0b98f88b61195f4f",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ad089dc18b10473c7eefe203269fbea57dd361ca772b9f833eef0e8837192f09",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "missing",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — User types 'lamp' (Frame 6 onward) but no frame shows a results list; the content area below the search card stays blank and 'Desk lamp' never appears in any of the 26 frames."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive",
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d",
+    "shots/break-00.png": "sha256:daccdbd062c77328d2f94ad432e8760dd80522a1e58e6054c06c17e518f818ad",
+    "shots/break-01.png": "sha256:daccdbd062c77328d2f94ad432e8760dd80522a1e58e6054c06c17e518f818ad",
+    "shots/break-02.png": "sha256:daccdbd062c77328d2f94ad432e8760dd80522a1e58e6054c06c17e518f818ad",
+    "shots/break-03.png": "sha256:daccdbd062c77328d2f94ad432e8760dd80522a1e58e6054c06c17e518f818ad",
+    "shots/break-04.png": "sha256:633520e67569ca8c6450c23ec4bd63384ba07b49863514e21738fe55e7441740",
+    "shots/break-05.png": "sha256:88c8b4623f6f01779b4d7d8e2a04b8a282232cee3c9391445646f37f08d801b9",
+    "shots/break-06.png": "sha256:88c8b4623f6f01779b4d7d8e2a04b8a282232cee3c9391445646f37f08d801b9",
+    "shots/break-07.png": "sha256:3068a322203d2a290462ec82145d2b5c46e3ae00f40eca9c8b2d860cea2d668f",
+    "shots/break-08.png": "sha256:70e79c8b686bc69f4a99fba9f491584c690739de23efcdcf7246d0c7284f8814",
+    "shots/break-09.png": "sha256:614ac21ab1094fe1c717db31c24c484b514a146655d265a19dd11438fe4e26b9",
+    "shots/break-10.png": "sha256:b768fc5fce20e688ad953fd8d05e7bf3117f9a320074aebb4c35cc9538009eb4",
+    "shots/break-11.png": "sha256:b768fc5fce20e688ad953fd8d05e7bf3117f9a320074aebb4c35cc9538009eb4",
+    "shots/break-12.png": "sha256:b768fc5fce20e688ad953fd8d05e7bf3117f9a320074aebb4c35cc9538009eb4",
+    "shots/break-13.png": "sha256:b768fc5fce20e688ad953fd8d05e7bf3117f9a320074aebb4c35cc9538009eb4",
+    "shots/break-14.png": "sha256:3068a322203d2a290462ec82145d2b5c46e3ae00f40eca9c8b2d860cea2d668f",
+    "shots/break-15.png": "sha256:70e79c8b686bc69f4a99fba9f491584c690739de23efcdcf7246d0c7284f8814",
+    "shots/break-16.png": "sha256:70e79c8b686bc69f4a99fba9f491584c690739de23efcdcf7246d0c7284f8814",
+    "shots/break-17.png": "sha256:614ac21ab1094fe1c717db31c24c484b514a146655d265a19dd11438fe4e26b9",
+    "shots/break-18.png": "sha256:70e79c8b686bc69f4a99fba9f491584c690739de23efcdcf7246d0c7284f8814",
+    "shots/break-19.png": "sha256:d8227cd3d37032c32807582ff1c3d7ecfa72ceb0e8d89df32fc384f977fe0e98",
+    "shots/break-20.png": "sha256:d8227cd3d37032c32807582ff1c3d7ecfa72ceb0e8d89df32fc384f977fe0e98",
+    "shots/break-21.png": "sha256:d8227cd3d37032c32807582ff1c3d7ecfa72ceb0e8d89df32fc384f977fe0e98",
+    "shots/break-22.png": "sha256:37a2957170d2fac3c00fec18f56b5c29bbe4e312341abeb7a830840a02b52eb6",
+    "shots/break-23.png": "sha256:ac7a173affd13056c74555e1ffd63351ffc549fb4d3833702519fcafa877e249",
+    "shots/break-24.png": "sha256:ac7a173affd13056c74555e1ffd63351ffc549fb4d3833702519fcafa877e249",
+    "shots/break-25.png": "sha256:ac7a173affd13056c74555e1ffd63351ffc549fb4d3833702519fcafa877e249",
+    "shots/green-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/green-01.png": "sha256:e64cda11a5d00d5dc90767fb19647c1919e8d4a8ccb69f318b337b24199d1e7e",
+    "shots/green-02.png": "sha256:013447ca79eeb4bb8dd13b2db8b73b5ce7ca145015d4fffcb2dbb949cb3948d5",
+    "shots/red-00.png": "sha256:64d238311f3338cc5a66f3c947e275587c0bb46959953ff13fde6fef747b444b",
+    "shots/red-01.png": "sha256:c9e5614b4b9e9737cb8fc09093c26fa106a3a8601adf465cd62da473a56cdcbf",
+    "shots/red-02.png": "sha256:44b2941023385fe6df1230cd65b9891cf383d08998cd8d2096491e7676b5343d",
+    "shots/red-03.png": "sha256:44b2941023385fe6df1230cd65b9891cf383d08998cd8d2096491e7676b5343d",
+    "shots/red-04.png": "sha256:44b2941023385fe6df1230cd65b9891cf383d08998cd8d2096491e7676b5343d",
+    "shots/red-05.png": "sha256:966ad3c41813e7a188fe799bae222a507ab4042c0b8ef24cfddb3846be573206",
+    "shots/red-06.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-07.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-08.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-09.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-10.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-11.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-12.png": "sha256:966ad3c41813e7a188fe799bae222a507ab4042c0b8ef24cfddb3846be573206",
+    "shots/red-13.png": "sha256:937d722a7b5afded8229482d8c2b49f8995627a287d1fff666c0a968b28c06d2",
+    "shots/red-14.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-15.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-16.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-17.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-18.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-19.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-20.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-21.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-22.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-23.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-24.png": "sha256:f09301f03569333f2b62261e422a702a2d0478a50453b17ad7af493516289d15",
+    "shots/red-25.png": "sha256:5494d5798358bfb5a4d6444054cd9c9a8a713b5296e96d5be9022258fc03fc26"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:b7fd2c295510f3960a82a17f561238374b71e75ae8e1cf57af322eb3092c7bcb",
+    "entries": 134
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "nl6eGjhkuilq1S5d11WranpDQscKxfT0CbF2I4b4qVFZp6sZZsU9hw82yrR2bMiHCW10Lm++7FhYkTRVI83xAA=="
+  }
+}

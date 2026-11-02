@@ -1,0 +1,208 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T12:30:42.703Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-fixed-banner/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-fixed-banner/base",
+        "sha": "d929f357dc206a5d2247e664be6a2e5bf903810c"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-fixed-banner/fix",
+        "sha": "8a8bea036572a9853af7d0d36b4094b3f1283c23"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-fixed-banner/bad-fix",
+        "sha": "b07cf3ffdc6dc56a25a2090a4bf65dc2702ed843"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-fixed-banner/base",
+      "sha": "d929f357dc206a5d2247e664be6a2e5bf903810c",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e2c01ca89bdb5223393994eddbd1ecb1d2c9e4bbce76bcaa1272fc81e5b81652",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "missing",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows an order confirmation with an order number; all 26 frames display only 'We use cookies to keep the shop working.' on a blank page with no cart, Pay button, or confirmation visible."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-fixed-banner/fix",
+      "sha": "8a8bea036572a9853af7d0d36b4094b3f1283c23",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d0920b59b029a053c4fd0b38e5f69658519a10b1a45bd59f938f2f79352b6e0f",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted fail, others pass",
+          "observation": "Clicked Pay and saw Thank you with Order #1042 confirmation.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 1 does not show the required given state of one item - it shows Quantity 9 for Trail Runner Shoes, so the confirmation in Frame 2 (Order #1042) cannot be validated as starting from a cart with one item."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "at least one criterion inconclusive"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-fixed-banner/bad-fix",
+      "sha": "b07cf3ffdc6dc56a25a2090a4bf65dc2702ed843",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b6479943004779102075242b8e4dcf25173cb2612a8c20f97f6932a3c78cac51",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "missing",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows an order confirmation with an order number; all 26 frames show only a blank page with a cookie banner and no cart, Pay button, or confirmation content."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "green: inconclusive",
+    "red: inconclusive",
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-08.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-09.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-10.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-11.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-12.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-13.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-14.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-15.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-16.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/break-17.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/break-18.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/break-19.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/break-20.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/break-21.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-22.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-23.png": "sha256:fc5987d69b17d7874217b19ba5a28a608420e7f158e880837a05c2df930c769c",
+    "shots/break-24.png": "sha256:fc5987d69b17d7874217b19ba5a28a608420e7f158e880837a05c2df930c769c",
+    "shots/break-25.png": "sha256:fc5987d69b17d7874217b19ba5a28a608420e7f158e880837a05c2df930c769c",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-08.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-09.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-10.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-11.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-12.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-13.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-14.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-15.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-16.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-17.png": "sha256:526c5ac57f8387fe93db18f7b15c281c690b9f0c6a5ee70f8c6ed739da752bdc",
+    "shots/red-18.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-19.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-20.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-21.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-22.png": "sha256:98ba753d4d258ea03b9cbf8ccebef9910a515ea892330902caf7e679c14ee9fe",
+    "shots/red-23.png": "sha256:98ba753d4d258ea03b9cbf8ccebef9910a515ea892330902caf7e679c14ee9fe",
+    "shots/red-24.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-25.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:2691cbc76c7c6ab990882884187aaa7470f8db9425f8622c647029bf667282fb",
+    "entries": 132
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "ic8jDqXFXA9Xrb9b0GeepJ4VQAzgeSXy1lwsdORcFRtex3aaBuxLHSElTXQvbwKQDLLVTbrEwfRAxX/TSxd2Aw=="
+  }
+}

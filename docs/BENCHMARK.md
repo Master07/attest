@@ -4,6 +4,8 @@
 
 Ten planted UI bugs, each in three versions of a tiny checkout app: **base** (the bug), **bad-fix** (a plausible wrong fix whose own check passes: a behavioural unit test, or a source check for the visual bugs) and **fix** (the real fix). Attest runs Red on base, Green on fix and Break on bad-fix, with four votes per phase: the Spark 1.3 verifier, deterministic code checks, SAM 3.1 (where the criterion names a visible element) and a Muse Wonder judge (the judge at the time; it now runs on Muse Spark Open).
 
+A larger, pre-registered benchmark of 102 generated planted bugs is reported separately in [BENCHMARK_GENERATED](BENCHMARK_GENERATED.md); the two sets are never pooled.
+
 Every receipt is committed in [proofs/benchmark](../proofs/benchmark/); `npm run verify-proofs` checks them without a key.
 
 Scenarios were built by Command Code to a written spec; criteria were written before any run and never changed (`git log -- examples/bench/*/app/criteria.yml`). An AI-free probe (raw mouse clicks, no models) confirms every base is broken, every fix works and every bad-fix is still broken; all ten bad-fix test suites pass.

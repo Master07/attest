@@ -1,0 +1,173 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-02T01:13:49.936Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen-r2/checkout-clipped/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen-r2/G-checkout-clipped/base",
+        "sha": "e717256b9adf45540ee78e5e76ff9bc14075a1ac"
+      },
+      "green": {
+        "ref": "bench-gen-r2/G-checkout-clipped/fix",
+        "sha": "b5403ffbe3a17adf6e79766297e5a1612802c35f"
+      },
+      "break": {
+        "ref": "bench-gen-r2/G-checkout-clipped/bad-fix",
+        "sha": "c0810235848dc75e3e57a2e36f191fae93a8895f"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen-r2/G-checkout-clipped/base",
+      "sha": "e717256b9adf45540ee78e5e76ff9bc14075a1ac",
+      "status": "completed",
+      "error": null,
+      "steps": 6,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "7daefa4c162f05e144df5b1be96684da6b560603f8e9531edd90f6b188f6e3b3",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicked Pay $89.00 and a Thank you message with Order #1042 appeared.",
+          "evidence": [
+            "shots/red-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Final frame shows 'Thank you' and 'Order #1042' after the 'Pay $89.00' button was visible, confirming a single Pay click produced an order confirmation with an order number."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen-r2/G-checkout-clipped/fix",
+      "sha": "b5403ffbe3a17adf6e79766297e5a1612802c35f",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c13128308c1e0ffe92c3c2a6fe41b9fcbb16564fdfa3a9fb1c8d4ba65fda7a19",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Pay, the page showed Thank you with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the cart with one item and Pay button, and Frame 2 shows the order confirmation with Order #1042."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen-r2/G-checkout-clipped/bad-fix",
+      "sha": "c0810235848dc75e3e57a2e36f191fae93a8895f",
+      "status": "completed",
+      "error": null,
+      "steps": 10,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e2f18c72f6033ceab07eb0e3043ba71f3d94b1cefb03fb35be171c0ba1f4fdec",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicked Pay $89.00 and an order confirmation showing Order #1042 appeared.",
+          "evidence": [
+            "shots/break-10.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 10 shows 'Thank you' order confirmation immediately after the Pay button in Frame 9, and Frame 11 clearly displays Order #1042, fulfilling the then outcome."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: bug not reproduced in this environment",
+    "break: the wrong fix passed — the verifier cannot tell them apart"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:3b7fea913b17084dbf548b8d3666eaa3cb3bb47678d2d01240bb5a91e5bd0624",
+    "shots/break-01.png": "sha256:3b7fea913b17084dbf548b8d3666eaa3cb3bb47678d2d01240bb5a91e5bd0624",
+    "shots/break-02.png": "sha256:3b7fea913b17084dbf548b8d3666eaa3cb3bb47678d2d01240bb5a91e5bd0624",
+    "shots/break-03.png": "sha256:3b7fea913b17084dbf548b8d3666eaa3cb3bb47678d2d01240bb5a91e5bd0624",
+    "shots/break-04.png": "sha256:3b7fea913b17084dbf548b8d3666eaa3cb3bb47678d2d01240bb5a91e5bd0624",
+    "shots/break-05.png": "sha256:3b7fea913b17084dbf548b8d3666eaa3cb3bb47678d2d01240bb5a91e5bd0624",
+    "shots/break-06.png": "sha256:428ca38277e425885f440b36b13e2898ba80fbc2bcd197462cd782090e4056d5",
+    "shots/break-07.png": "sha256:428ca38277e425885f440b36b13e2898ba80fbc2bcd197462cd782090e4056d5",
+    "shots/break-08.png": "sha256:93cce53dab66991200a9134dd028b156c7cae049fc80e00ad878dc67371cd5be",
+    "shots/break-09.png": "sha256:01517034d4943fbc372449d15d55b92e5bfe4bd963c55cb0de05c84633f86b56",
+    "shots/break-10.png": "sha256:55e74640d4c3e23c15d63e159d481d2293b18d3e6acac61309a66c5d186a01e9",
+    "shots/green-00.png": "sha256:cb6adaf5ff8c011acbd70e5b5c621dd286d816542312895d21344c0450861a1a",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:c7d6ee36111fc01ba9b8316e461695ef47e00df6ce2113dd65513b2a5828998e",
+    "shots/red-01.png": "sha256:c7d6ee36111fc01ba9b8316e461695ef47e00df6ce2113dd65513b2a5828998e",
+    "shots/red-02.png": "sha256:c7d6ee36111fc01ba9b8316e461695ef47e00df6ce2113dd65513b2a5828998e",
+    "shots/red-03.png": "sha256:3f76c378a6106a289dd8b0c51eaa578adc468c641aa6ac3d81045d78ce18b9d8",
+    "shots/red-04.png": "sha256:3f76c378a6106a289dd8b0c51eaa578adc468c641aa6ac3d81045d78ce18b9d8",
+    "shots/red-05.png": "sha256:0585a15eef17934fb934a8c5abc1e3ac057b9200d62bf9e369f28f12d5375d04",
+    "shots/red-06.png": "sha256:90bd651f7d41f8da684bf022e7743736f26719201c4aebe965f4a50e9502dd4e"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:4e8c8b096f600a559432227e4d8fdd5bc25db84f96e7bf6ba12170bafe99b203",
+    "entries": 64
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "xYAVRYBjgtySJl8BVrZDmddbqjJ1NFPyX4bjLlt9aHfuHdY3hZa/igWLGrDE2gpEYJ+Mpk6IjQ+BG5wmJhd1Bg=="
+  }
+}

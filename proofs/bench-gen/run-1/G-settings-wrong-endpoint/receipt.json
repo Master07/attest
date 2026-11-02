@@ -1,0 +1,163 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T18:28:43.532Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/settings-wrong-endpoint/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-settings-wrong-endpoint/base",
+        "sha": "439b042647fd9a53cc9e76a2419a2e44d66dac7f"
+      },
+      "green": {
+        "ref": "bench-gen/G-settings-wrong-endpoint/fix",
+        "sha": "178970aabce27d0d64af2da56ee4e743d45e8326"
+      },
+      "break": {
+        "ref": "bench-gen/G-settings-wrong-endpoint/bad-fix",
+        "sha": "968859d76f0f2ac42b1bedca297b9a986ac3cfaa"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-settings-wrong-endpoint/base",
+      "sha": "439b042647fd9a53cc9e76a2419a2e44d66dac7f",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e664541166d4abc80d48020fa240eaf126adfd86d72d23728e21b014d4e9742d",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After turning email notifications on and clicking Save twice, the page showed 'Something went wrong. Please try again.' instead of 'Settings saved'.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 3 shows 'Something went wrong. Please try again.' instead of 'Settings saved' after the Save action, so the required success outcome is not achieved."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-settings-wrong-endpoint/fix",
+      "sha": "178970aabce27d0d64af2da56ee4e743d45e8326",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "38a2789ad1515ffeaa60027006e12fb7e7ea5b3ad420585717c527c691b05a37",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After turning on email notifications and clicking Save, the page showed 'Settings saved' with the checkbox still checked on.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Settings saved' text and the Email notifications checkbox remains checked (on) after the Save action from the initial off state in Frame 1."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-settings-wrong-endpoint/bad-fix",
+      "sha": "968859d76f0f2ac42b1bedca297b9a986ac3cfaa",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "afa6f107b2c5d49bd018b950e960169277ef0bba1a5e1ca8df469e1995ea6f2c",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After turning email notifications on and clicking Save, the page showed 'Something went wrong. Please try again.' instead of 'Settings saved'.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After clicking Save the page shows 'Something went wrong. Please try again.' instead of 'Settings saved'."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628",
+    "shots/break-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/break-02.png": "sha256:b32d9ec29530c663cb902d4c21a65fa6331f677c66155f26e76a7febdb68c6d1",
+    "shots/break-03.png": "sha256:b32d9ec29530c663cb902d4c21a65fa6331f677c66155f26e76a7febdb68c6d1",
+    "shots/green-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/green-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/green-02.png": "sha256:1ba94088a7ed50e56f7b1988e2330d815aa5d7ebf49bcc78f311c19461ca1698",
+    "shots/red-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/red-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/red-02.png": "sha256:b32d9ec29530c663cb902d4c21a65fa6331f677c66155f26e76a7febdb68c6d1",
+    "shots/red-03.png": "sha256:b32d9ec29530c663cb902d4c21a65fa6331f677c66155f26e76a7febdb68c6d1"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:7a45694f749511257fa7cb60d4fc6f162acf95b3c67937d217be34735b046a76",
+    "entries": 46
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "p23SwiiA6+KTgoT2fyfFs+b/o/B8K6cVRge3LagG51DTzaLwKptlygRyYw4jhcwQ9dyS/fX+fIj+TEqs7iUHDA=="
+  }
+}

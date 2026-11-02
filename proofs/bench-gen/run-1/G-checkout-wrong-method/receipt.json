@@ -1,0 +1,162 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T13:15:51.098Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/checkout-wrong-method/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-checkout-wrong-method/base",
+        "sha": "cb63fe84d10f6703b8023a4aca3a424a98c6dc02"
+      },
+      "green": {
+        "ref": "bench-gen/G-checkout-wrong-method/fix",
+        "sha": "779f989ed804f27135740492eb19af303a9e285d"
+      },
+      "break": {
+        "ref": "bench-gen/G-checkout-wrong-method/bad-fix",
+        "sha": "fe8ca37038adfb3fb820e381755b35163bb364d9"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-checkout-wrong-method/base",
+      "sha": "cb63fe84d10f6703b8023a4aca3a424a98c6dc02",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "42fdcddf6c375a85ba079a81edec20b08b4f72c98195e2aed108172ec0925170",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Both first and second clicks on Pay showed 'Something went wrong. Please try again.' with no order confirmation or order number.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No order confirmation with an order number is shown in any frame; after the Pay action Frame 2-4 only show the error \"Something went wrong. Please try again.\" on the cart page."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-checkout-wrong-method/fix",
+      "sha": "779f989ed804f27135740492eb19af303a9e285d",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "fe3863a05aa9e94094860a22aa4fe5df69fb5f221fae3721e000082fba192879",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicked Pay and saw Thank you with Order #1042.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the initial cart with Trail Runner Shoes and Pay button, Frame 2 shows the then outcome of a thank you confirmation with Order #1042 clearly displayed."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-checkout-wrong-method/bad-fix",
+      "sha": "fe8ca37038adfb3fb820e381755b35163bb364d9",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "24af705b5279bdb75b7ad3990005b903c72beb6a043d263b207527b78c7c40dc",
+      "criteria": [
+        {
+          "id": "pay-completes",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "First click on Pay showed 'Something went wrong. Please try again.' with no order confirmation, and a second click showed the same error.",
+          "evidence": [
+            "shots/break-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After clicking Pay no order confirmation with order number appears; frames 2-4 only show error 'Something went wrong. Please try again.' on the cart page."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4d37f605be6b2d3ef5ce336780555284f615fae59d69623f3f37d01e0e97023a",
+    "shots/break-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/break-01.png": "sha256:521b789501f56f84296e2c8dcb7f3f8a41983dff66561a0207dda9803edb7ce6",
+    "shots/break-02.png": "sha256:521b789501f56f84296e2c8dcb7f3f8a41983dff66561a0207dda9803edb7ce6",
+    "shots/break-03.png": "sha256:521b789501f56f84296e2c8dcb7f3f8a41983dff66561a0207dda9803edb7ce6",
+    "shots/green-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/green-01.png": "sha256:afe6cd617cbd263a73e990a7c9e8624e35c2b4ed0e829e3aed1072af78ef92d8",
+    "shots/red-00.png": "sha256:e1304835be878533850eb15a44da833a599bd04be0369172585d91372e94af32",
+    "shots/red-01.png": "sha256:521b789501f56f84296e2c8dcb7f3f8a41983dff66561a0207dda9803edb7ce6",
+    "shots/red-02.png": "sha256:521b789501f56f84296e2c8dcb7f3f8a41983dff66561a0207dda9803edb7ce6",
+    "shots/red-03.png": "sha256:521b789501f56f84296e2c8dcb7f3f8a41983dff66561a0207dda9803edb7ce6"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:76dbe12bfcb0678bb7a67a582ca4eb6ec69b523cc108d7498ad0ddc9c2e7984f",
+    "entries": 44
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "8IOb/FV9ABOlvnPcLGEoy0LrSC5EwDmOrWlIWRq+dYUuKbovFbMbbogaoLRRK54Rm92t10BAUz2IYeei2073CA=="
+  }
+}

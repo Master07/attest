@@ -1,0 +1,182 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T21:50:00.904Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-fixed-banner/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-fixed-banner/base",
+        "sha": "c36472f585873c6525aac7ab7098321aeacb6332"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-fixed-banner/fix",
+        "sha": "28f039fac201b784ee1db7f7eb30a7c8de9accd9"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-fixed-banner/bad-fix",
+        "sha": "4cda2df44a22dd730531f32e8dc0d32e0717a509"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-fixed-banner/base",
+      "sha": "c36472f585873c6525aac7ab7098321aeacb6332",
+      "status": "completed",
+      "error": null,
+      "steps": 17,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8af3488f031838e23f4bd8483da03ee3b7284b490daff168f10d66a579d69474",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Page at / shows only Northwind Supply header and cookie text with no new-item field, Add button, or Buy milk in the list after typing.",
+          "evidence": [
+            "shots/red-17.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No to-do list UI or 'Buy milk' entry ever appears — all 18 frames show only a cookie notice and blank page with no list content visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-fixed-banner/fix",
+      "sha": "28f039fac201b784ee1db7f7eb30a7c8de9accd9",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "bdbae75eea2344804926a4893bb30585c46225e7611d91b53fb692bbd27e7735",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing 'Buy milk' and clicking Add, the to-do list displays 'Buy milk' below the form.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 (and 4) shows 'Buy milk' appearing in the list area below the form after typing and clicking Add, satisfying the expected outcome."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-fixed-banner/bad-fix",
+      "sha": "4cda2df44a22dd730531f32e8dc0d32e0717a509",
+      "status": "completed",
+      "error": null,
+      "steps": 7,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "bb8f6724a87af5f35855dde6dff4c68207bebd45006e802958bf95ef9e1e1fa0",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Page shows only Northwind Supply header and cookie notice with no new-item field, Add button, or Buy milk entry visible.",
+          "evidence": [
+            "shots/break-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows a to-do list or the text \"Buy milk\"; all 8 frames show only the Northwind Supply header and cookie notice with an empty page body."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/break-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/green-02.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/green-03.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-01.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-02.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-03.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-04.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-05.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-06.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-07.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-08.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-09.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-10.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-11.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-12.png": "sha256:2682dd23acb0ab61e64b948bcadb7069ad4837e987ea00e1997c9e96e1ce51e2",
+    "shots/red-13.png": "sha256:98ba753d4d258ea03b9cbf8ccebef9910a515ea892330902caf7e679c14ee9fe",
+    "shots/red-14.png": "sha256:98ba753d4d258ea03b9cbf8ccebef9910a515ea892330902caf7e679c14ee9fe",
+    "shots/red-15.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-16.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205",
+    "shots/red-17.png": "sha256:1e2e3de5bce50662e49391d654666e8d519cb960ca683c63224867e68f8b3205"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:2cb55004cfb6371f8b644a17195a3b26f776c0bbda2c21b917dec6271c9e6902",
+    "entries": 84
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "8KPtWtOU+EtAzm51wp0YyeMyJE6etqnlAiLvtBe5Kcp3mr2Vzyvi0UDhHM0//ogKSfYTg6tKrb7WyE3JdAL9BA=="
+  }
+}

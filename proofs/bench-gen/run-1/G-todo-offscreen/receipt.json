@@ -1,0 +1,187 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T22:27:51.795Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-offscreen/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-offscreen/base",
+        "sha": "aa6656606d64f55a9b3aaf46344c9a9c33d17188"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-offscreen/fix",
+        "sha": "69b62dd0b0c7234d82976d43966d6d47607b7066"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-offscreen/bad-fix",
+        "sha": "8cfcbe228f7994b5fd71501dc9ed0045c9e351c5"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-offscreen/base",
+      "sha": "aa6656606d64f55a9b3aaf46344c9a9c33d17188",
+      "status": "completed",
+      "error": null,
+      "steps": 17,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e1a9c9a53658cacf84886ac34482469f37028e447c865d48d284b9d57cd6bda2",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the to-do list displays Buy milk.",
+          "evidence": [
+            "shots/red-17.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 18 shows the to-do list area containing the item 'Buy milk' below the 'Working...' indicator after typing and Add."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-offscreen/fix",
+      "sha": "69b62dd0b0c7234d82976d43966d6d47607b7066",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "60cc54db2d192489d1a83165ed403a341d5f8b5cb4e62775105ad46c3869fe68",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the list below the form shows Buy milk.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 is the first frame after the Add action and it clearly displays \"Buy milk\" in the list area below the separator, satisfying the then outcome."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-offscreen/bad-fix",
+      "sha": "8cfcbe228f7994b5fd71501dc9ed0045c9e351c5",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "bc4939066fc23e86bb0a6565d2e7c817e425bcb29fb8daf4c06f5bd6ac9c15b0",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the to-do list displays Buy milk.",
+          "evidence": [
+            "shots/break-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frames 11 and 12 clearly show 'Buy milk' appearing in the list area after typing and the Add button interaction."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: bug not reproduced in this environment",
+    "break: the wrong fix passed — the verifier cannot tell them apart"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:28580725911804a1faef5c09acff8f0a90c295722a0592d156cfd86505abcd18",
+    "shots/break-01.png": "sha256:45daa519f157f6c8e530424fd7fb4982140a00d1b88a88817b0dd21e0d57a2b9",
+    "shots/break-02.png": "sha256:6d7dbbd66b78db9776b07f268eadb0389a6168f47909e22aa8ce8df0e7b11c00",
+    "shots/break-03.png": "sha256:45daa519f157f6c8e530424fd7fb4982140a00d1b88a88817b0dd21e0d57a2b9",
+    "shots/break-04.png": "sha256:518f0459ce0a4e2d68aa3d23d71c1e93ffda4d41420e800cfc4a687e26ca0134",
+    "shots/break-05.png": "sha256:7f092921b732a84965b6e8e0b7b35e30e2c753865291c1ce0436046b03c249f2",
+    "shots/break-06.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/break-07.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/break-08.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/break-09.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/break-10.png": "sha256:b861924b92e8f8a700c65e8efd04fc2779276b2871e94de49a79efb1998264e1",
+    "shots/break-11.png": "sha256:b861924b92e8f8a700c65e8efd04fc2779276b2871e94de49a79efb1998264e1",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:c1c000b588d70f1d5f48c86748688baf9c440c4386fa21ad3022a2820c09110e",
+    "shots/green-02.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/green-03.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:28580725911804a1faef5c09acff8f0a90c295722a0592d156cfd86505abcd18",
+    "shots/red-01.png": "sha256:45daa519f157f6c8e530424fd7fb4982140a00d1b88a88817b0dd21e0d57a2b9",
+    "shots/red-02.png": "sha256:6d7dbbd66b78db9776b07f268eadb0389a6168f47909e22aa8ce8df0e7b11c00",
+    "shots/red-03.png": "sha256:518f0459ce0a4e2d68aa3d23d71c1e93ffda4d41420e800cfc4a687e26ca0134",
+    "shots/red-04.png": "sha256:7f092921b732a84965b6e8e0b7b35e30e2c753865291c1ce0436046b03c249f2",
+    "shots/red-05.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-06.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-07.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-08.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-09.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-10.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-11.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-12.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-13.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-14.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-15.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-16.png": "sha256:8fcfa8b4f7fd214c919d2468e78a9aec0b1ead2d6627fc6c5995a6d23f7792b6",
+    "shots/red-17.png": "sha256:b861924b92e8f8a700c65e8efd04fc2779276b2871e94de49a79efb1998264e1"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:28d55d62ccfb4c293379e9867666e148b1e963da9225574c14fe76c989bcd166",
+    "entries": 92
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "EdjRU4XZAmu53EO8KcsE9D4T4hmJvgySZ689TL3N3UuEAxc4eajj83EzoLL7yaL3m0iHgiBtg6auTKqG/L5gDw=="
+  }
+}

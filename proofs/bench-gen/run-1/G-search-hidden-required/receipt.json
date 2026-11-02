@@ -1,0 +1,166 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:44:51.163Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/search-hidden-required/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-search-hidden-required/base",
+        "sha": "c0e6b225f31c6da9cc3e2e229ef8bf62a99bb53a"
+      },
+      "green": {
+        "ref": "bench-gen/G-search-hidden-required/fix",
+        "sha": "05b49b4a0be5bc2e83c9df412c8f9213fd546011"
+      },
+      "break": {
+        "ref": "bench-gen/G-search-hidden-required/bad-fix",
+        "sha": "8761e497fd2aa493b4ec0f9567a5d12cbb74963f"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-search-hidden-required/base",
+      "sha": "c0e6b225f31c6da9cc3e2e229ef8bf62a99bb53a",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "fada535d7475dbadb88f590902360a272dc90786fcd4aa9c446795256d275a4e",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Typed 'lamp' and clicked Search twice with waits, but no results list or 'Desk lamp' ever appeared.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No search results are displayed in any frame; the UI remains on the search form and never shows a list containing \"Desk lamp\"."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-search-hidden-required/fix",
+      "sha": "05b49b4a0be5bc2e83c9df412c8f9213fd546011",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "fba159edddefbc022ae262404b9a12abf558bfa1529851f8505267e089f47474",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After searching for lamp, the results list shows Desk lamp.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Desk lamp' listed in the results after the search for 'lamp' was executed."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-search-hidden-required/bad-fix",
+      "sha": "8761e497fd2aa493b4ec0f9567a5d12cbb74963f",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "7beb39a4fe9587d020cb8ec94cf9068d56c53c20ffdb09ccd74cb881c098be86",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Typed 'lamp' and clicked Search twice and pressed Enter, but no results appeared and 'Desk lamp' was never listed.",
+          "evidence": [
+            "shots/break-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No search results are displayed in any frame, and \"Desk lamp\" never appears after \"lamp\" is entered."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d",
+    "shots/break-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-01.png": "sha256:e64cda11a5d00d5dc90767fb19647c1919e8d4a8ccb69f318b337b24199d1e7e",
+    "shots/break-02.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/break-03.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/break-04.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/break-05.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/green-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/green-01.png": "sha256:e64cda11a5d00d5dc90767fb19647c1919e8d4a8ccb69f318b337b24199d1e7e",
+    "shots/green-02.png": "sha256:013447ca79eeb4bb8dd13b2db8b73b5ce7ca145015d4fffcb2dbb949cb3948d5",
+    "shots/red-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/red-01.png": "sha256:e64cda11a5d00d5dc90767fb19647c1919e8d4a8ccb69f318b337b24199d1e7e",
+    "shots/red-02.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/red-03.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/red-04.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:960d0bb69721c43e2284dcb5acb1b94b1969d82b453390b8886d16b3d478ce36",
+    "entries": 52
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "9bAwNyZR02+FiAJX0RcMepJkTC21lp6XIsdYyRd/W8u5M95S8GORbzxLUQVKQUooKEBSpXkPLQX5y969f7HKBw=="
+  }
+}

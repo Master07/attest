@@ -1,0 +1,8 @@
+id: gen-settings
+criteria:
+  - id: settings-save
+    given: The settings page at /settings with email notifications off
+    when: The user turns email notifications on and clicks "Save"
+    then: The page says "Settings saved" and email notifications are on
+    expect:
+      network: { method: PUT, path: /api/settings, status: 200 }

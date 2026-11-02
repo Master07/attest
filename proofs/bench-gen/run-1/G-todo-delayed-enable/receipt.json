@@ -1,0 +1,167 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T21:39:39.433Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/todo-delayed-enable/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-todo-delayed-enable/base",
+        "sha": "07ae1ca8109b945d444e9e1fcd33843bb100516d"
+      },
+      "green": {
+        "ref": "bench-gen/G-todo-delayed-enable/fix",
+        "sha": "5950489948755c94a44901829544031ad6e9e6c3"
+      },
+      "break": {
+        "ref": "bench-gen/G-todo-delayed-enable/bad-fix",
+        "sha": "1bff10bc69469d50d94634268c13cd07782d54c0"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-todo-delayed-enable/base",
+      "sha": "07ae1ca8109b945d444e9e1fcd33843bb100516d",
+      "status": "completed",
+      "error": null,
+      "steps": 6,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "db071edaf71efd045bd6c4f6f85aee157e6b58534b8795d805228acd5f826e89",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Typed 'Buy milk' and clicked Add twice with no visible effect and no list item appeared.",
+          "evidence": [
+            "shots/red-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — The frames show \"Buy milk\" typed into the New item input but no list item appears below the Add button through the final frame."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-todo-delayed-enable/fix",
+      "sha": "5950489948755c94a44901829544031ad6e9e6c3",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c78e63cf0af8bddca55eeaa738b3c38a126ae50741085bb6b2b780ccf31682c2",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After typing Buy milk and clicking Add, the list below the form displays Buy milk.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Buy milk' entered in the new-item field and the same text appearing in the list below after Add was clicked, persisting in Frame 4."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-todo-delayed-enable/bad-fix",
+      "sha": "1bff10bc69469d50d94634268c13cd07782d54c0",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "332513fed444ef1c5c773a8613e58b4da0bf3f73877d68da22b137d75276b509",
+      "criteria": [
+        {
+          "id": "todo-adds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "The New item field contains Buy milk but no list item appears after clicking Add twice.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No list entry for 'Buy milk' appears; frames 2-4 only show 'Buy milk' remaining in the New item input with no list rendered below the Add button."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:599400c7c16b40ccf0313fa71661ac3679532af4c6be65499f3d2064c75cfe76",
+    "shots/break-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/break-01.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/break-02.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/break-03.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/green-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/green-01.png": "sha256:20a21cf220649a1146e7a08f25ccff813c95b5c825953fa51a4e23d82f4a2f4f",
+    "shots/green-02.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/green-03.png": "sha256:e8fa6490b1d5fd8fdd95cd27e4131b3bbd66f7eb3e4a7fb751bf4eb3ae5bbac2",
+    "shots/red-00.png": "sha256:886ef17f8c80183dd54e3a16b553c26f1f8347f9573326984d90f079599ded70",
+    "shots/red-01.png": "sha256:d9b88fbad3c4cd9befa2740b24da6e1d4286b5d826f264f4a6e25b6c070f70fe",
+    "shots/red-02.png": "sha256:a5c5d6d1a04c8c4d811dd81060c277adbe92098c98c9bbfebc6cf44bef6bea80",
+    "shots/red-03.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/red-04.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/red-05.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b",
+    "shots/red-06.png": "sha256:d0ed334fceeb19c461fe853904606c31528703b1498c791fd02fd08ddb25b86b"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:68eb8c31fff3d1301ad28295e59476e598f84cc86f8f844c3c2d335d259ea3a6",
+    "entries": 54
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "t5P4X5p9obWtoCaqHyjRuQZ51ICJWV/xWkjva1xhpeS+gpe5oKibzTcVwHMkWGHMLnQlR5lUSDFhn7LEfyR0CA=="
+  }
+}

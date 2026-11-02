@@ -1,0 +1,186 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T17:28:15.330Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/settings-late-overlay/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-settings-late-overlay/base",
+        "sha": "19a38a38f626f398924ec56ba4aba04a25bad287"
+      },
+      "green": {
+        "ref": "bench-gen/G-settings-late-overlay/fix",
+        "sha": "d26dc7bbca53b17bcd8a4fea94d5ba321456dd78"
+      },
+      "break": {
+        "ref": "bench-gen/G-settings-late-overlay/bad-fix",
+        "sha": "b569c16735baebdb8fd98b0ecf8d74d8b1c0eb9e"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-settings-late-overlay/base",
+      "sha": "19a38a38f626f398924ec56ba4aba04a25bad287",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c010f901ccec66daa894062da2493ce4b2f7e8180cc257535058899411fd8333",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Clicked the email notifications checkbox twice and Save, but the checkbox stayed unchecked and no Settings saved message appeared.",
+          "evidence": [
+            "shots/red-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows 'Settings saved' and the email notifications checkbox remains unchecked (off) in all six frames."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-settings-late-overlay/fix",
+      "sha": "d26dc7bbca53b17bcd8a4fea94d5ba321456dd78",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5475be655ad143f96fe39a382f731e22bc921871becf6a4895e212d871d4e143",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Save the page shows 'Settings saved' with the Email notifications checkbox checked.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Settings saved' text with the Email notifications checkbox checked (on) after it was off in Frame 1 and turned on in Frame 2."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-settings-late-overlay/bad-fix",
+      "sha": "b569c16735baebdb8fd98b0ecf8d74d8b1c0eb9e",
+      "status": "completed",
+      "error": null,
+      "steps": 24,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e482d108a0728f2b519c6bc753c842c493409b2dc67a4e1bdebb811deecf7515",
+      "criteria": [
+        {
+          "id": "settings-save",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Page displayed 'Settings saved' with the email notifications checkbox checked.",
+          "evidence": [
+            "shots/break-16.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 17 (first frame after Save is clicked) shows 'Settings saved' text and the Email notifications checkbox checked (on), confirming the then outcome was achieved after the turn-on + Save action."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "break: the wrong fix passed — the verifier cannot tell them apart"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:46161f5e896a9dda19b093b03dfa3da815d6e2d390e6f7bfbb4a4843d57c0628",
+    "shots/break-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-01.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-02.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-03.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-04.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-05.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-06.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-07.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-08.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/break-09.png": "sha256:10f278bfea125dee1e5a3ebac5cf0cf6108647d82910b1e97fe45029a8ec35c0",
+    "shots/break-10.png": "sha256:c6a18ce06a344b4c8990e2c7eee272432e2b1ca7a4ea9529fab98bcca6edf726",
+    "shots/break-11.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd",
+    "shots/break-12.png": "sha256:559286c0451b6f1822878e3ebbf9d93a0ac251bec5d0d9c364d5d13f1f38c0bd",
+    "shots/break-13.png": "sha256:c6a18ce06a344b4c8990e2c7eee272432e2b1ca7a4ea9529fab98bcca6edf726",
+    "shots/break-14.png": "sha256:06168f516872d42fe36ce45bcaf6f7972c52f951820adeeb312f3afdc60edd2c",
+    "shots/break-15.png": "sha256:86356fc321433051db738d02cba309b8cca40b3975e50ad0db00d90112e1fc44",
+    "shots/break-16.png": "sha256:ba35c9c443b3cb6b57e96933dfaa193a8d2c552de4b802d2de2069810704352e",
+    "shots/break-17.png": "sha256:ba35c9c443b3cb6b57e96933dfaa193a8d2c552de4b802d2de2069810704352e",
+    "shots/break-18.png": "sha256:ba35c9c443b3cb6b57e96933dfaa193a8d2c552de4b802d2de2069810704352e",
+    "shots/break-19.png": "sha256:ad43af5a84ffc1496aafbb67d909380554c71237973fef4b76d188c3386c6d4e",
+    "shots/break-20.png": "sha256:2b05ce47423ad0188f40f8a2daab9789a5fa3696c9d1dea593f7fc89ec791f00",
+    "shots/break-21.png": "sha256:2b05ce47423ad0188f40f8a2daab9789a5fa3696c9d1dea593f7fc89ec791f00",
+    "shots/break-22.png": "sha256:2b05ce47423ad0188f40f8a2daab9789a5fa3696c9d1dea593f7fc89ec791f00",
+    "shots/break-23.png": "sha256:2b05ce47423ad0188f40f8a2daab9789a5fa3696c9d1dea593f7fc89ec791f00",
+    "shots/break-24.png": "sha256:2b05ce47423ad0188f40f8a2daab9789a5fa3696c9d1dea593f7fc89ec791f00",
+    "shots/green-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/green-01.png": "sha256:fb7ce19d3fc445a4ede005faa763821a39cc42051ea7fbd2ee8a90b9a9d9960d",
+    "shots/green-02.png": "sha256:1ba94088a7ed50e56f7b1988e2330d815aa5d7ebf49bcc78f311c19461ca1698",
+    "shots/red-00.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/red-01.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/red-02.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/red-03.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/red-04.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2",
+    "shots/red-05.png": "sha256:b35796a05900dfcf1e2a9236528b2df5f980184e936e256ba65ef7dede2e46c2"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:6e1e8be954a761d756320286c5f941d61e5adc58c030f342fb195135f47cb50a",
+    "entries": 92
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "kSF4zOp8sJMem6X06wbOmahs2Bx7pTzee16uPKFXZ1qF2IenvxVxmCCmt8o+BvBRseD9X+S3RYgnr/hgUi9AAw=="
+  }
+}

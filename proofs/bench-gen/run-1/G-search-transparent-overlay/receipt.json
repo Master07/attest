@@ -1,0 +1,182 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T16:00:42.644Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/bench-gen/search-transparent-overlay/app",
+    "refs": {
+      "red": {
+        "ref": "bench-gen/G-search-transparent-overlay/base",
+        "sha": "084ddc27b4a411b1a69ed28403ed3a94256ca813"
+      },
+      "green": {
+        "ref": "bench-gen/G-search-transparent-overlay/fix",
+        "sha": "c928f591d1b707e4f0ae3fc3e65797068bcee029"
+      },
+      "break": {
+        "ref": "bench-gen/G-search-transparent-overlay/bad-fix",
+        "sha": "2e54b3863cd848e42ad0865f0e5dfd6bafecd527"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "bench-gen/G-search-transparent-overlay/base",
+      "sha": "084ddc27b4a411b1a69ed28403ed3a94256ca813",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d058f062fee12d1ae3ad3b8901b6e59b0523736443025ccf01efab21ecc6dce9",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "fail",
+            "checks": "fail",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Searched for 'lamp' by typing in the Search field and clicking Search twice and pressing Enter, but no results list appeared and 'Desk lamp' was never shown.",
+          "evidence": [
+            "shots/red-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 8-12 show 'lamp' entered in the Search field but no results list ever appears, and 'Desk lamp' is never visible in any frame."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "bench-gen/G-search-transparent-overlay/fix",
+      "sha": "c928f591d1b707e4f0ae3fc3e65797068bcee029",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5a9b26eec257b3ef2f58d4f92f04ab72eabb0cacf95e2b9986a6b86f7eb28bc8",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Searched for lamp and the results list shows Desk lamp",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows the search input contains 'lamp' and the results area below displays 'Desk lamp'."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "bench-gen/G-search-transparent-overlay/bad-fix",
+      "sha": "2e54b3863cd848e42ad0865f0e5dfd6bafecd527",
+      "status": "completed",
+      "error": null,
+      "steps": 15,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "59c9e5605ace4a1b1ba98b1b4b8ea0067d0717a3ad8fc18ef67168dd9827de2f",
+      "criteria": [
+        {
+          "id": "search-finds",
+          "votes": {
+            "cua": "pass",
+            "checks": "pass",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Searched for lamp and the results list shows Desk lamp.",
+          "evidence": [
+            "shots/break-15.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 16 shows the search completed for 'lamp' and the results area lists 'Desk lamp'."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "break: the wrong fix passed — the verifier cannot tell them apart"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:2e791f04fc9081c00660fc0754172d61245239ab921ce584dc10b9cc8f7cdc2d",
+    "shots/break-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-01.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-02.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-03.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-04.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-05.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-06.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-07.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/break-08.png": "sha256:b1d85e58d2123a402701f552deb2a1137140e06397034140a97dda428893be86",
+    "shots/break-09.png": "sha256:e64cda11a5d00d5dc90767fb19647c1919e8d4a8ccb69f318b337b24199d1e7e",
+    "shots/break-10.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/break-11.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/break-12.png": "sha256:907322c54942aecb821345409031a51a1c0658d96e86d99f25f1f19aa6663d4e",
+    "shots/break-13.png": "sha256:6ebe622c20b9ddfb51bec823f121931b26b80e4941cbc807e1d5f7324c7bf70d",
+    "shots/break-14.png": "sha256:46a9c7c074169066b8ad4619560ab5df87c72ffb53f5285977644578722a3701",
+    "shots/break-15.png": "sha256:013447ca79eeb4bb8dd13b2db8b73b5ce7ca145015d4fffcb2dbb949cb3948d5",
+    "shots/green-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/green-01.png": "sha256:013447ca79eeb4bb8dd13b2db8b73b5ce7ca145015d4fffcb2dbb949cb3948d5",
+    "shots/red-00.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/red-01.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/red-02.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/red-03.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/red-04.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/red-05.png": "sha256:ff790f4ec58d3881efd81ff6444eb34b267e23852d1fa11d687cb8bf8c6bfb0f",
+    "shots/red-06.png": "sha256:b1d85e58d2123a402701f552deb2a1137140e06397034140a97dda428893be86",
+    "shots/red-07.png": "sha256:e64cda11a5d00d5dc90767fb19647c1919e8d4a8ccb69f318b337b24199d1e7e",
+    "shots/red-08.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/red-09.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/red-10.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554",
+    "shots/red-11.png": "sha256:76725513d6544bfdfee5677b7f81892c911649225dcdf9263f651718dedfe554"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:3aa00ca2270596332028222c42625b679f41c6382aeaeb5f38ba33ec58833678",
+    "entries": 84
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "HJDNS/M2tbZ4AqYG1QsgxposccZuMGbKYnZNNf8+S2YpcKJ4DMeBhYad5nyh7iv3TmCDEiD+yL2hQsPObwVBDw=="
+  }
+}
