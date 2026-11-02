@@ -38,7 +38,7 @@ This module adds a (current)/(total) style status indicator to the deck.
 		var opts = $[deck]('getOptions');
 		
 		// Start on first slide
-		$(opts.selectors.statusCurrent).text(1);
+		$(opts.selectors.statusCurrent).text(2);
 		// Set total slides once
 		if (opts.countNested) {
 			$(opts.selectors.statusTotal).text($[deck]('getSlides').length);
