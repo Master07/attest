@@ -89,3 +89,17 @@ test("a signed receipt whose verdict doesn't follow from its votes is caught", (
   writeFileSync(path, JSON.stringify(signReceipt(r, keyPath)));  // …but it still claims PROVEN, validly signed
   assert.deepEqual(failed(path), ["verdict"]);
 });
+
+test("judge failures: 0.2 receipts record missing; 0.1 receipts abstained", async () => {
+  const { judgeErrored, judgeAbstained } = await import("../src/receipt.js");
+  const base = { id: "c", result: "inconclusive" as const, reason: "", observation: "", evidence: [] };
+  const v02 = { ...base, votes: { cua: "pass" as const, checks: "n/a" as const, sam: "n/a" as const, judge: "missing" as const } };
+  const v01 = { ...base, votes: { cua: "pass" as const, checks: "n/a" as const, sam: "n/a" as const, judge: "n/a" as const }, notes: ["Judge could not vote: 503"] };
+  const notAsked = { ...v01, notes: [] };
+  assert.equal(judgeErrored(v02), true);
+  assert.equal(judgeErrored(v01), true);
+  assert.equal(judgeErrored(notAsked), false);
+  const phase = (c: typeof v01 | typeof v02) => ({ phase: "green", criteria: [c] }) as unknown as PhaseRecord;
+  assert.equal(judgeAbstained({ phases: [phase(v01)] }), true);
+  assert.equal(judgeAbstained({ phases: [phase(v02)] }), false);
+});

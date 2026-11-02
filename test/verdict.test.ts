@@ -55,3 +55,20 @@ test("fix verdict: not reproduced is worded as not reproduced, not as fake", () 
   const out = fixVerdict({ red: "pass", green: "pass", break: "fail" });
   assert.ok(out.reasons.some((r) => r.includes("not reproduced in this environment")));
 });
+
+test("criterion: a required judge that gave no vote is inconclusive, never a pass or a fail", () => {
+  for (const cua of ["pass", "fail"] as const) {
+    const out = combineCriterion(votes({ cua, checks: "pass", sam: "pass", judge: "missing" }));
+    assert.equal(out.result, "inconclusive");
+    assert.equal(out.reason, "required judge gave no vote");
+  }
+  // A judge that wasn't requested still abstains.
+  assert.equal(combineCriterion(votes({ cua: "pass", judge: "n/a" })).result, "pass");
+});
+
+test("fix verdict: a judge outage in any phase cannot certify", () => {
+  const phase = (judge: CriterionVotes["judge"], cua: "pass" | "fail") => combinePhase([combineCriterion(votes({ cua, judge })).result]).result;
+  const out = fixVerdict({ red: phase("fail", "fail"), green: phase("missing", "pass"), break: phase("fail", "fail") });
+  assert.equal(out.verdict, "INCONCLUSIVE");
+  assert.equal(fixVerdict({ red: phase("fail", "fail"), green: phase("missing", "pass") }).verdict, "INCONCLUSIVE");
+});

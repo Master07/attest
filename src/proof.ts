@@ -13,7 +13,7 @@ import type { CriteriaFile } from "./criteria.js";
 import { runVerifier } from "./cua.js";
 import { EventLog } from "./eventlog.js";
 import { pickRoute } from "./models.js";
-import { sha256File, signReceipt } from "./receipt.js";
+import { RECEIPT_VERSION, sha256File, signReceipt } from "./receipt.js";
 import { writeReport } from "./report.js";
 import type { CriterionRecord, PhaseRecord, Receipt, ReceiptBody } from "./receipt.js";
 import { combineCriterion, combinePhase, fixVerdict } from "./verdict.js";
@@ -188,7 +188,7 @@ async function runPhase(
         cua,
         checks: checks.find((x) => x.id === c.id)?.result ?? "n/a",
         sam: s?.vote ?? "n/a",
-        judge: j?.result ?? ("n/a" as const),
+        judge: j?.result ?? (ctx.config.verifier.judge ? ("missing" as const) : ("n/a" as const)),
       };
       const out = combineCriterion(votes);
       const cited = v?.evidence_step != null ? shots.get(v.evidence_step) : undefined;
@@ -268,7 +268,7 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
     ...(config.verifier.judge ? [{ role: "judge", ...pickRoute("judge") }] : []),
   ];
   const body: ReceiptBody = {
-    version: "attest.receipt/0.1",
+    version: RECEIPT_VERSION,
     mode: "fix",
     created_at: new Date().toISOString(),
     subject: {

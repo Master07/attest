@@ -4,6 +4,9 @@
 
 export type Vote = "pass" | "fail" | "n/a";
 export type CuaVote = "pass" | "fail" | "missing";
+/** "missing": the judge was required (verifier.judge on) but gave no usable vote. Receipts before
+ *  attest.receipt/0.2 never record it; they stored a failed judge as "n/a". */
+export type JudgeVote = Vote | "missing";
 export type CriterionResult = "pass" | "fail" | "inconclusive";
 export type PhaseName = "red" | "green" | "break";
 export type Verdict = "PROVEN" | "PROVEN_UNCHECKED" | "REJECTED" | "INCONCLUSIVE";
@@ -12,7 +15,7 @@ export interface CriterionVotes {
   cua: CuaVote;   // the verifier's verdict; "missing" if it gave none
   checks: Vote;   // deterministic checks; "n/a" when the criterion has no url/network expectation
   sam: Vote;      // UI confirmation; "n/a" when not run
-  judge: Vote;    // independent judge; "n/a" when not run
+  judge: JudgeVote; // independent judge; "n/a" when not requested, "missing" when required but silent
 }
 
 export interface CriterionOutcome {
@@ -26,9 +29,11 @@ export interface CriterionOutcome {
  * - Verifier passes but a code check / SAM fails → fail (a hard check caught a false pass).
  * - Verifier fails but code checks pass → inconclusive (the two disagree about what happened).
  * - Judge, when present, must agree with the combined result, or the criterion is inconclusive.
+ * - A required judge that gave no vote → inconclusive: one model alone never decides.
  */
 export function combineCriterion(votes: CriterionVotes): CriterionOutcome {
   if (votes.cua === "missing") return { result: "inconclusive", reason: "verifier gave no verdict" };
+  if (votes.judge === "missing") return { result: "inconclusive", reason: "required judge gave no vote" };
 
   const hard = [
     { name: "checks", vote: votes.checks },

@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import type { Receipt } from "./receipt.js";
-import { judgeErrored, keyFingerprint, sha256File } from "./receipt.js";
+import { judgeAbstained, judgeErrored, keyFingerprint, sha256File } from "./receipt.js";
 
 // W1: render a signed receipt as a GitHub pull-request comment, and the small gh/git helpers
 // the two CLI commands need. The renderer is pure: no I/O, no clock, no randomness.
@@ -152,7 +152,7 @@ function build(receipt: Receipt, opts: PrCommentOptions, includeObservations: bo
     `## Attest: ${receipt.verdict} ${EMOJI[receipt.verdict]}`,
     "",
     meaning(receipt),
-    ...(receipt.phases.some((p) => p.criteria.some(judgeErrored)) ? ["", `> **Judge did not vote in ${receipt.phases.filter((p) => p.criteria.some(judgeErrored)).length} of ${receipt.phases.length} phases** (error recorded in the receipt); this verdict rests on the remaining votes.`] : []),
+    ...(receipt.phases.some((p) => p.criteria.some(judgeErrored)) ? ["", `> **Judge did not vote in ${receipt.phases.filter((p) => p.criteria.some(judgeErrored)).length} of ${receipt.phases.length} phases** (error recorded in the receipt); ${judgeAbstained(receipt) ? "this verdict rests on the remaining votes" : "a required judge that gives no vote makes those criteria inconclusive"}.`] : []),
     "",
   ];
   if (receipt.replay !== undefined) sections.push(replayBanner(receipt));

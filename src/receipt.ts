@@ -10,7 +10,9 @@ import type { CriterionResult, CriterionVotes, PhaseName, Verdict } from "./verd
 // Receipt (ARCHITECTURE §8): a signed summary that pins the criteria, every artifact,
 // and the event log's head and length. `verifyReceipt` checks it without calling any model.
 
-export const RECEIPT_VERSION = "attest.receipt/0.1";
+// 0.2: a required judge that gives no vote is recorded as "missing" and makes the criterion
+// inconclusive. 0.1 receipts recorded it as "n/a" and still re-verify unchanged.
+export const RECEIPT_VERSION = "attest.receipt/0.2";
 
 export interface CriterionRecord {
   id: string;
@@ -65,10 +67,15 @@ export interface Receipt extends ReceiptBody {
 export const sha256File = (path: string): string =>
   `sha256:${createHash("sha256").update(readFileSync(path)).digest("hex")}`;
 
-/** True when the judge was asked but could not vote (its error is recorded in the notes), as opposed to
- *  a vote that was not applicable. The verdict treats both as an abstention; the views must not. */
+/** True when the judge was asked but could not vote, as opposed to a vote that was not applicable.
+ *  0.2 receipts record this as "missing" (the criterion is inconclusive); 0.1 receipts recorded "n/a"
+ *  with the error in the notes, and their verdict treated it as an abstention. */
 export const judgeErrored = (c: CriterionRecord): boolean =>
-  c.votes.judge === "n/a" && (c.notes ?? []).some((n) => n.startsWith("Judge could not vote"));
+  c.votes.judge === "missing" || (c.votes.judge === "n/a" && (c.notes ?? []).some((n) => n.startsWith("Judge could not vote")));
+
+/** True when a judge failure was allowed to abstain (0.1 receipts), so the verdict rests on the other votes. */
+export const judgeAbstained = (receipt: { phases: PhaseRecord[] }): boolean =>
+  receipt.phases.some((p) => p.criteria.some((c) => c.votes.judge === "n/a" && judgeErrored(c)));
 
 /** Short identifier for a signing key. The SPKI key's first characters are a fixed Ed25519 DER header,
  *  so a prefix would be the same for every key; a hash of the whole key is not. */

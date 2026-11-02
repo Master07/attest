@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { loadCriteria } from "./criteria.js";
 import type { CriterionRecord, PhaseRecord, Receipt } from "./receipt.js";
-import { judgeErrored, keyFingerprint } from "./receipt.js";
+import { judgeAbstained, judgeErrored, keyFingerprint } from "./receipt.js";
 import type { Vote } from "./verdict.js";
 
 // Evidence page: a self-contained index.html rendered from receipt.json (no scripts, no network).
@@ -349,7 +349,7 @@ ${receipt.replay ? `<p class="replay"><b>Replay.</b> Model responses came from t
   <div class="card verdict">
     <div class="label">Verdict</div>
     <div class="vrow"><span class="vword ${v.cls}">${esc(v.word)}</span><span class="chip">${matched} of ${receipt.phases.length} phases as expected</span></div>
-    <p class="lede">${esc(v.line)}</p>${judgeMissing ? `<p class="replay"><b>Judge did not vote in ${judgeMissing} of ${receipt.phases.length} phases.</b> Its error is recorded in the receipt; this verdict rests on the remaining votes.</p>` : ""}
+    <p class="lede">${esc(v.line)}</p>${judgeMissing ? `<p class="replay"><b>Judge did not vote in ${judgeMissing} of ${receipt.phases.length} phases.</b> Its error is recorded in the receipt; ${judgeAbstained(receipt) ? "this verdict rests on the remaining votes" : "a required judge that gives no vote makes those criteria inconclusive"}.</p>` : ""}
     <ul class="reasons">${receipt.reasons.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
     <div class="tiles">${receipt.phases.map(phaseTile).join("")}</div>
   </div>
