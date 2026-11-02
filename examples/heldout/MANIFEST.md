@@ -48,7 +48,7 @@ Source report: https://github.com/hakimel/reveal.js/issues/2645
 
 ### p1/b2
 
-In an RTL presentation with fragments, next/previous navigation may move the wrong way after the fragments. Next should reveal the fragments in order and then advance to the next slide; previous should reverse that sequence. Linear keyboard navigation should follow RTL arrow directions.
+In an RTL presentation with fragments, next/previous navigation may move in an unexpected direction after the fragments. Next should reveal the fragments in order and then advance to the next slide; previous should reverse that sequence. Linear keyboard navigation should follow RTL arrow directions.
 
 Source report: https://github.com/hakimel/reveal.js/commit/488c5c8f9427bc99199770dc927c2f1c79c1a468
 
