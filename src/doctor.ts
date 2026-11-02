@@ -75,9 +75,15 @@ export function redactSecrets(text: string, env: NodeJS.ProcessEnv): string {
   return out;
 }
 
+// Same presence test as resolveProvider / pickRoute: "" is absent, and a whitespace-only value still counts.
 function secretPresent(env: NodeJS.ProcessEnv, name: string): boolean {
   const value = env[name];
-  return typeof value === "string" && value.trim() !== "";
+  return typeof value === "string" && value !== "";
+}
+
+/** Extra env `prove` passes to the app. Credentials stay out; appEnv strips them even if added. */
+export function serverExtraEnv(configDir: string): Record<string, string> {
+  return { ATTEST_CONFIG_DIR: resolve(configDir) };
 }
 
 function judgeRouteLabel(route: ModelRoute): string {
@@ -270,7 +276,7 @@ export function checkConfig(opts: {
   appPath: string;
   criteriaPath?: string;
   configDir?: string;
-}): { checks: DoctorCheck[]; config?: AttestConfig; criteria?: CriteriaFile } {
+}): { checks: DoctorCheck[]; configDir: string; config?: AttestConfig; criteria?: CriteriaFile } {
   const dir = resolve(opts.configDir ?? join(resolve(opts.repoRoot), opts.appPath));
   const criteriaFile = opts.criteriaPath !== undefined ? resolve(opts.criteriaPath) : join(dir, "criteria.yml");
   const checks: DoctorCheck[] = [];
@@ -303,13 +309,15 @@ export function checkConfig(opts: {
 
   return {
     checks,
+    configDir: dir,
     ...(config !== undefined ? { config } : {}),
     ...(criteria !== undefined ? { criteria } : {}),
   };
 }
 
 export async function checkBrowser(env: NodeJS.ProcessEnv = process.env): Promise<DoctorCheck> {
-  const channel = env.ATTEST_BROWSER_CHANNEL?.trim() || "msedge";
+  // Same channel expression as launchBrowser in browser.ts.
+  const channel = env.ATTEST_BROWSER_CHANNEL ?? "msedge";
   let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined;
   try {
     browser = await chromium.launch({ channel, headless: true });
@@ -334,6 +342,7 @@ export async function checkServer(opts: {
   appPath: string;
   ref: string;
   config: AttestConfig;
+  configDir: string;
   env: NodeJS.ProcessEnv;
 }): Promise<DoctorCheck> {
   const started = Date.now();
@@ -346,6 +355,7 @@ export async function checkServer(opts: {
       ref: opts.ref,
       phase: "doctor",
       config: opts.config,
+      env: serverExtraEnv(opts.configDir),
     });
     const seconds = ((Date.now() - started) / 1000).toFixed(1);
     check = { ok: true, name: "server", detail: `base ${opts.ref} ready in ${seconds}s at ${workspace.url}` };
@@ -408,7 +418,14 @@ export async function runDoctor(opts: DoctorOptions): Promise<DoctorReport> {
       fix: "fix the base ref and attest.yml, then re-run",
     });
   } else {
-    checks.push(await checkServer({ repoRoot, appPath: opts.appPath, ref: opts.base, config: loaded.config, env }));
+    checks.push(await checkServer({
+      repoRoot,
+      appPath: opts.appPath,
+      ref: opts.base,
+      config: loaded.config,
+      configDir: loaded.configDir,
+      env,
+    }));
   }
 
   const needsUi: boolean | "unknown" = loaded.criteria === undefined

@@ -15,6 +15,7 @@ import {
   formatCheck,
   redactSecrets,
   renderDoctor,
+  serverExtraEnv,
   summaryLines,
 } from "../src/doctor.js";
 import {
@@ -121,11 +122,26 @@ test("a missing Baseten key uses the judge fallback and is not a failure", () =>
   assert.equal(text.includes(modelKey), false);
 });
 
-test("a blank model key counts as missing and is not printed", () => {
-  const checks = credentialChecks({ MODEL_API_KEY: "   ", BASETEN_API_KEY: "" });
+test("an empty model key counts as missing and is not printed", () => {
+  const checks = credentialChecks({ MODEL_API_KEY: "", BASETEN_API_KEY: "" });
   assert.equal(checks[0]?.ok, false);
   assert.equal(checks[0]?.detail, "MODEL_API_KEY missing");
-  assert.match(checks[1]?.detail ?? "", /BASETEN_API_KEY absent; judge route meta\//);
+  assert.equal(checks[1]?.detail, `BASETEN_API_KEY absent; judge route meta/${MODEL_IDS.wonder}`);
+});
+
+test("a whitespace-only key still counts as set and is not printed", () => {
+  const spaces = "   ";
+  const checks = credentialChecks({ MODEL_API_KEY: spaces, BASETEN_API_KEY: spaces });
+  const text = JSON.stringify(checks);
+  assert.equal(checks[0]?.detail, "MODEL_API_KEY set");
+  assert.equal(checks[1]?.detail, "BASETEN_API_KEY set; judge route Spark Open on Baseten");
+  assert.equal(text.includes(spaces), false);
+});
+
+test("the server check passes only the config directory, not credentials", () => {
+  const env = serverExtraEnv(join(repoRoot, "examples", "checkout-demo"));
+  assert.deepEqual(Object.keys(env), ["ATTEST_CONFIG_DIR"]);
+  assert.equal(env.ATTEST_CONFIG_DIR, join(repoRoot, "examples", "checkout-demo"));
 });
 
 test("an invalid route override is a failure and its value is not echoed", () => {
