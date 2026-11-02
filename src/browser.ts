@@ -84,7 +84,18 @@ const KEY_NAMES = new Map<string, string>([
   ["PAGEDOWN", "PageDown"],
   ["HOME", "Home"],
   ["END", "End"],
+  ["INSERT", "Insert"],
+  ["INS", "Insert"],
+  // DOM / Playwright names, which the verifier also sends (e.g. "ArrowRight", "Page_Down").
+  ["ARROWUP", "ArrowUp"],
+  ["ARROWDOWN", "ArrowDown"],
+  ["ARROWLEFT", "ArrowLeft"],
+  ["ARROWRIGHT", "ArrowRight"],
+  ...Array.from({ length: 12 }, (_, i): [string, string] => [`F${i + 1}`, `F${i + 1}`]),
 ]);
+
+// US-layout characters a person types with Shift held; pressing one adds Shift, as a real keyboard would.
+const SHIFTED = new Set("~!@#$%^&*()_+{}|:\"<>?");
 
 export function toPlaywrightKeys(keys: string[]): string {
   if (keys.length === 0) throw new Error("keypress: keys must not be empty");
@@ -93,13 +104,15 @@ export function toPlaywrightKeys(keys: string[]): string {
     const trimmed = key.trim();
     if (trimmed === "") throw new Error("keypress: key must not be empty");
 
-    const named = KEY_NAMES.get(trimmed.toUpperCase());
+    const named = KEY_NAMES.get(trimmed.toUpperCase().replace(/_/g, ""));
     if (named !== undefined) return named;
-    if (/^[A-Za-z0-9]$/.test(trimmed)) return trimmed;
+    if (/^[\x21-\x7e]$/.test(trimmed)) return trimmed; // one printable character: letter, digit or punctuation
 
     throw new Error(`keypress: unknown key "${key}"`);
   });
 
+  const last = mapped.at(-1);
+  if (last !== undefined && SHIFTED.has(last) && !mapped.includes("Shift")) mapped.unshift("Shift");
   return mapped.join("+");
 }
 
