@@ -1,6 +1,6 @@
 # Held-out run plan: workflows A and B
 
-> **Audience:** reviewers · **Status:** pre-registration for the freeze - selector validation passed (outcome A, 2026-11-03); not frozen and not authorization to run yet · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md`, `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`
+> **Audience:** reviewers · **Status:** pre-registration for the freeze - selector validation passed (outcome A, 2026-11-03); **frozen at tag `heldout-freeze`** (2026-11-03); runs authorized in the order below · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md`, `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`
 
 This file fixes the run procedure **before any result is seen**. It was written without seeing
 candidate diffs or labels. Candidate IDs come from `MANIFEST.md`; they are never grouped by
@@ -85,8 +85,8 @@ npm run attest -- verify proofs/heldout/<Cnn>-A/receipt.json   # or -B
 
 ## Models, copied from `src/models.ts`
 
-Values at the time of writing (`src/models.ts` at commit `f94dc45`); re-check and pin them in the
-freeze commit.
+Re-checked against `src/models.ts` at the freeze commit: unchanged from `f94dc45`. `BASETEN_API_KEY` is set,
+so the judge route is Spark Open on Baseten.
 
 | Role | Provider | Model ID |
 |---|---|---|
@@ -118,10 +118,19 @@ items is shown), which `expect.visible` cannot express. Code checks and SAM will
 
 ## Freeze checklist
 
-- [ ] `examples/heldout/MANIFEST.md` committed and merged into the harness branch.
-- [ ] Five harness folders present; each base build starts and reproduces its bug by hand.
-- [ ] `p1/b1` (`C02`, `C08`) excluded, with the reason stated above.
-- [ ] This plan committed, with the model IDs re-checked against `src/models.ts`.
-- [ ] `SEALED.sha256` present, free of absolute local paths, and the sealed bundle outside the
+- [x] `examples/heldout/MANIFEST.md` committed and merged into the harness branch.
+- [x] Five harness folders present; each base build starts and reproduces its bug by hand.
+- [x] `p1/b1` (`C02`, `C08`) excluded, with the reason stated above.
+- [x] This plan committed, with the model IDs re-checked against `src/models.ts`.
+- [x] `SEALED.sha256` present, free of absolute local paths, and the sealed bundle outside the
       repository.
-- [ ] Tag `heldout-freeze` on the commit that holds all of the above.
+- [x] Tag `heldout-freeze` on the commit that holds all of the above.
+
+## Freeze record
+
+- Attest code at the freeze includes the required-judge policy: a judge that is on but gives no vote makes the criterion
+  INCONCLUSIVE (receipt version `attest.receipt/0.2`), and INCONCLUSIVE verdicts carry a cause.
+- `attest doctor` (no model call) passed for all ten included candidates: every ref resolves, both config files load,
+  Edge launches, credentials are set, and each base build becomes ready.
+- Typecheck, 146/146 tests and 156/156 published receipts valid at the freeze commit.
+- The runner has not seen the sealed labels, candidate diffs or ground-truth tests.
