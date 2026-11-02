@@ -24,7 +24,8 @@ function scriptValue(scripts: unknown, name: string): string | undefined {
   return value.trim();
 }
 
-/** `--start` wins, then package.json `scripts.start`, then `scripts.dev`. */
+/** `--start` wins, then package.json `scripts.start`, then `scripts.dev`, run through npm so
+ *  node_modules/.bin is on PATH (Attest starts the app with a plain shell). */
 export function startCommand(explicit: string | undefined, packageJsonText: string | undefined): string {
   if (explicit !== undefined && explicit.trim() !== "") return explicit.trim();
   if (packageJsonText === undefined) {
@@ -40,9 +41,9 @@ export function startCommand(explicit: string | undefined, packageJsonText: stri
   }
 
   const scripts = isRecord(document) ? document["scripts"] : undefined;
-  const start = scriptValue(scripts, "start") ?? scriptValue(scripts, "dev");
-  if (start === undefined) throw new InitError("pass --start, or add a start or dev script to package.json");
-  return start;
+  const name = scriptValue(scripts, "start") !== undefined ? "start" : scriptValue(scripts, "dev") !== undefined ? "dev" : undefined;
+  if (name === undefined) throw new InitError("pass --start, or add a start or dev script to package.json");
+  return `npm run ${name}`;
 }
 
 function yamlScalar(value: string): string {
@@ -53,6 +54,7 @@ function yamlScalar(value: string): string {
 export function draftAttestYml(start: string): string {
   return [
     "app:",
+    "  # The app must listen on the port Attest passes in the PORT environment variable.",
     `  start: ${yamlScalar(start)}`,
     "  url: http://localhost:$PORT",
     "  ready: /",

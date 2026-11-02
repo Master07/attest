@@ -251,7 +251,7 @@ Per criterion, in each phase:
 | CUA | Spark 1.3 | Required |
 | Deterministic | `checks.ts` | Required when `expect` is present; overrides the CUA vote if they disagree |
 | SAM | SAM 3.1 | Required when `visible` is present |
-| Judge | Spark Open | When enabled, must agree with the combined result; disagreement → `INCONCLUSIVE` |
+| Judge | Spark Open | When enabled, must agree with the combined result; disagreement → `INCONCLUSIVE`. No vote (an outage or an unusable reply) → `INCONCLUSIVE` from receipt version 0.2 on |
 
 A criterion **passes** only if every applicable vote passes. A phase **passes** only if every criterion passes. Disagreement never becomes a pass.
 

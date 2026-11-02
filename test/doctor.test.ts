@@ -255,9 +255,10 @@ test("a bad criteria file reports loadCriteria's message exactly", async () => {
 
 test("start command prefers --start, then scripts.start, then scripts.dev", () => {
   assert.equal(startCommand("npm start", "{\"scripts\":{\"start\":\"node a.js\"}}"), "npm start");
-  assert.equal(startCommand(undefined, "{\"scripts\":{\"start\":\"node server.js\",\"dev\":\"vite\"}}"), "node server.js");
-  assert.equal(startCommand("  ", "{\"scripts\":{\"dev\":\"vite\"}}"), "vite");
-  assert.equal(startCommand(undefined, "\uFEFF{\"scripts\":{\"start\":\"node server.js\"}}"), "node server.js");
+  assert.equal(startCommand(undefined, "{\"scripts\":{\"start\":\"node server.js\",\"dev\":\"vite\"}}"), "npm run start");
+  // Run through npm: a bare script body such as "vite" is not on PATH in Attest's plain shell.
+  assert.equal(startCommand("  ", "{\"scripts\":{\"dev\":\"vite\"}}"), "npm run dev");
+  assert.equal(startCommand(undefined, "\uFEFF{\"scripts\":{\"start\":\"node server.js\"}}"), "npm run start");
   assert.throws(() => startCommand(undefined, "{\"scripts\":{}}"), InitError);
   assert.throws(() => startCommand(undefined, undefined), InitError);
 });
@@ -282,12 +283,12 @@ test("init writes drafts the loaders accept and never overwrites them", async ()
   try {
     await writeFile(join(dir, "package.json"), "{\"scripts\":{\"dev\":\"vite\"}}\n", "utf8");
     const first = initApp({ appPath: dir });
-    assert.equal(first.start, "vite");
+    assert.equal(first.start, "npm run dev");
     assert.equal(first.wrote.length, 2);
     assert.equal(first.skipped.length, 0);
 
     const config = loadConfig(dir);
-    assert.equal(config.app.start, "vite");
+    assert.equal(config.app.start, "npm run dev");
     assert.equal(config.app.timeout_s, 90);
     assert.equal(config.verifier.max_steps, 25);
     assert.equal(config.verifier.judge, true);

@@ -206,7 +206,7 @@ npm run bench -- check               # AI-free check of the 10 benchmark scenari
 - The verifier is a model and can be inconsistent. Agreement between independent votes is evidence, not a guarantee: it reduces false passes, it doesn't eliminate them.
 - **Break needs a wrong fix you supply.** On someone else's PR, without one the strongest honest verdict is `PROVEN_UNCHECKED` (the fix works; Attest's ability to reject a wrong one wasn't tested). Generating wrong fixes automatically is roadmap.
 - Only fix mode is built; regression and equivalence modes are designed, not implemented.
-- If a voter can't vote — say the judge's endpoint is down — it abstains (`n/a`, with the error recorded in the receipt) and the remaining votes decide; disagreement is still never a pass.
+- If the judge is on but can't vote — say its endpoint is down — the criterion is `INCONCLUSIVE` (receipt version 0.2), so one model alone never certifies. Receipts before 0.2 let the remaining votes decide (Board#918 run 2); they re-verify unchanged and are labelled. Disagreement is never a pass.
 - The receipt proves nothing changed after capture, not that the capture environment was honest. The signature detects a later edit; it is made with a key created on the machine that ran the proof.
 - The app under test never sees Attest's API keys, but it does run as your user — run unfamiliar repos in a VM or container.
 
