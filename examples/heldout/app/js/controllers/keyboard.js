@@ -143,7 +143,7 @@ export default class Keyboard {
 	onDocumentKeyPress( event ) {
 
 		// Check if the pressed key is question mark
-		if( event.shiftKey && event.charCode === 63 ) {
+		if( event.shiftKey && event.charCode === 63 && document.activeElement.tagName !== "INPUT" ) {
 			this.Reveal.toggleHelp();
 		}
 
