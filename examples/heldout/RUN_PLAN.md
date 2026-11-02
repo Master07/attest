@@ -1,18 +1,19 @@
 # Held-out run plan: workflows A and B
 
-> **Audience:** reviewers · **Status:** BLOCKED pending adjudication of the selector's post-seal audit - do not freeze or run yet · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md`, `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`
+> **Audience:** reviewers · **Status:** pre-registration for the freeze - selector validation passed (outcome A, 2026-11-03); not frozen and not authorization to run yet · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md`, `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`
 
 This file fixes the run procedure **before any result is seen**. It was written without seeing
 candidate diffs or labels. Candidate IDs come from `MANIFEST.md`; they are never grouped by
 label in this plan or in any output path.
 
-## Pre-run gate
+## Selector status
 
-The selector's label-free post-seal audit (`summary.json`, 2026-11-02T20:20Z) reports readiness
-**BLOCKED**: the original oracles did not cover some reported transition sequences or establish
-native editing preservation, and the supplemental audit does not fully agree with the committed
-mapping. No relabeling or resealing has happened. **Do not tag `heldout-freeze` and do not run any
-candidate until this is adjudicated** and `MANIFEST.md` carries the corresponding warning.
+The selector's final protocol audit (commit `5f2c3c0`) reached **outcome A**: revision 2 validated
+against the strengthened oracle, with report-backed base and Break failures, positive controls and
+included-label agreement; the included-set mix after the C02/C08 exclusion passed privately. No
+reproducible defect justified a revision, and no reseal occurred. This is original-selector
+revalidation, not independent certification. A separate `heldout-freeze` is still required before
+any run.
 
 ## Harnesses and exclusions
 
@@ -21,7 +22,7 @@ candidates (`C02`, `C08`) are **not run at all**. Reason: the base bug needs a r
 keypress (`shiftKey: true`), Attest's `keypress` vocabulary accepts only named keys and single
 letters/digits (`src/browser.ts`, `toPlaywrightKeys`), and its `type` action produces
 `shiftKey: false`. Under Attest the base therefore looks fixed, which could REJECT a correct
-candidate.
+candidate. The evaluation run set is registered in MANIFEST.md under Evaluation run-set registration.
 
 | Candidate | Bug | Harness |
 |---|---|---|
