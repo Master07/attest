@@ -1,6 +1,6 @@
 # Held-out run plan: workflows A and B
 
-> **Audience:** team (local pre-registration) · **Status:** draft for the freeze · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md` (Codex), `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`, `HANDOFF_CC.md`
+> **Audience:** reviewers · **Status:** pre-registration for the freeze · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md`, `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`
 
 This file fixes the run procedure **before any result is seen**. It was written without seeing
 candidate diffs or labels. Candidate IDs come from `MANIFEST.md`; they are never grouped by
@@ -9,11 +9,11 @@ label in this plan or in any output path.
 ## Harnesses and exclusions
 
 Six bugs were selected; **five harnesses are in this branch**. `p1/b1` is excluded, so its two
-candidates (`C02`, `C08`) are **not run at all**. Reason (details in `HANDOFF_CC.md`): the base
-bug needs a real `Shift` + `/` keypress (`shiftKey: true`), Attest's `keypress` vocabulary accepts
-only named keys and single letters/digits (`src/browser.ts`, `toPlaywrightKeys`), and its `type`
-action produces `shiftKey: false`. Under Attest the base therefore looks fixed, which could
-REJECT a correct candidate.
+candidates (`C02`, `C08`) are **not run at all**. Reason: the base bug needs a real `Shift` + `/`
+keypress (`shiftKey: true`), Attest's `keypress` vocabulary accepts only named keys and single
+letters/digits (`src/browser.ts`, `toPlaywrightKeys`), and its `type` action produces
+`shiftKey: false`. Under Attest the base therefore looks fixed, which could REJECT a correct
+candidate.
 
 | Candidate | Bug | Harness |
 |---|---|---|
@@ -36,7 +36,7 @@ REJECT a correct candidate.
    `C01`, `C03`, `C04`, `C05`, `C06`, `C07`, `C09`, `C10`, `C11`, `C12`.
 2. **Then workflow B**, same order.
 3. One run at a time; no parallel Attest runs; no reordering after any result.
-4. Total: 20 runs (10 candidates × 2 workflows). The six excluded runs are not replaced.
+4. Total: 20 runs (10 candidates × 2 workflows). The four excluded runs are not replaced.
 
 ## Commands
 
@@ -104,14 +104,15 @@ items is shown), which `expect.visible` cannot express. Code checks and SAM will
 - `proofs/heldout/<Cnn>-A/` and `proofs/heldout/<Cnn>-B/` — receipt, event log, screenshots,
   phase videos and evidence page, exactly as written by `attest prove --out`.
 - No pull-request comments are generated or posted.
-- `docs/BENCHMARK_HELDOUT.md` and the README row are produced by Claude Code after every run
-  finishes and the sealed bundle is unsealed.
+- `docs/BENCHMARK_HELDOUT.md` and the README row are produced after every run finishes and the
+  sealed bundle is unsealed.
 
 ## Freeze checklist
 
 - [ ] `examples/heldout/MANIFEST.md` committed and merged into the harness branch.
 - [ ] Five harness folders present; each base build starts and reproduces its bug by hand.
-- [ ] `p1/b1` (`C02`, `C08`) excluded, with the reason recorded in `HANDOFF_CC.md`.
+- [ ] `p1/b1` (`C02`, `C08`) excluded, with the reason stated above.
 - [ ] This plan committed, with the model IDs re-checked against `src/models.ts`.
-- [ ] `SEALED.sha256` present and the sealed bundle outside the repository.
+- [ ] `SEALED.sha256` present, free of absolute local paths, and the sealed bundle outside the
+      repository.
 - [ ] Tag `heldout-freeze` on the commit that holds all of the above.
