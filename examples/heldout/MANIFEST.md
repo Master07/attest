@@ -1,8 +1,10 @@
 # Held-out presentation selection
 
-## Readiness: BLOCKED
+## Revision 2 — ready for pre-freeze review
 
-A post-seal audit by the original selector found incomplete oracle coverage and supplemental behavioral checks that do not fully agree with the retained label mapping. **Do not freeze or evaluate this selection until the discrepancy is resolved.** This was original-selector revalidation, not independent reviewer verification. The original app source refs, sealed archive, commitment and labels are preserved.
+The mapping was revised once, before any Attest run. The original oracle did not establish rendered visibility reliably and omitted some progression/native-editing assertions. Revision 2 uses calibrated rendered-visibility, full transition, and native focus/caret/value checks against the exact committed app trees, with positive controls and external network blocked.
+
+This is a correction by the original selector, not independent reviewer verification. Projects, bug reports, app bytes, candidate IDs and source refs are unchanged; these are not new independent cases. The original archive and commitment remain preserved, with the old hash in git history. The active `SEALED.sha256` commits the revision-2 archive. No freeze, Attest evaluation or unsealing is authorized by this registration.
 
 This pilot contains 12 randomized candidate IDs across six historical UI bugs in three MIT-licensed projects. It contains source refs and reports only; behavioral tests, candidate labels and source-change provenance are sealed separately. No Attest evaluations have been run for this selection.
 
@@ -110,4 +112,4 @@ IDs were assigned by a cryptographic random shuffle before app refs were committ
 
 A fresh-context AI selector chose these cases independently of the evaluation runner and criteria author. Its coordinating context had read internal benchmark notes; those diagnoses were not passed to this selector. Label/test files are held outside the repository, with a random nonce in the commitment bundle. Shared filesystem separation is operational, not cryptographic access control. No human reproduction checks have been performed.
 
-The sealed bundle includes every final build's independent Microsoft Edge behavioral checks and positive controls, source digests, discarded setup attempts, provenance, and suggested human checks. Labels follow measured behavior, not an assumed status from upstream history. The SHA-256 commitment is in `SEALED.sha256`. A separate evaluation freeze must include the harnesses and run protocol before any Attest execution.
+The revision-2 sealed bundle includes every pinned build's Microsoft Edge behavioral checks and positive controls, authored by the original selector independently of Attest, source digests, discarded setup attempts, provenance, and suggested human checks. Labels follow measured behavior, not an assumed status from upstream history. The SHA-256 commitment is in `SEALED.sha256`. A separate evaluation freeze must include the harnesses and run protocol before any Attest execution.
