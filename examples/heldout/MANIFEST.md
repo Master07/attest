@@ -8,6 +8,23 @@ This is a correction by the original selector, not independent reviewer verifica
 
 This pilot contains 12 randomized candidate IDs across six historical UI bugs in three MIT-licensed projects. It contains source refs and reports only; behavioral tests, candidate labels and source-change provenance are sealed separately. No Attest evaluations have been run for this selection.
 
+## Evaluation run-set registration
+
+Revision 2 has completed selector validation for the following evaluation subset. This registration remains subject to pre-freeze review; it is not a freeze or authorization to run Attest.
+
+- Included candidate IDs for workflows A and B: `C01`, `C03`, `C04`, `C05`, `C06`, `C07`, `C09`, `C10`, `C11`, `C12`.
+- Excluded candidate IDs: `C02`, `C08` (`p1/b1`); excluded before freeze because the required keyboard input is unavailable to the evaluation driver. These refs remain preserved in the sealed selection but are outside both workflows.
+
+Workflow B pairs each included candidate with the corresponding bug's separate Break ref. Its Break set is:
+
+- `ho/p1/b2/break`
+- `ho/p2/b1/break`
+- `ho/p2/b2/break`
+- `ho/p3/b1/break`
+- `ho/p3/b2/break`
+
+`ho/p1/b1/break` is omitted from workflow B because both candidates for that bug are excluded. The full sealed selection and all source refs remain preserved. The active revision-2 commitment is unchanged; this update registers the evaluation subset without resealing.
+
 ## Scope and startup
 
 These are browser presentation engines shown through minimal selector-authored local presentation pages. This keeps the UI reproducible but limits domain diversity. No account, network service or build step is required. Application source and licenses live at `examples/heldout/app` on each app ref.
