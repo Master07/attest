@@ -2,6 +2,8 @@
 
 A verifier that never sees the code reproduces the bug, confirms the fix in the running app, shows it would reject a wrong fix, and seals it all into a receipt anyone can check.
 
+**▶ [Demo video (2:52)](https://youtu.be/jMU3TaSQ45o)** · recorded evidence from the receipts in this repo, synthetic voice, captions burned in.
+
 *Built entirely during the Meta Global AI Developer Hackathon (Oct 26 – Nov 4, 2026) · Indie track · Push the Frontier.* <sub>Design docs were written Oct 26–30; git was set up on Oct 31, so the first commit contains them.</sub>
 
 ![SAM 3.1 finds the Pay button; the click actually landed on an invisible chat-widget container](docs/assets/sam-reveal.png)
@@ -193,7 +195,7 @@ npm run bench -- check               # AI-free check of the 10 benchmark scenari
 
 - The bug must reproduce in an app Attest can start locally; production-only bugs are out of scope.
 - "Not reproduced" is not "fake": Attest refuses to certify, it doesn't rule on the report.
-- The verifier is a model and can be inconsistent; the independent votes reduce false passes, they don't eliminate them.
+- The verifier is a model and can be inconsistent. Agreement between independent votes is evidence, not a guarantee: it reduces false passes, it doesn't eliminate them.
 - **Break needs a wrong fix you supply.** On someone else's PR, without one the strongest honest verdict is `PROVEN_UNCHECKED` (the fix works; Attest's ability to reject a wrong one wasn't tested). Generating wrong fixes automatically is roadmap.
 - Only fix mode is built; regression and equivalence modes are designed, not implemented.
 - If a voter can't vote — say the judge's endpoint is down — it abstains (`n/a`, with the error recorded in the receipt) and the remaining votes decide; disagreement is still never a pass.
