@@ -2595,6 +2595,7 @@ export default function( revealElement, options ) {
 					let h = indexh - 1;
 					slide( h, v );
 				}
+				
 				else {
 					navigateLeft({skipFragments});
 				}
@@ -2628,6 +2629,9 @@ export default function( revealElement, options ) {
 
 			if( routes.down ) {
 				navigateDown({skipFragments});
+			}
+			else if( config.rtl ) {
+				navigateLeft({skipFragments});
 			}
 			else {
 				navigateRight({skipFragments});
