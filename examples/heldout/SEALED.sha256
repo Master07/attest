@@ -1,0 +1,8 @@
+# SHA-256 commitment to exact final ZIP bytes; includes a random nonce.
+9045e599c8c0288679ea4f656f57845c12f5056f355e5ca08ae43b8fb6f649c4 *heldout-labels.zip
+
+# Exact archive command (PowerShell):
+# Compress-Archive -Path 'C:\dev\attest-heldout-sealed\bundle\*' -DestinationPath 'C:\dev\attest-heldout-sealed\heldout-labels.zip' -CompressionLevel Optimal
+# Exact digest command (PowerShell):
+# Get-FileHash -LiteralPath 'C:\dev\attest-heldout-sealed\heldout-labels.zip' -Algorithm SHA256
+# Do not inspect the archive until all frozen evaluation runs finish.
