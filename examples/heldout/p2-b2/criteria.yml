@@ -1,0 +1,14 @@
+id: default-substeps-one-at-a-time
+# Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
+# was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: one-next-reveals-one-default-substep
+    given: >-
+      The presentation is open on the slide headed "First slide". The paragraphs
+      "First point", "Second point" and "Third point" are all hidden, and the "Next"
+      button is visible at the top left.
+    when: >-
+      The user clicks the "Next" button once and waits for the slide to settle.
+    then: >-
+      "First point" is visible, "Second point" and "Third point" are still hidden, and
+      the slide headed "First slide" is still the visible slide.

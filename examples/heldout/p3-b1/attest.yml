@@ -1,0 +1,14 @@
+app:
+  # The app under test is a minimal presentation page committed on the ho/* refs; its files live in
+  # examples/heldout/app inside that ref. serve.cjs lives here, in Attest's config dir, and serves
+  # the ref's app directory (which is Attest's working directory for the app).
+  start: node -e "require(process.env.ATTEST_CONFIG_DIR + '/serve.cjs')"
+  url: http://127.0.0.1:$PORT
+  ready: /index.html
+  open: /index.html
+  timeout_s: 30
+browser:
+  viewport: { width: 1280, height: 720 }
+verifier:
+  max_steps: 25
+  judge: true
