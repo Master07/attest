@@ -1,0 +1,9 @@
+# Active revision-2 SHA-256 commitment to exact final ZIP bytes; includes a fresh random nonce.
+4ff87f0a4e740ee9965ebd15917a9a8a4eefc6514513252af21e86b54cd28489 *heldout-labels-v2.zip
+
+# Exact archive command (PowerShell):
+# Compress-Archive -Path 'C:\dev\attest-heldout-sealed\revision-02\bundle\*' -DestinationPath 'C:\dev\attest-heldout-sealed\revision-02\heldout-labels-v2.zip' -CompressionLevel Optimal
+# Exact digest command (PowerShell):
+# Get-FileHash -LiteralPath 'C:\dev\attest-heldout-sealed\revision-02\heldout-labels-v2.zip' -Algorithm SHA256
+# Original commitment remains in git history; original ZIP is preserved privately.
+# Mapping revised once before any Attest run. Do not unseal before all separately authorized frozen runs finish.
