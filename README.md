@@ -16,7 +16,7 @@ The reviewer's real question — *does this actually fix the bug?* — still mea
 
 **Attest does that step and leaves evidence either way.** If the fix works, the reviewer gets a proof instead of a manual QA session; if it doesn't, they get the screenshot of where the click actually landed. Who wrote the fix doesn't matter — a coding agent, a person, or Muse Code in Attest's own loop.
 
-<sub>Honest note: in our runs Muse Code fixed every demo bug on the first try. The wrong fixes Attest rejects below are ones we wrote, so that the Break phase has something to catch.</sub>
+<sub>Honest note: in our runs Muse Code fixed every demo bug on the first try. The wrong fixes in the Break phase are ones we wrote, so that it has something to catch. Board#913 below is different: a real AI-written change that Attest rejected.</sub>
 
 ## What Attest does
 
