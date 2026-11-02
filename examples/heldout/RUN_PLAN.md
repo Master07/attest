@@ -1,10 +1,18 @@
 # Held-out run plan: workflows A and B
 
-> **Audience:** reviewers · **Status:** pre-registration for the freeze · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md`, `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`
+> **Audience:** reviewers · **Status:** BLOCKED pending adjudication of the selector's post-seal audit - do not freeze or run yet · **Last updated:** 2026-11-03 · **Related:** `MANIFEST.md`, `SEALED.sha256`, `docs/BENCHMARK_HELDOUT.md`
 
 This file fixes the run procedure **before any result is seen**. It was written without seeing
 candidate diffs or labels. Candidate IDs come from `MANIFEST.md`; they are never grouped by
 label in this plan or in any output path.
+
+## Pre-run gate
+
+The selector's label-free post-seal audit (`summary.json`, 2026-11-02T20:20Z) reports readiness
+**BLOCKED**: the original oracles did not cover some reported transition sequences or establish
+native editing preservation, and the supplemental audit does not fully agree with the committed
+mapping. No relabeling or resealing has happened. **Do not tag `heldout-freeze` and do not run any
+candidate until this is adjudicated** and `MANIFEST.md` carries the corresponding warning.
 
 ## Harnesses and exclusions
 
