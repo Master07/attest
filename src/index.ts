@@ -1,6 +1,8 @@
 import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { renderDoctor, runDoctor } from "./doctor.js";
+import { initApp } from "./init.js";
 import { draftCriteria } from "./intake.js";
 import { runLoop } from "./loop.js";
 import { fetchPrRefs, publishComment, readReceipt, viewPr, writePrComment } from "./prcomment.js";
@@ -11,6 +13,9 @@ import { writeReport } from "./report.js";
 const USAGE = `usage:
   attest prove --app <path> --base <ref> --pr <ref> [--break <ref>] [--criteria <file>] [--out <dir>]
                [--config-dir <dir>] [--record <cassette.jsonl> | --replay <cassette.jsonl>]
+  attest doctor --app <path> --base <ref> --pr <ref> [--break <ref>] [--criteria <file>]
+               [--config-dir <dir>] [--no-start]
+  attest init --app <path> [--start "<cmd>"] [--out <dir>]
   attest comment <receipt.json>
   attest pr <number> --app <path> [--break <ref>] [--criteria <file>] [--config-dir <dir>] [--out <dir>]
                [--record <f> | --replay <f>] [--post]
@@ -78,6 +83,43 @@ try {
     console.log(`receipt: ${receiptPath}`);
     console.log(`evidence page: ${join(dirname(receiptPath), "index.html")}`);
     process.exitCode = receipt.verdict === "PROVEN" || receipt.verdict === "PROVEN_UNCHECKED" ? 0 : 1;
+  } else if (command === "doctor") {
+    const noStart = rest.includes("--no-start");
+    const f = flags(rest.filter((arg) => arg !== "--no-start"));
+    const app = f.get("app");
+    const base = f.get("base");
+    const pr = f.get("pr");
+    if (app === undefined || base === undefined || pr === undefined) throw new Error("doctor needs --app, --base and --pr");
+
+    const brk = f.get("break");
+    const criteriaPath = f.get("criteria");
+    const configDir = f.get("config-dir");
+    const report = await runDoctor({
+      repoRoot,
+      appPath: app,
+      base,
+      pr,
+      ...(brk !== undefined ? { break: brk } : {}),
+      ...(criteriaPath !== undefined ? { criteriaPath: resolve(criteriaPath) } : {}),
+      ...(configDir !== undefined ? { configDir: resolve(configDir) } : {}),
+      ...(noStart ? { noStart: true } : {}),
+    });
+    console.log(renderDoctor(report, process.env));
+    process.exitCode = report.ok ? 0 : 1;
+  } else if (command === "init") {
+    const f = flags(rest);
+    const app = f.get("app");
+    if (app === undefined) throw new Error("init needs --app");
+    const start = f.get("start");
+    const out = f.get("out");
+    const result = initApp({
+      appPath: app,
+      ...(start !== undefined ? { start } : {}),
+      ...(out !== undefined ? { outDir: resolve(out) } : {}),
+    });
+    for (const path of result.wrote) console.log(`wrote ${path}`);
+    for (const path of result.skipped) console.log(`left existing ${path}`);
+    console.log("A person must review this before any run.");
   } else if (command === "comment") {
     const path = rest[0];
     if (path === undefined) throw new Error("comment needs a receipt path");
