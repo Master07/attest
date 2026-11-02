@@ -1,0 +1,7 @@
+id: listjs-search-clear
+# Frozen before the live run. Wording is the assigned criterion, unchanged.
+criteria:
+  - id: clear-shows-all-names
+    given: a list of Jonny, Jonas, Martina and Gustaf with a search field
+    when: I type Mar and click the clear button at the right edge of the field
+    then: the field is empty and all four names are shown

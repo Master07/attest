@@ -1,0 +1,128 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:19:04.778Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/live/list/red",
+        "sha": "18f3f306991e5c90ef8c37478f978ae6a953241f"
+      },
+      "green": {
+        "ref": "rw/live/list/green",
+        "sha": "9754c28262b07e647e0ad3de181cdb4e323e7db7"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "1a9a835e144d003555364b5532cc44e980fc421a45b65f56645c79aab697dc22"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/live/list/red",
+      "sha": "18f3f306991e5c90ef8c37478f978ae6a953241f",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ef84571df01cfb0e40e3bdcaca19a2347ce21bb3736f28f65b4437b5aeea9134",
+      "criteria": [
+        {
+          "id": "clear-shows-all-names",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing Mar and clicking the clear X, the field was empty but only Martina was shown instead of all four names.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After the clear action the search field is empty but only Martina is shown instead of all four names (Jonny, Jonas, Martina, Gustaf)."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/live/list/green",
+      "sha": "9754c28262b07e647e0ad3de181cdb4e323e7db7",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "7a670ce7936d8f79ace4ad3e02d2dcb8dcf9190d5e235b9f3ea4363206207f17",
+      "criteria": [
+        {
+          "id": "clear-shows-all-names",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking the X clear button the search field was empty and all four names Jonny, Jonas, Martina and Gustaf were shown.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows 'Mar' filtering to Martina with clear button visible, and Frame 4 shows field empty with placeholder 'Search' and all four names Jonny, Jonas, Martina, Gustaf restored after clicking clear."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "PROVEN_UNCHECKED",
+  "reasons": [
+    "red failed and green passed; no break build, so sensitivity is unchecked"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:1a9a835e144d003555364b5532cc44e980fc421a45b65f56645c79aab697dc22",
+    "shots/green-00.png": "sha256:47513e36111798cc6d1f3a95401f4e0c2726db04dd6032967cb681ff1cee5179",
+    "shots/green-01.png": "sha256:0a253032715707062c486f694cdbec0db8109b59fb3f4a4048f4ae605c23e685",
+    "shots/green-02.png": "sha256:9e0ca6527d41e706fed1f637ff78bd2e48436bd2fb1511ca20681d4468926adc",
+    "shots/green-03.png": "sha256:0a253032715707062c486f694cdbec0db8109b59fb3f4a4048f4ae605c23e685",
+    "shots/red-00.png": "sha256:47513e36111798cc6d1f3a95401f4e0c2726db04dd6032967cb681ff1cee5179",
+    "shots/red-01.png": "sha256:9e0ca6527d41e706fed1f637ff78bd2e48436bd2fb1511ca20681d4468926adc",
+    "shots/red-02.png": "sha256:9228443651397956fd6be07a14c2088899d831ec01390560b6dab5b110b8bcbe",
+    "shots/red-03.png": "sha256:9228443651397956fd6be07a14c2088899d831ec01390560b6dab5b110b8bcbe",
+    "videos/green.webm": "sha256:724b30876fb26ccb4d8635efa96c9213b484e427ca819bfce6055902e5e741c2",
+    "videos/red.webm": "sha256:7857999868c40e1e0202bad785c238ab711c45f59bba520eed4aca4db6a2e688"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:bc2475787279cea5893e7e61366cc8d746428abe634387f11674a4eb9fc87f2d",
+    "entries": 35
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "H3EoCdl4lRdVzfp1qH0s5ikVI+pFaEndivCWknAT3XkE2cCvahvR9AAK77NsW80nCm4fnClP0CxGQGivUvUzAQ=="
+  }
+}

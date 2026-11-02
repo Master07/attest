@@ -1,0 +1,169 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:22:19.267Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/jspaint/base",
+        "sha": "8e37f20514f5ff6a3ee8410dc932b8cccd964e1e"
+      },
+      "green": {
+        "ref": "rw/jspaint/fix",
+        "sha": "e0ae75bd808d024c74de7f6db2de148bbdb418b9"
+      },
+      "break": {
+        "ref": "rw/jspaint/bad-fix",
+        "sha": "a63d6e46fdf5853f3288c35913a8a846a16d7649"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "3b8020096fc1831b9806b4137debfed6823ded4a9baef5e54e90f9c26632356e"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/jspaint/base",
+      "sha": "8e37f20514f5ff6a3ee8410dc932b8cccd964e1e",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e15f2065971de71eabf61090d7c9344d881b859d78f787dcd4df198f767f07cd",
+      "criteria": [
+        {
+          "id": "attributes-width-field-receives-typing",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After Ctrl+E opened Attributes and typing 320, Tab, 240 with no clicks, the dialog still showed Width 683 and Height 384 instead of 320 and 240.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 2-4 show Attributes dialog with Width 683 and Height 384 unchanged, never displaying Width 320 and Height 240 after typing and Tab."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/jspaint/fix",
+      "sha": "e0ae75bd808d024c74de7f6db2de148bbdb418b9",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "6ee59176d60582d344cdfac72bb01434c6af1bdf581ce5cd5887d5880b065aec",
+      "criteria": [
+        {
+          "id": "attributes-width-field-receives-typing",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Attributes dialog shows Width 320 and Height 240 after typing without clicking.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows Attributes dialog open with Width field selected, and Frame 3 shows Width 320 and Height 240 as required."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/jspaint/bad-fix",
+      "sha": "a63d6e46fdf5853f3288c35913a8a846a16d7649",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "cb1234b31623426a7a27c87fefeafb24af52f58ff97acf262769d253e6fa53bc",
+      "criteria": [
+        {
+          "id": "attributes-width-field-receives-typing",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Typing 320 appended to the existing width to show 683320 instead of 320 while Height showed 240.",
+          "evidence": [
+            "shots/break-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 3/6 shows Width as \"683320\" (original 683 with 320 appended) not \"320\"; typing did not replace the selected field, so Width 320 Height 240 was not achieved."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:3b8020096fc1831b9806b4137debfed6823ded4a9baef5e54e90f9c26632356e",
+    "shots/break-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/break-01.png": "sha256:dab114f9465979904dd0ee5ba4f0137e3c427b3d475ddc1b99f8e4e687613dd1",
+    "shots/break-02.png": "sha256:16bff5f96869d7cd1c7d544664ea183e122f3104948105eaab87363745d6b128",
+    "shots/break-03.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/break-04.png": "sha256:dab114f9465979904dd0ee5ba4f0137e3c427b3d475ddc1b99f8e4e687613dd1",
+    "shots/break-05.png": "sha256:16bff5f96869d7cd1c7d544664ea183e122f3104948105eaab87363745d6b128",
+    "shots/green-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/green-01.png": "sha256:17e06b6eb0d28b3897a34ebd76aa354a5dc1c88898d27e138afc31fdfddb815e",
+    "shots/green-02.png": "sha256:30b7583a8a4f0d328bde5f43f7e01b03dbd80656d0e945009047e21e3baa7654",
+    "shots/red-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/red-01.png": "sha256:f8932586c26e2a86fde7849c5538b2a65228cfed3d653d075b74aed7c4e95fc0",
+    "shots/red-02.png": "sha256:7d2ffcc70ddc3173299a9026fc57084ad04caa6112c916cc1d7fc9189666a8de",
+    "shots/red-03.png": "sha256:7d2ffcc70ddc3173299a9026fc57084ad04caa6112c916cc1d7fc9189666a8de"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:e6b076348261f55550078da9fe07784fc6282b8454980ff1cee3cccb107abb91",
+    "entries": 53
+  },
+  "replay": {
+    "cassette": "jspaint-313-run1.jsonl",
+    "sha256": "sha256:5515094087638117216031d2046825cf05969a62852641def3065fce80089c80"
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "gCVTcyHl3oifB0KhAGhFJedz+O0rXInUOMHT2zNLiPOu8gSoZ3VKzfOhFVvkPyo1hF7CqjU8K7qZ7J14XFP0Cg=="
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:17:13.783Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/eu48/base",
+        "sha": "eab1c90de8cccb4a911ccd3d3c0f668d7b9649e4"
+      },
+      "green": {
+        "ref": "rw/eu48/fix",
+        "sha": "ddb2596f5f8fd24c1a596151b6a29342df9adad1"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "e76092ba769a9d25d6741dcd231c97c6a4e7e99569f289fd70b6c231bc1b8c59"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/eu48/base",
+      "sha": "eab1c90de8cccb4a911ccd3d3c0f668d7b9649e4",
+      "status": "completed",
+      "error": null,
+      "steps": 15,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5f8db6d5df6358228ac746f211ff0f262f1be208a2a638d3478d31d00205cbba",
+      "criteria": [
+        {
+          "id": "typing-keeps-text-and-focus",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abcd the Obszar działania field showed only a with unfocused border, and a repeat attempt showed the same.",
+          "evidence": [
+            "shots/red-15.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After scrolling to Nd 01.11 the Obszar działania field is visible but never shows \"abcd\" – frames 12-13 and 16 show only \"a\" and frames 14-15 revert to the placeholder, so the typed text is not retained (and focus/border is lost between frames)."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/eu48/fix",
+      "sha": "ddb2596f5f8fd24c1a596151b6a29342df9adad1",
+      "status": "completed",
+      "error": null,
+      "steps": 6,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "3b9ed65f0bfed0b89691c511c85fab362345b680bb59530a5fa82f2e5fa0607d",
+      "criteria": [
+        {
+          "id": "typing-keeps-text-and-focus",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "The Obszar dzialania textarea shows abcd with a focused black border after typing.",
+          "evidence": [
+            "shots/green-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 7 shows the 'Obszar działania' textarea containing 'abcd' with the same thick focus border seen in Frame 6, indicating it retains keyboard focus after typing."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "PROVEN_UNCHECKED",
+  "reasons": [
+    "red failed and green passed; no break build, so sensitivity is unchecked"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:e76092ba769a9d25d6741dcd231c97c6a4e7e99569f289fd70b6c231bc1b8c59",
+    "shots/green-00.png": "sha256:e925be72ae5a548a38c66dc884c1a297c2d44ce976d2e2d3b1ac549b8e155936",
+    "shots/green-01.png": "sha256:3a80d53fbf9369537191b0a0946e751018eeb2c047ddd127fbfa4ee474339a2f",
+    "shots/green-02.png": "sha256:50d688762a15e596db54756abdc0ed1030528db2094b1b513c8f7d2f21318590",
+    "shots/green-03.png": "sha256:e7c019539484addd997be51697b82dc2768e6cccd1bfbfa7e3d781599b47384c",
+    "shots/green-04.png": "sha256:fa4ae6abda1dcbee6f6a43426fffaf3030a75addd4319018cd336120ddf8e6d0",
+    "shots/green-05.png": "sha256:a05cad20c5b0373d7b1c75e7462437e05792ffa2129c5cf3936b0f0148048ab5",
+    "shots/green-06.png": "sha256:89e66ecdb0432ccb00b5c0ccbf0b8612691bf7876181334dd1474dc69b03e2a6",
+    "shots/red-00.png": "sha256:e925be72ae5a548a38c66dc884c1a297c2d44ce976d2e2d3b1ac549b8e155936",
+    "shots/red-01.png": "sha256:f7d23ee8e3c33d2272ffc7bf084358149170e8dca85c984f3ad4d3419f6898ac",
+    "shots/red-02.png": "sha256:ecb8a0462a1a941cb39de42a0cc5c1a015ffae2cb8c25b25ed434b990f62ce6b",
+    "shots/red-03.png": "sha256:7126a2a4490dac6a71dddd5557a5fd99b51a2871b676fb3747fb95ac517a73b9",
+    "shots/red-04.png": "sha256:7126a2a4490dac6a71dddd5557a5fd99b51a2871b676fb3747fb95ac517a73b9",
+    "shots/red-05.png": "sha256:a76dd34dded34ef84ace590477ee5eeee53d5c25820ebda651e3f0f6d249eff4",
+    "shots/red-06.png": "sha256:e925be72ae5a548a38c66dc884c1a297c2d44ce976d2e2d3b1ac549b8e155936",
+    "shots/red-07.png": "sha256:e925be72ae5a548a38c66dc884c1a297c2d44ce976d2e2d3b1ac549b8e155936",
+    "shots/red-08.png": "sha256:e925be72ae5a548a38c66dc884c1a297c2d44ce976d2e2d3b1ac549b8e155936",
+    "shots/red-09.png": "sha256:acaf59deb854e5de66f16e775946b2760e13e67401ab39592fef6d3d6228edf9",
+    "shots/red-10.png": "sha256:6186ea9beed6b84101b2077b46caf392ab9e0808480abf5e42318bb69fa8391e",
+    "shots/red-11.png": "sha256:813dfebfc2d8d84133b85c9a5f106ffba589f709b546d0c67e58d57255961705",
+    "shots/red-12.png": "sha256:ea1352e9f48cfc0938d9081f1d4dab878b513c9e36a3850a0e8889348565b630",
+    "shots/red-13.png": "sha256:acaf59deb854e5de66f16e775946b2760e13e67401ab39592fef6d3d6228edf9",
+    "shots/red-14.png": "sha256:6186ea9beed6b84101b2077b46caf392ab9e0808480abf5e42318bb69fa8391e",
+    "shots/red-15.png": "sha256:813dfebfc2d8d84133b85c9a5f106ffba589f709b546d0c67e58d57255961705",
+    "videos/green.webm": "sha256:790a7fac0321939a3c7febcfc0f57bea27a25c2f6e613d28a8b57318022228a0"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:e87732179503e34321096c166235cf7e1bc33b1611b7bd6a2f87842ade6951cf",
+    "entries": 64
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "FeF/Pu/u8FJEwlq+Yrm5a5hVlEwYxITbDU5qHCPKh+l22LB1flbX75GUaWyTtRBKJI9uvu7jtS941qs33zLhDQ=="
+  }
+}

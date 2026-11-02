@@ -1,0 +1,169 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:21:57.544Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/live/hyp/red",
+        "sha": "50c35c1b45b910b553ebe52fd03a8f7a3f351ee2"
+      },
+      "green": {
+        "ref": "rw/live/hyp/green",
+        "sha": "0a698181c6f42d551ded9a76f98b581349e2d54a"
+      },
+      "break": {
+        "ref": "rw/live/hyp/break",
+        "sha": "1bfd62aaf1f98b0a966f258f9d8a0834e1b0bd5f"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "8d1b3707387f4a387b126341811cd511646ea7e96f42dc7796975a320690c73e"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/live/hyp/red",
+      "sha": "50c35c1b45b910b553ebe52fd03a8f7a3f351ee2",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "0ee8677fae9328c647f5e0a3c04fbfcb722fc36be021cc50c90f7b810d62678d",
+      "criteria": [
+        {
+          "id": "lightbox-covers-page",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Both single clicks on the red thumbnail left the page unchanged with no lightbox overlay appearing.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No lightbox overlay covering the page ever appears - the image remains as a small thumbnail inside the task card in all frames after the tap."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/live/hyp/green",
+      "sha": "0a698181c6f42d551ded9a76f98b581349e2d54a",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "174fc64f9fef6292d3a8cb87577dd26ecb2a14662d31b7bc2b3df2deed2e5ca1",
+      "criteria": [
+        {
+          "id": "lightbox-covers-page",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Single click on the red-yellow thumbnail opened a full-page dark overlay centered on the same image with a close button.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows the given dashboard task card with single thumbnail image and Frame 3 immediately after shows the lightbox overlay covering the page displaying the same enlarged image."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/live/hyp/break",
+      "sha": "1bfd62aaf1f98b0a966f258f9d8a0834e1b0bd5f",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "e80bb454be9c8cb01fc237d052564b862f14990ab14cae083f5e502a0af4674b",
+      "criteria": [
+        {
+          "id": "lightbox-covers-page",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Tapped the red thumbnail once, then again to confirm, and both times the card stayed unchanged with no lightbox overlay covering the page.",
+          "evidence": [
+            "shots/break-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows a lightbox overlay covering the page; the image remains only as a small thumbnail inside the task card in frames 2-4 with no enlarged overlay visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:8d1b3707387f4a387b126341811cd511646ea7e96f42dc7796975a320690c73e",
+    "shots/break-00.png": "sha256:f0700de3dff178c0a6c9da64cc1c3082760ae4ad651a8e9974740426a1c8ca29",
+    "shots/break-01.png": "sha256:659346d0692c0fd4c7e184c7b6100e13f80bb01c78a6703c894194d79dff2bdc",
+    "shots/break-02.png": "sha256:dc89eea7eb81102eed881cf1c028143e7c4aab5fabeda52c6a14d3aa148f8e3a",
+    "shots/break-03.png": "sha256:dc89eea7eb81102eed881cf1c028143e7c4aab5fabeda52c6a14d3aa148f8e3a",
+    "shots/green-00.png": "sha256:d0a22e1a467dea54e440eaee26bb013b9cb43d840e4860e0be044ba67701640f",
+    "shots/green-01.png": "sha256:5050e9227ef062d804f520f6c1dc7366f7755c1a09d4b8eeac0f696b8b46d6be",
+    "shots/green-02.png": "sha256:f249d66ae92bc46a94c309e055fc2a654e0bea350c5cebd37ef13a08e08de19b",
+    "shots/red-00.png": "sha256:f0700de3dff178c0a6c9da64cc1c3082760ae4ad651a8e9974740426a1c8ca29",
+    "shots/red-01.png": "sha256:659346d0692c0fd4c7e184c7b6100e13f80bb01c78a6703c894194d79dff2bdc",
+    "shots/red-02.png": "sha256:17dc26fc8d9e621c58a3c8db67187200de9f4e156e3e7adef910f2a62750e002",
+    "shots/red-03.png": "sha256:17dc26fc8d9e621c58a3c8db67187200de9f4e156e3e7adef910f2a62750e002",
+    "videos/break.webm": "sha256:8b5e5add316e26bc344c44d9bb94158d965acb3d5d9e0c7f6181385d9d3ac486",
+    "videos/green.webm": "sha256:c8188982ad742e28227d24ffff5d377c6df40cfc2bfb78594b5914919a987099",
+    "videos/red.webm": "sha256:8c3adee3f139bfe6c247528711a6995076ac4a618695721116ae79daa0eaeb38"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:17655c6928d2066f5afe3557eaa8ddae256e742bd6afb8fcfb5d2e667fad3c65",
+    "entries": 49
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "r2bjl4PcEp+pDvduPIw4j4aQow6uS/MpZoqvyJtHz0DffxopfhZo+8uxOZ+lFG88ua9rz8J04HuIkH7Vm3HXCQ=="
+  }
+}

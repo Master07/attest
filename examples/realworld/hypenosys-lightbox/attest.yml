@@ -1,0 +1,11 @@
+app:
+  start: node -e "require(process.env.ATTEST_CONFIG_DIR + '/serve.cjs')"
+  url: http://localhost:$PORT
+  ready: /dashboard.html
+  open: /dashboard.html
+  timeout_s: 45
+browser:
+  viewport: { width: 1280, height: 720 }
+verifier:
+  max_steps: 25
+  judge: true

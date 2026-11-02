@@ -1,0 +1,7 @@
+id: eu-reporter-type-in-day-field
+# Frozen before the live run. Wording is the assigned criterion, unchanged.
+criteria:
+  - id: typing-keeps-text-and-focus
+    given: the month calendar is open
+    when: I scroll to the first day and type abcd into the field labelled "Obszar działania"
+    then: that field shows abcd and still has keyboard focus

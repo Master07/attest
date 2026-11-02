@@ -1,0 +1,7 @@
+id: hypenosys-lightbox-first-tap
+# Frozen before the live run. Wording is the assigned criterion, unchanged.
+criteria:
+  - id: lightbox-covers-page
+    given: the dashboard shows a task card with one image
+    when: I tap that thumbnail once
+    then: the lightbox covers the page and shows the image

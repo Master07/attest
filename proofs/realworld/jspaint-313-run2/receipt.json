@@ -1,0 +1,170 @@
+{
+  "version": "attest.receipt/0.1",
+  "mode": "fix",
+  "created_at": "2026-11-01T14:16:01.179Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": ".",
+    "refs": {
+      "red": {
+        "ref": "rw/jspaint/base",
+        "sha": "8e37f20514f5ff6a3ee8410dc932b8cccd964e1e"
+      },
+      "green": {
+        "ref": "rw/jspaint/fix",
+        "sha": "e0ae75bd808d024c74de7f6db2de148bbdb418b9"
+      },
+      "break": {
+        "ref": "rw/jspaint/bad-fix",
+        "sha": "a63d6e46fdf5853f3288c35913a8a846a16d7649"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "3b8020096fc1831b9806b4137debfed6823ded4a9baef5e54e90f9c26632356e"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "rw/jspaint/base",
+      "sha": "8e37f20514f5ff6a3ee8410dc932b8cccd964e1e",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "0f1d90ed2f8b51f8d4fcfcebbb3ec9b08e26eedfd6c153dfd415f56afc3ad5ca",
+      "criteria": [
+        {
+          "id": "attributes-width-field-receives-typing",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After Ctrl+E opened Attributes, typing 320, Tab, and 240 on both first and retry attempts left Width at 683 and Height at 384 with no visible change.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Attributes dialog is open but shows Width 683 and Height 384 in all frames, not Width 320 and Height 240, so typing was not received in the fields."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "rw/jspaint/fix",
+      "sha": "e0ae75bd808d024c74de7f6db2de148bbdb418b9",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "35c547490160a86581b8bb600dac45d6745a901d036a775ea4a4fa0f6bcb1c75",
+      "criteria": [
+        {
+          "id": "attributes-width-field-receives-typing",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Attributes dialog shows Width 320 and Height 240 after typing without clicking.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows the Attributes dialog with Width 320 and Height 240, matching the expected outcome after typing without clicking."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "rw/jspaint/bad-fix",
+      "sha": "a63d6e46fdf5853f3288c35913a8a846a16d7649",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "2c4b55e87e914c20ef6700cbdd69bcabed2258cca82db54cb4b24ab1a33c5174",
+      "criteria": [
+        {
+          "id": "attributes-width-field-receives-typing",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After Ctrl+E then typing 320, Tab, 240 without clicking, Width shows 683320 instead of 320 while Height shows 240.",
+          "evidence": [
+            "shots/break-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After the typing sequence the Attributes dialog shows Width as 683320 (original 683 with 320 appended) instead of 320, while Height correctly shows 240, so the width field did not receive/replace typing as required."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:3b8020096fc1831b9806b4137debfed6823ded4a9baef5e54e90f9c26632356e",
+    "shots/break-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/break-01.png": "sha256:dab114f9465979904dd0ee5ba4f0137e3c427b3d475ddc1b99f8e4e687613dd1",
+    "shots/break-02.png": "sha256:6079d2fd859480c9495451b14732964e59ab369c23ee59a173426b38b3b9db31",
+    "shots/break-03.png": "sha256:16bff5f96869d7cd1c7d544664ea183e122f3104948105eaab87363745d6b128",
+    "shots/break-04.png": "sha256:16bff5f96869d7cd1c7d544664ea183e122f3104948105eaab87363745d6b128",
+    "shots/green-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/green-01.png": "sha256:17e06b6eb0d28b3897a34ebd76aa354a5dc1c88898d27e138afc31fdfddb815e",
+    "shots/green-02.png": "sha256:30b7583a8a4f0d328bde5f43f7e01b03dbd80656d0e945009047e21e3baa7654",
+    "shots/red-00.png": "sha256:0ce2470f392caf287d6eae9976f827b99727fc6684cd0379b497bc9806872a4b",
+    "shots/red-01.png": "sha256:f8932586c26e2a86fde7849c5538b2a65228cfed3d653d075b74aed7c4e95fc0",
+    "shots/red-02.png": "sha256:7d2ffcc70ddc3173299a9026fc57084ad04caa6112c916cc1d7fc9189666a8de",
+    "shots/red-03.png": "sha256:1d5c9347b3b34e445a35ae3aa3a52bba28b4a8e25c5bfdd58d50f6bb932052b3",
+    "videos/break.webm": "sha256:b52a0f4996b639710ecefbb0bbea68bbc90aca4c7462098f9c2979aa301d6b2b",
+    "videos/green.webm": "sha256:3dc67ce747edd764f2e3a2b7fe1d306855850315ca420871daebd0deb2e50345",
+    "videos/red.webm": "sha256:88b5f2da61ff05df68effe572b4a8b5b7b1af3da723c0d3d9e7eb4bd36d94973"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:d1dcd52dadf0474119fdc8d2382cd465f9bbdb9471435241f6cfdf2459d60f39",
+    "entries": 51
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "xQ+AmzVAP4ux0du4zklyEPt0HVuqgqx9FcaH5xbACfcxIBR6wljxRAylWccRskl9W7yhEudAeKBytgmEdFLoBQ=="
+  }
+}

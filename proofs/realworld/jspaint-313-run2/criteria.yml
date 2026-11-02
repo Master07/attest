@@ -1,0 +1,10 @@
+id: jspaint-image-attributes-focus
+# Frozen before any Attest run (Nov 1), written from 1j01/jspaint issue #313
+# ("Width" field is not focused and selected when opening Image -> Attributes,
+# reported by suchipi) and from the fix commit's own one-line change.
+# Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: attributes-width-field-receives-typing
+    given: JS Paint is open on a new blank image, with no dialog open
+    when: The user presses Ctrl+E to open Image > Attributes and then, without clicking anything, types 320, presses Tab and types 240
+    then: The Attributes dialog shows Width 320 and Height 240

@@ -38,6 +38,16 @@ The code checks and SAM had nothing to check (the criterion names no URL, networ
 
 **What this shows, and what it doesn't.** Copilot's fix keeps focus and text while typing in the running app, and Attest tells it apart from a fix that misses one of the listeners. The wrong fix is ours, labelled, and committed before the run; the run says nothing about wrong fixes we didn't think of.
 
+### Exploratory run (not pre-registered)
+
+Earlier the same day, before this criterion was frozen, a separate agent ran the same PR with a differently worded criterion ([exploratory/criteria.yml](exploratory/criteria.yml): scroll to the first day and type abcd into "Obszar działania"; the field shows abcd and keeps focus). It used no wrong fix. That criterion was committed only after the run.
+
+| Run | Red | Green | Break | Verdict | Receipt |
+|---|---|---|---|---|---|
+| exploratory | fail | pass | — | **PROVEN_UNCHECKED** | [proofs/realworld/eu-reporter-48-exploratory](../../../proofs/realworld/eu-reporter-48-exploratory/) |
+
+Red: *"After typing abcd the Obszar działania field showed only a with unfocused border, and a repeat attempt showed the same."* Green: *"The Obszar dzialania textarea shows abcd with a focused black border after typing."* The judge agreed in both phases. Reproduce it with `--config-dir examples/realworld/eu-reporter-typing/exploratory` and no `--break`.
+
 ## Reproduce
 
 ```bash
