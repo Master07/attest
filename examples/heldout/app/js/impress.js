@@ -1628,7 +1628,7 @@
         api = event.detail.api;
         var gc = api.lib.gc;
 
-        var selectors = [ "input[type=text]", "textarea", "select", "[contenteditable=true]" ];
+        var selectors = [ "input[type=text], input[type=email]", "textarea", "select", "[contenteditable=true]" ];
         for ( var selector of selectors ) {
             var elements = document.querySelectorAll( selector );
             if ( !elements ) {
