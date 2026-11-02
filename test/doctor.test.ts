@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -16,6 +17,14 @@ import {
   renderDoctor,
   summaryLines,
 } from "../src/doctor.js";
+import {
+  CRITERIA_REVIEW_HEADER,
+  InitError,
+  draftAttestYml,
+  draftCriteriaYml,
+  initApp,
+  startCommand,
+} from "../src/init.js";
 import { MODEL_IDS } from "../src/models.js";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -223,6 +232,65 @@ test("a bad criteria file reports loadCriteria's message exactly", async () => {
     assert.equal(checks[0]?.ok, true);
     assert.equal(checks[1]?.ok, false);
     assert.equal(checks[1]?.detail, expected);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test("start command prefers --start, then scripts.start, then scripts.dev", () => {
+  assert.equal(startCommand("npm start", "{\"scripts\":{\"start\":\"node a.js\"}}"), "npm start");
+  assert.equal(startCommand(undefined, "{\"scripts\":{\"start\":\"node server.js\",\"dev\":\"vite\"}}"), "node server.js");
+  assert.equal(startCommand("  ", "{\"scripts\":{\"dev\":\"vite\"}}"), "vite");
+  assert.equal(startCommand(undefined, "\uFEFF{\"scripts\":{\"start\":\"node server.js\"}}"), "node server.js");
+  assert.throws(() => startCommand(undefined, "{\"scripts\":{}}"), InitError);
+  assert.throws(() => startCommand(undefined, undefined), InitError);
+});
+
+test("drafts use config.ts defaults and a review header", () => {
+  const attest = draftAttestYml("node server.js");
+  assert.match(attest, /start: node server.js/);
+  assert.match(attest, /timeout_s: 90/);
+  assert.match(attest, /width: 1280, height: 720/);
+  assert.match(attest, /max_steps: 25/);
+  assert.match(attest, /judge: true/);
+
+  const criteria = draftCriteriaYml();
+  assert.ok(criteria.startsWith(CRITERIA_REVIEW_HEADER));
+  assert.match(criteria, /given: <given>/);
+  assert.match(criteria, /when: <when>/);
+  assert.match(criteria, /then: <then>/);
+});
+
+test("init writes drafts the loaders accept and never overwrites them", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "attest-init-"));
+  try {
+    await writeFile(join(dir, "package.json"), "{\"scripts\":{\"dev\":\"vite\"}}\n", "utf8");
+    const first = initApp({ appPath: dir });
+    assert.equal(first.start, "vite");
+    assert.equal(first.wrote.length, 2);
+    assert.equal(first.skipped.length, 0);
+
+    const config = loadConfig(dir);
+    assert.equal(config.app.start, "vite");
+    assert.equal(config.app.timeout_s, 90);
+    assert.equal(config.verifier.max_steps, 25);
+    assert.equal(config.verifier.judge, true);
+    assert.deepEqual(config.browser.viewport, { width: 1280, height: 720 });
+
+    const criteria = loadCriteria(join(dir, "criteria.yml"));
+    assert.equal(criteria.criteria.length, 1);
+    assert.equal(criteria.criteria[0]?.given, "<given>");
+
+    const attestBefore = readFileSync(join(dir, "attest.yml"), "utf8");
+    const criteriaBefore = readFileSync(join(dir, "criteria.yml"), "utf8");
+    await writeFile(join(dir, "attest.yml"), `${attestBefore}# kept\n`, "utf8");
+    const marked = readFileSync(join(dir, "attest.yml"), "utf8");
+
+    const second = initApp({ appPath: dir, start: "node other.js" });
+    assert.deepEqual(second.wrote, []);
+    assert.equal(second.skipped.length, 2);
+    assert.equal(readFileSync(join(dir, "attest.yml"), "utf8"), marked);
+    assert.equal(readFileSync(join(dir, "criteria.yml"), "utf8"), criteriaBefore);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

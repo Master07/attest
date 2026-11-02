@@ -105,6 +105,8 @@ Requires Node 22+ and git; step 2 also needs Microsoft Edge or Chrome (`ATTEST_B
 npm run attest -- doctor --app examples/checkout-demo --base demo/base --pr demo/fix --break demo/bad-fix
 ```
 
+`attest init --app <path>` writes a draft `attest.yml` and `criteria.yml` (defaults match the loader) and never overwrites existing files. A person reviews the draft before any run.
+
 **1. Check the proofs — seconds, no key, no model calls.** Every result above is a signed receipt from a **live** run, committed in [proofs/](proofs/) (TodoMVC's, at 101 MB, is a release download). This checks each signature, hash chain, screenshot and video, and recomputes each verdict from the recorded votes:
 
 ```bash
