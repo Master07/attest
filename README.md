@@ -1,5 +1,7 @@
 # Attest — proof-of-fix for AI pull requests
 
+[![verify](https://github.com/Master07/attest/actions/workflows/verify.yml/badge.svg)](https://github.com/Master07/attest/actions/workflows/verify.yml) <sub>Every push re-checks the types, the tests and all 220 committed receipts on Windows, macOS and Linux, with no keys and no model calls.</sub>
+
 A verifier that never sees the code reproduces the bug, confirms the fix in the running app, shows it would reject a wrong fix, and seals it all into a receipt anyone can check.
 
 **▶ [Demo video (2:52)](https://youtu.be/jMU3TaSQ45o)** · recorded evidence from the receipts in this repo, synthetic voice, captions burned in.
