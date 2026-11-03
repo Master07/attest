@@ -255,6 +255,8 @@ Per criterion, in each phase:
 
 A criterion **passes** only if every applicable vote passes. A phase **passes** only if every criterion passes. Disagreement never becomes a pass.
 
+**Failed actions (receipt version 0.3 on).** If Attest can't perform a browser action the verifier asked for (an unknown key, say), the phase records it in `action_errors` and is `INCONCLUSIVE`, whatever the screenshots show. A missing keypress can make Green look fixed or Red look broken, and Attest can't tell an essential action from an incidental one, so it treats all of them alike. Earlier receipts have no `action_errors` and re-verify unchanged. In the held-out runs after the key-map fix, no phase had a failed action (0 of 111).
+
 ## 8. The receipt
 
 ```json

@@ -12,7 +12,9 @@ import type { CriterionResult, CriterionVotes, PhaseName, Verdict } from "./verd
 
 // 0.2: a required judge that gives no vote is recorded as "missing" and makes the criterion
 // inconclusive. 0.1 receipts recorded it as "n/a" and still re-verify unchanged.
-export const RECEIPT_VERSION = "attest.receipt/0.2";
+// 0.3: each phase records `action_errors`; any failed browser action makes the phase inconclusive.
+// Earlier receipts have no such field, so they re-verify under their own policy, unchanged.
+export const RECEIPT_VERSION = "attest.receipt/0.3";
 
 export interface CriterionRecord {
   id: string;
@@ -37,6 +39,7 @@ export interface PhaseRecord {
   result: CriterionResult;
   reason: string;
   video?: string;              // artifact path of the phase's screen recording, when recorded
+  action_errors?: string[];    // 0.3+: browser actions that could not be performed ("step N: …")
 }
 
 export interface ReceiptBody {
@@ -121,7 +124,7 @@ export function recomputeVerdict(phases: PhaseRecord[]): { verdict: Verdict; mis
       if (out.result !== c.result) mismatches.push(`${p.phase}/${c.id}: recorded ${c.result}, votes give ${out.result}`);
       return out.result;
     });
-    const phase = combinePhase(criteria, p.error ?? undefined);
+    const phase = combinePhase(criteria, p.error ?? undefined, p.action_errors ?? []);
     if (phase.result !== p.result) mismatches.push(`${p.phase}: recorded ${p.result}, criteria give ${phase.result}`);
     results[p.phase] = phase.result;
   }

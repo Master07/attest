@@ -72,3 +72,21 @@ test("fix verdict: a judge outage in any phase cannot certify", () => {
   assert.equal(out.verdict, "INCONCLUSIVE");
   assert.equal(fixVerdict({ red: phase("fail", "fail"), green: phase("missing", "pass") }).verdict, "INCONCLUSIVE");
 });
+
+test("phase: a failed browser action makes the phase inconclusive, whichever way it points", () => {
+  const failed = ["step 3: keypress: unknown key \"Foo\""];
+  assert.equal(combinePhase(["pass"], undefined, failed).result, "inconclusive");
+  assert.equal(combinePhase(["fail"], undefined, failed).result, "inconclusive");
+  assert.match(combinePhase(["pass"], undefined, failed).reason, /1 browser action failed: step 3/);
+  assert.match(combinePhase(["pass"], undefined, [...failed, "step 4: x"]).reason, /^2 browser actions failed/);
+  assert.equal(combinePhase(["pass"], undefined, []).result, "pass");
+  assert.equal(combinePhase(["pass"], "app did not start", failed).reason, "phase error: app did not start");
+});
+
+test("fix verdict: a failed action cannot fake a reproduction or a pass", () => {
+  const failed = ["step 2: keypress: unknown key \"ArrowRight\""];
+  // Red "failed" only because the key never reached the page, Green passed: no certification.
+  assert.equal(fixVerdict({ red: combinePhase(["fail"], undefined, failed).result, green: "pass", break: "fail" }).verdict, "INCONCLUSIVE");
+  // Green passed only because the key never reached the page: no certification.
+  assert.equal(fixVerdict({ red: "fail", green: combinePhase(["pass"], undefined, failed).result }).verdict, "INCONCLUSIVE");
+});

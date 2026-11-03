@@ -65,8 +65,18 @@ export interface PhaseOutcome {
 }
 
 /** A phase fails if any criterion fails; otherwise it is inconclusive if any is; otherwise it passes. */
-export function combinePhase(criteria: CriterionResult[], error?: string): PhaseOutcome {
+/**
+ * A phase result from its criteria. A browser action the verifier asked for but Attest could not
+ * perform (`actionErrors`) makes the phase inconclusive whichever way the screenshots point: the
+ * screen may show the state before the action, which can fake a pass in Green or a reproduction in
+ * Red. Attest can't tell an essential action from an incidental one, so it treats every failure alike.
+ */
+export function combinePhase(criteria: CriterionResult[], error?: string, actionErrors: string[] = []): PhaseOutcome {
   if (error !== undefined) return { result: "inconclusive", reason: `phase error: ${error}` };
+  if (actionErrors.length > 0) {
+    const n = actionErrors.length;
+    return { result: "inconclusive", reason: `${n} browser action${n === 1 ? "" : "s"} failed: ${actionErrors[0]}` };
+  }
   if (criteria.length === 0) return { result: "inconclusive", reason: "no criteria evaluated" };
   if (criteria.includes("fail")) return { result: "fail", reason: "at least one criterion failed" };
   if (criteria.includes("inconclusive")) return { result: "inconclusive", reason: "at least one criterion inconclusive" };

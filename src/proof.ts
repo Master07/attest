@@ -130,6 +130,7 @@ async function runPhase(
 
     record.status = result.status;
     record.steps = result.steps.length;
+    record.action_errors = result.steps.flatMap((s) => s.errors.map((e) => `step ${s.step}: ${e}`));
     record.model = result.model;
     record.prompt_sha256 = result.promptSha256;
     if (result.status !== "completed") record.error = result.error ?? result.status;
@@ -217,7 +218,7 @@ async function runPhase(
     if (workspace !== undefined) await workspace.stop();
   }
 
-  const outcome = combinePhase(record.criteria.map((c) => c.result), record.error ?? undefined);
+  const outcome = combinePhase(record.criteria.map((c) => c.result), record.error ?? undefined, record.action_errors ?? []);
   record.result = outcome.result;
   record.reason = outcome.reason;
   log.append("phase_result", { result: record.result, reason: record.reason }, phase);

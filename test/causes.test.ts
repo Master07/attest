@@ -42,3 +42,11 @@ test("causes: every cause carries a next step", () => {
   assert.equal(all.length, 3);
   for (const c of all) assert.ok(c.next.length > 20);
 });
+
+test("causes: a failed browser action is named, with the action", () => {
+  const out = inconclusiveCauses({ verdict: "INCONCLUSIVE", phases: [
+    phase("green", "inconclusive", [crit("pass", "all votes pass")], { action_errors: ["step 2: keypress: unknown key \"Foo\""] }),
+  ] });
+  assert.deepEqual(out.map((c) => c.kind), ["action_failed"]);
+  assert.match(out[0]!.detail, /green: 1 failed, first step 2: keypress/);
+});

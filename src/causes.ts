@@ -4,7 +4,7 @@
 import type { PhaseRecord } from "./receipt.js";
 import type { Verdict } from "./verdict.js";
 
-export type CauseKind = "not_reproduced" | "wrong_fix_passed" | "incomplete" | "judge_missing" | "disagreement";
+export type CauseKind = "not_reproduced" | "wrong_fix_passed" | "incomplete" | "action_failed" | "judge_missing" | "disagreement";
 
 export interface Cause {
   kind: CauseKind;
@@ -25,6 +25,10 @@ const NEXT: Record<CauseKind, { title: string; next: string }> = {
   incomplete: {
     title: "Execution incomplete",
     next: "Re-run once. If it repeats, run attest doctor and check the criterion's given path.",
+  },
+  action_failed: {
+    title: "A browser action failed",
+    next: "Attest couldn't perform an action the verifier asked for, so the screenshots may not show the criterion's when. Read the action error on the evidence page; if Attest can't send that key or action, report it. Otherwise re-run once.",
   },
   judge_missing: {
     title: "Required judge gave no vote",
@@ -48,6 +52,8 @@ export function inconclusiveCauses(receipt: { verdict: Verdict; phases: PhaseRec
   if (brk?.result === "pass") out.push(cause("wrong_fix_passed", "break: the wrong fix meets the criterion"));
   for (const p of receipt.phases) {
     if (p.result !== "inconclusive") continue;
+    const failed = p.action_errors ?? [];
+    if (failed.length > 0) out.push(cause("action_failed", `${p.phase}: ${failed.length} failed, first ${failed[0]}`));
     if (p.error !== null || p.status !== "completed") {
       const what = p.status === "step_cap" ? "the verifier hit its step cap" : (p.error ?? `verifier status ${p.status}`);
       out.push(cause("incomplete", `${p.phase}: ${what}`));

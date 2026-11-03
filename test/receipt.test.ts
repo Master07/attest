@@ -103,3 +103,19 @@ test("judge failures: 0.2 receipts record missing; 0.1 receipts abstained", asyn
   assert.equal(judgeAbstained({ phases: [phase(v01)] }), true);
   assert.equal(judgeAbstained({ phases: [phase(v02)] }), false);
 });
+
+test("recompute: action errors are part of the verdict from 0.3; receipts without them are unchanged", async () => {
+  const { recomputeVerdict } = await import("../src/receipt.js");
+  const red = phase("red", "fail", "fail"), brk = phase("break", "fail", "fail");
+  const green = phase("green", "pass", "pass");
+  assert.equal(recomputeVerdict([red, green, brk]).verdict, "PROVEN");
+  // A 0.3 receipt that records a failed action in Green but still claims the phase passed is caught.
+  const claimed = { ...green, action_errors: ["step 2: keypress: unknown key \"Foo\""] };
+  const out = recomputeVerdict([red, claimed, brk]);
+  assert.equal(out.verdict, "INCONCLUSIVE");
+  assert.match(out.mismatches.join(" "), /green: recorded pass, criteria give inconclusive/);
+  // Recorded honestly, it verifies.
+  assert.deepEqual(recomputeVerdict([red, { ...claimed, result: "inconclusive" }, brk]).mismatches, []);
+  // An empty list is the same as none.
+  assert.equal(recomputeVerdict([red, { ...green, action_errors: [] }, brk]).verdict, "PROVEN");
+});
