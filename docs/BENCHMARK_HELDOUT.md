@@ -1,12 +1,12 @@
 # Held-out benchmark: unfamiliar projects, hidden labels
 
-> **Audience:** judges + devs · **Status:** final for runs 1 and 2 · **Last updated:** 2026-11-03 · **Related:** [manifest](../examples/heldout/MANIFEST.md) · [run plan 1](../examples/heldout/RUN_PLAN.md) · [run plan 2](../examples/heldout/RUN_PLAN_2.md) · [unsealed labels](../examples/heldout/unsealed/) · [generated benchmark](BENCHMARK_GENERATED.md) · [receipts](../proofs/heldout/)
+> **Audience:** judges + devs · **Status:** final for runs 1–3 · **Last updated:** 2026-11-03 · **Related:** [manifest](../examples/heldout/MANIFEST.md) · [run plan 1](../examples/heldout/RUN_PLAN.md) · [run plan 2](../examples/heldout/RUN_PLAN_2.md) · [run 3 criteria](../examples/heldout/run-3/README.md) · [unsealed labels](../examples/heldout/unsealed/) · [generated benchmark](BENCHMARK_GENERATED.md) · [receipts](../proofs/heldout/)
 
 **Small, but independent.** Every earlier benchmark was built by the people who built Attest, so we knew which fixes were right. Here an AI selector that took no other part in the evaluation picked the cases and sealed the labels. The criteria were written without seeing any fix, and Attest ran without the labels. The question is the one a reviewer cares about: **how often does Attest accept a fix that is actually wrong?**
 
 ## Headline
 
-**Attest accepted 3 of 5 wrong fixes.** It never rejected a correct one. Each accepted wrong fix breaks only on a path that the bug report names but the criterion doesn't test. In all three, the verifier's observations on the tested path match the app.
+**Runs 1–2, as pre-registered: Attest accepted 3 of 5 wrong fixes.** It never rejected a correct one. Each accepted wrong fix breaks only on a path that the bug report names but the criterion doesn't test. In all three, the verifier's observations on the tested path match the app.
 
 | | Run 1 (as frozen) | Run 2 (key map fixed) |
 |---|---|---|
@@ -33,7 +33,30 @@ Workflows A and B gave the same accept/reject decision on every wrong fix. Break
 - **The INCONCLUSIVE correct fix (C07-B, both runs):** the separate Break build passed the criterion, so Attest refused to certify. Like the misses above, that Break build fails only on an untested path: going back with Previous.
 - **No outages.** No Meta API 5xx occurred, so nothing was re-run. All 40 receipts verify. Run 1 ran 03:27–04:35 IST and run 2 04:35–05:34 IST on Nov 3.
 
-The full table, one row per candidate, run and workflow, comes from `node scripts/score-heldout.mjs <zip> <labels.json> proofs/heldout/run-1 proofs/heldout/run-2`.
+**Run 3, with one criterion per path the report names: Attest rejected all 5 wrong fixes** and still rejected no correct fix. Run 3 is exploratory and came after unsealing; see [below](#run-3-one-criterion-per-path).
+
+The full table, one row per candidate, run and workflow, comes from `node scripts/score-heldout.mjs <zip> <labels.json> proofs/heldout/run-1 proofs/heldout/run-2 proofs/heldout/run-3`.
+
+## Run 3: one criterion per path
+
+**Exploratory, not blind.** Runs 1–2 pointed at a remedy: one criterion per path the report names. Run 3 tests that remedy on the same builds. The criteria author wrote the new criteria after runs 1–2 were scored and the labels unsealed. They didn't see the labels, the candidate diffs or the results ([criteria and disclosure](../examples/heldout/run-3/README.md)). The criteria were tagged `heldout-run3` before the first run 3 run. This is a test of the remedy, not an independent accuracy measure.
+
+| | Run 2 (one path per bug) | Run 3 (every reported path) |
+|---|---|---|
+| Wrong fixes accepted, workflow A | 3/5 | **0/5** |
+| Wrong fixes accepted, workflow B | 3/5 | **0/5** |
+| Correct fixes rejected | 0/10 | **0/10** |
+| Correct fixes accepted, workflow A | 5/5 | 4/5 (1 INCONCLUSIVE) |
+| Correct fixes PROVEN, workflow B | 4/5 | 2/5 (3 INCONCLUSIVE); 3/5 after the outage re-run |
+
+- **Only the criteria changed.** The candidates, Break builds, Attest's code, prompts, step cap (25) and model IDs are the same as run 2. Each file keeps the frozen criterion first, word for word. It adds one criterion per path and one per "must still work" clause in the report, 2–4 per bug. Before any run, the author checked each one by hand against the base build.
+- **The three misses are now rejected in both workflows.** Each one fails on the new criterion for the path it breaks, with the verifier and the judge both voting fail: C01 on contenteditable, C06 on Previous, C12 on the email input. These are the paths the sealed ground truth names. C03 and C11 are rejected as before.
+- **More criteria cost decisive verdicts on correct fixes, never a wrong pass.**
+  - **C10-A:** a Meta API HTTP 500 in Red. Its one re-run hit another 500, so it stays INCONCLUSIVE. Green passed every criterion, and both voters agreed.
+  - **C04-B:** an HTTP 500 in Red. The re-run is PROVEN.
+  - **C07-B and C10-B:** Break hit the 25-step cap. With 3–4 criteria, a phase needs more steps than the cap, which was sized for one criterion. Green passed every criterion in both. The cap wasn't raised and these weren't re-run, because the rules allow re-runs only for outages.
+- **Outages:** 4 of 20 runs had a Meta API 5xx: C03-B, C04-B, C10-A and C12-B. Each was re-run once, and both receipts are published ([run 3](../proofs/heldout/run-3/) · [re-runs](../proofs/heldout/run-3-rerun/)). C03-B and C12-B were REJECTED both times.
+- Run 3 ran 13:26–17:15 IST, and the re-runs 17:16–18:17 IST, on Nov 3. All 24 receipts verify.
 
 ## The cases
 
@@ -66,4 +89,5 @@ The labels are in a zip outside the repository whose SHA-256 was committed befor
 - **Small:** 10 candidates in 5 bugs. Treat the numbers as an independent spot check, not an accuracy rate.
 - **One domain:** all three are presentation libraries, shown through minimal pages the selector wrote.
 - **The ground truth comes from an AI selector**, not a person, and no person has reproduced the cases yet.
-- **Each criterion tests one reported path.** For example, the arrow-key bug is checked in a single-line input, not in a textarea. A fix that covers only the tested path can pass.
+- **In runs 1–2, each criterion tests one reported path.** For example, the arrow-key bug is checked in a single-line input, not in a textarea. A fix that covers only the tested path can pass. Run 3 covers every path, but it isn't blind.
+- **The step cap was sized for one criterion.** In run 3, with 2–4 criteria per phase, 4 of 24 receipts hit 25 steps in one phase. Each of those phases became INCONCLUSIVE, never a pass.

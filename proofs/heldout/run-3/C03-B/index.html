@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Attest receipt · Rejected · examples/heldout/app</title>
+<style>
+:root{--bg:#f6f6f3;--surface:#ffffff;--surface-2:#f1f1ed;--ink:#15171c;--ink-2:#3a3e46;--muted:#686d77;--faint:#959aa4;--line:#e3e3dd;--line-2:#d3d3cc;
+--accent:#245b57;--ok:#1d6b47;--ok-bg:#e7f2eb;--ok-line:#bcdcc8;--bad:#b02a1f;--bad-bg:#fcebe8;--bad-line:#efc3bd;--warn:#875700;--warn-bg:#faf0dc;--warn-line:#ead6a8;
+--code-bg:#1b1e24;--code-ink:#e6e8ec;
+--sans:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+--mono:"Cascadia Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1014;--surface:#161920;--surface-2:#1c2028;--ink:#e8eaee;--ink-2:#c3c7cf;--muted:#929aa6;--faint:#6c7380;--line:#252a33;--line-2:#323844;
+--accent:#83c9c1;--ok:#62c793;--ok-bg:#11251b;--ok-line:#22533a;--bad:#f2928a;--bad-bg:#2b1513;--bad-line:#5b2924;--warn:#e9b75e;--warn-bg:#2a2110;--warn-line:#5a4520;--code-bg:#0a0c10}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.mono{font-family:var(--mono);font-size:.88em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.01em}
+.brand .logo{width:22px;height:22px;color:var(--ink)}
+.brand .sub{font-weight:400;color:var(--muted)}
+.top-meta{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px}
+.stamp{display:inline-block;border:1px solid currentColor;border-radius:6px;padding:3px 9px;font:600 11.5px var(--mono);letter-spacing:.08em}
+.stamp.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}.stamp.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line)}.stamp.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.toc{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+.toc a{color:var(--ink-2);text-decoration:none;font-size:13px;padding:5px 10px;border-radius:6px;white-space:nowrap}
+.toc a:hover{background:var(--surface-2)}
+main.wrap{padding-top:28px;padding-bottom:48px}
+h2{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:36px 0 12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.replay{margin:0 0 16px;padding:12px 16px;border:1px solid var(--warn-line);background:var(--warn-bg);color:var(--ink);border-radius:10px;font-size:14px}
+.summary{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:16px}
+.verdict{padding:22px 24px}
+.label{font-size:12.5px;color:var(--muted)}
+.vrow{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:4px 0 8px}
+.vword{font-size:30px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.vword.ok{color:var(--ok)}.vword.bad{color:var(--bad)}.vword.warn{color:var(--warn)}
+.chip{font-size:12.5px;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.lede{margin:0 0 6px;color:var(--ink-2);font-size:16px}
+.reasons{margin:0 0 16px;padding-left:18px;color:var(--muted);font-size:13.5px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink);text-decoration:none}
+.tile:hover{border-color:var(--line-2)}
+.tile-name{font-weight:600}.tile-role{font-size:12.5px;color:var(--muted)}.tile-io{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.tile-match{font-size:12.5px;font-weight:600;margin-top:2px}.tile-match.ok{color:var(--ok)}.tile-match.bad{color:var(--bad)}.tile-match.warn{color:var(--warn)}
+.integrity{padding:20px 22px}
+.integrity h3{margin:0 0 12px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.kv{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 14px;margin:0;font-size:13.5px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.cmd{margin:14px 0 0;background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:10px 12px;font:12.5px/1.5 var(--mono);overflow-x:auto;white-space:pre}
+.panel{padding:18px 22px}
+.sub{color:var(--muted);font-size:12.5px}
+.badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;padding:1px 7px;border-radius:999px;background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line);vertical-align:1px}
+.subject{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.crit-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.crit-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px}
+.crit-id{color:var(--muted);margin-bottom:6px}
+.gwt{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 16px;margin:0}
+.gwt dt{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.gwt dd{margin:0}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:16px}
+.phase-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.phase-head h3{margin:0;font-size:18px;font-weight:600}
+.phase-head .role{font-weight:400;color:var(--muted);font-size:15px}
+.ref{color:var(--muted);margin-top:4px}
+.outcome{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.io{font-size:13px;color:var(--ink-2)}
+.pill{font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid}
+.pill.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}.pill.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line)}.pill.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+.phase-error{margin:0 0 14px;padding:10px 14px;border-radius:8px;background:var(--bad-bg);border:1px solid var(--bad-line);font-size:14px}
+.crit-result+.crit-result{margin-top:18px;padding-top:18px;border-top:1px dashed var(--line)}
+.votes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.vote{border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vote .vl{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.vote .vv{font-weight:600;font-size:14px;display:flex;gap:6px;align-items:baseline}
+.v-pass .vv{color:var(--ok)}.v-fail .vv{color:var(--bad)}.v-na .vv{color:var(--faint);font-weight:400}.v-missing{border-color:var(--warn-line);background:var(--warn-bg)}.v-missing .vv{color:var(--warn)}
+.obs{margin:0 0 12px;padding:2px 0 2px 14px;border-left:3px solid var(--line-2);font-size:15px;color:var(--ink)}
+.k{display:block;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.notes{margin:0 0 14px;font-size:13.5px;color:var(--ink-2)}.notes ul{margin:2px 0 0;padding-left:18px}.notes li+li{margin-top:4px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:6px}.shots figure:only-child{max-width:760px}
+figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface-2)}
+figure img{display:block;width:100%;height:auto}
+figcaption{font-size:12px;color:var(--muted);padding:8px 12px;border-top:1px solid var(--line);background:var(--surface)}
+.video{margin-top:14px}.video video{display:block;width:100%;background:#000}
+.timeline{margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.timeline summary{cursor:pointer;padding:10px 14px;font-size:13.5px;font-weight:600;color:var(--ink-2);display:flex;justify-content:space-between;gap:12px}
+.timeline .count{font-weight:400;color:var(--muted)}
+.timeline ol{list-style:none;margin:0;padding:4px 14px 10px}
+.timeline li{display:grid;grid-template-columns:30px minmax(0,1fr) 168px;gap:14px;align-items:start;padding:10px 0;border-top:1px solid var(--line);position:relative}
+.timeline .stepn{width:24px;height:24px;border-radius:50%;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;font:600 11.5px var(--mono);color:var(--muted);background:var(--surface-2)}
+.timeline .stepbody{font:12.5px/1.55 var(--mono);color:var(--ink-2);min-width:0;overflow-wrap:anywhere}
+.timeline .err{color:var(--bad)}
+.stepshot img{width:168px;display:block;border:1px solid var(--line);border-radius:6px}
+.meta-line{margin:12px 0 0;font-size:12.5px;color:var(--faint)}
+.verify{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.verify ul{margin:6px 0 0;padding-left:18px;font-size:14px}.verify li+li{margin-top:4px}
+.verify h3{margin:0;font-size:14px;font-weight:600}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:18px 0 40px;color:var(--faint);font-size:12.5px}
+.tablewrap{overflow-x:auto}.ptable{width:100%;min-width:900px;table-layout:fixed;border-collapse:collapse;font-size:13.5px}.ptable .stamp,.ptable .pill,.ptable .nw{white-space:nowrap}.ptable td a{overflow-wrap:anywhere}.ptable th{text-align:left;font-size:12px;font-weight:600;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap}.ptable td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}.ptable tr:last-child td{border-bottom:0}.phs{white-space:nowrap}.ph{display:inline-block;font-size:12px;padding:1px 7px;border-radius:999px;border:1px solid;margin-right:4px}.ph.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}.ph.bad{color:var(--bad);background:var(--bad-bg);border-color:var(--bad-line)}.ph.warn{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line)}
+@media (max-width:820px){.summary,.subject,.verify{grid-template-columns:minmax(0,1fr)}.votes{grid-template-columns:repeat(2,minmax(0,1fr))}.outcome{align-items:flex-start}
+.timeline li{grid-template-columns:30px minmax(0,1fr)}.stepshot{grid-column:2}.stepshot img{width:100%}.vword{font-size:26px}.wrap{padding:0 16px}}
+@media print{.toc,.video video{display:none}body{background:#fff;font-size:12px}.card,.phase,.crit-card,.timeline{break-inside:avoid;border-color:#ccc}main{padding:0}.top{border:0}.cmd{background:#f3f3f3;color:#111}a{color:inherit;text-decoration:none}}
+</style></head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 4 5.6v6.1c0 4.8 3.3 8.6 8 9.8 4.7-1.2 8-5 8-9.8V5.6L12 2.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.6 12.2 2.4 2.4 4.6-4.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Attest</span><span class="sub">Proof-of-fix receipt · examples/heldout/app</span></div>
+  <div class="top-meta"><span title="2026-11-03T09:52:09.863Z">3 Nov 2026, 09:52 UTC</span><span class="stamp bad">REJECTED</span></div>
+</div></header>
+<nav class="toc" aria-label="Sections"><div class="wrap"><a href="#summary">Summary</a><a href="#subject">Subject</a><a href="#criteria">Criteria</a><a href="#phase-red">Red</a><a href="#phase-green">Green</a><a href="#phase-break">Break</a><a href="#verify">Verify</a></div></nav>
+<main class="wrap">
+
+<section id="summary" class="summary">
+  <div class="card verdict">
+    <div class="label">Verdict</div>
+    <div class="vrow"><span class="vword bad">Rejected</span><span class="chip">1 of 3 phases as expected</span></div>
+    <p class="lede">The fix does not meet the criteria in the running app.</p>
+    <ul class="reasons"><li>green: the fix does not meet the criteria</li></ul>
+    <div class="tiles"><a class="tile" href="#phase-red"><span class="tile-name">Red</span><span class="tile-role">Original code</span><span class="tile-io">expects <b>fail</b> · observed <b>fail</b></span><span class="tile-match ok">✓ as expected</span></a><a class="tile" href="#phase-green"><span class="tile-name">Green</span><span class="tile-role">The fix</span><span class="tile-io">expects <b>pass</b> · observed <b>fail</b></span><span class="tile-match bad">✗ not as expected</span></a><a class="tile" href="#phase-break"><span class="tile-name">Break</span><span class="tile-role">A wrong fix</span><span class="tile-io">expects <b>fail</b> · observed <b>inconclusive</b></span><span class="tile-match warn">! inconclusive</span></a></div>
+  </div>
+  <aside class="card integrity" aria-label="Integrity">
+    <h3>Integrity</h3>
+    <dl class="kv">
+      <dt>Signature</dt><dd>Ed25519 · <span class="mono" title="MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=">sha256:627c0d375ff77cc2</span></dd>
+      <dt>Event log</dt><dd>135 entries · <span class="mono" title="sha256:4ba1a0ecfa4f99caceba077001b6099e4057bfeb27a8c024b013a11ac3ccfac3">4ba1a0ecfa4f…</span></dd>
+      <dt>Artifacts</dt><dd>58 files, each hashed</dd>
+      <dt>Criteria</dt><dd><span class="mono" title="4d5828f604afb4b88d565429dfcbcfafe6641e87a057f04f3f5e0de29824cc0f">4d5828f604af…</span></dd>
+      <dt>Run</dt><dd>live</dd>
+    </dl>
+    <div class="cmd">npm run attest -- verify receipt.json</div>
+  </aside>
+</section>
+<h2 id="subject">Subject</h2>
+<section class="subject">
+  <div class="card panel"><dl class="kv">
+    <dt>Run from</dt><dd class="mono">https://github.com/Master07/attest.git</dd>
+    <dt>App</dt><dd>examples/heldout/app</dd>
+    <dt>Red</dt><dd class="mono" title="d32e92fbf6c941e06f450efc2af3b2eb1a2e8268">ho/p1/b2/base @ d32e92f</dd><dt>Green</dt><dd class="mono" title="4d5070c612897870fb86bdc68ee45e7f9c6a8747">ho/C03/candidate @ 4d5070c</dd><dt>Break</dt><dd class="mono" title="5794f09b02c386b4dd9054ddee4d478a930c80ca">ho/p1/b2/break @ 5794f09</dd>
+  </dl></div>
+  <div class="card panel"><dl class="kv"><dt>verifier</dt><dd>Muse Spark 1.3 <span class="sub">Meta Model API · <span class="mono">muse-spark-1.3</span></span></dd><dt>judge</dt><dd>Muse Spark Open <span class="sub">Baseten · <span class="mono">meta-models/muse-spark-open</span></span> <span class="badge">open weights</span></dd></dl></div>
+</section>
+<h2 id="criteria">Acceptance criteria · human-approved</h2>
+<ul class="crit-list"><li class="crit-card"><div class="crit-id mono">rtl-next-reveals-fragments-then-advances</div><dl class="gwt"><dt>Given</dt><dd>An RTL presentation is open on the slide headed &#34;First slide&#34;. The paragraphs &#34;First point&#34; and &#34;Second point&#34; are both hidden, and the &#34;Next&#34; and &#34;Previous&#34; buttons are visible at the top left.</dd><dt>When</dt><dd>The user clicks the &#34;Next&#34; button once and waits for the slide to settle, clicks &#34;Next&#34; a second time and waits, then clicks &#34;Next&#34; a third time and waits.</dd><dt>Then</dt><dd>After the first click, &#34;First point&#34; is visible and &#34;Second point&#34; is still hidden. After the second click, both points are visible and the slide headed &#34;First slide&#34; is still the visible slide. After the third click, the slide headed &#34;Second slide&#34; is visible.</dd></dl></li><li class="crit-card"><div class="crit-id mono">rtl-previous-reverses-fragments</div><dl class="gwt"><dt>Given</dt><dd>An RTL presentation is open on the slide headed &#34;First slide&#34;. The paragraphs &#34;First point&#34; and &#34;Second point&#34; are both visible, and the &#34;Next&#34; and &#34;Previous&#34; buttons are visible at the top left.</dd><dt>When</dt><dd>The user clicks the &#34;Previous&#34; button once and waits for the slide to settle, clicks &#34;Previous&#34; a second time and waits, then clicks &#34;Previous&#34; a third time and waits.</dd><dt>Then</dt><dd>After the first click, &#34;Second point&#34; is hidden and &#34;First point&#34; is still visible. After the second click, &#34;First point&#34; is also hidden and the slide headed &#34;First slide&#34; is still the visible slide. After the third click, both paragraphs are still hidden and &#34;First slide&#34; is still the visible slide.</dd></dl></li><li class="crit-card"><div class="crit-id mono">rtl-left-arrow-moves-forward-right-arrow-back</div><dl class="gwt"><dt>Given</dt><dd>An RTL presentation is open on the slide headed &#34;First slide&#34;. The paragraphs &#34;First point&#34; and &#34;Second point&#34; are both hidden.</dd><dt>When</dt><dd>The user presses the Left arrow key once and waits, presses the Left arrow key a second time and waits, then presses the Right arrow key once and waits.</dd><dt>Then</dt><dd>After the first Left press, &#34;First point&#34; is visible and &#34;Second point&#34; is hidden. After the second Left press, both paragraphs are visible. After the Right press, &#34;Second point&#34; is hidden again and &#34;First point&#34; stays visible.</dd></dl></li></ul>
+<h2>The proof</h2>
+
+  <section class="phase" id="phase-red">
+    <header class="phase-head">
+      <div>
+        <h3>Red <span class="role">· Original code — the bug should reproduce</span></h3>
+        <div class="ref mono" title="d32e92fbf6c941e06f450efc2af3b2eb1a2e8268">ho/p1/b2/base @ d32e92f</div>
+      </div>
+      <div class="outcome">
+        <span class="io">expected <b>fail</b> · observed <b>fail</b></span>
+        <span class="pill ok">✓ as expected</span>
+      </div>
+    </header>
+    
+    
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-next-reveals-fragments-then-advances</div>
+      <div class="votes" role="list">
+        <div class="vote v-fail"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-fail"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>After the third Next click the visible slide is still First slide showing First point only, not Second slide.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): fail — Frames 1-3 show zero→one→both on First slide but no frame ever shows ‘Second slide’; Frame 4 after the third action reverts to one fragment on First slide instead of advancing.</li></ul></div>
+      <div class="shots"><figure><a href="shots/red-12.png"><img src="shots/red-12.png" alt="shots/red-12.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-previous-reverses-fragments</div>
+      <div class="votes" role="list">
+        <div class="vote v-fail"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-fail"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>After the third Previous click First point is visible again instead of both paragraphs staying hidden on First slide.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): fail — No sequence shows both→one→zero→zero with a single Previous per step; e.g., Frame5 both→Frame6 one→Frame7 zero is correct but Frame8 re-shows First point instead of staying hidden on the third Previous.</li></ul></div>
+      <div class="shots"><figure><a href="shots/red-16.png"><img src="shots/red-16.png" alt="shots/red-16.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-left-arrow-moves-forward-right-arrow-back</div>
+      <div class="votes" role="list">
+        <div class="vote v-fail"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-pass"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>After the second Left press both points are hidden instead of both paragraphs being visible.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): pass — From hidden given, Frames 1-4 show Frame2 First point only after first Left, Frame3 both after second Left, and Frame4 First point only again after Right, matching forward on Left and back on Right.</li></ul></div>
+      <div class="shots"><figure><a href="shots/red-22.png"><img src="shots/red-22.png" alt="shots/red-22.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <figure class="video"><video src="videos/red.webm" controls muted preload="metadata"></video><figcaption>Screen recording of this phase · <span class="mono">videos/red.webm</span></figcaption></figure>
+    <details class="timeline" open><summary>What the verifier did, step by step <span class="count">24 steps</span></summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a class="stepshot" href="shots/red-00.png"><img src="shots/red-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-01.png"><img src="shots/red-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-02.png"><img src="shots/red-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-03.png"><img src="shots/red-03.png" alt="step 3" loading="lazy"></a></li><li><span class="stepn">4</span><div class="stepbody"><div>click (59, 46) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-04.png"><img src="shots/red-04.png" alt="step 4" loading="lazy"></a></li><li><span class="stepn">5</span><div class="stepbody"><div>click (59, 46) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-05.png"><img src="shots/red-05.png" alt="step 5" loading="lazy"></a></li><li><span class="stepn">6</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-06.png"><img src="shots/red-06.png" alt="step 6" loading="lazy"></a></li><li><span class="stepn">7</span><div class="stepbody"><div>click (159, 46) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-07.png"><img src="shots/red-07.png" alt="step 7" loading="lazy"></a></li><li><span class="stepn">8</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-08.png"><img src="shots/red-08.png" alt="step 8" loading="lazy"></a></li><li><span class="stepn">9</span><div class="stepbody"><div>press F5</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-09.png"><img src="shots/red-09.png" alt="step 9" loading="lazy"></a></li><li><span class="stepn">10</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-10.png"><img src="shots/red-10.png" alt="step 10" loading="lazy"></a></li><li><span class="stepn">11</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-11.png"><img src="shots/red-11.png" alt="step 11" loading="lazy"></a></li><li><span class="stepn">12</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-12.png"><img src="shots/red-12.png" alt="step 12" loading="lazy"></a></li><li><span class="stepn">13</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-13.png"><img src="shots/red-13.png" alt="step 13" loading="lazy"></a></li><li><span class="stepn">14</span><div class="stepbody"><div>click (157, 46) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-14.png"><img src="shots/red-14.png" alt="step 14" loading="lazy"></a></li><li><span class="stepn">15</span><div class="stepbody"><div>click (157, 47) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-15.png"><img src="shots/red-15.png" alt="step 15" loading="lazy"></a></li><li><span class="stepn">16</span><div class="stepbody"><div>click (157, 47) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-16.png"><img src="shots/red-16.png" alt="step 16" loading="lazy"></a></li><li><span class="stepn">17</span><div class="stepbody"><div>press F5</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-17.png"><img src="shots/red-17.png" alt="step 17" loading="lazy"></a></li><li><span class="stepn">18</span><div class="stepbody"><div>press F5</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-18.png"><img src="shots/red-18.png" alt="step 18" loading="lazy"></a></li><li><span class="stepn">19</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-19.png"><img src="shots/red-19.png" alt="step 19" loading="lazy"></a></li><li><span class="stepn">20</span><div class="stepbody"><div>click (640, 216) → landed on div.slide-background-content (not a control)</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-20.png"><img src="shots/red-20.png" alt="step 20" loading="lazy"></a></li><li><span class="stepn">21</span><div class="stepbody"><div>press ArrowLeft</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-21.png"><img src="shots/red-21.png" alt="step 21" loading="lazy"></a></li><li><span class="stepn">22</span><div class="stepbody"><div>press ArrowLeft</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-22.png"><img src="shots/red-22.png" alt="step 22" loading="lazy"></a></li><li><span class="stepn">23</span><div class="stepbody"><div>press ArrowLeft</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-23.png"><img src="shots/red-23.png" alt="step 23" loading="lazy"></a></li><li><span class="stepn">24</span><div class="stepbody"><div>press ArrowRight</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/red-24.png"><img src="shots/red-24.png" alt="step 24" loading="lazy"></a></li></ol></details>
+    <p class="meta-line">24 verifier steps · Muse Spark 1.3 · prompt <span class="mono" title="53eb3172f435c0f27c297962b153768d2dc35dd84e8a6e47f4b3e670dc0d8ca3">53eb3172f435</span></p>
+  </section>
+  <section class="phase" id="phase-green">
+    <header class="phase-head">
+      <div>
+        <h3>Green <span class="role">· The fix — the criteria should pass</span></h3>
+        <div class="ref mono" title="4d5070c612897870fb86bdc68ee45e7f9c6a8747">ho/C03/candidate @ 4d5070c</div>
+      </div>
+      <div class="outcome">
+        <span class="io">expected <b>pass</b> · observed <b>fail</b></span>
+        <span class="pill bad">✗ not as expected</span>
+      </div>
+    </header>
+    
+    
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-next-reveals-fragments-then-advances</div>
+      <div class="votes" role="list">
+        <div class="vote v-fail"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-fail"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>After the third Next click the display still showed First slide with only First point visible instead of Second slide.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): fail — Frames 1-4 show the fragment progression correctly but frame 4 after the third Next still shows First slide with First point, never showing Second slide.</li></ul></div>
+      <div class="shots"><figure><a href="shots/green-03.png"><img src="shots/green-03.png" alt="shots/green-03.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-previous-reverses-fragments</div>
+      <div class="votes" role="list">
+        <div class="vote v-fail"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-fail"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>After the third Previous click First point became visible instead of both paragraphs staying hidden on First slide.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): fail — Frames 5-8 start with both points visible and correctly hide to one point then hidden, but frame 8 after the third Previous reveals First point again instead of staying hidden on First slide.</li></ul></div>
+      <div class="shots"><figure><a href="shots/green-07.png"><img src="shots/green-07.png" alt="shots/green-07.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-left-arrow-moves-forward-right-arrow-back</div>
+      <div class="votes" role="list">
+        <div class="vote v-pass"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-pass"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+      </div>
+      <blockquote class="obs"><span class="k">Verifier saw</span>Two Left presses revealed First point then both points, and the Right press hid Second point while First point stayed visible.</blockquote>
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): pass — Frames 9-12 show hidden -&#62; First point after first Left, both points after second Left, and back to only First point after Right, all on First slide.</li></ul></div>
+      <div class="shots"><figure><a href="shots/green-11.png"><img src="shots/green-11.png" alt="shots/green-11.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <figure class="video"><video src="videos/green.webm" controls muted preload="metadata"></video><figcaption>Screen recording of this phase · <span class="mono">videos/green.webm</span></figcaption></figure>
+    <details class="timeline" open><summary>What the verifier did, step by step <span class="count">11 steps</span></summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a class="stepshot" href="shots/green-00.png"><img src="shots/green-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (59, 46) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-01.png"><img src="shots/green-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-02.png"><img src="shots/green-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>click (58, 48) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-03.png"><img src="shots/green-03.png" alt="step 3" loading="lazy"></a></li><li><span class="stepn">4</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-04.png"><img src="shots/green-04.png" alt="step 4" loading="lazy"></a></li><li><span class="stepn">5</span><div class="stepbody"><div>click (157, 46) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-05.png"><img src="shots/green-05.png" alt="step 5" loading="lazy"></a></li><li><span class="stepn">6</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-06.png"><img src="shots/green-06.png" alt="step 6" loading="lazy"></a></li><li><span class="stepn">7</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-07.png"><img src="shots/green-07.png" alt="step 7" loading="lazy"></a></li><li><span class="stepn">8</span><div class="stepbody"><div>click (157, 48) → landed on button#prev</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-08.png"><img src="shots/green-08.png" alt="step 8" loading="lazy"></a></li><li><span class="stepn">9</span><div class="stepbody"><div>press ArrowLeft</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-09.png"><img src="shots/green-09.png" alt="step 9" loading="lazy"></a></li><li><span class="stepn">10</span><div class="stepbody"><div>press ArrowLeft</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-10.png"><img src="shots/green-10.png" alt="step 10" loading="lazy"></a></li><li><span class="stepn">11</span><div class="stepbody"><div>press ArrowRight</div><div>wait</div><div>look at the screen</div></div><a class="stepshot" href="shots/green-11.png"><img src="shots/green-11.png" alt="step 11" loading="lazy"></a></li></ol></details>
+    <p class="meta-line">11 verifier steps · Muse Spark 1.3 · prompt <span class="mono" title="588d0e9fa5060221fe4d96ddad9cfd4789a24777b3e65633ee8a0b56dcc27898">588d0e9fa506</span></p>
+  </section>
+  <section class="phase" id="phase-break">
+    <header class="phase-head">
+      <div>
+        <h3>Break <span class="role">· A wrong fix — Attest should reject it</span></h3>
+        <div class="ref mono" title="5794f09b02c386b4dd9054ddee4d478a930c80ca">ho/p1/b2/break @ 5794f09</div>
+      </div>
+      <div class="outcome">
+        <span class="io">expected <b>fail</b> · observed <b>inconclusive</b></span>
+        <span class="pill warn">! inconclusive</span>
+      </div>
+    </header>
+    <p class="phase-error"><b>Phase error.</b> HTTP 504 {&#34;error&#34;:{&#34;code&#34;:null,&#34;message&#34;:&#34;request timed out&#34;,&#34;param&#34;:null,&#34;type&#34;:&#34;server_error&#34;}}</p>
+    
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-next-reveals-fragments-then-advances</div>
+      <div class="votes" role="list">
+        <div class="vote v-missing"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">!</span>no vote — error</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-pass"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+      </div>
+      
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): pass — Frames 1→2→3→4 show hidden → First point only → both points on First slide → Second slide after third Next, exactly matching the three steps.</li></ul></div>
+      <div class="shots"><figure><a href="shots/break-16.png"><img src="shots/break-16.png" alt="shots/break-16.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-previous-reverses-fragments</div>
+      <div class="votes" role="list">
+        <div class="vote v-missing"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">!</span>no vote — error</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-fail"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✗</span>fail</span></div>
+      </div>
+      
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): fail — Starting from both visible (Frame 10) Frame 11 correctly hides Second point and Frame 12 hides First point, but the next settled frame (Frame 13) shows First point re-visible instead of remaining hidden on First slide for the third Previous.</li></ul></div>
+      <div class="shots"><figure><a href="shots/break-16.png"><img src="shots/break-16.png" alt="shots/break-16.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <div class="crit-result">
+      <div class="crit-id mono">rtl-left-arrow-moves-forward-right-arrow-back</div>
+      <div class="votes" role="list">
+        <div class="vote v-missing"><span class="vl">Verifier · Muse Spark 1.3</span><span class="vv"><span class="mark" aria-hidden="true">!</span>no vote — error</span></div>
+        <div class="vote v-na"><span class="vl">Code checks</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-na"><span class="vl">Element check</span><span class="vv"><span class="mark" aria-hidden="true">–</span>not applicable</span></div>
+        <div class="vote v-pass"><span class="vl">Judge · Muse Spark Open</span><span class="vv"><span class="mark" aria-hidden="true">✓</span>pass</span></div>
+      </div>
+      
+      <div class="notes"><span class="k">Other voters</span><ul><li>Judge (meta-models/muse-spark-open): pass — Starting hidden (Frame 12) Frame 13 shows First point only after first Left, Frame 15 shows both after second Left (Frame 14 is an extra wait duplicate with no state change), and Frame 16 shows Second hidden again after Right press.</li></ul></div>
+      <div class="shots"><figure><a href="shots/break-16.png"><img src="shots/break-16.png" alt="shots/break-16.png" loading="lazy"></a><figcaption>Screenshot the verifier cited</figcaption></figure></div>
+    </div>
+    <figure class="video"><video src="videos/break.webm" controls muted preload="metadata"></video><figcaption>Screen recording of this phase · <span class="mono">videos/break.webm</span></figcaption></figure>
+    <details class="timeline" open><summary>What the verifier did, step by step <span class="count">16 steps</span></summary><ol><li><span class="stepn">0</span><div class="stepbody"><div>open the app</div></div><a class="stepshot" href="shots/break-00.png"><img src="shots/break-00.png" alt="step 0" loading="lazy"></a></li><li><span class="stepn">1</span><div class="stepbody"><div>click (59, 46) → landed on button#next</div><div>wait</div></div><a class="stepshot" href="shots/break-01.png"><img src="shots/break-01.png" alt="step 1" loading="lazy"></a></li><li><span class="stepn">2</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div></div><a class="stepshot" href="shots/break-02.png"><img src="shots/break-02.png" alt="step 2" loading="lazy"></a></li><li><span class="stepn">3</span><div class="stepbody"><div>click (58, 47) → landed on button#next</div><div>wait</div></div><a class="stepshot" href="shots/break-03.png"><img src="shots/break-03.png" alt="step 3" loading="lazy"></a></li><li><span class="stepn">4</span><div class="stepbody"><div>click (157, 46) → landed on button#prev</div><div>wait</div></div><a class="stepshot" href="shots/break-04.png"><img src="shots/break-04.png" alt="step 4" loading="lazy"></a></li><li><span class="stepn">5</span><div class="stepbody"><div>press F5</div><div>wait</div></div><a class="stepshot" href="shots/break-05.png"><img src="shots/break-05.png" alt="step 5" loading="lazy"></a></li><li><span class="stepn">6</span><div class="stepbody"><div>press Ctrl+l</div><div>wait</div></div><a class="stepshot" href="shots/break-06.png"><img src="shots/break-06.png" alt="step 6" loading="lazy"></a></li><li><span class="stepn">7</span><div class="stepbody"><div>type &#34;http://127.0.0.1:62620
+&#34;</div><div>wait</div></div><a class="stepshot" href="shots/break-07.png"><img src="shots/break-07.png" alt="step 7" loading="lazy"></a></li><li><span class="stepn">8</span><div class="stepbody"><div>click (1157, 674) → landed on button.resume-button</div><div>wait</div></div><a class="stepshot" href="shots/break-08.png"><img src="shots/break-08.png" alt="step 8" loading="lazy"></a></li><li><span class="stepn">9</span><div class="stepbody"><div>press Home</div><div>wait</div></div><a class="stepshot" href="shots/break-09.png"><img src="shots/break-09.png" alt="step 9" loading="lazy"></a></li><li><span class="stepn">10</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div></div><a class="stepshot" href="shots/break-10.png"><img src="shots/break-10.png" alt="step 10" loading="lazy"></a></li><li><span class="stepn">11</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div></div><a class="stepshot" href="shots/break-11.png"><img src="shots/break-11.png" alt="step 11" loading="lazy"></a></li><li><span class="stepn">12</span><div class="stepbody"><div>click (159, 46) → landed on button#prev</div><div>wait</div></div><a class="stepshot" href="shots/break-12.png"><img src="shots/break-12.png" alt="step 12" loading="lazy"></a></li><li><span class="stepn">13</span><div class="stepbody"><div>press Home</div><div>wait</div></div><a class="stepshot" href="shots/break-13.png"><img src="shots/break-13.png" alt="step 13" loading="lazy"></a></li><li><span class="stepn">14</span><div class="stepbody"><div>click (58, 48) → landed on button#next</div><div>wait</div></div><a class="stepshot" href="shots/break-14.png"><img src="shots/break-14.png" alt="step 14" loading="lazy"></a></li><li><span class="stepn">15</span><div class="stepbody"><div>click (159, 47) → landed on button#prev</div><div>wait</div></div><a class="stepshot" href="shots/break-15.png"><img src="shots/break-15.png" alt="step 15" loading="lazy"></a></li><li><span class="stepn">16</span><div class="stepbody"><div>click (159, 46) → landed on button#prev</div><div>wait</div></div><a class="stepshot" href="shots/break-16.png"><img src="shots/break-16.png" alt="step 16" loading="lazy"></a></li></ol></details>
+    <p class="meta-line">16 verifier steps · Muse Spark 1.3 · prompt <span class="mono" title="89315822d1ad5e4329d8d16442c079611b3f79ff2b65532cf878c31b51475e37">89315822d1ad</span></p>
+  </section>
+<h2 id="verify">Check this receipt yourself</h2>
+<section class="card panel verify">
+  <div><h3>What <span class="mono">attest verify</span> checks — no model calls</h3><ul>
+    <li>The Ed25519 signature over the receipt</li>
+    <li>The hash-chained event log, its head and its length</li>
+    <li>The hash of every screenshot, video and the criteria copy</li>
+    <li>That the verdict follows from the recorded votes</li></ul></div>
+  <div><h3>What a receipt does not prove</h3><ul>
+    <li>That the capture environment was honest — it shows nothing changed after capture; the signature detects a later edit</li>
+    <li>Who ran it — the key is created on the machine that ran the proof</li>
+    <li>Anything beyond the stated criteria</li></ul></div>
+</section>
+</main>
+<footer><div class="wrap">This page is generated from <span class="mono">receipt.json</span> and is not itself signed. The receipt is the source of truth — if they ever disagree, trust <span class="mono">attest verify</span>.</div></footer>
+</body></html>

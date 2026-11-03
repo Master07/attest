@@ -1,0 +1,354 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T09:27:46.112Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p3/b1/base",
+        "sha": "e9fa7dc8f8a00f5375f8c433fa8ccb766a597c27"
+      },
+      "green": {
+        "ref": "ho/C01/candidate",
+        "sha": "0d88c20d3e8d828dde04eb7da6765651ac056362"
+      },
+      "break": {
+        "ref": "ho/p3/b1/break",
+        "sha": "2608e58cf76c2556cab8cf161397a41c63ffecbf"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "8bdfdf21d8bc40a9ad11b671f71350276cc2027a38024a57d33e3058d9a4e397"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p3/b1/base",
+      "sha": "e9fa7dc8f8a00f5375f8c433fa8ccb766a597c27",
+      "status": "completed",
+      "error": null,
+      "steps": 7,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "024748dabdd9689c9421b48427635bec60465d19728694efe6ef9e2830ed35b2",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abc, pressing Right twice and typing d in Input, the presentation showed Third slide instead of staying on First slide.",
+          "evidence": [
+            "shots/red-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 4 shows navigation to 'Third slide' after the Right-arrow presses in Input, and no frame shows Input containing 'abcd' on 'First slide' — Input remains 'abc' in frames 3,5,7."
+          ]
+        },
+        {
+          "id": "right-arrow-in-textarea-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abc, pressing Right twice and typing d in Text area, the presentation showed Third slide instead of staying on First slide.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 6 shows navigation to 'Third slide' after Right-arrow in Text area, and Text area never shows 'abcd' — it shows 'abc' in frames 5 and 7 on 'First slide'."
+          ]
+        },
+        {
+          "id": "right-arrow-in-contenteditable-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After editing the Edit here box with abc, pressing Right twice and typing d, the presentation showed Third slide instead of staying on First slide.",
+          "evidence": [
+            "shots/red-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 7 shows the editable box on 'First slide' containing 'Edit hereabc' not 'Edit hereabcd' and no later frame shows 'Edit hereabcd' on 'First slide'."
+          ]
+        },
+        {
+          "id": "keyboard-navigation-outside-controls-still-works",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking the First slide heading and pressing Right once, the Second slide became visible.",
+          "evidence": [
+            "shots/red-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 8 shows 'Second slide' visible after the heading was focused on 'First slide' and Right arrow pressed, confirming outside-control navigation still works."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C01/candidate",
+      "sha": "0d88c20d3e8d828dde04eb7da6765651ac056362",
+      "status": "completed",
+      "error": null,
+      "steps": 10,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "39d948d7b6ac0d045a8ebff13e363c2a260ec8d86116e0c3270ac962456ed66f",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Input field shows abcd and heading still shows First slide.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows Input field containing \"abcd\" while presentation still displays \"First slide\" with no navigation."
+          ]
+        },
+        {
+          "id": "right-arrow-in-textarea-stays-on-slide",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Text area shows abcd and heading still shows First slide.",
+          "evidence": [
+            "shots/green-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 5 shows Text area field containing \"abcd\" while presentation still displays \"First slide\"."
+          ]
+        },
+        {
+          "id": "right-arrow-in-contenteditable-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Pressing Right in the editable box navigated away to Third slide instead of staying on First slide.",
+          "evidence": [
+            "shots/green-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 7-8 show navigation to Second/Third slide after Right arrow in editable box and Frames 9-10 show editable box contains \"Edit hereabc\" not \"Edit hereabcd\" on First slide."
+          ]
+        },
+        {
+          "id": "keyboard-navigation-outside-controls-still-works",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicking First slide heading then pressing Right showed Second slide.",
+          "evidence": [
+            "shots/green-10.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 10 shows First slide with no editable focus and Frame 11 immediately shows Second slide after Right arrow press."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p3/b1/break",
+      "sha": "2608e58cf76c2556cab8cf161397a41c63ffecbf",
+      "status": "completed",
+      "error": null,
+      "steps": 14,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "62321ec9131f44efd4b5af3050b62737b680669da739b4501e125bdcb400d5c3",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abc, pressing Right twice and typing d in the Input, the presentation showed Third slide instead of First slide.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows Input containing \"abcd\" on \"First slide\"; Input only ever shows \"abc\" (Frames 5-7,10-11,14) and subsequent frames show navigation away to Second/Third slide."
+          ]
+        },
+        {
+          "id": "right-arrow-in-textarea-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abc, pressing Right twice and typing d in the Text area, the presentation showed Third slide instead of First slide.",
+          "evidence": [
+            "shots/break-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Text area never shows \"abcd\", only \"abc\" (Frames 10-11,14) and after typing abc the presentation navigates to Third/Second slide (Frames 12-13), not staying on First slide with abcd."
+          ]
+        },
+        {
+          "id": "right-arrow-in-contenteditable-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After editing the Edit here box and pressing Right twice, the presentation showed Third slide instead of First slide.",
+          "evidence": [
+            "shots/break-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Editable box only shows \"Edit hereabc\" in Frame 14, never \"Edit hereabcd\", and next frame leaves First slide for Second slide, so Right-arrow handling failed."
+          ]
+        },
+        {
+          "id": "keyboard-navigation-outside-controls-still-works",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicking the First slide heading and pressing Right once showed the Second slide.",
+          "evidence": [
+            "shots/break-14.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frames clearly show navigation from First slide to Second slide after heading interaction (Frame 14 -> Frame 15, also Frames 4,9,13), satisfying the required Second slide visibility."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:fc4f142b4bcc1e2193223b0939f02d1a6272bc4fc71dff30c89b434bf81c400e",
+    "shots/break-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/break-01.png": "sha256:a3cbb8d7ec2dc283c493400e557bafea33ffd70c1061bce2958d1fa25b84acb9",
+    "shots/break-02.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/break-03.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/break-04.png": "sha256:6b8612dc0f68fa51e421d8e10bd7d1a777c770a854043e70f4f94dcc00aa16f5",
+    "shots/break-05.png": "sha256:7d0c56c3dfa26b512dd50f01577e4022479e7dff86179e98801391b1dff0d57e",
+    "shots/break-06.png": "sha256:b5bf03f86ff257abaf29f943e4cd6ae54eee671fb95640b923d6e88ed5e1c129",
+    "shots/break-07.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/break-08.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/break-09.png": "sha256:9e59b70247168bb30f2547a795ec18bd6d7a83d521162a9e47f2d1046d270fba",
+    "shots/break-10.png": "sha256:a622b7d9034f178369df1c31cc4c7e855bb2f07ea0bf0c0c554a9465fe5d7b1d",
+    "shots/break-11.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/break-12.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/break-13.png": "sha256:b2c7404c797b8e8d454f753019aedb33c9333f791220ea6e64b17c1aec4159db",
+    "shots/break-14.png": "sha256:b5ecaecd7ddac51292844c61bf073e91bcc24ff176e7cdbdae55a63b05c7f958",
+    "shots/green-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/green-01.png": "sha256:a3cbb8d7ec2dc283c493400e557bafea33ffd70c1061bce2958d1fa25b84acb9",
+    "shots/green-02.png": "sha256:099c3539b68167b7eeecf32d5139eb4a41ed64b34fa8c55c7c6f3b14eb59f84a",
+    "shots/green-03.png": "sha256:3bce8188ba6ecb041a51552236066377246892de16e9e511fbdc21ca2dde3084",
+    "shots/green-04.png": "sha256:98f05aa701d83364745d91f63b630ee897b37585d4d1ccb50a6ddb237c88a56b",
+    "shots/green-05.png": "sha256:52bddc400c754a97fef1d8e32a67e716c39eae179687b18960cb10fc221fe763",
+    "shots/green-06.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/green-07.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/green-08.png": "sha256:e7cee0f36e1f0f08dc54e6f5a04141c856fd70a1e9c180dddfcd49d60694e8ba",
+    "shots/green-09.png": "sha256:f6e30a5dcac6c01a239bd565810d627cf317c4151980a155e8da943a0ed04396",
+    "shots/green-10.png": "sha256:b5ecaecd7ddac51292844c61bf073e91bcc24ff176e7cdbdae55a63b05c7f958",
+    "shots/red-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/red-01.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/red-02.png": "sha256:7d0c56c3dfa26b512dd50f01577e4022479e7dff86179e98801391b1dff0d57e",
+    "shots/red-03.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/red-04.png": "sha256:6e408627e57be014a8de9ca1c02904cb74575891f57f19c50b0d4a46e8fa41a3",
+    "shots/red-05.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/red-06.png": "sha256:0c47b6707b2e81c97ab94c564eefffc6ff41e6fffc9fea42ffa69e848be94d89",
+    "shots/red-07.png": "sha256:b5ecaecd7ddac51292844c61bf073e91bcc24ff176e7cdbdae55a63b05c7f958",
+    "videos/break.webm": "sha256:4e3e842138904ee7f542083ed7fb77a79d7517401cedb1d4829765d6629123c5",
+    "videos/green.webm": "sha256:bdea1c877ff33dbadaec856208a5b0efdcd8a6b7bf951628f97490a565189db0",
+    "videos/red.webm": "sha256:988791272f433c8309de51816d530a50219e667b7de5fcb4761d3cd26ab9ea0f"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:1d702779a6190648ce105694f174a1df09d08727b25f5eb4be5e0d63f924e6cf",
+    "entries": 95
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "o7DjB/LgnuH4nz+n2Bh9uHgoZxWkonktdhVNK34UoO0rLnkhXoEcyI3LzPJugmEJ0s33wfBkPMUDEMXej7tzBA=="
+  }
+}

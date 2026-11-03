@@ -1,0 +1,365 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T11:46:09.585Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p2/b1/base",
+        "sha": "55ad3539127a59c2053383da163d0d677671ed02"
+      },
+      "green": {
+        "ref": "ho/C12/candidate",
+        "sha": "2379bf8bee49b27897016bf3fe8aa0b0eb1550d6"
+      },
+      "break": {
+        "ref": "ho/p2/b1/break",
+        "sha": "94ded357d11d0bed2ddde8c8fe0748ccb7393422"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "47045d92f9fc88fa0de3a7e3a0518d042750c9b22ba3ab6232b4aab10ad06905"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p2/b1/base",
+      "sha": "55ad3539127a59c2053383da163d0d677671ed02",
+      "status": "error",
+      "error": "HTTP 500 {\"error\":{\"code\":null,\"message\":\"internal server error\",\"param\":null,\"type\":\"server_error\"}}",
+      "steps": 13,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "24ed008be845fa007e3af35f7315c2e505e12b825955fdf5c8060b3cf04b593e",
+      "criteria": [
+        {
+          "id": "space-in-default-input-does-not-advance",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-13.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows Default input with \"hello world\" on First slide; Frame 3 shows Second slide after space and Frames 4-6 show only \"hello\" on First slide."
+          ]
+        },
+        {
+          "id": "typing-in-email-input-does-not-advance",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-13.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows Email input with \"hello world\" on First slide; Frame 9 shows advance to Second slide on space and Frame 10 shows only \"hello\" in Email input."
+          ]
+        },
+        {
+          "id": "explicit-text-input-keeps-working",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-13.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frames 13-14 show Text input contains \"hello world\" while presentation remains on First slide with no advance to Second slide."
+          ]
+        },
+        {
+          "id": "shortcuts-work-when-slide-has-focus",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-13.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frames 3 and 9 show Second slide becomes visible after Space press, demonstrating slide advancement via keyboard still functions."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: HTTP 500 {\"error\":{\"code\":null,\"message\":\"internal server error\",\"param\":null,\"type\":\"server_error\"}}",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C12/candidate",
+      "sha": "2379bf8bee49b27897016bf3fe8aa0b0eb1550d6",
+      "status": "completed",
+      "error": null,
+      "steps": 14,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "95aa5dc859587723461b6631bf5345397779ae470cb5f2e43d6278ccfc5d0330",
+      "criteria": [
+        {
+          "id": "space-in-default-input-does-not-advance",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "The Default input contained hello world and the presentation still showed First slide.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows the Default input contains 'hello world' and the slide is still 'First slide' with no 'Second slide' visible, so the space did not advance."
+          ]
+        },
+        {
+          "id": "typing-in-email-input-does-not-advance",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Typing hello world into the Email input advanced the presentation to Second slide.",
+          "evidence": [
+            "shots/green-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 7 shows the presentation advanced to 'Second slide' while typing in the Email input and Frame 8 shows the Email input only contains 'hello' not 'hello world', so the space triggered an advance."
+          ]
+        },
+        {
+          "id": "explicit-text-input-keeps-working",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "The Text input contained hello world and the presentation still showed First slide.",
+          "evidence": [
+            "shots/green-12.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 13 shows the Text input contains 'hello world' and the presentation is still on 'First slide', so typing with space worked."
+          ]
+        },
+        {
+          "id": "shortcuts-work-when-slide-has-focus",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Clicking the First slide heading and pressing Space showed Second slide.",
+          "evidence": [
+            "shots/green-14.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 15 shows 'Second slide' visible after the First slide state in Frame 14, confirming Space advances the slide when the slide has focus."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p2/b1/break",
+      "sha": "94ded357d11d0bed2ddde8c8fe0748ccb7393422",
+      "status": "completed",
+      "error": null,
+      "steps": 15,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8f83e4162815a8eb42834e363d9cdc0cba50dbff5236dc024f995c2a2c0416ed",
+      "criteria": [
+        {
+          "id": "space-in-default-input-does-not-advance",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Typing hello world into Default input advanced to Second slide instead of staying on First slide.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 3 shows Second slide immediately after focusing Default input and Frames 4-6 show Default input contains only 'hello' on First slide, never 'hello world', proving space advanced the deck."
+          ]
+        },
+        {
+          "id": "typing-in-email-input-does-not-advance",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Email input contained hello world and First slide remained visible.",
+          "evidence": [
+            "shots/break-08.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 9 shows presentation still on First slide with the Email input field containing 'hello world' and Second slide not visible."
+          ]
+        },
+        {
+          "id": "explicit-text-input-keeps-working",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Text input contained hello world and First slide remained visible.",
+          "evidence": [
+            "shots/break-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 12 shows presentation still on First slide with the Text input field containing 'hello world' and Second slide not visible."
+          ]
+        },
+        {
+          "id": "shortcuts-work-when-slide-has-focus",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Pressing Space with slide heading focused showed Second slide.",
+          "evidence": [
+            "shots/break-14.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frames 13-14 show First slide with no input focused and Frames 15-16 show Second slide visible after the Space key press on the slide."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:1f5efc2cfd1bccf9032a983cd3cc3ff294942b5d69697ce108c2d6ec8606a743",
+    "shots/break-00.png": "sha256:b2a21fda0e3d6c98301335642a410d3b5c19b4001a16314d6aedd2519c421966",
+    "shots/break-01.png": "sha256:0d3a49356eb9c3a39bd7c48ba8de407e1eaf3621be9a95ed4fc84e8a1f9d0330",
+    "shots/break-02.png": "sha256:24917b4ded7a1f8b1a4080a2111c6bed87fd3e8920e4523e293f0ff53df9b77f",
+    "shots/break-03.png": "sha256:26faece282bf8c3b85329db901d3b238770206a76cd965405880abf46bcc0607",
+    "shots/break-04.png": "sha256:26faece282bf8c3b85329db901d3b238770206a76cd965405880abf46bcc0607",
+    "shots/break-05.png": "sha256:26faece282bf8c3b85329db901d3b238770206a76cd965405880abf46bcc0607",
+    "shots/break-06.png": "sha256:ed1c03533d1e1bc403820581cca740475adf6cf4aed329580a8511e52d772dd2",
+    "shots/break-07.png": "sha256:7f909eb5b7c8cfd65a7a4bccae184916c8707e4c02eb3e2ab363c1eb95757725",
+    "shots/break-08.png": "sha256:c9952b047d3a234a5c8e7247a6b4720d0382862889fe34a86336b50db5760d69",
+    "shots/break-09.png": "sha256:7f909eb5b7c8cfd65a7a4bccae184916c8707e4c02eb3e2ab363c1eb95757725",
+    "shots/break-10.png": "sha256:a2f560037530a82d21d503763cfdb3258065b057ab3b425f679e5da19a95128f",
+    "shots/break-11.png": "sha256:27f084d27c9ddf61c77796e47d4bc19df39c4f486b5d425e98d2c7f9c7428309",
+    "shots/break-12.png": "sha256:a2f560037530a82d21d503763cfdb3258065b057ab3b425f679e5da19a95128f",
+    "shots/break-13.png": "sha256:b2a21fda0e3d6c98301335642a410d3b5c19b4001a16314d6aedd2519c421966",
+    "shots/break-14.png": "sha256:24917b4ded7a1f8b1a4080a2111c6bed87fd3e8920e4523e293f0ff53df9b77f",
+    "shots/break-15.png": "sha256:24917b4ded7a1f8b1a4080a2111c6bed87fd3e8920e4523e293f0ff53df9b77f",
+    "shots/green-00.png": "sha256:b2a21fda0e3d6c98301335642a410d3b5c19b4001a16314d6aedd2519c421966",
+    "shots/green-01.png": "sha256:0d3a49356eb9c3a39bd7c48ba8de407e1eaf3621be9a95ed4fc84e8a1f9d0330",
+    "shots/green-02.png": "sha256:a90b67bf6e8e569b7af3821f22a8da6ebb52e6885c2aff1f62ecb0a5e9a989fb",
+    "shots/green-03.png": "sha256:a90b67bf6e8e569b7af3821f22a8da6ebb52e6885c2aff1f62ecb0a5e9a989fb",
+    "shots/green-04.png": "sha256:a90b67bf6e8e569b7af3821f22a8da6ebb52e6885c2aff1f62ecb0a5e9a989fb",
+    "shots/green-05.png": "sha256:7294e91be396656d6c300b68ad4ea6a514562a113b9776bdd464c626901c39c0",
+    "shots/green-06.png": "sha256:24917b4ded7a1f8b1a4080a2111c6bed87fd3e8920e4523e293f0ff53df9b77f",
+    "shots/green-07.png": "sha256:370a759a7d95bc79fb94fd7cf1020eef17ee54ba0c779b07915d3b80f10db220",
+    "shots/green-08.png": "sha256:710cbfc5d41cb813c510ee232374437836b2a7977f840cbc836072c809aaf797",
+    "shots/green-09.png": "sha256:3fd0dca42d075dec66076937cfa991880569e3eca7b0ff721aec7b60e70333a5",
+    "shots/green-10.png": "sha256:710cbfc5d41cb813c510ee232374437836b2a7977f840cbc836072c809aaf797",
+    "shots/green-11.png": "sha256:3fd0dca42d075dec66076937cfa991880569e3eca7b0ff721aec7b60e70333a5",
+    "shots/green-12.png": "sha256:03436eebdc9a5cd308f41affdfb860afdf919f226f58266530db6f194874ab8a",
+    "shots/green-13.png": "sha256:68683ac646068002e22f16cdcdc96de223eb0f9e19fceb4f5bdb08ce5b6af8de",
+    "shots/green-14.png": "sha256:24917b4ded7a1f8b1a4080a2111c6bed87fd3e8920e4523e293f0ff53df9b77f",
+    "shots/red-00.png": "sha256:b2a21fda0e3d6c98301335642a410d3b5c19b4001a16314d6aedd2519c421966",
+    "shots/red-01.png": "sha256:0d3a49356eb9c3a39bd7c48ba8de407e1eaf3621be9a95ed4fc84e8a1f9d0330",
+    "shots/red-02.png": "sha256:24917b4ded7a1f8b1a4080a2111c6bed87fd3e8920e4523e293f0ff53df9b77f",
+    "shots/red-03.png": "sha256:26faece282bf8c3b85329db901d3b238770206a76cd965405880abf46bcc0607",
+    "shots/red-04.png": "sha256:26faece282bf8c3b85329db901d3b238770206a76cd965405880abf46bcc0607",
+    "shots/red-05.png": "sha256:26faece282bf8c3b85329db901d3b238770206a76cd965405880abf46bcc0607",
+    "shots/red-06.png": "sha256:ed1c03533d1e1bc403820581cca740475adf6cf4aed329580a8511e52d772dd2",
+    "shots/red-07.png": "sha256:7f909eb5b7c8cfd65a7a4bccae184916c8707e4c02eb3e2ab363c1eb95757725",
+    "shots/red-08.png": "sha256:acfbfd060f4083508a3dbdcbe114268bb38811de98326e42a82838b9cc09fcc0",
+    "shots/red-09.png": "sha256:df0b49a699107db815a3ef964b20cc2e428163aa8fba9c3488b1ff624b004273",
+    "shots/red-10.png": "sha256:48dfc3a7c8f4f46062c536be0637619e736d580cb8cc4b543da41ed97ba0a859",
+    "shots/red-11.png": "sha256:16bd3691ea70906ba4932b64178f98200bfa6601def26cb8aae6abe4ca3a5c2e",
+    "shots/red-12.png": "sha256:200768dda51050ceda350c2afab5762f2a0bef01f6598b95562901f26d7bbe25",
+    "shots/red-13.png": "sha256:29960f39d6955ce5d0f2cccbc408bfbd62ebe685e041c4a19658ca02f7c32933",
+    "videos/break.webm": "sha256:5a24441e9a0bf1a4a0c6c556bfcf3093dd1b3aefb0670afb6901098bd5c95a71",
+    "videos/green.webm": "sha256:65ee0ff83cb91427df2bd4599847a4b351830be1908a8de28dca97e3e357c2ff",
+    "videos/red.webm": "sha256:4d5badfb8e0565722a280e36167447f7cb2a382b4ccdad2f906d2a259c6e34af"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:193e0c97730cf0cf7d8334de486cc6f15c1b5774c7e40eef27cce1f0077066bc",
+    "entries": 117
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "Pe+MghJK8taNL9z6xAv9WxEx/I8xmTxUcyti2QfkXoYnsg0vGQwp0GBKHZ3DvMZ3snYrkeqokt08Vf8JFBkXAw=="
+  }
+}

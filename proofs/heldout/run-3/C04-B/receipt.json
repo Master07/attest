@@ -1,0 +1,285 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T10:02:06.318Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p2/b2/base",
+        "sha": "60e3490a8ad2d01f5de294bd0dcf33316d73d64f"
+      },
+      "green": {
+        "ref": "ho/C04/candidate",
+        "sha": "708165c6a1564a95e088058bae0d22faccaf2f57"
+      },
+      "break": {
+        "ref": "ho/p2/b2/break",
+        "sha": "c7a3d97c46541eb1c56e1b4f0f0a8d054fba4c07"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "e4321b81b64e591a0fdf0ca8e95a48f8072c45a8b89e066cba0d713e81cd11da"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p2/b2/base",
+      "sha": "60e3490a8ad2d01f5de294bd0dcf33316d73d64f",
+      "status": "error",
+      "error": "HTTP 504 {\"error\":{\"code\":null,\"message\":\"request timed out\",\"param\":null,\"type\":\"server_error\"}}",
+      "steps": 0,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "49fbed543deb79a01fdc38f22dfba8216bf158a0fc06751d85b70fc563c678e8",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-00.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Only one frame exists showing 'First slide' with no points visible; it does not show 'First point' visible alone after a single Next click while staying on 'First slide'."
+          ]
+        },
+        {
+          "id": "previous-hides-one-default-substep",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-00.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Single frame shows 'First slide' with zero points visible, not the required state where 'Third point' is hidden but 'First point' and 'Second point' remain visible after a single Previous click."
+          ]
+        },
+        {
+          "id": "explicitly-ordered-substeps-still-group",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/red-00.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Single frame shows 'First slide' centered and 'Second slide' off-screen with no grouped paragraphs visible, not 'Second slide' as the visible slide with both 'Grouped one' and 'Grouped two' revealed together after one Next click."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: HTTP 504 {\"error\":{\"code\":null,\"message\":\"request timed out\",\"param\":null,\"type\":\"server_error\"}}",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C04/candidate",
+      "sha": "708165c6a1564a95e088058bae0d22faccaf2f57",
+      "status": "completed",
+      "error": null,
+      "steps": 8,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c247057a2df061cff204d517586a428430ff402ac11032e65987088fb525dbdf",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After one Next click First point was visible while Second and Third were hidden on First slide.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows First slide with no points hidden and Frame 2 immediately shows only First point visible on the same First slide after one Next."
+          ]
+        },
+        {
+          "id": "previous-hides-one-default-substep",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After one Previous click from all visible, Third point was hidden while First and Second remained visible on First slide.",
+          "evidence": [
+            "shots/green-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 4 shows First slide with all three points visible and Frame 5 immediately shows only First and Second point visible with Third point hidden on same slide after one Previous."
+          ]
+        },
+        {
+          "id": "explicitly-ordered-substeps-still-group",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After one Next click on Second slide both Grouped one and Grouped two became visible while staying on Second slide.",
+          "evidence": [
+            "shots/green-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 7 shows Second slide with both Grouped paragraphs hidden and Frame 8 immediately shows both Grouped one and Grouped two visible on same Second slide after one Next."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p2/b2/break",
+      "sha": "c7a3d97c46541eb1c56e1b4f0f0a8d054fba4c07",
+      "status": "completed",
+      "error": null,
+      "steps": 8,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "f2e189caadb50ba726566c19cc476f6b03aaf1898fcfebf72453a60d1a60304e",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After one Next click from all hidden, First point, Second point and Third point were all visible instead of only First point.",
+          "evidence": [
+            "shots/break-06.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 1 shows First slide with no points; the immediate next frame Frame 2 shows all three points visible instead of only First point, so one Next did not reveal a single default substep."
+          ]
+        },
+        {
+          "id": "previous-hides-one-default-substep",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After one Previous click from all visible, Third point was hidden while First point and Second point stayed visible on First slide.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows First slide with all three points visible and the immediate next frame Frame 3 shows First and Second point visible with Third point hidden while still on First slide."
+          ]
+        },
+        {
+          "id": "explicitly-ordered-substeps-still-group",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After one Next click on Second slide, both Grouped one and Grouped two became visible while staying on Second slide.",
+          "evidence": [
+            "shots/break-08.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 8 shows Second slide with Grouped one and Grouped two hidden and the immediate next frame Frame 9 shows both Grouped one and Grouped two visible while still on Second slide."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "red: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:e34cf7a4f18b1f2d462fdc5709681a75766abe76c4edc386361bab8dabc5cf04",
+    "shots/break-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "shots/break-01.png": "sha256:aa93964c129454b529fb0eddd7a9072962c16e7c2d5777a9101aff565eb5fb4f",
+    "shots/break-02.png": "sha256:5e496e6499572d8a87358a37bf54f9192b3508895a90e58fc0042aa381eb03e4",
+    "shots/break-03.png": "sha256:8adbf9ecd109faafe3f2f5f883f4c94db3bed8a91ee596c1e1e87824b14e5c58",
+    "shots/break-04.png": "sha256:f57c8b1ff7532c084d584321c40b33421d2e61312783b49f403bccf6e7b87c37",
+    "shots/break-05.png": "sha256:54aed62b0a32d3836cea5cbb384dc7926e804a2bc47a0aa21cdd1afaecc1c108",
+    "shots/break-06.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "shots/break-07.png": "sha256:434ee139716ae84362ce43959a7f7e707498a50a4f827d09b5f0495bd8fc36eb",
+    "shots/break-08.png": "sha256:836f4f92431baa46ba3c4efb8e1f055a467bfa22e2bc254c8c27ed4407f8d1b7",
+    "shots/green-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "shots/green-01.png": "sha256:99e71006a75fc8bc9bbe220220acd3fc844d34340a427bbb3926910f170908e8",
+    "shots/green-02.png": "sha256:d832dcbfffa96bd0597c3ef0ae3d860ecf0ca181e38acffa2352817d6204e7bf",
+    "shots/green-03.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "shots/green-04.png": "sha256:5e496e6499572d8a87358a37bf54f9192b3508895a90e58fc0042aa381eb03e4",
+    "shots/green-05.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "shots/green-06.png": "sha256:434ee139716ae84362ce43959a7f7e707498a50a4f827d09b5f0495bd8fc36eb",
+    "shots/green-07.png": "sha256:836f4f92431baa46ba3c4efb8e1f055a467bfa22e2bc254c8c27ed4407f8d1b7",
+    "shots/green-08.png": "sha256:836f4f92431baa46ba3c4efb8e1f055a467bfa22e2bc254c8c27ed4407f8d1b7",
+    "shots/red-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "videos/break.webm": "sha256:5aae3a44ae939f66ee8bf16076c8d0ed0b63f939f57d118a39f11405ab3ecfd4",
+    "videos/green.webm": "sha256:49b2f46d78ded55ff502d58833420275684d1ca2b80690093039d0fb3a1347bc",
+    "videos/red.webm": "sha256:a23be33c3da3ad582fb66d008880bab647a62821e254d2dfd07c37efd94e0c6f"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:dba43a730f2b6b84dc205050c0511779079524cc69f5b28e6428bb3554922627",
+    "entries": 65
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "glWUUZHhVNUnMmK5Glei36uJcWFPyKK5q1wHR+1v5xyt0CKi+Kf5+dhm3qq7p+wEztfSFFrMAEr9FgB/5mi/AQ=="
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T08:20:34.795Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p1/b2/base",
+        "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268"
+      },
+      "green": {
+        "ref": "ho/C03/candidate",
+        "sha": "4d5070c612897870fb86bdc68ee45e7f9c6a8747"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d5828f604afb4b88d565429dfcbcfafe6641e87a057f04f3f5e0de29824cc0f"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p1/b2/base",
+      "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268",
+      "status": "completed",
+      "error": null,
+      "steps": 18,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "a80a760f5518ead50014044113bbb43ec4bf17a2e923a50058e650e70d7b3eb1",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Next click the screen still showed First slide with First point only, not Second slide.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame1 shows First slide hidden -> Frame2 First point visible -> Frame3 both visible correct but Frame4 after third Next still shows First slide with First point and no frame in 1-19 ever shows Second slide."
+          ]
+        },
+        {
+          "id": "rtl-previous-reverses-fragments",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Previous click First point was visible again instead of both paragraphs staying hidden.",
+          "evidence": [
+            "shots/red-09.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — The clearest reverse Both Frame7 -> First Frame8 -> Hidden Frame9 is correct for two Previous clicks but the immediate next frame Frame10 shows First point again instead of staying hidden, and no consecutive Both->First->Hidden->Hidden window exists."
+          ]
+        },
+        {
+          "id": "rtl-left-arrow-moves-forward-right-arrow-back",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted pass, others fail",
+          "observation": "After the second Left press the slide showed no points visible instead of both points visible.",
+          "evidence": [
+            "shots/red-16.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Starting from Hidden Frame1, first Left shows First point only in Frame2, second Left shows both points in Frame3, and the next frame Frame4 shows Second point hidden again with First still visible, matching the required forward/back behavior."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C03/candidate",
+      "sha": "4d5070c612897870fb86bdc68ee45e7f9c6a8747",
+      "status": "completed",
+      "error": null,
+      "steps": 13,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d8823580e31d1b5d42d9e91543f34c6cd52508d061e736153b19b1717675a0e3",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Next click the visible slide was still First slide with First point visible instead of Second slide.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 1→2 and 2→3 correctly show First point then both points on First slide, but no frame ever shows the heading 'Second slide' after the third Next, with Frame 4 instead reverting to First slide/First point only."
+          ]
+        },
+        {
+          "id": "rtl-previous-reverses-fragments",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Previous click First point was visible instead of both paragraphs staying hidden.",
+          "evidence": [
+            "shots/green-09.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — While Both→First point (e.g., Frame 7→8) and First point→hidden (Frame 8→9, First slide still visible) occur, the required third Previous to stay on First slide with both hidden never occurs, as the next frame after hidden (Frame 9→10 and 11→12) shows First point re-appearing."
+          ]
+        },
+        {
+          "id": "rtl-left-arrow-moves-forward-right-arrow-back",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Left revealed First point, second Left revealed both points, and Right hid Second point again while First stayed visible.",
+          "evidence": [
+            "shots/green-13.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Strict sequence Frame 1 (none) → Frame 2 (First point only) → Frame 3 (both) → Frame 4 (First point only, First slide) satisfies Left, Left, Right behavior, also repeated in Frames 11→12→13→14."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:d0aaf9f683464261f566648a8c61ad959a0f2c68513f5a0869614fa5e1bcde62",
+    "shots/green-00.png": "sha256:527664eca5119aa86c6368c0e23c86e977581a87e0e42315ff7dbd987ee6f3f3",
+    "shots/green-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-05.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-06.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-07.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/green-08.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/green-09.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/green-10.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/green-11.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/green-12.png": "sha256:44bf2598b1f5671929f36f6a55b64f7d431b124f0a858883d826e7ba5b5aa9fa",
+    "shots/green-13.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/red-00.png": "sha256:d43264f576e34a25d2583c303b4cd95ec8bc85ab13843b39bee0bb5241022190",
+    "shots/red-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-05.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-06.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-07.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/red-08.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/red-09.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/red-10.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/red-11.png": "sha256:46a9d058270a3498a337250b8d47d03e470648d7947d2db07e1722d265279d23",
+    "shots/red-12.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/red-13.png": "sha256:46a9d058270a3498a337250b8d47d03e470648d7947d2db07e1722d265279d23",
+    "shots/red-14.png": "sha256:3b03f7baff6f44a7e40570fe14cc5eb57306c0bc78a9d0d077ab413c47c52d24",
+    "shots/red-15.png": "sha256:3959aa9bd34045a033aa2a53776cd6552b83a90583f2d5c0a023f03a320c5583",
+    "shots/red-16.png": "sha256:3b03f7baff6f44a7e40570fe14cc5eb57306c0bc78a9d0d077ab413c47c52d24",
+    "shots/red-17.png": "sha256:3959aa9bd34045a033aa2a53776cd6552b83a90583f2d5c0a023f03a320c5583",
+    "shots/red-18.png": "sha256:780b434cbb7c190275e1a8530297fc99729595bfccbba964309b5b551dceac42",
+    "videos/green.webm": "sha256:83e10f670cb4542ed1ac3fed9e0dc099d3736acbeaeff878dfb9229b7f29c72f",
+    "videos/red.webm": "sha256:64cb442b0726d5db9a6fde31bf8b27406ec76eda0300682d8ceb381c6b59519c"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:c9a60a98d0dccb7138c072425b2ef70604a523bf11b33c80439067c8aa8faa22",
+    "entries": 85
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "e9KISRd3P1cPkSH86++tNSZjdJ4TYWx9nhw1QChg3XUZ/RAi5cV2DnTLAvpwXBWdlFMjeIhGcy4AldhKJxTcBQ=="
+  }
+}

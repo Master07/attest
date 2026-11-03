@@ -1,0 +1,167 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T09:02:23.099Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p3/b2/base",
+        "sha": "1817fd6addb76259499187b22ef0646de27ea4ab"
+      },
+      "green": {
+        "ref": "ho/C11/candidate",
+        "sha": "0a4720a8a1990588d888473be12ac3644fe563db"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "7854571a866e973e6ae32a8f9526df91e19f33c8bd53d15c87cfea047a30f191"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p3/b2/base",
+      "sha": "1817fd6addb76259499187b22ef0646de27ea4ab",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5983e14e0ccaf45357391fde81082e2078e0d980f6fbe928c40d7fda5023cf77",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize, Third slide remained visible but status read 1 / 3 instead of 3 / 3.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 4 after Initialize shows Third slide but status 1 / 3 instead of required 3 / 3."
+          ]
+        },
+        {
+          "id": "status-correct-after-subsequent-navigation",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Previous, Second slide was visible and status read 2 / 3.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 5 after Previous shows Second slide with status 2 / 3 as required."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C11/candidate",
+      "sha": "0a4720a8a1990588d888473be12ac3644fe563db",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "4edfce923e67b5edffbbf5bfe4547cfa52983ece9dc11669d9ee085f0a4a6a7e",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize, Third slide was still visible but status read 1 / 3 instead of 3 / 3.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 4 shows after Initialize the slide is still Third slide but status text is 1 / 3, not the required 3 / 3."
+          ]
+        },
+        {
+          "id": "status-correct-after-subsequent-navigation",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Previous, Second slide was visible and status read 2 / 3.",
+          "evidence": [
+            "shots/green-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 5 shows after Previous the Second slide is visible with status 2 / 3, matching the expected outcome."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:eb1647e84e6b15720a8da86aeeb1eabbb62ce92aade33843d28b3db9ffcc425c",
+    "shots/green-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/green-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/green-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/green-03.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "shots/green-04.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "shots/green-05.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "shots/red-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/red-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/red-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/red-03.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "shots/red-04.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "videos/green.webm": "sha256:8cf7c6dfdab5fb0d5b6c06c35ec63ee89207c1788cbc32d45e288dff6d208f8d",
+    "videos/red.webm": "sha256:7b60ad6abaf082e2a7e000b61aa1c24c7157f92b6152eb90768ca81c40428d1d"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:658b637d6b69d01b4c987efe4a35dbfee66920121fec5e86526b7b0a9b7b4914",
+    "entries": 41
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "3PmraP0lsh3v6AyOrLQWkltdZgY8Iou2oQXxK74uP62QT0iJwJl76UzDxa2xFUVGxg5Yg6Buy0Af6dh/JC6qAA=="
+  }
+}

@@ -1,0 +1,45 @@
+id: shortcuts-ignore-text-inputs-all-paths
+# Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
+# was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
+# Run 3 (exploratory, after unsealing): one criterion per path the report names.
+# The frozen criterion below was written before any candidate branch was opened; the added
+# criteria were written after runs 1-2 without seeing labels, diffs or results.
+criteria:
+  - id: space-in-default-input-does-not-advance
+    given: >-
+      The presentation is open on the slide headed "First slide". The field labelled
+      "Default input" is visible, and the slide headed "Second slide" is not visible.
+    when: >-
+      The user clicks into the "Default input" field and types the text hello world,
+      including the space between the two words.
+    then: >-
+      The "Default input" field contains "hello world" and the presentation is still
+      showing the slide headed "First slide".
+  - id: typing-in-email-input-does-not-advance
+    given: >-
+      The presentation is open on the slide headed "First slide". The field labelled
+      "Email input" is visible, and the slide headed "Second slide" is not visible.
+    when: >-
+      The user clicks into the "Email input" field and types the text hello world,
+      including the space between the two words.
+    then: >-
+      The "Email input" field contains "hello world" and the presentation is still
+      showing the slide headed "First slide".
+  - id: explicit-text-input-keeps-working
+    given: >-
+      The presentation is open on the slide headed "First slide". The field labelled
+      "Text input" is visible, and the slide headed "Second slide" is not visible.
+    when: >-
+      The user clicks into the "Text input" field and types the text hello world,
+      including the space between the two words.
+    then: >-
+      The "Text input" field contains "hello world" and the presentation is still
+      showing the slide headed "First slide".
+  - id: shortcuts-work-when-slide-has-focus
+    given: >-
+      The presentation is open on the slide headed "First slide". No text field has
+      focus, and the slide headed "Second slide" is not visible.
+    when: >-
+      The user clicks the slide heading "First slide" and presses the Space key once.
+    then: >-
+      The slide headed "Second slide" is visible.

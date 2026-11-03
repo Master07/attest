@@ -1,0 +1,264 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T08:08:45.909Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p3/b1/base",
+        "sha": "e9fa7dc8f8a00f5375f8c433fa8ccb766a597c27"
+      },
+      "green": {
+        "ref": "ho/C01/candidate",
+        "sha": "0d88c20d3e8d828dde04eb7da6765651ac056362"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "8bdfdf21d8bc40a9ad11b671f71350276cc2027a38024a57d33e3058d9a4e397"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p3/b1/base",
+      "sha": "e9fa7dc8f8a00f5375f8c433fa8ccb766a597c27",
+      "status": "completed",
+      "error": null,
+      "steps": 16,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "1c34bec8640564b088f30842b1982c7ec70e93e85df314a7f9d4a18f84834c67",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abc, pressing Right twice and typing d in the Input, the presentation showed Third slide instead of staying on First slide.",
+          "evidence": [
+            "shots/red-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows Input \"abcd\" on First slide; Input shows \"abc\" in Frames 4-7 then presentation leaves First slide to Third slide in Frame 9 after Right arrow presses."
+          ]
+        },
+        {
+          "id": "right-arrow-in-textarea-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abc, pressing Right twice and typing d in the Text area, the presentation showed Third slide instead of staying on First slide.",
+          "evidence": [
+            "shots/red-08.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows Text area \"abcd\" on First slide; Text area shows \"abc\" in Frame 11 then presentation navigates to Third slide in Frame 13, not staying on First."
+          ]
+        },
+        {
+          "id": "right-arrow-in-contenteditable-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After editing the box and pressing Right twice, the presentation showed Third slide instead of staying on First slide.",
+          "evidence": [
+            "shots/red-12.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows editable box \"Edit hereabcd\"; all First slide frames show only \"Edit here\" and navigation leaves First slide, so outcome never achieved."
+          ]
+        },
+        {
+          "id": "keyboard-navigation-outside-controls-still-works",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking the First slide heading and pressing Right once, the Second slide became visible.",
+          "evidence": [
+            "shots/red-15.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 15 shows First slide with no focus and Frame 16 immediately shows Second slide, demonstrating Right arrow on heading correctly advances one slide."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C01/candidate",
+      "sha": "0d88c20d3e8d828dde04eb7da6765651ac056362",
+      "status": "completed",
+      "error": null,
+      "steps": 18,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "714ec18f554aadf9de61902e501abe00eb7e83cab39d55aa2d38df9197b6f370",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Input field showed abcd and heading still First slide 1/3 after typing and Right arrows.",
+          "evidence": [
+            "shots/green-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 2 shows the Input field containing \"abcd\" while the slide heading remains \"First slide\", confirming Right arrow did not navigate."
+          ]
+        },
+        {
+          "id": "right-arrow-in-textarea-stays-on-slide",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Text area showed abcd and heading still First slide 1/3 after typing and Right arrows.",
+          "evidence": [
+            "shots/green-05.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 6 shows the Text area containing \"abcd\" while still on \"First slide\", confirming Right arrow did not navigate."
+          ]
+        },
+        {
+          "id": "right-arrow-in-contenteditable-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Second attempt again left First slide and showed Third slide instead of staying with Edit hereabcd.",
+          "evidence": [
+            "shots/green-14.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows \"Edit hereabcd\"; frames 10-13 and 17 show only \"Edit hereabc\" and frame 15 shows navigation to \"Third slide\" instead of staying."
+          ]
+        },
+        {
+          "id": "keyboard-navigation-outside-controls-still-works",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted fail, others pass",
+          "observation": "Clicking First slide heading then Right arrow showed Second slide.",
+          "evidence": [
+            "shots/green-18.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — The first Right-arrow press with no control focused goes to \"Third slide\" in Frame 8 instead of the required \"Second slide\", so the single-press outcome is wrong."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:fc4f142b4bcc1e2193223b0939f02d1a6272bc4fc71dff30c89b434bf81c400e",
+    "shots/green-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/green-01.png": "sha256:099c3539b68167b7eeecf32d5139eb4a41ed64b34fa8c55c7c6f3b14eb59f84a",
+    "shots/green-02.png": "sha256:1444c3665f91e6e4d61f35101643025eae20b07140c2fac8bac7014edcda4bae",
+    "shots/green-03.png": "sha256:f48b8070766b7b99db0ccc38feeb6e7fba856c7d151f59efbd9b56bc42bd9b86",
+    "shots/green-04.png": "sha256:a3cbb8d7ec2dc283c493400e557bafea33ffd70c1061bce2958d1fa25b84acb9",
+    "shots/green-05.png": "sha256:84cc93462f5ed71290be055d657b98295657b864b80c16b1af27ff66fc4e830e",
+    "shots/green-06.png": "sha256:48e365a708afb7b83ec500fde2e7f0144b64617bca77d812eec94662b4ae72ee",
+    "shots/green-07.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/green-08.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/green-09.png": "sha256:745e3153a18917fc525b36c140cc3200c39389d58f783416daa0a8382bcfe803",
+    "shots/green-10.png": "sha256:300669db794ff2b607465b06669d6d5b727ebfb5e06ce030656afee630198a7f",
+    "shots/green-11.png": "sha256:300669db794ff2b607465b06669d6d5b727ebfb5e06ce030656afee630198a7f",
+    "shots/green-12.png": "sha256:300669db794ff2b607465b06669d6d5b727ebfb5e06ce030656afee630198a7f",
+    "shots/green-13.png": "sha256:427aae03c19e39268559ae5cb54fbe2713af440b8da90f710e4625b8eef3526a",
+    "shots/green-14.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/green-15.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/green-16.png": "sha256:745e3153a18917fc525b36c140cc3200c39389d58f783416daa0a8382bcfe803",
+    "shots/green-17.png": "sha256:427aae03c19e39268559ae5cb54fbe2713af440b8da90f710e4625b8eef3526a",
+    "shots/green-18.png": "sha256:b5ecaecd7ddac51292844c61bf073e91bcc24ff176e7cdbdae55a63b05c7f958",
+    "shots/red-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/red-01.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/red-02.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/red-03.png": "sha256:6b8612dc0f68fa51e421d8e10bd7d1a777c770a854043e70f4f94dcc00aa16f5",
+    "shots/red-04.png": "sha256:7d0c56c3dfa26b512dd50f01577e4022479e7dff86179e98801391b1dff0d57e",
+    "shots/red-05.png": "sha256:2e60ef44ce52a9bc607837d6eeb7a0d731a1932e353281f72fb286f44b992258",
+    "shots/red-06.png": "sha256:2e60ef44ce52a9bc607837d6eeb7a0d731a1932e353281f72fb286f44b992258",
+    "shots/red-07.png": "sha256:a3cbb8d7ec2dc283c493400e557bafea33ffd70c1061bce2958d1fa25b84acb9",
+    "shots/red-08.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/red-09.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/red-10.png": "sha256:1bb9da57da05f83170100f1af4577d03a78cba881bb3fc27d01403383599d101",
+    "shots/red-11.png": "sha256:48e365a708afb7b83ec500fde2e7f0144b64617bca77d812eec94662b4ae72ee",
+    "shots/red-12.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/red-13.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/red-14.png": "sha256:f654c9b6791b52082718fd831b99be08fb7c67440cb22531423b71eec4b726cd",
+    "shots/red-15.png": "sha256:b5ecaecd7ddac51292844c61bf073e91bcc24ff176e7cdbdae55a63b05c7f958",
+    "shots/red-16.png": "sha256:b5ecaecd7ddac51292844c61bf073e91bcc24ff176e7cdbdae55a63b05c7f958",
+    "videos/green.webm": "sha256:76e6ae3938fc56cd588a8accd3eabad26f51bcf0df38ace644a7c51cdc006375",
+    "videos/red.webm": "sha256:f0bbec34ba96dba96ae031b95d855f17b8729867c30fd7d97947ff606e254d0f"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:706dbee0b039a61c880b662b1fec7ebb8650235aa4df4ec2b48d88551ac83b5b",
+    "entries": 91
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "mR8JOcADo4ASwUObxsOnrJgib0voDDFfiliv6MfdqkN9vMGTUS1tJLjO5NQmOTLGbKMEd9CqkwfInjIFs5HEBQ=="
+  }
+}

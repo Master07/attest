@@ -1,0 +1,234 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T11:27:33.291Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p3/b2/base",
+        "sha": "1817fd6addb76259499187b22ef0646de27ea4ab"
+      },
+      "green": {
+        "ref": "ho/C11/candidate",
+        "sha": "0a4720a8a1990588d888473be12ac3644fe563db"
+      },
+      "break": {
+        "ref": "ho/p3/b2/break",
+        "sha": "2c19b1b16a6da84ccdcee4ec4477262f8918a101"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "7854571a866e973e6ae32a8f9526df91e19f33c8bd53d15c87cfea047a30f191"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p3/b2/base",
+      "sha": "1817fd6addb76259499187b22ef0646de27ea4ab",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "6957f4e09f0066ad5f3c1662bb8b292aa6cfa7204088dfadc37d589c801611b4",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize the Third slide remained visible but the status read 1 / 3 instead of 3 / 3.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 4 is first frame after Initialize and shows status 1 / 3 instead of required 3 / 3 while on Third slide, so the keep-current-status requirement is not met."
+          ]
+        },
+        {
+          "id": "status-correct-after-subsequent-navigation",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Previous the Second slide was visible and the status read 2 / 3.",
+          "evidence": [
+            "shots/red-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — After Initialize (Frame 4 on Third slide), the next frame after clicking Previous shows Second slide with status 2 / 3 as required, confirmed by Frames 5-6."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C11/candidate",
+      "sha": "0a4720a8a1990588d888473be12ac3644fe563db",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "25ca5c73467df47ac6b01ab39e073e1011b0933928581c92965c33ee2d11341d",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize, the Third slide remained visible but the status read 1 / 3 instead of 3 / 3.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 4 after Initialize still shows Third slide but status is 1 / 3 instead of the required 3 / 3."
+          ]
+        },
+        {
+          "id": "status-correct-after-subsequent-navigation",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Previous once, the Second slide was visible and the status read 2 / 3.",
+          "evidence": [
+            "shots/green-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 5 after Previous shows Second slide visible with status 2 / 3 as required."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p3/b2/break",
+      "sha": "2c19b1b16a6da84ccdcee4ec4477262f8918a101",
+      "status": "completed",
+      "error": null,
+      "steps": 10,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d6362852161a5a886ef6bac9c855a1db91210c57fb486cd8bbfce8c323ebe310",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize the Third slide remained visible but the status read 2 / 3 instead of 3 / 3.",
+          "evidence": [
+            "shots/break-09.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — The first frame after Initialize from Third 3/3 (Frame 9 to Frame 10) still shows Third slide but status is 2/3 not the required 3/3, and the earlier attempt Frame 5 to Frame 6 shows Second 2/3 instead of staying on Third."
+          ]
+        },
+        {
+          "id": "status-correct-after-subsequent-navigation",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Previous the Second slide was visible and the status read 2 / 3.",
+          "evidence": [
+            "shots/break-10.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 10 shows Third after Initialize, and the immediate next frame (Frame 11) after a single Previous click shows Second slide with status 2/3 as required."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:eb1647e84e6b15720a8da86aeeb1eabbb62ce92aade33843d28b3db9ffcc425c",
+    "shots/break-00.png": "sha256:73ee394e142206bb600dcb8d6d8b2bf8b1fe7ad9e135b4894196d9c887207017",
+    "shots/break-01.png": "sha256:73ee394e142206bb600dcb8d6d8b2bf8b1fe7ad9e135b4894196d9c887207017",
+    "shots/break-02.png": "sha256:aeca7968377fbd62d4335ba06530617e3c399b49614787da034d79b69a39878f",
+    "shots/break-03.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/break-04.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/break-05.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "shots/break-06.png": "sha256:f654c9b6791b52082718fd831b99be08fb7c67440cb22531423b71eec4b726cd",
+    "shots/break-07.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/break-08.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/break-09.png": "sha256:f2d6361f4e1b76dd7f3d77944407a72591341d8520c0012cbd2e154634a1bef8",
+    "shots/break-10.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "shots/green-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/green-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/green-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/green-03.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "shots/green-04.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "shots/red-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/red-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/red-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/red-03.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "shots/red-04.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "shots/red-05.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "videos/break.webm": "sha256:56a54b355b4e79baba99c1563ffc217b7d332328fdb8641a71caff87235452e7",
+    "videos/green.webm": "sha256:aa8be76683abcd6b9b02cdc1d8814e58dd673a8aed0b6b4dad623aebbf85eee1",
+    "videos/red.webm": "sha256:eb44331819c45194bc053c008b924c47e216138b1de61047b2a5eb0303c600f4"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:f602e3f556d1c33dcb8acdf96870af9282e6f51719eca728e8f980e06d18874d",
+    "entries": 71
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "uKhX5CIV8F9R07hAp6ecw9t4ulYWnjlahc9Az1PHVOSCcra4+Hg73qSXMM0myKnv6NSVg7tAAI7hk0NLRSGfAg=="
+  }
+}

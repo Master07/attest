@@ -1,0 +1,44 @@
+id: rtl-fragment-navigation-order-all-paths
+# Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
+# was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
+# Run 3 (exploratory, after unsealing): one criterion per path the report names.
+# The frozen criterion below was written before any candidate branch was opened; the added
+# criteria were written after runs 1-2 without seeing labels, diffs or results.
+criteria:
+  - id: rtl-next-reveals-fragments-then-advances
+    given: >-
+      An RTL presentation is open on the slide headed "First slide". The paragraphs
+      "First point" and "Second point" are both hidden, and the "Next" and "Previous"
+      buttons are visible at the top left.
+    when: >-
+      The user clicks the "Next" button once and waits for the slide to settle, clicks
+      "Next" a second time and waits, then clicks "Next" a third time and waits.
+    then: >-
+      After the first click, "First point" is visible and "Second point" is still hidden.
+      After the second click, both points are visible and the slide headed "First slide"
+      is still the visible slide. After the third click, the slide headed "Second slide"
+      is visible.
+  - id: rtl-previous-reverses-fragments
+    given: >-
+      An RTL presentation is open on the slide headed "First slide". The paragraphs
+      "First point" and "Second point" are both visible, and the "Next" and "Previous"
+      buttons are visible at the top left.
+    when: >-
+      The user clicks the "Previous" button once and waits for the slide to settle, clicks
+      "Previous" a second time and waits, then clicks "Previous" a third time and waits.
+    then: >-
+      After the first click, "Second point" is hidden and "First point" is still visible.
+      After the second click, "First point" is also hidden and the slide headed "First slide"
+      is still the visible slide. After the third click, both paragraphs are still hidden
+      and "First slide" is still the visible slide.
+  - id: rtl-left-arrow-moves-forward-right-arrow-back
+    given: >-
+      An RTL presentation is open on the slide headed "First slide". The paragraphs
+      "First point" and "Second point" are both hidden.
+    when: >-
+      The user presses the Left arrow key once and waits, presses the Left arrow key a
+      second time and waits, then presses the Right arrow key once and waits.
+    then: >-
+      After the first Left press, "First point" is visible and "Second point" is hidden.
+      After the second Left press, both paragraphs are visible. After the Right press,
+      "Second point" is hidden again and "First point" stays visible.

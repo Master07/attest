@@ -1,0 +1,326 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T10:47:42.427Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p1/b2/base",
+        "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268"
+      },
+      "green": {
+        "ref": "ho/C07/candidate",
+        "sha": "2c7463bc15d05a2ab156250dfb9fafcc4f7594e8"
+      },
+      "break": {
+        "ref": "ho/p1/b2/break",
+        "sha": "5794f09b02c386b4dd9054ddee4d478a930c80ca"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "4d5828f604afb4b88d565429dfcbcfafe6641e87a057f04f3f5e0de29824cc0f"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p1/b2/base",
+      "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268",
+      "status": "completed",
+      "error": null,
+      "steps": 22,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "5ba6ae1840a35a68e78f4ae75d5bf393f2cee050b35e63c637fcfc08498a52ec",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Next click the screen still shows First slide with First point only, not Second slide.",
+          "evidence": [
+            "shots/red-10.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frames 1-3 correctly show 0->1->2 fragments on First slide after first two Next clicks, but no frame ever shows the heading \"Second slide\" after the third click; the sequence instead returns to fewer fragments, so the third-click advance did not occur."
+          ]
+        },
+        {
+          "id": "rtl-previous-reverses-fragments",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted pass, others fail",
+          "observation": "After the third Previous click First point is visible again instead of both paragraphs staying hidden on First slide.",
+          "evidence": [
+            "shots/red-14.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Starting from Frame 5 with both points visible, Frame 6 shows only First point after one Previous, Frame 7 shows no points after a second Previous, and Frame 8 still shows no points on First slide after a third Previous, matching all three steps."
+          ]
+        },
+        {
+          "id": "rtl-left-arrow-moves-forward-right-arrow-back",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "judge voted pass, others fail",
+          "observation": "After the second Left arrow press both points are hidden with only First slide visible instead of both points visible.",
+          "evidence": [
+            "shots/red-20.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — From Frame 1 with no points, Frame 2 shows First point after first Left press, Frame 3 shows both points after second Left press, and Frame 4 shows back to only First point after Right press, demonstrating Left as forward and Right as back in RTL."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C07/candidate",
+      "sha": "2c7463bc15d05a2ab156250dfb9fafcc4f7594e8",
+      "status": "completed",
+      "error": null,
+      "steps": 10,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d860c595582c22cd71187747e1bd703ee9279327d0aa592fc6fc7ba4691f700f",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After first Next only First point appeared, after second both points stayed on First slide, after third Second slide appeared.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows First slide with no points, Frame 2 shows First point only, Frame 3 shows both points on First slide, Frame 4 shows Second slide."
+          ]
+        },
+        {
+          "id": "rtl-previous-reverses-fragments",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After first Previous only First point remained, after second both hid on First slide, after third still hid on First slide.",
+          "evidence": [
+            "shots/green-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 5 shows both points visible, Frame 6 shows only First point, Frame 7 shows no points with First slide, Frame 8 still shows First slide with no points."
+          ]
+        },
+        {
+          "id": "rtl-left-arrow-moves-forward-right-arrow-back",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "First Left showed First point alone, second Left showed both, Right hid Second point again leaving First point.",
+          "evidence": [
+            "shots/green-10.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 8 shows First slide with no points, Frame 9 shows First point only, Frame 10 shows both points, Frame 11 reverts to First point only."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p1/b2/break",
+      "sha": "5794f09b02c386b4dd9054ddee4d478a930c80ca",
+      "status": "step_cap",
+      "error": "stopped after 25 steps",
+      "steps": 25,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "c6e2b6a34ece6edcc1dae500c45684ba4959e907bae6fae408688ee6087d40fd",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — FRAME1 is First slide with no fragments, FRAME2 shows First point only, FRAME3 shows both points on First slide, FRAME4 shows Second slide – exactly the three Next steps."
+          ]
+        },
+        {
+          "id": "rtl-previous-reverses-fragments",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Starting from FRAME16 (both points), FRAME17 hides Second point and FRAME18 hides First point correctly, but the next settled frame FRAME19 shows First point visible again instead of staying hidden on First slide after the third Previous click."
+          ]
+        },
+        {
+          "id": "rtl-left-arrow-moves-forward-right-arrow-back",
+          "votes": {
+            "cua": "missing",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "inconclusive",
+          "reason": "verifier gave no verdict",
+          "observation": "",
+          "evidence": [
+            "shots/break-25.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — From FRAME20 (First slide alone) Left press shows First point at FRAME21, second Left shows both points at FRAME22, and Right press returns to First point only at FRAME23 – matching the RTL arrow mapping."
+          ]
+        }
+      ],
+      "result": "inconclusive",
+      "reason": "phase error: stopped after 25 steps",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "break: inconclusive"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:d0aaf9f683464261f566648a8c61ad959a0f2c68513f5a0869614fa5e1bcde62",
+    "shots/break-00.png": "sha256:527664eca5119aa86c6368c0e23c86e977581a87e0e42315ff7dbd987ee6f3f3",
+    "shots/break-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/break-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/break-03.png": "sha256:0232a1605d691e682a3f5cf745e544c16e87c3066e75828d87478fb878ec82d6",
+    "shots/break-04.png": "sha256:1e1303fce1a13b2c4c5c5bf084556ef48ec97ec8fcf903b61793f3e0ac76f6ce",
+    "shots/break-05.png": "sha256:dae6e13b9d27b5bf3f7e506d6437f211e10ea925ff11ad3aa4005aa7cdee5fd1",
+    "shots/break-06.png": "sha256:b9e3f9cd2e5442e4ecadd494e360451e969eaca01d00cd6a76e39bfd6ed49834",
+    "shots/break-07.png": "sha256:b9e3f9cd2e5442e4ecadd494e360451e969eaca01d00cd6a76e39bfd6ed49834",
+    "shots/break-08.png": "sha256:1e1303fce1a13b2c4c5c5bf084556ef48ec97ec8fcf903b61793f3e0ac76f6ce",
+    "shots/break-09.png": "sha256:12226309c211addebaceb80279005453261bba652e77ceb708f590401f069bbf",
+    "shots/break-10.png": "sha256:12226309c211addebaceb80279005453261bba652e77ceb708f590401f069bbf",
+    "shots/break-11.png": "sha256:139d02244518880cec1c3ee13cc8cf9c6405dec9ea96c0eeda56c79d280ef11a",
+    "shots/break-12.png": "sha256:139d02244518880cec1c3ee13cc8cf9c6405dec9ea96c0eeda56c79d280ef11a",
+    "shots/break-13.png": "sha256:139d02244518880cec1c3ee13cc8cf9c6405dec9ea96c0eeda56c79d280ef11a",
+    "shots/break-14.png": "sha256:139d02244518880cec1c3ee13cc8cf9c6405dec9ea96c0eeda56c79d280ef11a",
+    "shots/break-15.png": "sha256:780b434cbb7c190275e1a8530297fc99729595bfccbba964309b5b551dceac42",
+    "shots/break-16.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/break-17.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/break-18.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/break-19.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/break-20.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/break-21.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/break-22.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/break-23.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/break-24.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/break-25.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/green-00.png": "sha256:39eb9a365fd9db4b71527fb3a7ab0ba864b4307a5aaf9509b8d35124725dd314",
+    "shots/green-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-03.png": "sha256:0232a1605d691e682a3f5cf745e544c16e87c3066e75828d87478fb878ec82d6",
+    "shots/green-04.png": "sha256:efc496eeb9fff8bb8c3fdb0078efc835c8de9fee234da73af8223c25e0ae4c12",
+    "shots/green-05.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/green-06.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/green-07.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/green-08.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/green-09.png": "sha256:44bf2598b1f5671929f36f6a55b64f7d431b124f0a858883d826e7ba5b5aa9fa",
+    "shots/green-10.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/red-00.png": "sha256:3c2360db8d2ee4b9513e8a6c99f456c7e795c99ec3c2f0133746f63206515e39",
+    "shots/red-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-05.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/red-06.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/red-07.png": "sha256:46a9d058270a3498a337250b8d47d03e470648d7947d2db07e1722d265279d23",
+    "shots/red-08.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-09.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-10.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-11.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-12.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/red-13.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/red-14.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "shots/red-15.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/red-16.png": "sha256:a3c320d8c99064a00a8e371c21f175ef166ceea798e44e639795d3fb1b92e3b0",
+    "shots/red-17.png": "sha256:46a9d058270a3498a337250b8d47d03e470648d7947d2db07e1722d265279d23",
+    "shots/red-18.png": "sha256:3b03f7baff6f44a7e40570fe14cc5eb57306c0bc78a9d0d077ab413c47c52d24",
+    "shots/red-19.png": "sha256:3959aa9bd34045a033aa2a53776cd6552b83a90583f2d5c0a023f03a320c5583",
+    "shots/red-20.png": "sha256:3b03f7baff6f44a7e40570fe14cc5eb57306c0bc78a9d0d077ab413c47c52d24",
+    "shots/red-21.png": "sha256:3959aa9bd34045a033aa2a53776cd6552b83a90583f2d5c0a023f03a320c5583",
+    "shots/red-22.png": "sha256:780b434cbb7c190275e1a8530297fc99729595bfccbba964309b5b551dceac42",
+    "videos/break.webm": "sha256:a23db40cba768aa7381a3e5250dc1daf0e7d669b61016ec04be3e34f63a7daf0",
+    "videos/green.webm": "sha256:afa50496aa03b1368963fba3a6607c376ff3c5d3942ccfa373e7845a6cb976d1",
+    "videos/red.webm": "sha256:47d12dfcec3ec80f22d4681af9908bad127c9febd569ff929a3f9285966589e3"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:3cc0c095b2b6ce80cfc3fe3ae66fe30fed483d326d542ffde85b55eb84a48d94",
+    "entries": 147
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "gGcvPm/Tu/fQnnzVxsMyWT+pBT1Dpt5WI3OOfK8vmOCJ1JtuItpO32euh07CrM+LK+HM+mH30C/qQ2j7SLvGAA=="
+  }
+}
