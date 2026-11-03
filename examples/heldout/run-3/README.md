@@ -28,13 +28,15 @@ Notes on coverage:
 - **p2/b1:** the report says "other input types" (plural). The base page contains one other type,
   the email input; no extra inputs were added to the app.
 - **p3/b1:** the report says "arrow keys" without naming a direction for the controls. Only the
-  Right arrow (the key that navigates forward on this page) is exercised per control. The upstream
-  directions are not separately enumerated in the report.
+  Right arrow (the key that navigates forward on this page) is exercised per control. The report does not name a direction for the controls.
 - **p3/b1, contenteditable:** the End key is used to put the caret at the end of the existing text
   so the typed result is deterministic. That is setup, not a separate path.
 - **p1/b2:** the RTL direction mapping (Left arrow moves forward, Right arrow moves back) comes
   from the upstream commit the report links to (488c5c8).
-- No path named in a report was left untested.
+- **p3/b2, later navigation:** the Previous button is used because the deck is on its last slide
+  after Initialize; Next there does not change the slide.
+- Every control type and must-still-work clause named in a report is covered; the notes above
+  record the two places where the report is less specific.
 
 ## Base checks
 
