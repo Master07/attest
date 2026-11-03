@@ -2,6 +2,8 @@ id: default-substeps-one-at-a-time-all-paths
 # Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
 # was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
 # Run 3 (exploratory, after unsealing): one criterion per path the report names.
+# The frozen criterion below was written before any candidate branch was opened; the added
+# criteria were written after runs 1-2 without seeing labels, diffs or results.
 criteria:
   - id: one-next-reveals-one-default-substep
     given: >-
