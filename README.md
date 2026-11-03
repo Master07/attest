@@ -39,7 +39,7 @@ Each phase gets **up to four independent votes**, and disagreement is never a pa
 3. **SAM 3.1** — is the element visible, and did the click actually reach it?
 4. **A Muse Spark Open judge** (open weights, on Baseten) — sees only the requirement and the screenshots in order — no actions, no code.
 
-Code checks and SAM vote only when the criterion names a URL, a network call or a visible element; otherwise they record `n/a`. On the real-world proofs below they don't apply, so those verdicts rest on **two Meta models agreeing** (Spark 1.3 and Spark Open). All four vote only where all four apply: in the [10-bug planted benchmark](docs/BENCHMARK.md), on 12 of its 48 criterion results (the visual bugs). SAM never applies in the generated benchmark.
+Code checks and SAM vote only when the criterion names a URL, a network call or a visible element; otherwise they record `n/a`. On the real-world proofs below they don't apply, so those verdicts rest on **two Meta models agreeing** (Spark 1.3 and Spark Open). All four vote only where the criterion names a visible element: on the demo PR ([receipt](proofs/pr-1-live/)) and, in the [10-bug planted benchmark](docs/BENCHMARK.md), on B08 and B09 (12 of its 48 criterion results). SAM never applies in the generated benchmark.
 
 Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit made after sealing. The signature shows the receipt wasn't changed; it doesn't prove who ran the proof (the key is created on the machine that ran it). Every result below is a committed receipt: `npm run verify-proofs` checks all of them ([proofs/](proofs/)).
 
