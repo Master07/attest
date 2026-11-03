@@ -39,7 +39,7 @@ Each phase gets **up to four independent votes**, and disagreement is never a pa
 3. **SAM 3.1** — is the element visible, and did the click actually reach it?
 4. **A Muse Spark Open judge** (open weights, on Baseten) — sees only the requirement and the screenshots in order — no actions, no code.
 
-Code checks and SAM vote only when the criterion names a URL, a network call or a visible element; otherwise they record `n/a`. On the real-world proofs below they don't apply, so those verdicts rest on **two Meta models agreeing** (Spark 1.3 and Spark Open). All four vote on the planted benchmark bugs.
+Code checks and SAM vote only when the criterion names a URL, a network call or a visible element; otherwise they record `n/a`. On the real-world proofs below they don't apply, so those verdicts rest on **two Meta models agreeing** (Spark 1.3 and Spark Open). All four vote only where all four apply: in the [10-bug planted benchmark](docs/BENCHMARK.md), on 12 of its 48 criterion results (the visual bugs). SAM never applies in the generated benchmark.
 
 Everything — votes, screenshots, a hash-chained event log — is sealed into a **signed receipt** plus an evidence page. `attest verify` checks it without calling any model, and rejects any edit made after sealing. The signature shows the receipt wasn't changed; it doesn't prove who ran the proof (the key is created on the machine that ran it). Every result below is a committed receipt: `npm run verify-proofs` checks all of them ([proofs/](proofs/)).
 
@@ -93,14 +93,14 @@ Ten planted bugs show the mechanism works; they are not a measure of real-world 
 
 **A larger, pre-registered benchmark: 102 generated planted bugs** in five small apps, each with a real fix and a wrong fix that comes with a passing check, frozen and checked without AI before any model ran ([write-up](docs/BENCHMARK_GENERATED.md) · [receipts](proofs/bench-gen/)):
 
-- **Run 1: 55 PROVEN, 47 INCONCLUSIVE, 0 REJECTED.** No real fix was rejected and **no wrong fix was certified**. Of the 47 wrong fixes that came with a passing behavioural test, Attest certified none.
+- **Run 1: 55 PROVEN, 47 INCONCLUSIVE, 0 REJECTED.** No real fix was rejected and **no wrong fix was certified**. Of the 47 wrong fixes that came with a passing behavioural test, Attest certified none. Here each wrong fix sits in the Break position, where passing blocks PROVEN by design, so this is not a measured false-pass rate on candidate fixes; the held-out set below tests wrong fixes as the candidate.
 - **Every INCONCLUSIVE is listed with its reason.** 10 were our own mistake: the checkout page showed quantity 9 against a criterion saying "one item", and the judge rightly refused. The weak spot is layout bugs (clipped, off-screen, invisible or zero-size controls): 3 of 25 PROVEN. On those, Attest refused to certify rather than pass a wrong fix.
 - **Run 2**, pre-registered with only the quantity fixed, re-ran checkout: **17 of 19 PROVEN** (run 1: 8 of 20). Both runs are reported.
 
 <a id="held-out-with-hidden-labels"></a>**Held-out, with hidden labels: as pre-registered, Attest accepted 3 of 5 wrong fixes. With one criterion per reported path, it rejected all 5.** An AI selector picked 10 candidate fixes for 5 historical bugs in reveal.js, impress.js and deck.js, and sealed which were correct. The criteria were written without seeing any fix, and everything was frozen before the first run ([write-up](docs/BENCHMARK_HELDOUT.md) · [receipts](proofs/heldout/)):
 
 - **0 of 5 correct fixes rejected**, in every run and both workflows.
-- **Runs 1–2: 2 wrong fixes rejected; 3 accepted.** Each accepted wrong fix works on the one path its criterion tests and fails on another path the bug report names. Attest proves what the criterion says; a criterion that covers one path of a multi-path bug lets a partial fix through. The criteria author had flagged exactly these three as single-path before any run.
+- **Run 1: 2 wrong fixes accepted, 1 INCONCLUSIVE, 2 rejected. Run 2: 3 accepted, 2 rejected.** Each accepted wrong fix works on the one path its criterion tests and fails on another path the bug report names. Attest proves what the criterion says; a criterion that covers one path of a multi-path bug lets a partial fix through. The criteria author had flagged exactly these three as single-path before any run.
 - **Run 3 (exploratory, after unsealing): one criterion per path the report names.** On the same builds, Attest rejected all 5 wrong fixes, and still no correct fix. More criteria cost decisive verdicts: 4 of 10 correct-fix receipts were INCONCLUSIVE, from Meta API errors and a step cap sized for one criterion. One outage re-run turned PROVEN.
 - The run also found a bug in Attest: its key map dropped `ArrowRight`, so a phase could pass on keys never pressed. It's fixed, and run 2 re-ran everything at the fix, pre-registered before unsealing.
 
@@ -110,15 +110,7 @@ Ten planted bugs show the mechanism works; they are not a measure of real-world 
 
 Requires Node 22+ and git; step 2 also needs Microsoft Edge or Chrome (`ATTEST_BROWSER_CHANNEL=chrome` for Chrome).
 
-**Preflight, no model calls.** `attest doctor` checks refs, config, the browser, that `MODEL_API_KEY` is set (it prints "set", never the value), and that the base ref becomes ready. Without `--break` the best possible verdict is PROVEN_UNCHECKED. `--no-start` skips booting the app.
-
-```bash
-npm run attest -- doctor --app examples/checkout-demo --base demo/base --pr demo/fix --break demo/bad-fix
-```
-
-`attest init --app <path>` writes a draft `attest.yml` and `criteria.yml` (defaults match the loader) and never overwrites existing files. A person reviews the draft before any run.
-
-**1. Check the proofs — seconds, no key, no model calls.** Every result above is a signed receipt from a **live** run, committed in [proofs/](proofs/) (TodoMVC's, at 101 MB, is a release download). This checks each signature, hash chain, screenshot and video, and recomputes each verdict from the recorded votes:
+**1. Check the proofs — seconds, no key, no model calls.** Every result above is a signed receipt committed in [proofs/](proofs/), from a **live** run except the one jspaint replay, which is labelled as one (TodoMVC's, at 101 MB, is a release download). This checks each signature, hash chain, screenshot and video, and recomputes each verdict from the recorded votes:
 
 ```bash
 git clone https://github.com/Master07/attest.git && cd attest
@@ -136,6 +128,14 @@ npm run attest -- verify evidence/run-<id>/receipt.json
 ```
 
 Optional: `npx playwright install ffmpeg` (a few MB) adds a screen recording of every phase to the evidence page; without it, everything else still runs.
+
+**Before a live run: preflight, no model calls.** `attest doctor` checks refs, config, the browser, that `MODEL_API_KEY` is set (it prints "set", never the value), and that the base ref becomes ready. Without `--break` the best possible verdict is PROVEN_UNCHECKED. `--no-start` skips booting the app.
+
+```bash
+npm run attest -- doctor --app examples/checkout-demo --base demo/base --pr demo/fix --break demo/bad-fix
+```
+
+`attest init --app <path>` writes a draft `attest.yml` and `criteria.yml` (defaults match the loader) and never overwrites existing files. A person reviews the draft before any run.
 
 **3. Live, with your own keys:** `cp .env.example .env`, set `MODEL_API_KEY` (and `BASETEN_API_KEY` for the open-weights judge; without it the judge uses Muse Wonder), and drop `--replay …`.
 **Let Muse Code write the fix**, then prove it: `npm run attest -- loop --app examples/checkout-widget --base demo2/base --break demo2/bad-fix --report "I click Pay and nothing happens."`
