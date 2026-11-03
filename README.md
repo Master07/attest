@@ -47,6 +47,8 @@ Everything — votes, screenshots, a hash-chained event log — is sealed into a
 
 ## Results
 
+> **Held-out, with labels sealed by a separate AI selector:** as pre-registered, Attest accepted **3 of 5** wrong fixes, each broken only on a path its criterion didn't test. With one criterion per path the bug report names, it rejected **all 5**. No correct fix was rejected in any run. The second result comes from run 3, which is exploratory: its criteria were written after unsealing. [Details](#held-out-with-hidden-labels) · [write-up](docs/BENCHMARK_HELDOUT.md) · [all 220 receipts, live dashboard](https://master07.github.io/attest/proofs/)
+
 **On real, merged pull requests in other people's apps**, each criterion committed before its run, live, the verifier and the open-weights judge agreeing in every phase, neither seeing the code. The bugs and the fixes are real; **every wrong fix (Break) is one we wrote**. Every run is reported, first attempt included:
 
 | Fix (licence) | Written by | Verdict | Receipt · write-up |
@@ -95,7 +97,7 @@ Ten planted bugs show the mechanism works; they are not a measure of real-world 
 - **Every INCONCLUSIVE is listed with its reason.** 10 were our own mistake: the checkout page showed quantity 9 against a criterion saying "one item", and the judge rightly refused. The weak spot is layout bugs (clipped, off-screen, invisible or zero-size controls): 3 of 25 PROVEN. On those, Attest refused to certify rather than pass a wrong fix.
 - **Run 2**, pre-registered with only the quantity fixed, re-ran checkout: **17 of 19 PROVEN** (run 1: 8 of 20). Both runs are reported.
 
-**Held-out, with hidden labels: as pre-registered, Attest accepted 3 of 5 wrong fixes. With one criterion per reported path, it rejected all 5.** An AI selector picked 10 candidate fixes for 5 historical bugs in reveal.js, impress.js and deck.js, and sealed which were correct. The criteria were written without seeing any fix, and everything was frozen before the first run ([write-up](docs/BENCHMARK_HELDOUT.md) · [receipts](proofs/heldout/)):
+<a id="held-out-with-hidden-labels"></a>**Held-out, with hidden labels: as pre-registered, Attest accepted 3 of 5 wrong fixes. With one criterion per reported path, it rejected all 5.** An AI selector picked 10 candidate fixes for 5 historical bugs in reveal.js, impress.js and deck.js, and sealed which were correct. The criteria were written without seeing any fix, and everything was frozen before the first run ([write-up](docs/BENCHMARK_HELDOUT.md) · [receipts](proofs/heldout/)):
 
 - **0 of 5 correct fixes rejected**, in every run and both workflows.
 - **Runs 1–2: 2 wrong fixes rejected; 3 accepted.** Each accepted wrong fix works on the one path its criterion tests and fails on another path the bug report names. Attest proves what the criterion says; a criterion that covers one path of a multi-path bug lets a partial fix through. The criteria author had flagged exactly these three as single-path before any run.

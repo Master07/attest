@@ -50,8 +50,12 @@ for (const path of found) {
 console.log(`\n${found.length - invalid} of ${found.length} receipts valid`);
 
 if (writeIndex) {
-  // Real-world proofs first, then pull requests, then the benchmark; alphabetical within each.
-  const rank = (p: string): number => (p.startsWith("realworld/") ? 0 : p.startsWith("pr-") ? 1 : p.startsWith("benchmark/") ? 2 : 3);
+  // Real-world proofs first, then held-out, pull requests and the benchmarks; alphabetical within each.
+  const ORDER = ["realworld/", "heldout/", "pr-", "benchmark/", "bench-gen"];
+  const rank = (p: string): number => {
+    const i = ORDER.findIndex((prefix) => p.startsWith(prefix));
+    return i === -1 ? ORDER.length : i;
+  };
   entries.sort((a, b) => rank(a.path) - rank(b.path) || a.path.localeCompare(b.path));
   const out = join(root, "index.html");
   writeFileSync(out, renderProofsIndex(entries));

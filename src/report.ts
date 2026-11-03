@@ -421,7 +421,13 @@ export interface ProofIndexEntry {
   valid: boolean;              // result of verifyReceipt when the page was generated
 }
 
-const GROUPS: [RegExp, string][] = [[/^realworld\//, "Real-world"], [/^pr-/, "Pull requests"], [/^benchmark\//, "Benchmark"]];
+const GROUPS: [RegExp, string][] = [
+  [/^realworld\//, "Real-world"],
+  [/^heldout\//, "Held-out (sealed labels)"],
+  [/^pr-/, "Pull requests"],
+  [/^benchmark\//, "Benchmark"],
+  [/^bench-gen/, "Generated benchmark"],
+];
 const groupOf = (path: string): string => GROUPS.find(([re]) => re.test(path))?.[1] ?? "Other";
 
 /** Pure: the dashboard HTML for a set of verified receipts, grouped and in the given order. */
