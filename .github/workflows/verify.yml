@@ -21,6 +21,9 @@ jobs:
     continue-on-error: ${{ matrix.os != 'windows-latest' }}
     steps:
       - uses: actions/checkout@v4
+      # The doctor tests resolve the demo branches (demo/base, demo/fix); checkout fetches only this commit.
+      - run: git fetch --no-tags origin "+refs/heads/demo/*:refs/heads/demo/*"
+        shell: bash
       - uses: actions/setup-node@v4
         with:
           node-version: 22
