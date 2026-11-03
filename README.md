@@ -4,7 +4,7 @@ A verifier that never sees the code reproduces the bug, confirms the fix in the 
 
 **▶ [Demo video (2:52)](https://youtu.be/jMU3TaSQ45o)** · recorded evidence from the receipts in this repo, synthetic voice, captions burned in.
 
-*Built entirely during the Meta Global AI Developer Hackathon (Oct 26 – Nov 4, 2026) · Indie track · Push the Frontier.* <sub>Design docs were written Oct 26–30; git was set up on Oct 31, so the first commit contains them.</sub>
+*Built entirely during the **Meta Global AI Hackathon 2026** (the Meta Global AI Developer Hackathon, Oct 26 – Nov 4, 2026) · Indie track · Push the Frontier.* <sub>Design docs were written Oct 26–30; git was set up on Oct 31, so the first commit contains them.</sub>
 
 ![SAM 3.1 finds the Pay button; the click actually landed on an invisible chat-widget container](docs/assets/sam-reveal.png)
 
