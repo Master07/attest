@@ -1,0 +1,26 @@
+# Re-checks the whole repository on every push: types, unit tests, and every committed receipt
+# (signature, hash chain, artifact hashes, verdict recomputed from the recorded votes).
+# No API keys and no model calls.
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: windows-latest  # same line-ending handling as the machine that produced the receipts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run verify-proofs
