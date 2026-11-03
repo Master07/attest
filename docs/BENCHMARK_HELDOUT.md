@@ -28,10 +28,10 @@ Workflows A and B gave the same accept/reject decision on every wrong fix. Break
 | C12 | impress.js: shortcuts while typing | Space in an input with no `type` attribute | Other characters and other input types |
 
   The criteria author flagged exactly these three criteria as "one reported path tested, not every path" in their hand-off, before any run.
-- **The lesson is about criteria, not the verifier.** Attest proves what the criterion states. If the criterion covers one path of a multi-path bug, a fix that covers only that path passes. The remedy is one criterion per path the report names. The sealed ground truth says each of the three wrong fixes fails such a path, but we haven't run Attest with those criteria, so we don't claim it would catch them.
+- **The lesson is about criteria, not the verifier.** Attest proves what the criterion states. If the criterion covers one path of a multi-path bug, a fix that covers only that path passes. The remedy is one criterion per path the report names. Run 3 tests that remedy, with criteria written after unsealing ([below](#run-3-one-criterion-per-path)).
 - **Run 1 vs run 2:** run 1's key-map bug made p3/b1's Red pass (C01-A/B, C05-B), which turned C01 into INCONCLUSIVE instead of a wrong acceptance. The bug hid a miss rather than causing one. With it fixed, both p3/b1 bugs reproduced in every run.
 - **The INCONCLUSIVE correct fix (C07-B, both runs):** the separate Break build passed the criterion, so Attest refused to certify. Like the misses above, that Break build fails only on an untested path: going back with Previous.
-- **No outages.** No Meta API 5xx occurred, so nothing was re-run. All 40 receipts verify. Run 1 ran 03:27–04:35 IST and run 2 04:35–05:34 IST on Nov 3.
+- **No outages in runs 1–2.** No Meta API 5xx occurred, so nothing was re-run. All 40 receipts verify. Run 1 ran 03:27–04:35 IST and run 2 04:35–05:34 IST on Nov 3.
 
 **Run 3, with one criterion per path the report names: Attest rejected all 5 wrong fixes** and still rejected no correct fix. Run 3 is exploratory and came after unsealing; see [below](#run-3-one-criterion-per-path).
 
@@ -49,7 +49,7 @@ The full table, one row per candidate, run and workflow, comes from `node script
 | Correct fixes accepted, workflow A | 5/5 | 4/5 (1 INCONCLUSIVE) |
 | Correct fixes PROVEN, workflow B | 4/5 | 2/5 (3 INCONCLUSIVE); 3/5 after the outage re-run |
 
-- **Only the criteria changed.** The candidates, Break builds, Attest's code, prompts, step cap (25) and model IDs are the same as run 2. Each file keeps the frozen criterion first, word for word. It adds one criterion per path and one per "must still work" clause in the report, 2–4 per bug. Before any run, the author checked each one by hand against the base build.
+- **Only the criteria changed.** The candidates, Break builds, Attest's code, prompts, step cap (25) and model IDs are the same as run 2. Each file keeps the frozen criterion first, word for word. It adds one criterion per path and one per "must still work" clause in the report, 2–4 per bug. Before any run, the author checked each one against the base build with their own Playwright script, without model calls.
 - **The three misses are now rejected in both workflows.** Each one fails on the new criterion for the path it breaks, with the verifier and the judge both voting fail: C01 on contenteditable, C06 on Previous, C12 on the email input. These are the paths the sealed ground truth names. C03 and C11 are rejected as before.
 - **More criteria cost decisive verdicts on correct fixes, never a wrong pass.**
   - **C10-A:** a Meta API HTTP 500 in Red. Its one re-run hit another 500, so it stays INCONCLUSIVE. Green passed every criterion, and both voters agreed.

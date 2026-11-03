@@ -11,7 +11,14 @@ on:
 
 jobs:
   verify:
-    runs-on: windows-latest  # same line-ending handling as the machine that produced the receipts
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows matches the machine that produced the receipts. macOS and Linux run too; until they
+        # have passed once they don't decide the badge.
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.os != 'windows-latest' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
