@@ -1,0 +1,129 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T23:22:43.595Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p3/b2/base",
+        "sha": "1817fd6addb76259499187b22ef0646de27ea4ab"
+      },
+      "green": {
+        "ref": "ho/C09/candidate",
+        "sha": "33801dc4a83be8e674fb19f4a7eed968845ed3ef"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "9dc08e6dcc0442d01689bcfccac2a4b8a5bfb091155ae72cd802cdc659befceb"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p3/b2/base",
+      "sha": "1817fd6addb76259499187b22ef0646de27ea4ab",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "959a2929fd5a8087c8bfeffdc1daf9b4aca0397fd1637f0c14f486b5962ad4a9",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize, the slide still shows 'Third slide' but the status reads '1 / 3' instead of '3 / 3'.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After clicking Initialize the status reset to 1 / 3 instead of remaining 3 / 3, even though the Third slide stayed visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C09/candidate",
+      "sha": "33801dc4a83be8e674fb19f4a7eed968845ed3ef",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "33c4da8d3819f91e4eebc9248259dd89324e870a2719126cdb54bd4e84ce1202",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After clicking Next twice and then Initialize, the status still reads 3 / 3 with Third slide visible.",
+          "evidence": [
+            "shots/green-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — After reaching 3/3 Third slide in frame 3, frames 4-5 after Initialize still show status 3/3 and Third slide visible."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "PROVEN_UNCHECKED",
+  "reasons": [
+    "red failed and green passed; no break build, so sensitivity is unchecked"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:69c1a6b2180f94cdd8249c2208216461432f34293cabaf09f7894219befcda16",
+    "shots/green-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/green-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/green-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/green-03.png": "sha256:1c617d72c6e206dc7b79711f41f43d1a03010323b8530e486279d636eaa06dc2",
+    "shots/green-04.png": "sha256:1c617d72c6e206dc7b79711f41f43d1a03010323b8530e486279d636eaa06dc2",
+    "shots/red-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/red-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/red-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/red-03.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "videos/green.webm": "sha256:fadc870df20d19fa27193a1b070968c1ea04b44193661545616cf9a73afd9b3c",
+    "videos/red.webm": "sha256:8bf17df2c6d8044c97d50f9e06726b5941828ecfdec2f74f8bbba7320e542f7f"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:4033dfb8a22a73d22a99c662805963e204a45da7a3a326a0f3ba5d545348eaae",
+    "entries": 37
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "MeNipsQP6KzEHhc4zOoj/wcUIhnweAjoMQuKWw9crAMa5de/3Ho09asUWIAFJoxp7xRv06sXidqtd7ZjjHc3BQ=="
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "suggested": [
+    {
+      "bug": "p1/b1",
+      "instructions": "Focus each editable field and type a question mark; check text entry and help behavior, then repeat shortcut with slide focused."
+    },
+    {
+      "bug": "p2/b2",
+      "instructions": "Click Next repeatedly and Previous once; observe individual default-order points. On the second slide verify equal-order grouping."
+    },
+    {
+      "bug": "p3/b2",
+      "instructions": "Advance to slides two and three, initialize each time, and compare the displayed current number with the visible slide."
+    }
+  ],
+  "performed": false
+}

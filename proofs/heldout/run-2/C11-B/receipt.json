@@ -1,0 +1,179 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-03T00:00:49.804Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p3/b2/base",
+        "sha": "1817fd6addb76259499187b22ef0646de27ea4ab"
+      },
+      "green": {
+        "ref": "ho/C11/candidate",
+        "sha": "0a4720a8a1990588d888473be12ac3644fe563db"
+      },
+      "break": {
+        "ref": "ho/p3/b2/break",
+        "sha": "2c19b1b16a6da84ccdcee4ec4477262f8918a101"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "9dc08e6dcc0442d01689bcfccac2a4b8a5bfb091155ae72cd802cdc659befceb"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p3/b2/base",
+      "sha": "1817fd6addb76259499187b22ef0646de27ea4ab",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "2e0f5621cc2267ce1f27fbdb75c671a227865d0790fb35f788a3042bee138cba",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize the status reads 1 / 3 instead of 3 / 3 while Third slide is visible.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After clicking Initialize the status changed to \"1 / 3\" instead of remaining \"3 / 3\" as required, even though \"Third slide\" remained visible."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C11/candidate",
+      "sha": "0a4720a8a1990588d888473be12ac3644fe563db",
+      "status": "completed",
+      "error": null,
+      "steps": 4,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "1059c79fd40f19a867eb5f45878faaa32a5e64976b47690b88d22a4d69609642",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After clicking Initialize, the status reads 1 / 3 instead of 3 / 3 while Third slide remains visible.",
+          "evidence": [
+            "shots/green-04.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After clicking Initialize the status text changed to \"1 / 3\" in Frame 4 instead of remaining \"3 / 3\", so the required preservation did not occur."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p3/b2/break",
+      "sha": "2c19b1b16a6da84ccdcee4ec4477262f8918a101",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8b46d40c48da39d2c2b55fe1fdc4887662b2c14328a5fb4232cdd0b7b89c1a70",
+      "criteria": [
+        {
+          "id": "reinitialise-keeps-current-status",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After Next twice Third slide 3/3 was visible, but after Initialize the status read 2/3 while Third slide remained visible.",
+          "evidence": [
+            "shots/break-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After navigating to Third slide 3/3 in Frame 10 and clicking Initialize, Frame 11 shows status reverted to 2/3 instead of remaining 3/3 as required."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:69c1a6b2180f94cdd8249c2208216461432f34293cabaf09f7894219befcda16",
+    "shots/break-00.png": "sha256:73ee394e142206bb600dcb8d6d8b2bf8b1fe7ad9e135b4894196d9c887207017",
+    "shots/break-01.png": "sha256:73ee394e142206bb600dcb8d6d8b2bf8b1fe7ad9e135b4894196d9c887207017",
+    "shots/break-02.png": "sha256:aeca7968377fbd62d4335ba06530617e3c399b49614787da034d79b69a39878f",
+    "shots/break-03.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/break-04.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/break-05.png": "sha256:f2d6361f4e1b76dd7f3d77944407a72591341d8520c0012cbd2e154634a1bef8",
+    "shots/break-06.png": "sha256:6468eee77a3b92d15dca7cdbdaebeb58577a378aa17349ae732386146f02b6d8",
+    "shots/break-07.png": "sha256:f654c9b6791b52082718fd831b99be08fb7c67440cb22531423b71eec4b726cd",
+    "shots/break-08.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/break-09.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/break-10.png": "sha256:f2d6361f4e1b76dd7f3d77944407a72591341d8520c0012cbd2e154634a1bef8",
+    "shots/break-11.png": "sha256:f2d6361f4e1b76dd7f3d77944407a72591341d8520c0012cbd2e154634a1bef8",
+    "shots/green-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/green-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/green-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/green-03.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "shots/green-04.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "shots/red-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/red-01.png": "sha256:bcba4324c3422dc81af06994059b0ebc2dcbbb5137f219e83db58aec633b5bc1",
+    "shots/red-02.png": "sha256:4cc1d1b6f619946d07a502c3ec545ce1b4ecf99dfa0e8604f723b7d62e74d9ef",
+    "shots/red-03.png": "sha256:2621e3f8a9ecab1e8daf045df0a51bca58b374c63f7eabe3a063f262607af2e0",
+    "videos/break.webm": "sha256:c35945a02f5744e2a79ea0f7d64d22e5a34ac54523e5d7d39ed9c4d36a70eafb",
+    "videos/green.webm": "sha256:7c74a92595955c3f83fbb5ab72aa765713696d6e0e35107171d53c236ed0ab04",
+    "videos/red.webm": "sha256:5e0acee9b0e5d134b7445eac8fc50a70201f829949190691d2e2b7f354f0fb97"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:b0960ec493abf6ae9eba0f5722827d8ce82ec2f8575a8cf199bcab655beab5fb",
+    "entries": 69
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "sc0tFymqrH99hABBRyITgxkkvZv7oz5x0wZ50743mWOPiUKB9FTLVnm0HYUsM5PBrw+QlmXP1WuUUbF+fzRkAA=="
+  }
+}

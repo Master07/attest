@@ -1,12 +1,39 @@
 # Held-out benchmark: unfamiliar projects, hidden labels
 
-> **Audience:** judges + devs · **Status:** draft, results pending · **Last updated:** 2026-11-03 · **Related:** [manifest](../examples/heldout/MANIFEST.md) · [run plan 1](../examples/heldout/RUN_PLAN.md) · [run plan 2](../examples/heldout/RUN_PLAN_2.md) · [generated benchmark](BENCHMARK_GENERATED.md) · [receipts](../proofs/heldout/)
+> **Audience:** judges + devs · **Status:** final for runs 1 and 2 · **Last updated:** 2026-11-03 · **Related:** [manifest](../examples/heldout/MANIFEST.md) · [run plan 1](../examples/heldout/RUN_PLAN.md) · [run plan 2](../examples/heldout/RUN_PLAN_2.md) · [unsealed labels](../examples/heldout/unsealed/) · [generated benchmark](BENCHMARK_GENERATED.md) · [receipts](../proofs/heldout/)
 
 **Small, but independent.** Every earlier benchmark was built by the people who built Attest, so we knew which fixes were right. Here an AI selector that took no other part in the evaluation picked the cases and sealed the labels. The criteria were written without seeing any fix, and Attest ran without the labels. The question is the one a reviewer cares about: **how often does Attest accept a fix that is actually wrong?**
 
 ## Headline
 
-_Pending: filled in from `scripts/score-heldout.mjs` after both runs finish and the bundle is unsealed._
+**Attest accepted 3 of 5 wrong fixes.** It never rejected a correct one. Each accepted wrong fix breaks only on a path that the bug report names but the criterion doesn't test. In all three, the verifier's observations on the tested path match the app.
+
+| | Run 1 (as frozen) | Run 2 (key map fixed) |
+|---|---|---|
+| Correct fixes accepted, workflow A | 5/5 | 5/5 |
+| Correct fixes PROVEN, workflow B | 3/5 (2 INCONCLUSIVE) | 4/5 (1 INCONCLUSIVE) |
+| Correct fixes rejected | **0/10** | **0/10** |
+| Wrong fixes rejected | 2/5 | 2/5 |
+| **Wrong fixes accepted** | **2/5** (1 INCONCLUSIVE) | **3/5** |
+
+Workflows A and B gave the same accept/reject decision on every wrong fix. Break didn't help here, because each Break build also failed on the tested path.
+
+- **Rejected correctly: C03 and C11.** Each of these wrong fixes fails on the path the criterion tests.
+- **Accepted wrongly: C01, C06 and C12.** Each one works on the tested path and fails on another path the report names:
+
+| Candidate | Bug | Criterion tests | Wrong fix fails on (from the sealed ground truth) |
+|---|---|---|---|
+| C01 | deck.js: arrow keys in fields | Right arrow in the single-line input | Textarea and contenteditable editing |
+| C06 | impress.js: substeps one at a time | One Next reveals one point | Previous hides exactly one point |
+| C12 | impress.js: shortcuts while typing | Space in an input with no `type` attribute | Other characters and other input types |
+
+  The criteria author flagged exactly these three criteria as "one reported path tested, not every path" in their hand-off, before any run.
+- **The lesson is about criteria, not the verifier.** Attest proves what the criterion states. If the criterion covers one path of a multi-path bug, a fix that covers only that path passes. The remedy is one criterion per path the report names. The sealed ground truth says each of the three wrong fixes fails such a path, but we haven't run Attest with those criteria, so we don't claim it would catch them.
+- **Run 1 vs run 2:** run 1's key-map bug made p3/b1's Red pass (C01-A/B, C05-B), which turned C01 into INCONCLUSIVE instead of a wrong acceptance. The bug hid a miss rather than causing one. With it fixed, both p3/b1 bugs reproduced in every run.
+- **The INCONCLUSIVE correct fix (C07-B, both runs):** the separate Break build passed the criterion, so Attest refused to certify. Like the misses above, that Break build fails only on an untested path: going back with Previous.
+- **No outages.** No Meta API 5xx occurred, so nothing was re-run. All 40 receipts verify. Run 1 ran 03:27–04:35 IST and run 2 04:35–05:34 IST on Nov 3.
+
+The full table, one row per candidate, run and workflow, comes from `node scripts/score-heldout.mjs <zip> <labels.json> proofs/heldout/run-1 proofs/heldout/run-2`.
 
 ## The cases
 

@@ -1,0 +1,126 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T22:17:38.658Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p2/b1/base",
+        "sha": "55ad3539127a59c2053383da163d0d677671ed02"
+      },
+      "green": {
+        "ref": "ho/C12/candidate",
+        "sha": "2379bf8bee49b27897016bf3fe8aa0b0eb1550d6"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "fa8998b77638d7e43ef8d1d2bccf04278b956026ff1e362a4450af8508853a8c"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p2/b1/base",
+      "sha": "55ad3539127a59c2053383da163d0d677671ed02",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "15d83b85dad218f9f5e4764734f66f3ef5e3318a9a24b7a9b7b942a0cda0c90b",
+      "criteria": [
+        {
+          "id": "space-in-default-input-does-not-advance",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "Typing hello world advanced the presentation to Second slide instead of staying on First slide.",
+          "evidence": [
+            "shots/red-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Final frame shows 'Second slide' instead of 'First slide' and the 'Default input' never displays 'hello world', indicating the space advanced the presentation."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C12/candidate",
+      "sha": "2379bf8bee49b27897016bf3fe8aa0b0eb1550d6",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "3dd32d5af1f2183b0d17047c2b3e24e16c82834076df7d201afc201fe643e600",
+      "criteria": [
+        {
+          "id": "space-in-default-input-does-not-advance",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Default input contains 'hello world' and First slide is still shown with no Second slide visible.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows the presentation still on 'First slide' and the 'Default input' field contains 'hello world' including the space, with no advance to Second slide."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "PROVEN_UNCHECKED",
+  "reasons": [
+    "red failed and green passed; no break build, so sensitivity is unchecked"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:7e2ea2f114b039baed5c0426fa63091c3713adcd9240a2ee61bc90273e4dd7be",
+    "shots/green-00.png": "sha256:b2a21fda0e3d6c98301335642a410d3b5c19b4001a16314d6aedd2519c421966",
+    "shots/green-01.png": "sha256:ed1c03533d1e1bc403820581cca740475adf6cf4aed329580a8511e52d772dd2",
+    "shots/green-02.png": "sha256:a90b67bf6e8e569b7af3821f22a8da6ebb52e6885c2aff1f62ecb0a5e9a989fb",
+    "shots/red-00.png": "sha256:b2a21fda0e3d6c98301335642a410d3b5c19b4001a16314d6aedd2519c421966",
+    "shots/red-01.png": "sha256:ed1c03533d1e1bc403820581cca740475adf6cf4aed329580a8511e52d772dd2",
+    "shots/red-02.png": "sha256:24917b4ded7a1f8b1a4080a2111c6bed87fd3e8920e4523e293f0ff53df9b77f",
+    "videos/green.webm": "sha256:0d9994d778c340140afa5a1faba2de7a803feea68662ca9f744016cab612551d",
+    "videos/red.webm": "sha256:b02fecad299a635821461b4030f41c8cbb6e34782c20579bb55ed952de37e411"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:b9556ee2e41d6e8a70c83da469a097ed381de5dba7ae0177d1d788c4f9d4154a",
+    "entries": 31
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "4+jBHNTSDe9uDFzvd3dSNif+PTVWYr4M2HwTzGrZOv9pe5hS3w04FWS/dTztc46/JTXnRPoRIG1WmOrzbCiAAQ=="
+  }
+}

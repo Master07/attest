@@ -1,0 +1,139 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T22:03:44.108Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p1/b2/base",
+        "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268"
+      },
+      "green": {
+        "ref": "ho/C03/candidate",
+        "sha": "4d5070c612897870fb86bdc68ee45e7f9c6a8747"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "8adea029f66e3a3824c7f11e84a615c74cec74c7d95078977d3703279599f326"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p1/b2/base",
+      "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268",
+      "status": "completed",
+      "error": null,
+      "steps": 6,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "b23bb4c93f87f4a64bd7325d26fae2c22502b7b29cead9c7725c7767d522a6de",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Next click the visible slide was still headed First slide with only First point visible and Second slide never appeared.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After first two Next clicks frames 2 and 3 correctly show First point then both points on First slide, but after the third click no frame shows Second slide - frames 4-7 still show First slide."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C03/candidate",
+      "sha": "4d5070c612897870fb86bdc68ee45e7f9c6a8747",
+      "status": "completed",
+      "error": null,
+      "steps": 11,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "ddb94a40fd35f73892c69ab4247762e38428d2ae543810759aecf783b0d53931",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Next click the screen still shows First slide with First point instead of Second slide.",
+          "evidence": [
+            "shots/green-11.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows the heading 'Second slide' after the third Next click; all post-click frames (3,5,6,11) remain on 'First slide' with fragments, and later frames (8-12) still show 'First slide', so the required advance never occurs."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:1ce58836fcf9a673456dcb4e61e3cb938362b196a6b998c38688cff9a88a1882",
+    "shots/green-00.png": "sha256:95d15a8485af12ec24c02e3262358fdbc1e290ddd4f4dd444ca08d1e368526bb",
+    "shots/green-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-05.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-06.png": "sha256:4bc5c0f6ca89ae6c179e7db9661e3d6a760e5a30cbc2ec377c9afdac42e07d29",
+    "shots/green-07.png": "sha256:3959aa9bd34045a033aa2a53776cd6552b83a90583f2d5c0a023f03a320c5583",
+    "shots/green-08.png": "sha256:866f456c2d73c1c08de00f188699ebcf1a38023c87ef2f4f7b57fa021563e099",
+    "shots/green-09.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-10.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-11.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-00.png": "sha256:95d15a8485af12ec24c02e3262358fdbc1e290ddd4f4dd444ca08d1e368526bb",
+    "shots/red-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-05.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-06.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "videos/green.webm": "sha256:1ade5e9f696e405bffa7dcfcb6293e8b4f95f3c78eada285178298be3abf5fac",
+    "videos/red.webm": "sha256:6bda1d38e198d03380a0b97bf64910a459b8f6fcd3593dc29254a80f8d109c62"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:55d635c3e0e855f8e23358041903e32cb6248b11aa248d027d8cf30d45d7cd1b",
+    "entries": 57
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "txnP13KRt8TTBt6zik+ZCg8ybg/X7Fvfz5C0k3/0Y6jlPSK8zEyLpwc257HNghqqVbJku1gGr9dVWzqTo1sqCg=="
+  }
+}

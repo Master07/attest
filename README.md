@@ -93,6 +93,12 @@ Ten planted bugs show the mechanism works; they are not a measure of real-world 
 - **Every INCONCLUSIVE is listed with its reason.** 10 were our own mistake: the checkout page showed quantity 9 against a criterion saying "one item", and the judge rightly refused. The weak spot is layout bugs (clipped, off-screen, invisible or zero-size controls): 3 of 25 PROVEN. On those, Attest refused to certify rather than pass a wrong fix.
 - **Run 2**, pre-registered with only the quantity fixed, re-ran checkout: **17 of 19 PROVEN** (run 1: 8 of 20). Both runs are reported.
 
+**Held-out, with hidden labels: Attest accepted 3 of 5 wrong fixes.** An AI selector picked 10 candidate fixes for 5 historical bugs in reveal.js, impress.js and deck.js, and sealed which were correct. The criteria were written without seeing any fix, and everything was frozen before the first run ([write-up](docs/BENCHMARK_HELDOUT.md) · [receipts](proofs/heldout/)):
+
+- **0 of 5 correct fixes rejected**, in both runs and both workflows.
+- **2 wrong fixes rejected; 3 accepted.** Each accepted wrong fix works on the one path its criterion tests and fails on another path the bug report names. Attest proves what the criterion says; a criterion that covers one path of a multi-path bug lets a partial fix through. The criteria author had flagged exactly these three as single-path before any run.
+- The run also found a bug in Attest: its key map dropped `ArrowRight`, so a phase could pass on keys never pressed. It's fixed, and run 2 re-ran everything at the fix, pre-registered before unsealing.
+
 **A real bug, too:** Attest proved TodoMVC's real 2012 fix for "deleting a todo takes two clicks" — in a project we didn't write — after four honestly reported runs: an ambiguous requirement and two blind spots in Attest (a retry hiding the bug, a judge that saw only the final frame) surfaced and were fixed, and no run certified the wrong fix. [Every run →](examples/realworld/todomvc-delete/README.md) · [signed receipt (release download)](examples/realworld/todomvc-delete/README.md#check-the-receipt)
 
 ## Try it — no API key needed
@@ -162,6 +168,7 @@ Every model Attest calls at runtime is a Meta model. Details: [MODEL_STRATEGY](d
 | [ARCHITECTURE](docs/ARCHITECTURE.md) | The proof, the blind verifier, vote combining, the receipt, threats and limits |
 | [BENCHMARK](docs/BENCHMARK.md) | Ten planted bugs, two runs, what the numbers do and don't mean |
 | [BENCHMARK_GENERATED](docs/BENCHMARK_GENERATED.md) | 102 pre-registered generated bugs: every result, every INCONCLUSIVE with its reason, run 2 side by side |
+| [BENCHMARK_HELDOUT](docs/BENCHMARK_HELDOUT.md) | Held-out cases with sealed labels: 3 of 5 wrong fixes accepted, 0 correct rejected, and why |
 | [Real-world: Copilot's roadmap#361 fix](examples/realworld/roadmap-pulls/README.md) | GitHub Copilot's merged fix in someone else's app |
 | [Real-world: Devin's Board#918 keyboard fix](examples/realworld/board-focus-trap/README.md) | Three reported runs: INCONCLUSIVE, then the judge fixed, then PROVEN |
 | [Real-world: Devin's Board#921 fix](examples/realworld/board-enter/README.md) | An AI agent's merged fix in someone else's app, both runs |
@@ -205,6 +212,7 @@ npm run bench -- check               # AI-free check of the 10 benchmark scenari
 - "Not reproduced" is not "fake": Attest refuses to certify, it doesn't rule on the report.
 - The verifier is a model and can be inconsistent. Agreement between independent votes is evidence, not a guarantee: it reduces false passes, it doesn't eliminate them.
 - **Break needs a wrong fix you supply.** On someone else's PR, without one the strongest honest verdict is `PROVEN_UNCHECKED` (the fix works; Attest's ability to reject a wrong one wasn't tested). Generating wrong fixes automatically is roadmap.
+- **Attest proves what the criterion says, not the whole bug.** If a report names several paths and the criterion tests one, a fix that covers only that path passes: on the held-out set, 3 of 5 wrong fixes got through this way. Write one criterion per path the report names.
 - Only fix mode is built; regression and equivalence modes are designed, not implemented.
 - If the judge is on but can't vote — say its endpoint is down — the criterion is `INCONCLUSIVE` (receipt version 0.2), so one model alone never certifies. Receipts before 0.2 let the remaining votes decide (Board#918 run 2); they re-verify unchanged and are labelled. Disagreement is never a pass.
 - The receipt proves nothing changed after capture, not that the capture environment was honest. The signature detects a later edit; it is made with a key created on the machine that ran the proof.

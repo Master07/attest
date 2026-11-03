@@ -1,0 +1,132 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T23:11:18.371Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p1/b2/base",
+        "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268"
+      },
+      "green": {
+        "ref": "ho/C03/candidate",
+        "sha": "4d5070c612897870fb86bdc68ee45e7f9c6a8747"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "8adea029f66e3a3824c7f11e84a615c74cec74c7d95078977d3703279599f326"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p1/b2/base",
+      "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "d959ed740ef67bc9608552ba433b6ff4052cbffd319820c9503f97c71748d20d",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After first Next First point appeared, after second both points appeared on First slide, but after third Next the view reverted to First slide with only First point instead of showing Second slide.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — First two clicks correctly revealed First point then both points on First slide (frames 2-3), but third click never showed Second slide — frames 4-6 still show First slide with fragments toggling."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C03/candidate",
+      "sha": "4d5070c612897870fb86bdc68ee45e7f9c6a8747",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "afa033f58828eb3a7edaa2a4baa264714e2cfba30746ec5bbaf4019b501f94a0",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Next click the visible slide was still First slide with First point and no Second slide.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After the first two clicks the fragments revealed correctly (Frame 2 shows only First point, Frame 3 shows both on First slide), but after the third Next click no frame shows Second slide – Frames 4-6 still show First slide with fragment toggling, so the required advance to Second slide never occurs."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "REJECTED",
+  "reasons": [
+    "green: the fix does not meet the criteria"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:1ce58836fcf9a673456dcb4e61e3cb938362b196a6b998c38688cff9a88a1882",
+    "shots/green-00.png": "sha256:25afb70780e894c64048ba6302607eabc81f89096f516a5caa2d58b69cead262",
+    "shots/green-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-05.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-00.png": "sha256:85ff7979afbb40718b53c9cc7902935bf34b4429daf9aa8f9f4c363e67eee001",
+    "shots/red-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-05.png": "sha256:0768444270a8b09459af6c68c2282a9b268a83cbc4d21d14e0c77bad44739be7",
+    "videos/green.webm": "sha256:71e85672e25a2406a792889ff538e403c500691813a6bf5887214143a467045f",
+    "videos/red.webm": "sha256:fe91128f2e1e70718a4e0310b7e817fc43ec6ec8131c33251f8e0615d1883f14"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:846ffb5a988caf4c532f8d07f00c75477147e6c39a317f01bd665f432c4430ea",
+    "entries": 43
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "FBRLvBNyt3xzAOpZRTbyHSGRspi77ruLVO5mnwOchkr7kaq2sPb781iSqDpNXR8YIncikw7hpHF9aKKO7dPLDA=="
+  }
+}

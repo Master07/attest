@@ -1,0 +1,14 @@
+id: slide-status-kept-on-reinitialise
+# Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
+# was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: reinitialise-keeps-current-status
+    given: >-
+      The presentation is open on the slide headed "First slide", and the status text
+      next to the buttons reads "1 / 3".
+    when: >-
+      The user clicks the "Next" button twice (the status reads "3 / 3" and the slide
+      headed "Third slide" is visible), then clicks the "Initialize" button and waits.
+    then: >-
+      The status text still reads "3 / 3" and the slide headed "Third slide" is still
+      the visible slide.

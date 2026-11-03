@@ -1,0 +1,166 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T22:34:14.971Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p2/b2/base",
+        "sha": "60e3490a8ad2d01f5de294bd0dcf33316d73d64f"
+      },
+      "green": {
+        "ref": "ho/C06/candidate",
+        "sha": "50f8cad4d605e668d9943f7495ec169ff9b3bb87"
+      },
+      "break": {
+        "ref": "ho/p2/b2/break",
+        "sha": "c7a3d97c46541eb1c56e1b4f0f0a8d054fba4c07"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "cd088e019d1f88069afe9ad7ab8ef7808a7875d4e98dd6677e4db705f0511df4"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p2/b2/base",
+      "sha": "60e3490a8ad2d01f5de294bd0dcf33316d73d64f",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "572fb9125f7760135ab482ee35e4fca3c016d94f03086c7acd8f41f98bdb2da9",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "One click on Next revealed all three points instead of only First point while staying on First slide.",
+          "evidence": [
+            "shots/red-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 2, the first frame after the given state, shows all three points (\"First point\", \"Second point\", \"Third point\") visible at once on \"First slide\" instead of only \"First point\" with the other two still hidden."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C06/candidate",
+      "sha": "50f8cad4d605e668d9943f7495ec169ff9b3bb87",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "908a8ed372700a6ef594f1b3ba515a6fd87d60ffa234bd100aa7695c69fd2e84",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After one Next click, First slide shows First point visible while Second and Third points remain hidden.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 matches the given state with First slide and no points visible; Frame 2 first shows the effect with First point visible, Second/Third still absent, and First slide still centered."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p2/b2/break",
+      "sha": "c7a3d97c46541eb1c56e1b4f0f0a8d054fba4c07",
+      "status": "completed",
+      "error": null,
+      "steps": 1,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "853b2c249abab0ca8eba95fb04fcfb5e648cdee3856d1f2d42d7a4423d5a69ce",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After one Next click the First slide shows First point, Second point and Third point all visible instead of only First point visible.",
+          "evidence": [
+            "shots/break-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 2 shows all three points (First point, Second point, Third point) visible together after the click, rather than only First point visible with Second and Third still hidden."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "PROVEN",
+  "reasons": [
+    "red failed, green passed, break failed"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4dbf5d24c84ae60d8e7f5b84394d559036f9ac957ce57fbc1842cfc2f29b5582",
+    "shots/break-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "shots/break-01.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "shots/green-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "shots/green-01.png": "sha256:99e71006a75fc8bc9bbe220220acd3fc844d34340a427bbb3926910f170908e8",
+    "shots/green-02.png": "sha256:99e71006a75fc8bc9bbe220220acd3fc844d34340a427bbb3926910f170908e8",
+    "shots/red-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "shots/red-01.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "shots/red-02.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "videos/break.webm": "sha256:3a56a573c4ac9bd4096b9b450ba45193a9e9b37159e88dd2fa22383d4c286208",
+    "videos/green.webm": "sha256:bf44765ebc428cff5836dcadc243eca7ca673798c7b32b2699ede3290ed82256",
+    "videos/red.webm": "sha256:2674d0fb3b03eb1e793b2786b24f44ca26983683cc18cc76fe58034b4f110f0b"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:cc5f4fff495c97bcdbf56a63a5b2cd81e633e0c88d867b4768f6f2faade23a90",
+    "entries": 43
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "UdLhJBP18cRbXsx7XDQMCgE8Em+os8vMVdM2zXteWG1ZWjUeARB2n3IjDrR9wjz6cYRv3v2LyE21fL+1ytRhBw=="
+  }
+}

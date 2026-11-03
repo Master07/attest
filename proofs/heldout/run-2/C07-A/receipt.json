@@ -1,0 +1,130 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T23:20:17.723Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p1/b2/base",
+        "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268"
+      },
+      "green": {
+        "ref": "ho/C07/candidate",
+        "sha": "2c7463bc15d05a2ab156250dfb9fafcc4f7594e8"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "8adea029f66e3a3824c7f11e84a615c74cec74c7d95078977d3703279599f326"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p1/b2/base",
+      "sha": "d32e92fbf6c941e06f450efc2af3b2eb1a2e8268",
+      "status": "completed",
+      "error": null,
+      "steps": 5,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "1a667a1a60c526cd14706c47986372590b52e887bcd92c4d1268ec36d98f3859",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After the third Next click the visible slide still says First slide with First point instead of Second slide.",
+          "evidence": [
+            "shots/red-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — After the first two clicks frames 2-3 show the expected fragment reveals, but frame 4 (third Next click) still shows 'First slide' with only 'First point' and no frame ever shows 'Second slide', so the required advance on the third click did not occur."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C07/candidate",
+      "sha": "2c7463bc15d05a2ab156250dfb9fafcc4f7594e8",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "7a882b4732bf3779bc39fd34ce136d95d3c9e27cbba925c36a7103e66b0fc808",
+      "criteria": [
+        {
+          "id": "rtl-next-reveals-fragments-then-advances",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After first Next only First point appeared, after second both points were visible on First slide, after third Second slide was visible.",
+          "evidence": [
+            "shots/green-03.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frames show after 1st click only 'First point' visible on 'First slide' (frame 2), after 2nd click both points visible on 'First slide' (frame 3), after 3rd click 'Second slide' visible (frame 4) as required."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "PROVEN_UNCHECKED",
+  "reasons": [
+    "red failed and green passed; no break build, so sensitivity is unchecked"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:1ce58836fcf9a673456dcb4e61e3cb938362b196a6b998c38688cff9a88a1882",
+    "shots/green-00.png": "sha256:3c2360db8d2ee4b9513e8a6c99f456c7e795c99ec3c2f0133746f63206515e39",
+    "shots/green-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/green-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/green-03.png": "sha256:0232a1605d691e682a3f5cf745e544c16e87c3066e75828d87478fb878ec82d6",
+    "shots/red-00.png": "sha256:527664eca5119aa86c6368c0e23c86e977581a87e0e42315ff7dbd987ee6f3f3",
+    "shots/red-01.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-02.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-03.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "shots/red-04.png": "sha256:121a3d0170bbc68d4c7f087be71bcff4fcf8fdc625aad72c0ba0ccdd12b44d6c",
+    "shots/red-05.png": "sha256:ec613c6841a1a18d8bb59593e2a8b8f230354334d87f4393c493305bc957db3e",
+    "videos/green.webm": "sha256:950d72d6605ee9ce29105f8bf354267f8029eab8450fad8817e8067fc058e240",
+    "videos/red.webm": "sha256:6b75e3828aeb65655e0388722aeb02bd4635c4da677469a6751e9c2dddea0774"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:b105901a8a32f1906e88f7b322cbe5579948f2d1cd15052f104ed4f312786bc0",
+    "entries": 39
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "xu+b97LrZ8XKaaftQOtr7xZ4BJEDO7TX8kBA8wesv7E7C0vbVGCE/fuPe5TXxvMmUtXnfU/LP3EJbgZPO6c5Dg=="
+  }
+}

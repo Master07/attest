@@ -1,0 +1,172 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T22:21:59.115Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p3/b1/base",
+        "sha": "e9fa7dc8f8a00f5375f8c433fa8ccb766a597c27"
+      },
+      "green": {
+        "ref": "ho/C01/candidate",
+        "sha": "0d88c20d3e8d828dde04eb7da6765651ac056362"
+      },
+      "break": {
+        "ref": "ho/p3/b1/break",
+        "sha": "2608e58cf76c2556cab8cf161397a41c63ffecbf"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "fe1ed6e998ebcffd69caa156558f97cb173ee7d240fcb6c9d64f8e2a661daeec"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p3/b1/base",
+      "sha": "e9fa7dc8f8a00f5375f8c433fa8ccb766a597c27",
+      "status": "completed",
+      "error": null,
+      "steps": 7,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "12c50519d21a1dc620301194296359ecc1a0cc37e3dfdc03d835e7ac6850da72",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "After typing abc, pressing Right twice and typing d, the view showed Third slide with no Input field instead of First slide with abcd.",
+          "evidence": [
+            "shots/red-07.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — No frame shows Input with abcd on First slide — frames 4-7 show only abc on First slide and frame 8 ends on Third slide with no Input visible, indicating Right Arrow navigated slides instead of staying in the field."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C01/candidate",
+      "sha": "0d88c20d3e8d828dde04eb7da6765651ac056362",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "0a631eda0cfd4981325accafaf8579b11801a71b375bcea5784fd83187edd8d2",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Input field shows abcd and heading still shows First slide with 1 / 3.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows the Input field contains \"abcd\" while the heading remains \"First slide\" at 1/3, confirming right-arrow presses did not advance the slide."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    },
+    {
+      "phase": "break",
+      "ref": "ho/p3/b1/break",
+      "sha": "2608e58cf76c2556cab8cf161397a41c63ffecbf",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "4e9836bd4f36014a5bf709152318682833303a78f4b5d6cde8399913ca146d3e",
+      "criteria": [
+        {
+          "id": "right-arrow-in-input-stays-on-slide",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "Input field shows abcd and heading still shows First slide on 1 / 3.",
+          "evidence": [
+            "shots/break-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 3 shows Input field contains 'abcd' and presentation still shows 'First slide' at 1/3, so Right arrow did not navigate away."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/break.webm"
+    }
+  ],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "break: the wrong fix passed — the verifier cannot tell them apart"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:7583d68d8244ba269f1056b92e25b451a3d73841fabec2c8b791dbd573202e9e",
+    "shots/break-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/break-01.png": "sha256:a3cbb8d7ec2dc283c493400e557bafea33ffd70c1061bce2958d1fa25b84acb9",
+    "shots/break-02.png": "sha256:099c3539b68167b7eeecf32d5139eb4a41ed64b34fa8c55c7c6f3b14eb59f84a",
+    "shots/green-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/green-01.png": "sha256:a3cbb8d7ec2dc283c493400e557bafea33ffd70c1061bce2958d1fa25b84acb9",
+    "shots/green-02.png": "sha256:099c3539b68167b7eeecf32d5139eb4a41ed64b34fa8c55c7c6f3b14eb59f84a",
+    "shots/red-00.png": "sha256:6cddd35a901c924ef75f4a4d68c2d7d91242949ff53be0dde2494bb268c2e3a5",
+    "shots/red-01.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "shots/red-02.png": "sha256:2c1146b97e0b36e48e4638981f156121f338d77fab475f8c47f2d98111be1dfc",
+    "shots/red-03.png": "sha256:6b8612dc0f68fa51e421d8e10bd7d1a777c770a854043e70f4f94dcc00aa16f5",
+    "shots/red-04.png": "sha256:7d0c56c3dfa26b512dd50f01577e4022479e7dff86179e98801391b1dff0d57e",
+    "shots/red-05.png": "sha256:2e60ef44ce52a9bc607837d6eeb7a0d731a1932e353281f72fb286f44b992258",
+    "shots/red-06.png": "sha256:2e60ef44ce52a9bc607837d6eeb7a0d731a1932e353281f72fb286f44b992258",
+    "shots/red-07.png": "sha256:cce461b8de33fb93991111920265a22d3a17d65130ddb85fe75088bd7ca40ff3",
+    "videos/break.webm": "sha256:a3ca124c589362d422032b44c8548a4f396136c90725e537a392cc4f9351d3be",
+    "videos/green.webm": "sha256:6ecb97d6a2ee1be0c87bea1ce698b7c4079523cd48bb1b43294fbb8f26c3f818",
+    "videos/red.webm": "sha256:5829ea9249d03f53248c68d54a31d3258e000b2226c1d77201de31e0e4a1dab5"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:b0016b1ac548cd00c3fbd3f944048ca8e5f6c4758030e6e2d09712a67a2f65e2",
+    "entries": 55
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "zRYEwpvkvhUisSzAKGuvGrIgrlvGCmDwdv4qW8PGWbG6DLuNadrZtMSjE03Qcbug1P/K0wrI05v1599qxBs6Ag=="
+  }
+}

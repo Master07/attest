@@ -1,0 +1,212 @@
+{
+  "schema": 2,
+  "revision": 2,
+  "nonce": "5b17af8d6d2121f8fe0bac2e90899ab3737ea206db27efbb8a609307013f3a9d",
+  "policy": "Labels follow calibrated report-specific visible/native behavior on exact pinned committed bytes; source provenance and intended mix do not determine labels.",
+  "selector": {
+    "identity": "Original fresh-context selector correcting its own pre-evaluation mapping",
+    "independence": "Independent of Attest runner and criteria author; this is not independent reviewer verification.",
+    "context": "No Attest prompts, criteria, benchmark results or diagnoses were read by the selector. Parent context had excluded notes; they were not passed to this selector."
+  },
+  "candidates": [
+    {
+      "id": "C01",
+      "bug": "p3/b1",
+      "variant": "partial",
+      "label": "incorrect",
+      "evidence": "ground-truth-evidence/p3/b1/partial.json",
+      "source": "Selector-authored alternative; judged by behavior, not intended provenance",
+      "ref": {
+        "ref": "ho/C01/candidate",
+        "commit": "0d88c20d3e8d828dde04eb7da6765651ac056362",
+        "bug": "p3/b1"
+      },
+      "observedFailures": [
+        "Native editing retains focused control"
+      ],
+      "evidenceSha256": "cb0a8f2453e0caf0b40eb03988537308141cf2e7df12ef8bf99994932743b9f7"
+    },
+    {
+      "id": "C02",
+      "bug": "p1/b1",
+      "variant": "partial",
+      "label": "incorrect",
+      "evidence": "ground-truth-evidence/p1/b1/partial.json",
+      "source": "Selector-authored alternative; judged by behavior, not intended provenance",
+      "ref": {
+        "ref": "ho/C02/candidate",
+        "commit": "e9c1ef6e388b10febe3de6e0d914561fe16232ae",
+        "bug": "p1/b1"
+      },
+      "observedFailures": [
+        "Editing does not display help",
+        "Editing does not display help"
+      ],
+      "evidenceSha256": "ccd7b2955a60d92fa0401fda4812cc95fb3618c3a48cb203a9cf92831d9bf2af"
+    },
+    {
+      "id": "C03",
+      "bug": "p1/b2",
+      "variant": "partial",
+      "label": "incorrect",
+      "evidence": "ground-truth-evidence/p1/b2/partial.json",
+      "source": "Selector-authored alternative; judged by behavior, not intended provenance",
+      "ref": {
+        "ref": "ho/C03/candidate",
+        "commit": "4d5070c612897870fb86bdc68ee45e7f9c6a8747",
+        "bug": "p1/b2"
+      },
+      "observedFailures": [
+        "Forward action advances after final point",
+        "Forward action advances after final point"
+      ],
+      "evidenceSha256": "cae0fe55c5771d7bc77743a58080b42b6090215c33c3d0ca30921ebf5665b555"
+    },
+    {
+      "id": "C04",
+      "bug": "p2/b2",
+      "variant": "full",
+      "label": "correct",
+      "evidence": "ground-truth-evidence/p2/b2/full.json",
+      "source": "Upstream merged source change",
+      "ref": {
+        "ref": "ho/C04/candidate",
+        "commit": "708165c6a1564a95e088058bae0d22faccaf2f57",
+        "bug": "p2/b2"
+      },
+      "observedFailures": [],
+      "evidenceSha256": "ac4a251006bccbac3ad9a64731f81bda0a9b2e3335d2efd08b949b4bb879e9d2"
+    },
+    {
+      "id": "C05",
+      "bug": "p3/b1",
+      "variant": "full",
+      "label": "correct",
+      "evidence": "ground-truth-evidence/p3/b1/full.json",
+      "source": "Upstream merged source change",
+      "ref": {
+        "ref": "ho/C05/candidate",
+        "commit": "fcbb117f30d890a3b92177792300ffcdacf2613b",
+        "bug": "p3/b1"
+      },
+      "observedFailures": [],
+      "evidenceSha256": "d5c3f2a3c837474679156f1b44da7420d8159774753d3bb062701d84469a86cc"
+    },
+    {
+      "id": "C06",
+      "bug": "p2/b2",
+      "variant": "partial",
+      "label": "incorrect",
+      "evidence": "ground-truth-evidence/p2/b2/partial.json",
+      "source": "Selector-authored alternative; judged by behavior, not intended provenance",
+      "ref": {
+        "ref": "ho/C06/candidate",
+        "commit": "50f8cad4d605e668d9943f7495ec169ff9b3bb87",
+        "bug": "p2/b2"
+      },
+      "observedFailures": [
+        "Default reverse sequence hides exactly one point"
+      ],
+      "evidenceSha256": "1af33eba43fba2389cdbeee84e44442160d069de9f7e4b3334b2c53f4b0d265a"
+    },
+    {
+      "id": "C07",
+      "bug": "p1/b2",
+      "variant": "full",
+      "label": "correct",
+      "evidence": "ground-truth-evidence/p1/b2/full.json",
+      "source": "Upstream merged source change",
+      "ref": {
+        "ref": "ho/C07/candidate",
+        "commit": "2c7463bc15d05a2ab156250dfb9fafcc4f7594e8",
+        "bug": "p1/b2"
+      },
+      "observedFailures": [],
+      "evidenceSha256": "0aa13ca522f2f23ceac7a5b587e6a9aa550c348bfc16c78e8da7c4871f86dbd6"
+    },
+    {
+      "id": "C08",
+      "bug": "p1/b1",
+      "variant": "full",
+      "label": "correct",
+      "evidence": "ground-truth-evidence/p1/b1/full.json",
+      "source": "Upstream merged source change",
+      "ref": {
+        "ref": "ho/C08/candidate",
+        "commit": "b9cb0c86453d857f7a0d4955b81717f21b66190d",
+        "bug": "p1/b1"
+      },
+      "observedFailures": [],
+      "evidenceSha256": "9ff0ffbba94db09df702c2fdbaa78c5133709651978b35a5997bb4e033d54df8"
+    },
+    {
+      "id": "C09",
+      "bug": "p3/b2",
+      "variant": "full",
+      "label": "correct",
+      "evidence": "ground-truth-evidence/p3/b2/full.json",
+      "source": "Upstream merged source change",
+      "ref": {
+        "ref": "ho/C09/candidate",
+        "commit": "33801dc4a83be8e674fb19f4a7eed968845ed3ef",
+        "bug": "p3/b2"
+      },
+      "observedFailures": [],
+      "evidenceSha256": "87bfdd30110e387b4fbcea0f9becde22818d68b907ae6c214c5fbbe91babdf79"
+    },
+    {
+      "id": "C10",
+      "bug": "p2/b1",
+      "variant": "full",
+      "label": "correct",
+      "evidence": "ground-truth-evidence/p2/b1/full.json",
+      "source": "Upstream merged source change",
+      "ref": {
+        "ref": "ho/C10/candidate",
+        "commit": "2ecac8a1198b802c05a44eae2210572596854176",
+        "bug": "p2/b1"
+      },
+      "observedFailures": [],
+      "evidenceSha256": "80cc1fa7ec570e0f87fc76d495121b6431553e5f28d833c1d9aeb4643093d934"
+    },
+    {
+      "id": "C11",
+      "bug": "p3/b2",
+      "variant": "partial",
+      "label": "incorrect",
+      "evidence": "ground-truth-evidence/p3/b2/partial.json",
+      "source": "Selector-authored alternative; judged by behavior, not intended provenance",
+      "ref": {
+        "ref": "ho/C11/candidate",
+        "commit": "0a4720a8a1990588d888473be12ac3644fe563db",
+        "bug": "p3/b2"
+      },
+      "observedFailures": [
+        "Initialization ordinal matches the restored visible slide",
+        "Deep-link initialization ordinal matches visible slide"
+      ],
+      "evidenceSha256": "d4ec1c2ed2b7137d74752353e5c72f03342f12bc26a7afde482742b3965b39fc"
+    },
+    {
+      "id": "C12",
+      "bug": "p2/b1",
+      "variant": "partial",
+      "label": "incorrect",
+      "evidence": "ground-truth-evidence/p2/b1/partial.json",
+      "source": "Selector-authored alternative; judged by behavior, not intended provenance",
+      "ref": {
+        "ref": "ho/C12/candidate",
+        "commit": "2379bf8bee49b27897016bf3fe8aa0b0eb1550d6",
+        "bug": "p2/b1"
+      },
+      "observedFailures": [
+        "Typing shortcut character does not open help",
+        "Typing retains focused control"
+      ],
+      "evidenceSha256": "9ec55343efbc83fc084eb46aab0e1ced523a3a87d82c0a948505678aa15d806e"
+    }
+  ],
+  "committedSourceDigestsSha256": "dfdd32b1d03aab0cf2f17f73d956c92de8a6abf8f6f3ecb56a05f9612d02a1e8",
+  "oracleSha256": "88f064673b612bd73dd3cec4cb1c8c868420daaeaebb5e9ebd91eeff2be6d1b5",
+  "observerSha256": "7a3b38d1b09f963424e0d6c5604b25603da09a477f4f4eb810eb3349a88ea2db"
+}

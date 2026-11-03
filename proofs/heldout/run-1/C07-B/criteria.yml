@@ -1,0 +1,17 @@
+id: rtl-fragment-navigation-order
+# Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
+# was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
+criteria:
+  - id: rtl-next-reveals-fragments-then-advances
+    given: >-
+      An RTL presentation is open on the slide headed "First slide". The paragraphs
+      "First point" and "Second point" are both hidden, and the "Next" and "Previous"
+      buttons are visible at the top left.
+    when: >-
+      The user clicks the "Next" button once and waits for the slide to settle, clicks
+      "Next" a second time and waits, then clicks "Next" a third time and waits.
+    then: >-
+      After the first click, "First point" is visible and "Second point" is still hidden.
+      After the second click, both points are visible and the slide headed "First slide"
+      is still the visible slide. After the third click, the slide headed "Second slide"
+      is visible.

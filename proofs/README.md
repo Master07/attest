@@ -1,6 +1,6 @@
 # Proofs
 
-> **Audience:** judges + devs · **Status:** current · **Last updated:** 2026-11-02 · **Related:** [BENCHMARK](../docs/BENCHMARK.md) · [ARCHITECTURE §8–9](../docs/ARCHITECTURE.md)
+> **Audience:** judges + devs · **Status:** current · **Last updated:** 2026-11-03 · **Related:** [BENCHMARK](../docs/BENCHMARK.md) · [ARCHITECTURE §8–9](../docs/ARCHITECTURE.md)
 
 Every result the README and BENCHMARK quote is a signed receipt in this folder. Check them all yourself — no API key, no model calls:
 
@@ -14,6 +14,7 @@ What a receipt does **not** prove: it shows nothing was changed after capture, n
 
 | Bundle | What it shows | Verdict | Run | Judge |
 |---|---|---|---|---|
+| [heldout/run-1](heldout/run-1/), [heldout/run-2](heldout/run-2/) | Held-out evaluation with sealed labels: 10 candidate fixes in reveal.js, impress.js and deck.js, workflows A and B, run 1 as frozen and run 2 with the key map fixed ([write-up](../docs/BENCHMARK_HELDOUT.md)) | 3 of 5 wrong fixes accepted; 0 correct rejected | live | Muse Spark Open (open weights, Baseten) |
 | Board#918 runs 1–3 (release download) | **Devin's keyboard fix** in [shizukutanaka/Board#918](https://github.com/shizukutanaka/Board/pull/918): Tab no longer escapes the Share dialog. Same criterion and wrong fix (ours) in every run: run 1 INCONCLUSIVE (judge missed a sampled-out frame), run 2 PROVEN on the verifier alone (judge could not vote), run 3 PROVEN with both agreeing after the judge got contact sheets. 124 MB of video, so it is a [release download](https://github.com/Master07/attest/releases/tag/proofs-board918-2026-11-01) ([write-up](../examples/realworld/board-focus-trap/README.md)) | **INCONCLUSIVE → PROVEN** | live | Muse Spark Open (open weights, Baseten) |
 | [realworld/board-913-run1](realworld/board-913-run1/) | **Devin's merged change, rejected.** [shizukutanaka/Board#913](https://github.com/shizukutanaka/Board/pull/913) (MIT) said Escape left the find box open; it already closed, and after #913 it no longer does. Green fails ([write-up](../examples/realworld/board-find-esc/README.md)) | **REJECTED** | live | Muse Spark Open (open weights, Baseten) |
 | [realworld/board-914-run1](realworld/board-914-run1/) | Devin's follow-up [Board#914](https://github.com/shizukutanaka/Board/pull/914): Red shows #913's breakage, Green shows #914 repairs it. Same criterion; no wrong fix exists, so no Break, as pre-registered | **PROVEN_UNCHECKED** | live | Muse Spark Open (open weights, Baseten) |

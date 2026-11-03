@@ -1,0 +1,127 @@
+{
+  "version": "attest.receipt/0.2",
+  "mode": "fix",
+  "created_at": "2026-11-02T23:17:07.509Z",
+  "subject": {
+    "repo": "https://github.com/Master07/attest.git",
+    "app": "examples/heldout/app",
+    "refs": {
+      "red": {
+        "ref": "ho/p2/b2/base",
+        "sha": "60e3490a8ad2d01f5de294bd0dcf33316d73d64f"
+      },
+      "green": {
+        "ref": "ho/C06/candidate",
+        "sha": "50f8cad4d605e668d9943f7495ec169ff9b3bb87"
+      }
+    },
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "cd088e019d1f88069afe9ad7ab8ef7808a7875d4e98dd6677e4db705f0511df4"
+  },
+  "phases": [
+    {
+      "phase": "red",
+      "ref": "ho/p2/b2/base",
+      "sha": "60e3490a8ad2d01f5de294bd0dcf33316d73d64f",
+      "status": "completed",
+      "error": null,
+      "steps": 3,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "da03228f2bb4315e515f97e4ba0f7372d53d0b8f9c792ba1f20d6d4d759a47a0",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "fail",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "fail"
+          },
+          "result": "fail",
+          "reason": "verifier failed",
+          "observation": "A single click on Next made First point, Second point and Third point all visible at once instead of only First point.",
+          "evidence": [
+            "shots/red-01.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): fail — Frame 2, the first frame after the click, shows all three points (First point, Second point, Third point) visible instead of only First point with the other two hidden."
+          ]
+        }
+      ],
+      "result": "fail",
+      "reason": "at least one criterion failed",
+      "video": "videos/red.webm"
+    },
+    {
+      "phase": "green",
+      "ref": "ho/C06/candidate",
+      "sha": "50f8cad4d605e668d9943f7495ec169ff9b3bb87",
+      "status": "completed",
+      "error": null,
+      "steps": 2,
+      "model": "muse-spark-1.3",
+      "prompt_sha256": "8e7ebc90537b85d1903ae0f9b0f0b1e707156fd382be7ab84dc7aa32b325db60",
+      "criteria": [
+        {
+          "id": "one-next-reveals-one-default-substep",
+          "votes": {
+            "cua": "pass",
+            "checks": "n/a",
+            "sam": "n/a",
+            "judge": "pass"
+          },
+          "result": "pass",
+          "reason": "all votes pass",
+          "observation": "After one Next click, First slide remains centered with First point visible and Second and Third points not shown.",
+          "evidence": [
+            "shots/green-02.png"
+          ],
+          "notes": [
+            "Judge (meta-models/muse-spark-open): pass — Frame 1 shows the given hidden-points state on First slide, and Frame 2 right after one Next click shows First point visible while Second/Third stay hidden and First slide remains visible."
+          ]
+        }
+      ],
+      "result": "pass",
+      "reason": "all criteria pass",
+      "video": "videos/green.webm"
+    }
+  ],
+  "verdict": "PROVEN_UNCHECKED",
+  "reasons": [
+    "red failed and green passed; no break build, so sensitivity is unchecked"
+  ],
+  "models": [
+    {
+      "role": "verifier",
+      "provider": "meta",
+      "model": "muse-spark-1.3"
+    },
+    {
+      "role": "judge",
+      "provider": "baseten",
+      "model": "meta-models/muse-spark-open"
+    }
+  ],
+  "artifacts": {
+    "criteria.yml": "sha256:4dbf5d24c84ae60d8e7f5b84394d559036f9ac957ce57fbc1842cfc2f29b5582",
+    "shots/green-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "shots/green-01.png": "sha256:99e71006a75fc8bc9bbe220220acd3fc844d34340a427bbb3926910f170908e8",
+    "shots/green-02.png": "sha256:99e71006a75fc8bc9bbe220220acd3fc844d34340a427bbb3926910f170908e8",
+    "shots/red-00.png": "sha256:8277db504aecff457b0c5ac26dea283a48d0494dd0a9d9ff2e6df2d92982b870",
+    "shots/red-01.png": "sha256:aa93964c129454b529fb0eddd7a9072962c16e7c2d5777a9101aff565eb5fb4f",
+    "shots/red-02.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "shots/red-03.png": "sha256:716cb9c0ee059a16a88a72e3855dd33dee7a27b95e2b7d2ea0926ed02cd06ef8",
+    "videos/green.webm": "sha256:31979d4af1db7ab58e315ac431ee2234c2e1bce639131722c914d6698d3984db",
+    "videos/red.webm": "sha256:dee7680d20cd26017a45fe5df073cc3cc5682236266321c10d1280f88c63e4a2"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:5156d2f625245a083512a447809702fbe7d10861d6e7c39ccf39775e243bc65c",
+    "entries": 33
+  },
+  "signature": {
+    "alg": "ed25519",
+    "public_key": "MCowBQYDK2VwAyEAsSQLSosLZf/GrOJYS6x9Qy0rTcJP6x7lbzFhPcQcY3I=",
+    "value": "dekB22MgsHGS4ec1KlINdSXWK3esn7I2Di9AO0PifAP5wXPPsvg0zpxrOyYvTJtvpVMmxxZVsbc7IyHXMub0Cg=="
+  }
+}
