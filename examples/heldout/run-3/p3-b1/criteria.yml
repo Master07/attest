@@ -1,0 +1,43 @@
+id: arrow-keys-in-fields-edit-text-all-paths
+# Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
+# was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
+# Run 3 (exploratory, after unsealing): one criterion per path the report names.
+criteria:
+  - id: right-arrow-in-input-stays-on-slide
+    given: >-
+      The presentation is open on the slide headed "First slide". The field labelled
+      "Input" is visible, and the "Next" and "Previous" buttons are visible at the top left.
+    when: >-
+      The user clicks into the "Input" field, types abc, presses the Right arrow key
+      twice, then types d.
+    then: >-
+      The "Input" field contains "abcd" and the presentation is still showing the slide
+      headed "First slide".
+  - id: right-arrow-in-textarea-stays-on-slide
+    given: >-
+      The presentation is open on the slide headed "First slide". The field labelled
+      "Text area" is visible.
+    when: >-
+      The user clicks into the "Text area" field, types abc, presses the Right arrow key
+      twice, then types d.
+    then: >-
+      The "Text area" field contains "abcd" and the presentation is still showing the
+      slide headed "First slide".
+  - id: right-arrow-in-contenteditable-stays-on-slide
+    given: >-
+      The presentation is open on the slide headed "First slide". The editable box
+      reading "Edit here" is visible.
+    when: >-
+      The user clicks into the editable box, presses the End key, types abc, presses the
+      Right arrow key twice, then types d.
+    then: >-
+      The editable box contains "Edit hereabcd" and the presentation is still showing
+      the slide headed "First slide".
+  - id: keyboard-navigation-outside-controls-still-works
+    given: >-
+      The presentation is open on the slide headed "First slide". No editable control
+      has focus.
+    when: >-
+      The user clicks the slide heading "First slide" and presses the Right arrow key once.
+    then: >-
+      The slide headed "Second slide" is visible.

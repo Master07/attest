@@ -1,0 +1,34 @@
+id: default-substeps-one-at-a-time-all-paths
+# Written on 2026-11-03 from the bug report and the base build only, before any candidate branch
+# was opened. Not to be edited after seeing a result; a change would be a new, numbered run.
+# Run 3 (exploratory, after unsealing): one criterion per path the report names.
+criteria:
+  - id: one-next-reveals-one-default-substep
+    given: >-
+      The presentation is open on the slide headed "First slide". The paragraphs
+      "First point", "Second point" and "Third point" are all hidden, and the "Next"
+      button is visible at the top left.
+    when: >-
+      The user clicks the "Next" button once and waits for the slide to settle.
+    then: >-
+      "First point" is visible, "Second point" and "Third point" are still hidden, and
+      the slide headed "First slide" is still the visible slide.
+  - id: previous-hides-one-default-substep
+    given: >-
+      The presentation is open on the slide headed "First slide". The paragraphs
+      "First point", "Second point" and "Third point" are all visible, and the "Previous"
+      button is visible at the top left.
+    when: >-
+      The user clicks the "Previous" button once and waits for the slide to settle.
+    then: >-
+      "Third point" is hidden, "First point" and "Second point" are still visible, and
+      the slide headed "First slide" is still the visible slide.
+  - id: explicitly-ordered-substeps-still-group
+    given: >-
+      The presentation is open on the slide headed "Second slide". The paragraphs
+      "Grouped one" and "Grouped two" are both hidden.
+    when: >-
+      The user clicks the "Next" button once and waits for the slide to settle.
+    then: >-
+      "Grouped one" and "Grouped two" are both visible, and the slide headed "Second
+      slide" is still the visible slide.
