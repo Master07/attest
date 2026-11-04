@@ -4,7 +4,7 @@
 
 A verifier that never sees the code reproduces the bug, confirms the fix in the running app, shows it would reject a wrong fix, and seals it all into a receipt anyone can check.
 
-**▶ [Demo video (2:40)](https://youtu.be/P0roiXTdXa8)** · recorded evidence from the receipts in this repo, synthetic voice, captions burned in.
+**▶ [Demo video (2:41)](https://youtu.be/ia5waIGi0NI)** · a live run recorded on screen, with live Meta model calls visible, narrated by me, captions burned in.
 
 *Built entirely during the **Meta Global AI Hackathon 2026** (the Meta Global AI Developer Hackathon, Oct 26 – Nov 4, 2026) · Indie track · Push the Frontier.* <sub>Design docs were written Oct 26–30; git was set up on Oct 31, so the first commit contains them.</sub>
 
