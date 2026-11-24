@@ -1,0 +1,28 @@
+{
+  "version": "attest.receipt/0.3",
+  "mode": "fix",
+  "created_at": "2026-11-01T00:00:00.000Z",
+  "subject": {
+    "repo": null,
+    "app": "golden-test",
+    "refs": {},
+    "criteria_path": "criteria.yml",
+    "criteria_sha256": "27801da37eaa0a9e32e24210ce4478b0d331c8f21f82740391c09eb223ae2ed8"
+  },
+  "phases": [],
+  "verdict": "INCONCLUSIVE",
+  "reasons": [
+    "green phase missing",
+    "UTF-8: café 🌟; quote: \"x\"; newline:\n"
+  ],
+  "models": [],
+  "artifacts": {
+    "criteria.yml": "sha256:27801da37eaa0a9e32e24210ce4478b0d331c8f21f82740391c09eb223ae2ed8",
+    "artifact.txt": "sha256:e03516baf008bb4a1fa57a9a5e858d9cdefae9f35b458928e9c1631e2bd4b18b"
+  },
+  "log": {
+    "path": "events.jsonl",
+    "head": "sha256:fef45a1123daa3cd81ac94453cd4b895935f20366a34f2f656d9e21b9aa40a86",
+    "entries": 3
+  }
+}
