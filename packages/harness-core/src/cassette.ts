@@ -3,7 +3,15 @@
 // Replay answers each model's calls in the order they were recorded; a call with no
 // recording left throws instead of falling through to the network.
 
-import { appendFileSync, readFileSync } from "node:fs";
+import { nodeCassetteIo } from "./adapters/cassette-node.js";
+
+/** File access for Cassette. The default backing lives in ./adapters/cassette-node.js;
+ *  pass a fake here and the cassette never touches the disk. This file imports no
+ *  Node built-in modules. */
+export interface CassetteIo {
+  readText(path: string): string;
+  appendText(path: string, text: string): void;
+}
 
 export interface CassetteLine {
   seq: number;
@@ -42,21 +50,22 @@ export class Cassette {
 
   private constructor(
     private readonly path: string,
+    private readonly io: CassetteIo,
     private readonly queues: Map<string, CassetteLine[]> | null,
     private readonly replayOpts: Required<Omit<ReplayOptions, "sleep">> & Pick<ReplayOptions, "sleep">,
   ) {}
 
   /** Open a cassette for replay: every recorded call, per model, in recorded order. */
-  static replay(path: string, opts: ReplayOptions = {}): Cassette {
+  static replay(path: string, opts: ReplayOptions = {}, io: CassetteIo = nodeCassetteIo): Cassette {
     const queues = new Map<string, CassetteLine[]>();
-    for (const line of readFileSync(path, "utf8").split(/\r?\n/)) {
+    for (const line of io.readText(path).split(/\r?\n/)) {
       if (!line.trim()) continue;
       const entry = JSON.parse(line) as CassetteLine;
       const queue = queues.get(entry.model) ?? [];
       queue.push(entry);
       queues.set(entry.model, queue);
     }
-    return new Cassette(path, queues, {
+    return new Cassette(path, io, queues, {
       wait: opts.wait ?? true,
       defaultMs: opts.defaultMs ?? REPLAY_DEFAULT_MS,
       maxMs: opts.maxMs ?? REPLAY_MAX_MS,
@@ -65,8 +74,8 @@ export class Cassette {
   }
 
   /** Open a cassette for recording: each appended response becomes one line. */
-  static record(path: string): Cassette {
-    return new Cassette(path, null, { wait: false, defaultMs: REPLAY_DEFAULT_MS, maxMs: REPLAY_MAX_MS });
+  static record(path: string, io: CassetteIo = nodeCassetteIo): Cassette {
+    return new Cassette(path, io, null, { wait: false, defaultMs: REPLAY_DEFAULT_MS, maxMs: REPLAY_MAX_MS });
   }
 
   /** The next recorded response for `model`. Throws CassetteExhaustedError when none is left. */
@@ -86,6 +95,6 @@ export class Cassette {
   appendResponse(model: string, response: unknown, ms?: number): void {
     if (this.queues !== null) throw new Error(`cassette ${this.path} was opened for replay, not recording`);
     const line: CassetteLine = { seq: ++this.recordSeq, model, ms, response };
-    appendFileSync(this.path, `${JSON.stringify(line)}\n`);
+    this.io.appendText(this.path, `${JSON.stringify(line)}\n`);
   }
 }

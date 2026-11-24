@@ -15,6 +15,7 @@ export type {
   RouterOptions,
 } from "./router.js";
 export { Cassette, CassetteExhaustedError } from "./cassette.js";
-export type { CassetteLine, ReplayOptions } from "./cassette.js";
+export type { CassetteIo, CassetteLine, ReplayOptions } from "./cassette.js";
+export { nodeCassetteIo } from "./adapters/cassette-node.js";
 export { Budget, createBudget, withRetries } from "./budget.js";
-export type { BudgetOptions, RetryOptions } from "./budget.js";
+export type { BudgetOptions, RetryOptions, RetryPolicy } from "./budget.js";

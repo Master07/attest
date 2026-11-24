@@ -39,6 +39,21 @@ export class Budget {
     this.transientUsed += 1;
     return true;
   }
+
+  /**
+   * Retry policy capped by this budget's maxRetries. The caller supplies its own
+   * backoff schedule and transient predicate; the budget owns how many retries
+   * may be spent from that schedule.
+   */
+  retryPolicy(
+    backoffMs: number[],
+    isTransient: (err: unknown) => boolean,
+    sleep?: (ms: number) => Promise<void>,
+  ): RetryPolicy {
+    const policy: RetryPolicy = { backoffMs, maxRetries: this.maxRetries, isTransient };
+    if (sleep !== undefined) policy.sleep = sleep;
+    return policy;
+  }
 }
 
 export function createBudget(opts: BudgetOptions): Budget {
@@ -47,18 +62,26 @@ export function createBudget(opts: BudgetOptions): Budget {
 
 export interface RetryOptions {
   backoffMs: number[];
+  /** Retries allowed after the first attempt. Defaults to backoffMs.length (the whole schedule). */
+  maxRetries?: number;
   isTransient: (err: unknown) => boolean;
   sleep?: (ms: number) => Promise<void>;
+}
+
+/** Retry options whose limit comes from a Budget (see Budget.retryPolicy). */
+export interface RetryPolicy extends RetryOptions {
+  maxRetries: number;
 }
 
 /** Retry transient failures with backoff; anything else (e.g. 4xx) throws immediately. */
 export async function withRetries<T>(send: () => Promise<T>, opts: RetryOptions): Promise<T> {
   const sleep = opts.sleep ?? ((ms: number) => new Promise((r) => setTimeout(r, ms)));
+  const backoffMs = opts.maxRetries === undefined ? opts.backoffMs : opts.backoffMs.slice(0, opts.maxRetries);
   for (let attempt = 0; ; attempt++) {
     try {
       return await send();
     } catch (err) {
-      const wait = opts.backoffMs[attempt];
+      const wait = backoffMs[attempt];
       if (!opts.isTransient(err) || wait === undefined) throw err;
       await sleep(wait);
     }

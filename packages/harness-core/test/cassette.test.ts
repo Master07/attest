@@ -65,6 +65,20 @@ test("recorded lines keep the committed file format and replay back", async () =
   await assert.rejects(cassette.nextResponse("model-a"), CassetteExhaustedError);
 });
 
+test("record and replay work with injected in-memory io, touching no files", async () => {
+  const store = new Map<string, string>();
+  const memoryIo = {
+    readText: (path: string): string => store.get(path) ?? "",
+    appendText: (path: string, text: string): void => store.set(path, (store.get(path) ?? "") + text),
+  };
+  const recorder = Cassette.record("memory.jsonl", memoryIo);
+  recorder.appendResponse("model-a", { id: "x" }, 7);
+  assert.equal(store.size, 1);
+  const replaying = Cassette.replay("memory.jsonl", { wait: false }, memoryIo);
+  assert.deepEqual(await replaying.nextResponse("model-a"), { id: "x" });
+  await assert.rejects(replaying.nextResponse("model-a"), CassetteExhaustedError);
+});
+
 test("record and replay modes refuse each other's operations", async () => {
   const path = join(mkdtempSync(join(tmpdir(), "cassette-")), "test.jsonl");
   writeFileSync(path, `${JSON.stringify({ seq: 1, model: "m", response: { id: "x" } })}\n`);

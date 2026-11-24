@@ -1,5 +1,5 @@
 // Minimal client for the Responses API (Meta Model API, and OpenAI-compatible providers such as Baseten).
-import { Cassette, CassetteExhaustedError, withRetries } from "@corbet/harness-core";
+import { Cassette, CassetteExhaustedError, createBudget, withRetries } from "@corbet/harness-core";
 
 export interface ApiOutputItem {
   type?: string;
@@ -28,8 +28,24 @@ export class ApiError extends Error {
 // JSONL "cassette"; ATTEST_REPLAY=<file> answers requests from it instead of calling the API, in the
 // order they were recorded, per model. The browser, checks and receipt still run for real, so a
 // replay shows the same model decisions being re-applied to a live app — it is marked as a replay.
+// Attest's production retry policy: network errors and 5xx are retried up to 3
+// times with [1000, 3000, 8000]ms backoff; 4xx (including 429) never is. The retry
+// limit lives on the budget — the schedule here only sets the delays.
+const retryBudget = createBudget({ maxSteps: 0, maxRetries: 3, transientRetry: 0 });
+const RETRY_BACKOFF_MS = [1000, 3000, 8000];
+
+let retrySleep: ((ms: number) => Promise<void>) | undefined;
+/** Test seam: override the delay between retries (production waits with setTimeout). */
+export function setRetrySleep(sleep: ((ms: number) => Promise<void>) | undefined): void {
+  retrySleep = sleep;
+}
+
+// Cassette caches are keyed on the path, so changing ATTEST_RECORD/ATTEST_REPLAY
+// mid-process opens the new file instead of writing to (or reading from) the old one.
 let replayCassette: Cassette | null = null;
+let replayPath: string | null = null;
 let recordCassette: Cassette | null = null;
+let recordPath: string | null = null;
 
 function modelOf(body: unknown): string {
   return typeof body === "object" && body !== null && typeof (body as { model?: unknown }).model === "string"
@@ -46,7 +62,10 @@ export async function postResponses(baseUrl: string, apiKey: string, body: unkno
   const model = modelOf(body);
   const replay = process.env.ATTEST_REPLAY;
   if (replay) {
-    replayCassette ??= Cassette.replay(replay);
+    if (replayCassette === null || replayPath !== replay) {
+      replayCassette = Cassette.replay(replay);
+      replayPath = replay;
+    }
     try {
       return (await replayCassette.nextResponse(model)) as ApiResponse;
     } catch (err) {
@@ -62,7 +81,10 @@ export async function postResponses(baseUrl: string, apiKey: string, body: unkno
   const response = await postLive(baseUrl, apiKey, body);
   const record = process.env.ATTEST_RECORD;
   if (record) {
-    recordCassette ??= Cassette.record(record);
+    if (recordCassette === null || recordPath !== record) {
+      recordCassette = Cassette.record(record);
+      recordPath = record;
+    }
     recordCassette.appendResponse(model, response, Date.now() - started);
   }
   return response;
@@ -88,10 +110,14 @@ async function postLive(baseUrl: string, apiKey: string, body: unknown): Promise
 
   // Transient failures (network, 5xx — e.g. the 500s and 503 "persistence service error" seen in live runs)
   // are retried with backoff. 4xx means the request itself is wrong, so it is never retried.
-  return withRetries(send, {
-    backoffMs: [1000, 3000, 8000],
-    isTransient: (err) => err instanceof ApiError && (err.status === null || err.status >= 500),
-  });
+  return withRetries(
+    send,
+    retryBudget.retryPolicy(
+      RETRY_BACKOFF_MS,
+      (err) => err instanceof ApiError && (err.status === null || err.status >= 500),
+      retrySleep,
+    ),
+  );
 }
 
 /** All output_text from a response, in order. */

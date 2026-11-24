@@ -47,6 +47,46 @@ test("withRetries never retries non-transient failures", async () => {
   assert.equal(calls, 1);
 });
 
+test("maxRetries from the budget caps the schedule: 0 means no retries", async () => {
+  const budget = createBudget({ maxSteps: 5, maxRetries: 0, transientRetry: 0 });
+  let calls = 0;
+  const waits: number[] = [];
+  await assert.rejects(
+    withRetries(
+      async () => {
+        calls += 1;
+        throw Object.assign(new Error("down"), { status: 503 });
+      },
+      budget.retryPolicy([1000, 3000, 8000], (err) => (err as { status: number }).status >= 500, async (ms) => {
+        waits.push(ms);
+      }),
+    ),
+    /down/,
+  );
+  assert.equal(calls, 1);
+  assert.deepEqual(waits, []);
+});
+
+test("a budget with maxRetries 2 spends only the first two delays", async () => {
+  const budget = createBudget({ maxSteps: 5, maxRetries: 2, transientRetry: 2 });
+  let calls = 0;
+  const waits: number[] = [];
+  await assert.rejects(
+    withRetries(
+      async () => {
+        calls += 1;
+        throw Object.assign(new Error("down"), { status: 503 });
+      },
+      budget.retryPolicy([1000, 3000, 8000], (err) => (err as { status: number }).status >= 500, async (ms) => {
+        waits.push(ms);
+      }),
+    ),
+    /down/,
+  );
+  assert.equal(calls, 3);
+  assert.deepEqual(waits, [1000, 3000]);
+});
+
 test("withRetries gives up after the backoff schedule is spent", async () => {
   let calls = 0;
   await assert.rejects(
