@@ -83,3 +83,8 @@ export function ed25519Verify(bytes: Uint8Array, signature: Uint8Array, publicKe
   const key = createPublicKey({ key: Buffer.from(publicKeyDerBase64, "base64"), format: "der", type: "spki" });
   return verify(null, bytes, key, signature);
 }
+
+/** Parses DER SPKI base64 Ed25519 public key bytes and discards the result. Throws on a bad key. */
+export function assertEd25519PublicKeyDerBase64(publicKeyDerBase64: string): void {
+  createPublicKey({ key: Buffer.from(publicKeyDerBase64, "base64"), format: "der", type: "spki" });
+}

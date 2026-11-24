@@ -3,8 +3,8 @@
 // hashes. Anything proof-specific (receipt body fields, criteria, verdict policy)
 // stays with the caller and plugs in through hooks: extraSteps for additional
 // checks and recompute for verdict recomputation.
-import { base64ToBytes, bytesToBase64, ed25519Sign, ed25519Verify, ed25519PublicKeyDerBase64, joinPath, sha256Hex, utf8Bytes } from "./adapters/node.js";
-import { canonicalBytes, GENESIS, verifyChainText } from "./eventlog.js";
+import { assertEd25519PublicKeyDerBase64, base64ToBytes, bytesToBase64, ed25519Sign, ed25519Verify, ed25519PublicKeyDerBase64, joinPath, sha256Hex, utf8Bytes } from "./adapters/node.js";
+import { canonicalBytes, verifyChainText } from "./eventlog.js";
 
 export interface ReceiptSignature {
   alg: "ed25519";
@@ -69,7 +69,32 @@ export function createSignature(body: unknown, privateKeyPem: string): ReceiptSi
   return { alg: "ed25519", public_key, value };
 }
 
-export function verifySignature(body: unknown, signature: ReceiptSignature): boolean {
+/** Signs raw bytes with an Ed25519 PKCS#8 PEM private key. Returns the base64 signature value. */
+export function sign(bytes: Uint8Array, privateKeyPem: string): string {
+  return bytesToBase64(ed25519Sign(bytes, privateKeyPem));
+}
+
+/** Verifies a receipt body against its signature object. The public key is parsed
+ *  before the `alg` check, so a bad key throws even when `alg` is wrong, exactly as
+ *  the pre-extraction verifier did. */
+export function verifySignature(body: unknown, signature: ReceiptSignature): boolean;
+/** Verifies raw bytes against a base64 signature value and DER SPKI base64 public key. */
+export function verifySignature(bytes: Uint8Array, signatureValue: string, publicKeyDerBase64: string): boolean;
+export function verifySignature(
+  bodyOrBytes: unknown,
+  signatureOrValue: ReceiptSignature | string,
+  publicKeyDerBase64?: string,
+): boolean {
+  if (typeof signatureOrValue === "string") {
+    return ed25519Verify(
+      bodyOrBytes as Uint8Array,
+      base64ToBytes(signatureOrValue),
+      publicKeyDerBase64 as string,
+    );
+  }
+  const signature = signatureOrValue;
+  const body = bodyOrBytes;
+  assertEd25519PublicKeyDerBase64(signature.public_key);
   return (
     signature.alg === "ed25519" &&
     ed25519Verify(canonicalBytes(body), base64ToBytes(signature.value), signature.public_key)
@@ -96,15 +121,20 @@ export function verifyReceipt<R extends VerifiableReceipt<V>, V>(
   }
 
   // 2. Event log: unbroken chain, and exactly the head and length the receipt pins (catches truncation).
+  // Only the load is guarded: a missing log is a failed step, while a verification
+  // error (for example non-finite JSON numbers) propagates, as before extraction.
   const abs = joinPath(deps.dir, receipt.log.path);
-  let chain;
+  let text: string | null = null;
+  let loadError: string | null = null;
   try {
-    chain = verifyChainText(deps.loadEvents(abs));
+    text = deps.loadEvents(abs);
   } catch (err) {
-    const reason = err instanceof Error ? err.message : String(err);
-    chain = { ok: false, entries: 0, head: GENESIS, error: { line: 0, reason: `cannot read ${abs}: ${reason}` } };
+    loadError = err instanceof Error ? err.message : String(err);
   }
-  if (!chain.ok) {
+  const chain = loadError !== null ? null : verifyChainText(text as string);
+  if (chain === null) {
+    add("event log", false, `chain broken at line 0: cannot read ${abs}: ${loadError as string}`);
+  } else if (!chain.ok) {
     add("event log", false, `chain broken at line ${chain.error?.line}: ${chain.error?.reason}`);
   } else if (chain.head !== receipt.log.head || chain.entries !== receipt.log.entries) {
     add("event log", false, `log has ${chain.entries} entries ending ${chain.head.slice(0, 19)}…, receipt pins ${receipt.log.entries} ending ${receipt.log.head.slice(0, 19)}…`);

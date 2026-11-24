@@ -126,8 +126,17 @@ export class EventLog {
     return entry;
   }
 
+  /** Current head hash. Stays a getter: Attest reads it as a property. */
   get head(): string {
     return this.lastHash;
+  }
+
+  /** Reads and parses every entry currently in the log file. */
+  read(): LogEntry[] {
+    const text = readTextFile(this.file);
+    const lines = text.split(/\r?\n/);
+    if (lines.length > 0 && lines[lines.length - 1] === "") lines.pop();
+    return lines.map((line) => JSON.parse(line) as LogEntry);
   }
 
   get length(): number {
@@ -150,6 +159,38 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+interface CheckedFields {
+  seq: number;
+  ts: string;
+  phase: string | null;
+  kind: string;
+  data: Record<string, unknown>;
+  prev: string;
+  hash: string;
+}
+
+function checkedFields(parsed: unknown): { fields: CheckedFields } | { reason: string } {
+  if (!isRecord(parsed)) return { reason: "entry is not a JSON object" };
+
+  const seq = parsed["seq"];
+  const ts = parsed["ts"];
+  const phase = parsed["phase"];
+  const kind = parsed["kind"];
+  const data = parsed["data"];
+  const prev = parsed["prev"];
+  const hash = parsed["hash"];
+
+  if (typeof seq !== "number" || !Number.isInteger(seq)) return { reason: "seq must be an integer" };
+  if (typeof ts !== "string") return { reason: "ts must be a string" };
+  if (typeof phase !== "string" && phase !== null) return { reason: "phase must be a string or null" };
+  if (typeof kind !== "string") return { reason: "kind must be a string" };
+  if (!isRecord(data)) return { reason: "data must be an object" };
+  if (typeof prev !== "string") return { reason: "prev must be a string" };
+  if (typeof hash !== "string") return { reason: "hash must be a string" };
+
+  return { fields: { seq, ts, phase, kind, data, prev, hash } };
+}
+
 function checkLines(lines: string[]): ChainCheck {
   let head = GENESIS;
   let entries = 0;
@@ -165,23 +206,9 @@ function checkLines(lines: string[]): ChainCheck {
       return bad(`invalid JSON: ${err instanceof Error ? err.message : String(err)}`);
     }
 
-    if (!isRecord(parsed)) return bad("entry is not a JSON object");
-
-    const seq = parsed["seq"];
-    const ts = parsed["ts"];
-    const phase = parsed["phase"];
-    const kind = parsed["kind"];
-    const data = parsed["data"];
-    const prev = parsed["prev"];
-    const hash = parsed["hash"];
-
-    if (typeof seq !== "number" || !Number.isInteger(seq)) return bad("seq must be an integer");
-    if (typeof ts !== "string") return bad("ts must be a string");
-    if (typeof phase !== "string" && phase !== null) return bad("phase must be a string or null");
-    if (typeof kind !== "string") return bad("kind must be a string");
-    if (!isRecord(data)) return bad("data must be an object");
-    if (typeof prev !== "string") return bad("prev must be a string");
-    if (typeof hash !== "string") return bad("hash must be a string");
+    const checked = checkedFields(parsed);
+    if ("reason" in checked) return bad(checked.reason);
+    const { seq, ts, phase, kind, data, prev, hash } = checked.fields;
 
     if (seq !== line) return bad(`seq is ${seq}, expected ${line}`);
     if (prev !== head) return bad(`prev is ${prev}, expected ${head}`);
@@ -196,6 +223,31 @@ function checkLines(lines: string[]): ChainCheck {
   return { ok: true, entries, head };
 }
 
+/** Result of verifying already-parsed events: only whether the chain holds and,
+ *  when it does not, the 1-based line Attest reports. */
+export interface EventsChainCheck {
+  ok: boolean;
+  brokenAt?: number;
+}
+
+function checkEvents(events: LogEntry[]): EventsChainCheck {
+  let head = GENESIS;
+
+  for (let index = 0; index < events.length; index++) {
+    const line = index + 1;
+    const checked = checkedFields(events[index] as unknown);
+    if ("reason" in checked) return { ok: false, brokenAt: line };
+    const { seq, ts, phase, kind, data, prev, hash } = checked.fields;
+
+    if (seq !== line || prev !== head) return { ok: false, brokenAt: line };
+    if (hash !== hashEntry({ seq, ts, phase, kind, data, prev })) return { ok: false, brokenAt: line };
+
+    head = hash;
+  }
+
+  return { ok: true };
+}
+
 /** Verifies log text already loaded into memory. */
 export function verifyChainText(text: string): ChainCheck {
   const lines = text.split(/\r?\n/);
@@ -203,13 +255,24 @@ export function verifyChainText(text: string): ChainCheck {
   return checkLines(lines);
 }
 
-export function verifyChain(path: string): ChainCheck {
+/** Verifies the log file at a path. Unchanged shape: missing files fail at line 0. */
+export function verifyChain(path: string): ChainCheck;
+/** Verifies already-parsed events. Reports only whether the chain holds and,
+ *  when it does not, the 1-based `brokenAt` line Attest reports. */
+export function verifyChain(events: LogEntry[]): EventsChainCheck;
+export function verifyChain(input: string | LogEntry[]): ChainCheck | EventsChainCheck {
+  if (typeof input !== "string") return checkEvents(input);
   let text: string;
   try {
-    text = readTextFile(path);
+    text = readTextFile(input);
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
-    return { ok: false, entries: 0, head: GENESIS, error: { line: 0, reason: `cannot read ${path}: ${reason}` } };
+    return { ok: false, entries: 0, head: GENESIS, error: { line: 0, reason: `cannot read ${input}: ${reason}` } };
   }
   return verifyChainText(text);
+}
+
+/** Path-based chain verification under an explicit name; `verifyChain(path)` keeps working. */
+export function verifyChainFile(path: string): ChainCheck {
+  return verifyChain(path);
 }
