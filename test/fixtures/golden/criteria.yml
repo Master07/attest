@@ -1,0 +1,6 @@
+id: golden-test
+criteria:
+  - id: sample
+    given: a test bundle
+    when: verified
+    then: its evidence is intact

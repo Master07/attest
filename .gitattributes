@@ -1,2 +1,4 @@
 # Proof bundles are signed byte-for-byte: never convert their line endings.
 proofs/** -text
+# Golden fixtures are hashed byte-for-byte: preserve line endings.
+test/fixtures/golden/** -text
