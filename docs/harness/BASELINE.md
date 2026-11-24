@@ -210,3 +210,42 @@ the one report read to approve P1.
 A P1 change passes only if every number and fingerprint in this document comes out the same,
 apart from the deltas a card names. The four real-world cassettes stay out of the replay baseline
 (they need third-party fetches); `verify-proofs` still checks their committed receipts.
+
+## Fingerprint v2 (P1.1)
+
+Recorded by Opus on 2026-11-25. **v1 above is unchanged and kept as history.** v2 is what the replay check gates on from P1.1 onwards.
+
+### Why
+v1 numbers events by `seq` and includes the video events. When Playwright's ffmpeg recorder is missing, as on GitHub's hosted runners, Attest logs `video_unavailable` at the start of each phase instead of `video` at the end. That shifts the event order and changes v1, even though behaviour is identical: same verdict, same 54 events, `fp:4bd38bc3034d14ce` instead of `fp:d849ae1eb892a099` for checkout-widget. Opus reproduced CI's exact v1 values locally by hiding ffmpeg. P1 worked around this by installing ffmpeg in CI; v2 removes the dependency.
+
+### Definition
+The same as v1, with two changes:
+1. Drop every event whose `kind` is `video` or `video_unavailable`.
+2. Number the remaining events by **position** (1, 2, 3, …), not by `seq`.
+
+Each remaining event becomes `[position, phase, kind, picked]`, with `picked` exactly as in v1. JSON-encode each tuple, join with `\n`, SHA-256, and keep the first 16 hex characters. Output: `<verdict> · <n> events · fp2:<16 hex>`.
+
+```js
+const VIDEO_KINDS = new Set(["video", "video_unavailable"]);
+const events = all.filter((e) => !VIDEO_KINDS.has(e.kind));
+const lines = events.map((e, i) => JSON.stringify([i + 1, e.phase, e.kind, pick(e)])); // pick() as in v1
+const fp = createHash("sha256").update(lines.join("\n")).digest("hex").slice(0, 16);
+console.log(`${events.find((e) => e.kind === "verdict")?.data?.verdict} · ${events.length} events · fp2:${fp}`);
+```
+
+### Baseline and evidence
+Taken from the replays recorded at `b6b9b6a` on 2026-11-24 (before any code moved), and re-checked:
+
+| Cassette | Runs checked | v2 |
+|---|---|---|
+| checkout-widget | 4 replays (2 at `b6b9b6a`, 2 on `t/T-001`), all with ffmpeg; 1 replay on `main` without ffmpeg | `PROVEN · 51 events · fp2:0bf181c0525b5e16`, every run |
+| checkout-demo | 4 replays (2 at `b6b9b6a`, 2 on `t/T-001`), all with ffmpeg; 1 replay on `main` @ `c65cd4c` without ffmpeg | `PROVEN · 51 events · fp2:3a793401b16733a2`, every run |
+
+The no-ffmpeg runs had `PLAYWRIGHT_BROWSERS_PATH` pointed at an empty directory. Their v1 values were `fp:4bd38bc3034d14ce` and `fp:d67165e2afd00c2b`, the same as GitHub's runners printed, while v2 matched the baseline.
+
+Committed as `docs/harness/replay-baseline-v2.txt` (kept LF on every OS by `.gitattributes`):
+
+```
+checkout-widget · PROVEN · 51 events · fp2:0bf181c0525b5e16
+checkout-demo · PROVEN · 51 events · fp2:3a793401b16733a2
+```
