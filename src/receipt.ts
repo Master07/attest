@@ -1,9 +1,13 @@
-import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, sign, verify } from "node:crypto";
+// Thin wrapper over @corbet/harness-core: signing and verification now live in
+// the core so every agent produces receipts the same way. This module keeps its
+// exports and signatures; proof-specific fields (body, phases, verdict policy)
+// stay here and plug into the core verifier through hooks.
+import { createPrivateKey, generateKeyPairSync } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
+import { createSignature, hashArtifact, keyFingerprint, verifyReceipt as verifyCoreReceipt } from "@corbet/harness-core";
 import { loadCriteria } from "./criteria.js";
-import { canonicalJson, verifyChain } from "./eventlog.js";
 import { combineCriterion, combinePhase, fixVerdict } from "./verdict.js";
 import type { CriterionResult, CriterionVotes, PhaseName, Verdict } from "./verdict.js";
 
@@ -67,8 +71,10 @@ export interface Receipt extends ReceiptBody {
   signature: { alg: "ed25519"; public_key: string; value: string };
 }
 
+export { keyFingerprint };
+
 export const sha256File = (path: string): string =>
-  `sha256:${createHash("sha256").update(readFileSync(path)).digest("hex")}`;
+  hashArtifact(new Uint8Array(readFileSync(path)));
 
 /** True when the judge was asked but could not vote, as opposed to a vote that was not applicable.
  *  0.2 receipts record this as "missing" (the criterion is inconclusive); 0.1 receipts recorded "n/a"
@@ -79,11 +85,6 @@ export const judgeErrored = (c: CriterionRecord): boolean =>
 /** True when a judge failure was allowed to abstain (0.1 receipts), so the verdict rests on the other votes. */
 export const judgeAbstained = (receipt: { phases: PhaseRecord[] }): boolean =>
   receipt.phases.some((p) => p.criteria.some((c) => c.votes.judge === "n/a" && judgeErrored(c)));
-
-/** Short identifier for a signing key. The SPKI key's first characters are a fixed Ed25519 DER header,
- *  so a prefix would be the same for every key; a hash of the whole key is not. */
-export const keyFingerprint = (publicKey: string): string =>
-  `sha256:${createHash("sha256").update(publicKey).digest("hex").slice(0, 16)}`;
 
 /** Loads the local Ed25519 signing key, creating it on first use. Never commit it. */
 export function loadSigningKey(path = process.env.ATTEST_KEY_PATH ?? join(homedir(), ".attest", "signing-key.pem")) {
@@ -97,9 +98,8 @@ export function loadSigningKey(path = process.env.ATTEST_KEY_PATH ?? join(homedi
 
 export function signReceipt(body: ReceiptBody, keyPath?: string): Receipt {
   const privateKey = loadSigningKey(keyPath);
-  const publicKey = createPublicKey(privateKey).export({ type: "spki", format: "der" }).toString("base64");
-  const value = sign(null, Buffer.from(canonicalJson(body), "utf8"), privateKey).toString("base64");
-  return { ...body, signature: { alg: "ed25519", public_key: publicKey, value } };
+  const privateKeyPem = String(privateKey.export({ type: "pkcs8", format: "pem" }));
+  return { ...body, signature: createSignature(body, privateKeyPem) };
 }
 
 export interface VerifyStep {
@@ -132,65 +132,32 @@ export function recomputeVerdict(phases: PhaseRecord[]): { verdict: Verdict; mis
 }
 
 export function verifyReceipt(receiptPath: string): VerifyResult {
-  const steps: VerifyStep[] = [];
-  const add = (check: string, ok: boolean, detail: string): void => {
-    steps.push({ check, ok, detail });
-  };
-  const done = (verdict: Verdict | null): VerifyResult => ({ ok: steps.every((s) => s.ok), verdict, steps });
-
   let receipt: Receipt;
   try {
     // Strip a BOM (Windows editors add one); any real edit still fails the signature check.
     receipt = JSON.parse(readFileSync(receiptPath, "utf8").replace(/^﻿/, "")) as Receipt;
   } catch (err) {
-    add("read receipt", false, err instanceof Error ? err.message : String(err));
-    return done(null);
+    const detail = err instanceof Error ? err.message : String(err);
+    return { ok: false, verdict: null, steps: [{ check: "read receipt", ok: false, detail }] };
   }
   const dir = dirname(resolve(receiptPath));
 
-  // 1. Signature over the canonical body.
-  try {
-    const { signature, ...body } = receipt;
-    const key = createPublicKey({ key: Buffer.from(signature.public_key, "base64"), format: "der", type: "spki" });
-    const ok = signature.alg === "ed25519" && verify(null, Buffer.from(canonicalJson(body), "utf8"), key, Buffer.from(signature.value, "base64"));
-    add("signature", ok, ok ? "valid Ed25519 signature" : "signature does not match the receipt body");
-  } catch (err) {
-    add("signature", false, err instanceof Error ? err.message : String(err));
-  }
+  const criteriaStep = (r: Receipt): VerifyStep => {
+    try {
+      const criteria = loadCriteria(join(dir, r.subject.criteria_path));
+      const ok = criteria.sha256 === r.subject.criteria_sha256;
+      return { check: "criteria", ok, detail: ok ? "criteria hash matches" : "criteria file does not match the pinned hash" };
+    } catch (err) {
+      return { check: "criteria", ok: false, detail: err instanceof Error ? err.message : String(err) };
+    }
+  };
 
-  // 2. Event log: unbroken chain, and exactly the head and length the receipt pins (catches truncation).
-  const chain = verifyChain(join(dir, receipt.log.path));
-  if (!chain.ok) {
-    add("event log", false, `chain broken at line ${chain.error?.line}: ${chain.error?.reason}`);
-  } else if (chain.head !== receipt.log.head || chain.entries !== receipt.log.entries) {
-    add("event log", false, `log has ${chain.entries} entries ending ${chain.head.slice(0, 19)}…, receipt pins ${receipt.log.entries} ending ${receipt.log.head.slice(0, 19)}…`);
-  } else {
-    add("event log", true, `${chain.entries} entries, chain intact, head matches`);
-  }
-
-  // 3. Every artifact matches its recorded hash.
-  const bad: string[] = [];
-  for (const [rel, expected] of Object.entries(receipt.artifacts)) {
-    const path = join(dir, rel);
-    if (!existsSync(path)) bad.push(`${rel} missing`);
-    else if (sha256File(path) !== expected) bad.push(`${rel} changed`);
-  }
-  const count = Object.keys(receipt.artifacts).length;
-  add("artifacts", bad.length === 0, bad.length === 0 ? `${count} artifacts match their hashes` : bad.join("; "));
-
-  // 4. Criteria file hashes to the pinned value (same LF-normalised hash as at run time).
-  try {
-    const criteria = loadCriteria(join(dir, receipt.subject.criteria_path));
-    const ok = criteria.sha256 === receipt.subject.criteria_sha256;
-    add("criteria", ok, ok ? "criteria hash matches" : "criteria file does not match the pinned hash");
-  } catch (err) {
-    add("criteria", false, err instanceof Error ? err.message : String(err));
-  }
-
-  // 5. The verdict follows from the recorded votes.
-  const { verdict, mismatches } = recomputeVerdict(receipt.phases);
-  const ok = mismatches.length === 0 && verdict === receipt.verdict;
-  add("verdict", ok, ok ? `${verdict} follows from the recorded votes` : [...mismatches, `recorded ${receipt.verdict}, votes give ${verdict}`].join("; "));
-
-  return done(receipt.verdict);
+  const result = verifyCoreReceipt(receipt, {
+    dir,
+    loadEvents: (absoluteLogPath) => readFileSync(absoluteLogPath, "utf8"),
+    loadArtifact: (absoluteArtifactPath) => (existsSync(absoluteArtifactPath) ? new Uint8Array(readFileSync(absoluteArtifactPath)) : null),
+    extraSteps: (r) => [criteriaStep(r)],
+    recompute: (r) => recomputeVerdict(r.phases),
+  });
+  return { ok: result.ok, verdict: result.verdict, steps: result.steps };
 }
