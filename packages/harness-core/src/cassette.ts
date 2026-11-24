@@ -2,12 +2,10 @@
 // The JSONL file format is fixed: one {"seq","model","ms","response"} object per line.
 // Replay answers each model's calls in the order they were recorded; a call with no
 // recording left throws instead of falling through to the network.
-
-import { nodeCassetteIo } from "./adapters/cassette-node.js";
-
-/** File access for Cassette. The default backing lives in ./adapters/cassette-node.js;
- *  pass a fake here and the cassette never touches the disk. This file imports no
- *  Node built-in modules. */
+//
+// File access is supplied by the caller (the shared file backing re-exported from
+// the core index, or an in-memory fake in tests), so this file has no runtime
+// imports and never touches the disk on its own.
 export interface CassetteIo {
   readText(path: string): string;
   appendText(path: string, text: string): void;
@@ -56,7 +54,7 @@ export class Cassette {
   ) {}
 
   /** Open a cassette for replay: every recorded call, per model, in recorded order. */
-  static replay(path: string, opts: ReplayOptions = {}, io: CassetteIo = nodeCassetteIo): Cassette {
+  static replay(path: string, io: CassetteIo, opts: ReplayOptions = {}): Cassette {
     const queues = new Map<string, CassetteLine[]>();
     for (const line of io.readText(path).split(/\r?\n/)) {
       if (!line.trim()) continue;
@@ -74,7 +72,7 @@ export class Cassette {
   }
 
   /** Open a cassette for recording: each appended response becomes one line. */
-  static record(path: string, io: CassetteIo = nodeCassetteIo): Cassette {
+  static record(path: string, io: CassetteIo): Cassette {
     return new Cassette(path, io, null, { wait: false, defaultMs: REPLAY_DEFAULT_MS, maxMs: REPLAY_MAX_MS });
   }
 

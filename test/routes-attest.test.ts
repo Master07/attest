@@ -41,14 +41,27 @@ const EXPECTED: Record<string, Record<ModelRole, string>> = {
     verifier: "meta:muse-spark-1.3",
     judge: "baseten:meta-models/muse-spark-open",
   },
-  // An explicit ATTEST_ROUTE_JUDGE pins the judge even with no Baseten key.
+  // An explicit ATTEST_ROUTE_JUDGE pins the judge even with no Baseten key. The
+  // override value differs from both defaults (meta:muse-wonder-1.0 without a key,
+  // baseten:meta-models/muse-spark-open with one), so this fails if overrides are
+  // ignored.
   override: {
     worker: "meta:muse-spark-1.3",
     reasoning: "meta:muse-wonder-1.0",
     image: "meta:muse-image-1.0",
     ui: "meta:sam-3.1",
     verifier: "meta:muse-spark-1.3",
-    judge: "meta:muse-wonder-1.0",
+    judge: "meta:muse-spark-1.3",
+  },
+  // Same override with a Baseten key set: the explicit route still wins over the
+  // open-weights default.
+  overrideWithKey: {
+    worker: "meta:muse-spark-1.3",
+    reasoning: "meta:muse-wonder-1.0",
+    image: "meta:muse-image-1.0",
+    ui: "meta:sam-3.1",
+    verifier: "meta:muse-spark-1.3",
+    judge: "meta:muse-spark-1.3",
   },
 };
 
@@ -58,7 +71,8 @@ const ENVS: Record<string, NodeJS.ProcessEnv> = {
   none: {},
   baseten: { BASETEN_API_KEY: "k" },
   replay: { ATTEST_REPLAY: "cassette.jsonl" },
-  override: { ATTEST_ROUTE_JUDGE: "meta:muse-wonder-1.0" },
+  override: { ATTEST_ROUTE_JUDGE: "meta:muse-spark-1.3" },
+  overrideWithKey: { ATTEST_ROUTE_JUDGE: "meta:muse-spark-1.3", BASETEN_API_KEY: "k" },
 };
 
 // Env vars that influence routing. Each case clears them, applies its own, and
