@@ -61,9 +61,14 @@ export async function postResponses(baseUrl: string, apiKey: string, body: unkno
   const replay = process.env.ATTEST_REPLAY;
   if (replay) {
     // Loaded once, from the first path seen: later changes keep answering from the
-    // same queue, which the calls below consume in order.
+    // same queue, which the calls below consume in order. The state is assigned
+    // BEFORE reading and parsing — exactly like the pre-extraction code, which
+    // initialised its queue map before readFileSync — so a failed load still
+    // leaves an initialised (empty or partial) queue behind for later calls.
     if (replayCassette === null) {
-      replayCassette = Cassette.replay(replay, nodeCassetteIo);
+      const cassette = Cassette.emptyReplay(replay, nodeCassetteIo);
+      replayCassette = cassette;
+      cassette.load();
     }
     try {
       return (await replayCassette.nextResponse(model)) as ApiResponse;

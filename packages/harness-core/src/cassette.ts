@@ -53,22 +53,42 @@ export class Cassette {
     private readonly replayOpts: Required<Omit<ReplayOptions, "sleep">> & Pick<ReplayOptions, "sleep">,
   ) {}
 
-  /** Open a cassette for replay: every recorded call, per model, in recorded order. */
-  static replay(path: string, io: CassetteIo, opts: ReplayOptions = {}): Cassette {
-    const queues = new Map<string, CassetteLine[]>();
-    for (const line of io.readText(path).split(/\r?\n/)) {
-      if (!line.trim()) continue;
-      const entry = JSON.parse(line) as CassetteLine;
-      const queue = queues.get(entry.model) ?? [];
-      queue.push(entry);
-      queues.set(entry.model, queue);
-    }
-    return new Cassette(path, io, queues, {
+  /**
+   * Open an empty replay cassette. The caller assigns it as the process-wide
+   * state *before* loading, so a failed load still leaves an initialised
+   * (empty or partial) queue behind — exactly like the pre-extraction code,
+   * which assigned its queue map before reading and parsing the file.
+   */
+  static emptyReplay(path: string, io: CassetteIo, opts: ReplayOptions = {}): Cassette {
+    return new Cassette(path, io, new Map<string, CassetteLine[]>(), {
       wait: opts.wait ?? true,
       defaultMs: opts.defaultMs ?? REPLAY_DEFAULT_MS,
       maxMs: opts.maxMs ?? REPLAY_MAX_MS,
       ...(opts.sleep !== undefined ? { sleep: opts.sleep } : {}),
     });
+  }
+
+  /**
+   * Read this cassette's file and parse its lines into the queues. A missing
+   * file throws with nothing queued; bad JSON throws with the entries parsed
+   * so far kept. Single-shot: calling it twice queues every line twice.
+   */
+  load(): void {
+    if (this.queues === null) throw new Error(`cassette ${this.path} was opened for recording, not replay`);
+    for (const line of this.io.readText(this.path).split(/\r?\n/)) {
+      if (!line.trim()) continue;
+      const entry = JSON.parse(line) as CassetteLine;
+      const queue = this.queues.get(entry.model) ?? [];
+      queue.push(entry);
+      this.queues.set(entry.model, queue);
+    }
+  }
+
+  /** Open a cassette for replay: every recorded call, per model, in recorded order. */
+  static replay(path: string, io: CassetteIo, opts: ReplayOptions = {}): Cassette {
+    const cassette = Cassette.emptyReplay(path, io, opts);
+    cassette.load();
+    return cassette;
   }
 
   /** Open a cassette for recording: each appended response becomes one line. */
