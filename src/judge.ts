@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { createOpenAICompatProvider } from "@corbet/harness-core";
 import { outputText, pngDataUrl, postResponses } from "./api.js";
 import type { CriteriaFile } from "./criteria.js";
 import { composeSheets, planSheets } from "./frames.js";
@@ -63,18 +64,137 @@ export function parseJudgeReply(text: string, criteria: CriteriaFile): { votes: 
   return { votes, error: null };
 }
 
+/** Replace every occurrence of the bearer credential with [redacted]. */
+function redactKey(text: string, apiKey: string): string {
+  return apiKey ? text.split(apiKey).join("[redacted]") : text;
+}
+
+/** Judge identity for this route: slash form plus the base URL host only (no scheme, path, query or credentials). */
+function openAICompatDisplayModel(routeModel: string, baseUrl: string): string {
+  return `openai-compat/${routeModel} @ ${new URL(baseUrl).host}`;
+}
+
+/** Identity when the base URL is missing or invalid: slash form with no host, never the colon form. */
+function openAICompatHostlessModel(routeModel: string): string {
+  return `openai-compat/${routeModel}`;
+}
+
+/** Host form whenever the base URL parses validly, hostless slash form otherwise. Never echoes the URL. */
+function openAICompatModelForEnv(routeModel: string, env: NodeJS.ProcessEnv): string {
+  const baseUrl = env.ATTEST_OPENAI_COMPAT_BASE_URL;
+  if (typeof baseUrl === "string" && baseUrl !== "") {
+    try {
+      return openAICompatDisplayModel(routeModel, baseUrl);
+    } catch {
+      // Fall through to the hostless form below.
+    }
+  }
+  return openAICompatHostlessModel(routeModel);
+}
+
+async function runOpenAICompatJudge(
+  routeModel: string,
+  criteria: CriteriaFile,
+  screenshots: Buffer[],
+  plan: number[][],
+  task: string,
+  promptSha256: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<JudgeResult> {
+  // Used only when the base URL itself fails to resolve, so no host is known.
+  // Every path with a resolved base URL (success, no-vote, HTTP error, timeout,
+  // transport rejection, missing key) reports the full slash-form identity with
+  // host instead. The colon form is never used.
+  const fallback: JudgeResult = {
+    model: openAICompatHostlessModel(routeModel),
+    provider: "openai-compat",
+    votes: [],
+    promptSha256,
+    error: null,
+  };
+  let apiKey = "";
+  let model = fallback.model;
+  try {
+    const { baseUrl, apiKey: key } = resolveProvider("openai-compat", env);
+    apiKey = key;
+    model = openAICompatDisplayModel(routeModel, baseUrl);
+    const total = screenshots.length;
+    const last = (plan.at(-1) ?? [0]).at(-1) ?? 0;
+    // ≤ 8 frames: one image per frame, exactly as before. More: contact sheets, so no frame is dropped.
+    const images = plan.every((g) => g.length === 1)
+      ? plan.map(([i]) => screenshots[i as number] as Buffer)
+      : await composeSheets(screenshots, plan);
+    const labelled = plan.flatMap((group, j) => {
+      const first = (group[0] ?? 0) + 1;
+      const end = group.includes(last) ? " (end)" : "";
+      const label = group.length === 1
+        ? `FRAME ${first} of ${total}${end}:`
+        : `IMAGE ${j + 1} of ${plan.length} — FRAMES ${group.map((i) => i + 1).join(", ")} of ${total}${end}, laid out left to right, then top to bottom, each labelled with its frame number:`;
+      return [{ label, dataUrl: pngDataUrl(images[j] as Buffer) }];
+    });
+    const provider = createOpenAICompatProvider({ baseUrl, apiKey });
+    const outcome = await provider.judge({
+      model: routeModel,
+      instructions: INSTRUCTIONS,
+      task,
+      criteriaIds: criteria.criteria.map((c) => c.id),
+      images: labelled,
+    });
+    if ("votes" in outcome) {
+      return {
+        model,
+        provider: "openai-compat",
+        votes: outcome.votes.map((vote) => ({ ...vote, reason: redactKey(vote.reason, apiKey) })),
+        promptSha256,
+        error: null,
+      };
+    }
+    return { model, provider: "openai-compat", votes: [], promptSha256, error: redactKey(outcome.error, apiKey) };
+  } catch (err) {
+    const keyEnv = env.ATTEST_OPENAI_COMPAT_KEY_ENV || "OPENAI_COMPAT_API_KEY";
+    const knownKey = apiKey || env[keyEnv] || "";
+    // A valid base URL names its host even when the key (or the call) failed;
+    // only a missing or invalid URL stays hostless. Never the colon form.
+    model = openAICompatModelForEnv(routeModel, env);
+    return { ...fallback, model, error: redactKey(err instanceof Error ? err.message : String(err), knownKey) };
+  }
+}
+
 export async function runJudge(
   criteria: CriteriaFile,
   screenshots: Buffer[],
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<JudgeResult> {
   const plan = planSheets(screenshots.length);
-  const route = pickRoute("judge", false, env);
   const task = [
     "Acceptance criteria:",
     ...criteria.criteria.map((c) => `- id: ${c.id}\n  given: ${c.given}\n  when: ${c.when}\n  then: ${c.then}`),
   ].join("\n");
   const promptSha256 = createHash("sha256").update(`${INSTRUCTIONS}\n---\n${task}`).digest("hex");
+  let route: ReturnType<typeof pickRoute>;
+  try {
+    route = pickRoute("judge", false, env);
+  } catch (err) {
+    // An openai-compat route whose base URL is missing or invalid still reports
+    // a judge result (hostless slash identity, clear error) instead of throwing.
+    // Any other bad override keeps throwing, as before.
+    const raw = env.ATTEST_ROUTE_JUDGE?.trim() ?? "";
+    const prefix = "openai-compat:";
+    if (!raw.startsWith(prefix)) throw err;
+    const keyEnv = env.ATTEST_OPENAI_COMPAT_KEY_ENV || "OPENAI_COMPAT_API_KEY";
+    const knownKey = env[keyEnv] || "";
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      model: openAICompatModelForEnv(raw.slice(prefix.length), env),
+      provider: "openai-compat",
+      votes: [],
+      promptSha256,
+      error: redactKey(message, knownKey),
+    };
+  }
+  if (route.provider === "openai-compat") {
+    return runOpenAICompatJudge(route.model, criteria, screenshots, plan, task, promptSha256, env);
+  }
   const base: JudgeResult = { model: route.model, provider: route.provider, votes: [], promptSha256, error: null };
 
   try {

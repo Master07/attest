@@ -251,6 +251,14 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
   const replay = replayPath ? { cassette: basename(replayPath), sha256: sha256File(replayPath) } : null;
   log.append("run_start", { mode: "fix", app: opts.appPath, refs, criteria_sha256: criteria.sha256, replay });
 
+  // Fail fast on a misconfigured model route (e.g. a bad openai-compat judge
+  // route) before any workspace starts, browser launches, or phase event is logged.
+  const models = [
+    { role: "verifier", ...pickRoute("verifier") },
+    ...(criteria.criteria.some((c) => (c.expect?.visible ?? []).length > 0) ? [{ role: "ui", ...pickRoute("ui") }] : []),
+    ...(config.verifier.judge ? [{ role: "judge", ...pickRoute("judge") }] : []),
+  ];
+
   const ctx = { repoRoot, appPath: opts.appPath, configDir, config, criteria, dir, log, progress };
   const phases: PhaseRecord[] = [];
   for (const phase of ["red", "green", "break"] as const) {
@@ -268,11 +276,6 @@ export async function runProof(opts: ProofOptions): Promise<ProofResult> {
     if (r !== "events.jsonl" && r !== "receipt.json") artifacts[r] = sha256File(path);
   }
 
-  const models = [
-    { role: "verifier", ...pickRoute("verifier") },
-    ...(criteria.criteria.some((c) => (c.expect?.visible ?? []).length > 0) ? [{ role: "ui", ...pickRoute("ui") }] : []),
-    ...(config.verifier.judge ? [{ role: "judge", ...pickRoute("judge") }] : []),
-  ];
   const body: ReceiptBody = {
     version: RECEIPT_VERSION,
     mode: "fix",
