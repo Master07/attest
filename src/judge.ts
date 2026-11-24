@@ -69,9 +69,9 @@ function redactKey(text: string, apiKey: string): string {
   return apiKey ? text.split(apiKey).join("[redacted]") : text;
 }
 
-/** Receipt identity for this route: the full route plus the base URL host only. */
+/** Judge identity for this route: slash form plus the base URL host only (no scheme, path, query or credentials). */
 function openAICompatDisplayModel(routeModel: string, baseUrl: string): string {
-  return `openai-compat:${routeModel} @ ${new URL(baseUrl).host}`;
+  return `openai-compat/${routeModel} @ ${new URL(baseUrl).host}`;
 }
 
 async function runOpenAICompatJudge(
@@ -83,6 +83,9 @@ async function runOpenAICompatJudge(
   promptSha256: string,
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<JudgeResult> {
+  // Used only when the base URL itself fails to resolve, so no host is known.
+  // Every path with a resolved base URL (success, no-vote, HTTP error, timeout,
+  // transport rejection) reports the full slash-form identity with host instead.
   const fallback: JudgeResult = {
     model: `openai-compat:${routeModel}`,
     provider: "openai-compat",
@@ -91,10 +94,11 @@ async function runOpenAICompatJudge(
     error: null,
   };
   let apiKey = "";
+  let model = fallback.model;
   try {
     const { baseUrl, apiKey: key } = resolveProvider("openai-compat", env);
     apiKey = key;
-    const model = openAICompatDisplayModel(routeModel, baseUrl);
+    model = openAICompatDisplayModel(routeModel, baseUrl);
     const total = screenshots.length;
     const last = (plan.at(-1) ?? [0]).at(-1) ?? 0;
     // ≤ 8 frames: one image per frame, exactly as before. More: contact sheets, so no frame is dropped.
@@ -130,7 +134,7 @@ async function runOpenAICompatJudge(
   } catch (err) {
     const keyEnv = env.ATTEST_OPENAI_COMPAT_KEY_ENV || "OPENAI_COMPAT_API_KEY";
     const knownKey = apiKey || env[keyEnv] || "";
-    return { ...fallback, error: redactKey(err instanceof Error ? err.message : String(err), knownKey) };
+    return { ...fallback, model, error: redactKey(err instanceof Error ? err.message : String(err), knownKey) };
   }
 }
 
