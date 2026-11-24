@@ -16,7 +16,42 @@ export const PROVIDERS: Record<Provider, ProviderConfig> = {
     baseUrlEnv: "BASETEN_BASE_URL",
     defaultBaseUrl: "https://inference.baseten.co/v1",
   },
+  // OpenAI-compatible judge endpoint (OpenRouter, etc.). No default base URL: the
+  // caller must set ATTEST_OPENAI_COMPAT_BASE_URL. The bearer credential comes from
+  // the variable named by ATTEST_OPENAI_COMPAT_KEY_ENV (default OPENAI_COMPAT_API_KEY).
+  "openai-compat": { apiKeyEnv: "OPENAI_COMPAT_API_KEY", baseUrlEnv: "ATTEST_OPENAI_COMPAT_BASE_URL" },
 };
+
+export const OPENAI_COMPAT_DEFAULT_KEY_ENV = "OPENAI_COMPAT_API_KEY";
+
+/** Route-time validation of the openai-compat base URL, mirroring the core contract. */
+function validateOpenAICompatBaseUrl(baseUrl: string): void {
+  let url: URL;
+  try {
+    url = new URL(baseUrl);
+  } catch {
+    throw new Error("openai-compat: invalid base URL");
+  }
+  const httpLoopback = url.protocol === "http:" && url.hostname === "127.0.0.1";
+  if (url.protocol !== "https:" && !httpLoopback) {
+    throw new Error("openai-compat: base URL must use https: (http: is allowed only for 127.0.0.1)");
+  }
+  if (url.username !== "" || url.password !== "" || url.search !== "" || url.hash !== "") {
+    throw new Error("openai-compat: base URL must not contain credentials, a query or a fragment");
+  }
+}
+
+/** Resolve the openai-compat endpoint: required base URL, selectable key variable. */
+function resolveOpenAICompat(env: NodeJS.ProcessEnv): ProviderEndpoint {
+  const baseUrl = env.ATTEST_OPENAI_COMPAT_BASE_URL;
+  if (!baseUrl) throw new Error("openai-compat: set ATTEST_OPENAI_COMPAT_BASE_URL");
+  // `||`, not `??`: an empty KEY_ENV line falls back to the default.
+  const keyEnv = env.ATTEST_OPENAI_COMPAT_KEY_ENV || OPENAI_COMPAT_DEFAULT_KEY_ENV;
+  const apiKey = env[keyEnv];
+  if (!apiKey) throw new Error(`openai-compat: set ${keyEnv}`);
+  validateOpenAICompatBaseUrl(baseUrl);
+  return { baseUrl, apiKey };
+}
 
 export const MODEL_IDS = {
   spark: "muse-spark-1.3",
@@ -63,5 +98,9 @@ export interface ProviderEndpoint {
 }
 
 export function resolveProvider(provider: Provider, env: NodeJS.ProcessEnv = process.env): ProviderEndpoint {
+  // Replays answer from a cassette and never reach the network, so the generic
+  // router (which short-circuits on ATTEST_REPLAY before reading keys) handles
+  // them for every provider, including openai-compat.
+  if (provider === "openai-compat" && !env.ATTEST_REPLAY) return resolveOpenAICompat(env);
   return router.resolveProvider(provider, env);
 }

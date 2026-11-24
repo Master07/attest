@@ -1,6 +1,6 @@
 export type ModelRole = "worker" | "reasoning" | "image" | "ui" | "verifier" | "judge";
 
-export type Provider = "meta" | "baseten";
+export type Provider = "meta" | "baseten" | "openai-compat";
 
 export interface ModelRoute {
   provider: Provider;

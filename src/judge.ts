@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { createOpenAICompatProvider } from "@corbet/harness-core";
 import { outputText, pngDataUrl, postResponses } from "./api.js";
 import type { CriteriaFile } from "./criteria.js";
 import { composeSheets, planSheets } from "./frames.js";
@@ -63,6 +64,76 @@ export function parseJudgeReply(text: string, criteria: CriteriaFile): { votes: 
   return { votes, error: null };
 }
 
+/** Replace every occurrence of the bearer credential with [redacted]. */
+function redactKey(text: string, apiKey: string): string {
+  return apiKey ? text.split(apiKey).join("[redacted]") : text;
+}
+
+/** Receipt identity for this route: the full route plus the base URL host only. */
+function openAICompatDisplayModel(routeModel: string, baseUrl: string): string {
+  return `openai-compat:${routeModel} @ ${new URL(baseUrl).host}`;
+}
+
+async function runOpenAICompatJudge(
+  routeModel: string,
+  criteria: CriteriaFile,
+  screenshots: Buffer[],
+  plan: number[][],
+  task: string,
+  promptSha256: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<JudgeResult> {
+  const fallback: JudgeResult = {
+    model: `openai-compat:${routeModel}`,
+    provider: "openai-compat",
+    votes: [],
+    promptSha256,
+    error: null,
+  };
+  let apiKey = "";
+  try {
+    const { baseUrl, apiKey: key } = resolveProvider("openai-compat", env);
+    apiKey = key;
+    const model = openAICompatDisplayModel(routeModel, baseUrl);
+    const total = screenshots.length;
+    const last = (plan.at(-1) ?? [0]).at(-1) ?? 0;
+    // ≤ 8 frames: one image per frame, exactly as before. More: contact sheets, so no frame is dropped.
+    const images = plan.every((g) => g.length === 1)
+      ? plan.map(([i]) => screenshots[i as number] as Buffer)
+      : await composeSheets(screenshots, plan);
+    const labelled = plan.flatMap((group, j) => {
+      const first = (group[0] ?? 0) + 1;
+      const end = group.includes(last) ? " (end)" : "";
+      const label = group.length === 1
+        ? `FRAME ${first} of ${total}${end}:`
+        : `IMAGE ${j + 1} of ${plan.length} — FRAMES ${group.map((i) => i + 1).join(", ")} of ${total}${end}, laid out left to right, then top to bottom, each labelled with its frame number:`;
+      return [{ label, dataUrl: pngDataUrl(images[j] as Buffer) }];
+    });
+    const provider = createOpenAICompatProvider({ baseUrl, apiKey });
+    const outcome = await provider.judge({
+      model: routeModel,
+      instructions: INSTRUCTIONS,
+      task,
+      criteriaIds: criteria.criteria.map((c) => c.id),
+      images: labelled,
+    });
+    if ("votes" in outcome) {
+      return {
+        model,
+        provider: "openai-compat",
+        votes: outcome.votes.map((vote) => ({ ...vote, reason: redactKey(vote.reason, apiKey) })),
+        promptSha256,
+        error: null,
+      };
+    }
+    return { model, provider: "openai-compat", votes: [], promptSha256, error: redactKey(outcome.error, apiKey) };
+  } catch (err) {
+    const keyEnv = env.ATTEST_OPENAI_COMPAT_KEY_ENV || "OPENAI_COMPAT_API_KEY";
+    const knownKey = apiKey || env[keyEnv] || "";
+    return { ...fallback, error: redactKey(err instanceof Error ? err.message : String(err), knownKey) };
+  }
+}
+
 export async function runJudge(
   criteria: CriteriaFile,
   screenshots: Buffer[],
@@ -75,6 +146,9 @@ export async function runJudge(
     ...criteria.criteria.map((c) => `- id: ${c.id}\n  given: ${c.given}\n  when: ${c.when}\n  then: ${c.then}`),
   ].join("\n");
   const promptSha256 = createHash("sha256").update(`${INSTRUCTIONS}\n---\n${task}`).digest("hex");
+  if (route.provider === "openai-compat") {
+    return runOpenAICompatJudge(route.model, criteria, screenshots, plan, task, promptSha256, env);
+  }
   const base: JudgeResult = { model: route.model, provider: route.provider, votes: [], promptSha256, error: null };
 
   try {
