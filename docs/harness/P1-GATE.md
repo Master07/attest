@@ -159,8 +159,10 @@ root `.env` is refused outright — `src/index.ts:28` reloads it and could resto
 keys (CI has none). The script then reads `events.jsonl`, computes the BASELINE.md fingerprint,
 prints `name · verdict · <n> events · fp:<16 hex>`, and compares the printed lines against
 `docs/harness/replay-baseline.txt` exactly (CRLF/CR normalised to LF, no trim: a missing or extra
-line, a blank line, or stray whitespace on any line all fail). Temp dirs are removed on success
-and kept — with their paths printed — on failure.
+line, a blank line, or stray whitespace on any line all fail). Temp dirs are removed on success.
+When a replay finishes but its fingerprint or exit code is wrong, they are kept and their paths
+printed; an earlier failure (a spawn error, a malformed `events.jsonl`, an unreadable baseline file)
+throws before that point, still exits non-zero, but may not print the temp paths.
 
 ## Replay check self-test
 
@@ -197,8 +199,8 @@ Run locally on the branch head (macOS, Chrome), each with `ATTEST_BROWSER_CHANNE
 
 The normal run (`ATTEST_BROWSER_CHANNEL=chrome npx tsx scripts/replay-all.ts`) prints the two
 baseline lines and exits 0; `git status` is clean afterwards (no key written in the repo, temp
-dirs removed on success). Left for Opus: the two CI links above, and a throwaway-branch mutation
-check (mutate the core to confirm the replay fingerprint catches a behavioural change).
+dirs removed on success). Left for Opus: the CI links above, and the card's throwaway-branch check
+(a one-byte edit to a committed cassette must make CI fail; the branch is deleted afterwards).
 
 ## Known gaps
 
@@ -219,4 +221,4 @@ check (mutate the core to confirm the replay fingerprint catches a behavioural c
 - **The Muse sandbox cannot run browser replays**, so Opus runs the two cassette replays locally
   (Chrome) and posts the result; the CI step reproduces them on GitHub runners, which ship Chrome.
 - **CI links are `TODO(Opus)`** because the branch has not pushed yet; Opus fills them in and
-  re-runs every line before approving.
+  re-runs every line before recommending the owner's sign-off. The owner approves P1.
