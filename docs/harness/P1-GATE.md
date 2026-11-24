@@ -162,7 +162,11 @@ prints `name · verdict · <n> events · fp:<16 hex>`, and compares the printed 
 line, a blank line, or stray whitespace on any line all fail). Temp dirs are removed on success.
 When a replay finishes but its fingerprint or exit code is wrong, they are kept and their paths
 printed; an earlier failure (a spawn error, a malformed `events.jsonl`, an unreadable baseline file)
-throws before that point, still exits non-zero, but may not print the temp paths.
+throws before that point, still exits non-zero, but may not print the temp paths. The
+fingerprint also depends on the environment: it is computed over event order, and without
+Playwright's ffmpeg recorder Attest logs `video_unavailable` at the start of each phase instead
+of `video` at the end, changing the order; the baseline was recorded with ffmpeg present, so CI
+installs it (`npx playwright install ffmpeg`, no browsers) before the replay step (see Known gaps).
 
 ## Replay check self-test
 
@@ -211,6 +215,12 @@ dirs removed on success). Left for Opus: the CI links above, and the card's thro
   among the 220 that `verify-proofs` checks (signatures, hash chains, artifact hashes, recomputed
   verdicts). The two in-repo cassettes exercise the whole pipeline (workspace, browser, verifier,
   checks, SAM, judge, verdict, receipt).
+- **The replay fingerprint depends on whether the ffmpeg video recorder is installed.** When
+  Playwright's ffmpeg is absent, Attest logs `video_unavailable` at the start of each phase
+  instead of `video` at the end, and the event order is part of the fingerprint, so a machine
+  without ffmpeg reports a mismatch even when behaviour is unchanged. The baseline was recorded
+  with ffmpeg present, so CI installs it (`npx playwright install ffmpeg`, no browsers) and a
+  local replay must have it too.
 - **Existing clones must run `npm install` again after pulling.** `packages/harness-core` is a new
   npm workspace (`"workspaces": ["packages/*"]`); a stale `node_modules` will not resolve
   `@corbet/harness-core`. CI runs `npm ci` so it is always fresh.
