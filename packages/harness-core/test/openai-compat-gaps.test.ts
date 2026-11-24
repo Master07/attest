@@ -118,9 +118,6 @@ async function withHarness(t: TestContext, run: (logs: string[]) => Promise<void
     throw new Error("unexpected fetch without an explicit test stub");
   };
   const savedEnv = { ...process.env };
-  // Clear ambient replay/record flags so a developer shell cannot change routing during a test.
-  delete process.env.ATTEST_REPLAY;
-  delete process.env.ATTEST_RECORD;
   const logs: string[] = [];
   const savedConsole = new Map<ConsoleName, unknown>();
   for (const name of ["debug", "info", "log", "warn", "error"] as const) {

@@ -34,8 +34,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run verify-proofs
-      # Replay the two in-repo cassettes and check their fingerprints against the committed
-      # baseline (docs/harness/replay-baseline.txt). Model hosts are blocked by replay mode (the
+      # Replay the two in-repo cassettes and check their fingerprints (v2) against the committed
+      # baseline (docs/harness/replay-baseline-v2.txt). Model hosts are blocked by replay mode (the
       # cassette answers every model call; no keys are read), but the browser, workspace and
       # checks still run for real, so the step needs a browser. GitHub's hosted runners ship
       # Google Chrome, so it uses the chrome channel and skips Playwright's own browser download.
