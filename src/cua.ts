@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { createBudget } from "@corbet/harness-core";
+import type { Budget } from "@corbet/harness-core";
 import { ApiError, pngDataUrl, postResponses } from "./api.js";
 import type { ApiOutputItem, ApiResponse } from "./api.js";
 import type { Action, BrowserSession } from "./browser.js";
@@ -49,6 +51,8 @@ export interface CuaOptions {
   /** Called with every screenshot, step 0 included, so the caller can store evidence. */
   onScreenshot?: (step: number, png: Buffer) => void | Promise<void>;
   env?: NodeJS.ProcessEnv;
+  /** Step cap and retry allowance; defaults to Attest's constants (see runVerifier). */
+  budget?: Budget;
 }
 
 const sha256 = (data: Buffer | string): string => createHash("sha256").update(data).digest("hex");
@@ -167,6 +171,9 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
   const route = pickRoute("verifier", false, env);
   const { baseUrl, apiKey } = resolveProvider(route.provider, env);
   const prompt = buildVerifierPrompt(opts.criteria, opts.appUrl);
+  // The step cap and retry allowance come from the core budget. The numbers are Attest's own:
+  // max_steps default 25 (config.ts), 3 backoff retries (api.ts), one stateless fallback below.
+  const budget = opts.budget ?? createBudget({ maxSteps: opts.maxSteps, maxRetries: 3, transientRetry: 1 });
 
   const steps: CuaStep[] = [];
   const fallbacks: string[] = [];
@@ -224,7 +231,7 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
         return result(error ? "error" : "completed", { verdicts, finalText, ...(error ? { error } : {}) });
       }
 
-      if (step > opts.maxSteps) return result("step_cap", { error: `stopped after ${opts.maxSteps} steps` });
+      if (budget.exhausted()) return result("step_cap", { error: `stopped after ${opts.maxSteps} steps` });
 
       const safetyChecks = call.pending_safety_checks ?? [];
       if (safetyChecks.length > 0 && !isLocalUrl(opts.appUrl)) {
@@ -244,6 +251,7 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
       png = await opts.browser.screenshot();
       await opts.onScreenshot?.(step, png);
       steps.push({ step, actions: call.actions ?? [], errors, safetyChecks, screenshotSha256: sha256(png) });
+      budget.spend();
 
       if (response.id === undefined || call.call_id === undefined) {
         return result("error", { error: "response is missing id or call_id" });
@@ -274,6 +282,8 @@ export async function runVerifier(opts: CuaOptions): Promise<CuaResult> {
           // Chained turns depend on the server's stored copy of the conversation; live runs saw
           // HTTP 500 / 503 "persistence service error" here. Fall back to replaying it ourselves.
           if (!(err instanceof ApiError && (err.status === null || err.status >= 500))) throw err;
+          // One retry on transient errors: the budget's single transient allowance.
+          if (!budget.useTransientRetry()) throw err;
           stateless = true;
           fallbacks.push(`step ${step}: chained turn failed (${err.message}); switched to stateless replay`);
         }
