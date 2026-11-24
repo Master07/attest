@@ -4,5 +4,5 @@
     "noEmit": true,
     "rootDir": "."
   },
-  "include": ["src", "scripts", "test"]
+  "include": ["src", "scripts", "test", "packages/harness-core/src"]
 }
