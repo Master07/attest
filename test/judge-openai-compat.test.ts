@@ -67,7 +67,7 @@ const QUERY_SECRET = "sk-test-NOT-REAL-query-09ad77";
 const BASE_URL = "https://openrouter.ai:8443/api/v1";
 const MODEL = "non-meta/vision-model";
 const ROUTE = `openai-compat:${MODEL}`;
-const DISPLAY_MODEL = `${ROUTE} @ openrouter.ai:8443`;
+const DISPLAY_MODEL = `openai-compat/${MODEL} @ openrouter.ai:8443`;
 const PASS_REASON = "The saved item remains visible.";
 const FAIL_REASON = "The saved item is absent.";
 
@@ -164,8 +164,9 @@ const runtime = {
     browser: { viewport: { width: 800, height: 600 } },
     verifier: { max_steps: 1, judge: true },
   }),
-  startWorkspace: async (options: { ref: string }) => {
-    runtime.currentRef = options.ref;
+  startWorkspace: async (options: { ref: string; phase: string }) => {
+    // Track the phase (red/green/break), not the git ref: proof.ts passes both, and the stubs branch on "green".
+    runtime.currentRef = options.phase;
     return { sha: `${options.ref}-sha`, url: "http://127.0.0.1:3000", port: 3000, stop: async () => undefined };
   },
   launchBrowser: async () => ({
