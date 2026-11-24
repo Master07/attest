@@ -197,6 +197,8 @@ async function withHarness(t: TestContext, run: (logs: string[]) => Promise<void
     throw new Error("unexpected fetch without an explicit test stub");
   };
   const savedEnv = { ...process.env };
+  delete process.env.ATTEST_REPLAY;
+  delete process.env.ATTEST_RECORD;
   const logs: string[] = [];
   const savedConsole = new Map<ConsoleName, unknown>();
   for (const name of ["debug", "info", "log", "warn", "error"] as const) {
