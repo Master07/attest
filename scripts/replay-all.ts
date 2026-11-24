@@ -1,7 +1,8 @@
 // Replays the two in-repo cassettes (checkout-widget, checkout-demo) with model hosts
-// blocked, prints one fingerprint line per cassette, and checks the lines against the
-// committed baseline (docs/harness/replay-baseline.txt). Exit 0 when they match, non-zero
-// with the expected and actual lines when they do not.
+// blocked, prints one v2 fingerprint line per cassette, and checks the lines against the
+// committed v2 baseline (docs/harness/replay-baseline-v2.txt). Exit 0 when they match,
+// non-zero with the expected and actual lines when they do not. The v1 line is printed to
+// stderr for information but not gated on (v1 depends on whether ffmpeg is installed; v2 does not).
 //
 // Model hosts are blocked by replay mode: the cassette answers every model call in recorded
 // order and a missing recording throws instead of falling through to the network. Any model
@@ -20,12 +21,12 @@
 // fails the script, with the child's exit code and the last stderr lines printed.
 //
 // Usage: npx tsx scripts/replay-all.ts [baselinePath]
-//   baselinePath defaults to docs/harness/replay-baseline.txt; pass a copy to exercise the
+//   baselinePath defaults to docs/harness/replay-baseline-v2.txt; pass a copy to exercise the
 //   mismatch path without touching the committed file.
 import { spawn } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
-import { createHash } from "node:crypto";
 import { dirname, join, resolve } from "node:path";
+import { fingerprintV1, fingerprintV2, type ReplayEvent } from "./fingerprint.js";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
@@ -85,31 +86,9 @@ const CASSETTES: readonly Cassette[] = [
   },
 ];
 
-// Fingerprint definition, copied verbatim from docs/harness/BASELINE.md. For each event it
-// keeps only the fields a refactor must not change; run-specific fields (timestamps, ports,
-// screenshot hashes) are ignored, which is why this is stable where log.head is not.
-type ReplayEvent = { seq: number; phase: string | null; kind: string; data: any };
-
-function pick(e: ReplayEvent): unknown {
-  const d = e.data ?? {};
-  switch (e.kind) {
-    case "cua_step": return { step: d.step, actions: d.actions, errors: d.errors };
-    case "cua_result": return { status: d.status, verdicts: (d.verdicts ?? []).map((v: any) => [v.id, v.result]) };
-    case "checks": return (d.results ?? []).map((r: any) => [r.id, r.result, (r.outcomes ?? []).map((o: any) => [o.kind, o.result])]);
-    case "judge": return { model: d.model, votes: (d.votes ?? []).map((v: any) => [v.id, v.result]) };
-    case "phase_result": return d.result;
-    case "verdict": return d.verdict;
-    case "phase_start": return d.ref;
-    default: return null;
-  }
-}
-
-function fingerprintLine(name: string, eventsDir: string): string {
-  const events = readFileSync(join(eventsDir, "events.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l) as ReplayEvent);
-  const lines = events.map((e) => JSON.stringify([e.seq, e.phase, e.kind, pick(e)]));
-  const fp = createHash("sha256").update(lines.join("\n")).digest("hex").slice(0, 16);
-  const verdict = events.find((e) => e.kind === "verdict")?.data?.verdict;
-  return `${name} · ${verdict} · ${events.length} events · fp:${fp}`;
+// The fingerprint lives in scripts/fingerprint.ts (v1 and v2); v2 is what this script gates on.
+function readEvents(eventsDir: string): ReplayEvent[] {
+  return readFileSync(join(eventsDir, "events.jsonl"), "utf8").trim().split("\n").map((l) => JSON.parse(l) as ReplayEvent);
 }
 
 interface ChildResult {
@@ -166,7 +145,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const baselinePath = process.argv[2] ?? join(repoRoot, "docs", "harness", "replay-baseline.txt");
+  const baselinePath = process.argv[2] ?? join(repoRoot, "docs", "harness", "replay-baseline-v2.txt");
   const env = scrubEnv(process.env);
 
   // Self-test hook (read only by this script, never by src/): point the first cassette at a
@@ -201,10 +180,12 @@ async function main(): Promise<void> {
     }
     const eventsPath = join(outDir, "events.jsonl");
     if (existsSync(eventsPath)) {
-      actual.push(fingerprintLine(c.name, outDir));
+      const events = readEvents(outDir);
+      actual.push(`${c.name} · ${fingerprintV2(events)}`);
+      process.stderr.write(`${c.name} · ${fingerprintV1(events)}\n`);
     } else {
       process.stderr.write(`[${c.name}] no events.jsonl produced (attest exit ${code}); cannot fingerprint\n`);
-      actual.push(`${c.name} · ERROR · 0 events · fp:0000000000000000`);
+      actual.push(`${c.name} · ERROR · 0 events · fp2:0000000000000000`);
     }
   }
 

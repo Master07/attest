@@ -34,8 +34,6 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run verify-proofs
-      # The replay fingerprint includes event order; the baseline was recorded with video available, so install Playwright's ffmpeg recorder (no browsers — the runner's Chrome is reused).
-      - run: npx playwright install ffmpeg
       # Replay the two in-repo cassettes and check their fingerprints against the committed
       # baseline (docs/harness/replay-baseline.txt). Model hosts are blocked by replay mode (the
       # cassette answers every model call; no keys are read), but the browser, workspace and
