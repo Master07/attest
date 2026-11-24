@@ -89,6 +89,14 @@ const router = createRouter({
 
 export function pickRoute(role: ModelRole, contributor = false, env: NodeJS.ProcessEnv = process.env): ModelRoute {
   const resolved = router.resolve(role, { contributor, env });
+  if (resolved.provider === "openai-compat") {
+    // Fail at route-resolve time, before any fetch: the judge would otherwise
+    // report this as a missing vote. Same rules and messages as resolveProvider;
+    // the key itself is still checked at call time, and nothing is echoed.
+    const baseUrl = env.ATTEST_OPENAI_COMPAT_BASE_URL;
+    if (!baseUrl) throw new Error("openai-compat: set ATTEST_OPENAI_COMPAT_BASE_URL");
+    validateOpenAICompatBaseUrl(baseUrl);
+  }
   return { provider: resolved.provider as Provider, model: resolved.model };
 }
 

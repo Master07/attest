@@ -62,37 +62,82 @@ function parseBaseUrl(baseUrl: string): { origin: string; path: string } {
   return { origin: url.origin, path: url.pathname.replace(/\/+$/, "") };
 }
 
-/** One POST attempt with its own abort deadline. Throws sanitized errors only. */
+/** One POST attempt whose abort deadline covers the request and the full response body. */
 async function postOnce(
   url: string,
   apiKey: string,
   body: string,
   timeoutMs: number,
   fetchImpl: typeof fetch | undefined,
-): Promise<Response> {
+): Promise<{ response: Response; text: string | null }> {
+  const timeoutMessage = `openai-compat request timed out after ${timeoutMs} ms`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await (fetchImpl ?? globalThis.fetch)(url, {
-      method: "POST",
-      redirect: "error",
-      signal: controller.signal,
-      headers: {
-        authorization: `Bearer ${apiKey}`,
-        "content-type": "application/json",
-      },
-      body,
+  // Race the fetch and the body read against the abort so the deadline holds
+  // even for a fetch or body implementation that ignores the signal: the abort
+  // listener rejects while the timer guarantees the signal itself is aborted.
+  const withDeadline = <T>(work: Promise<T>): Promise<T> =>
+    new Promise<T>((resolve, reject) => {
+      if (controller.signal.aborted) {
+        reject(new Error(timeoutMessage));
+        return;
+      }
+      const onAbort = (): void => {
+        reject(new Error(timeoutMessage));
+      };
+      controller.signal.addEventListener("abort", onAbort, { once: true });
+      work.then(
+        (value) => {
+          controller.signal.removeEventListener("abort", onAbort);
+          resolve(value);
+        },
+        (error: unknown) => {
+          controller.signal.removeEventListener("abort", onAbort);
+          // The original rejection (including any abort error) is dropped so
+          // response bodies and fetch messages can never carry the key into an error.
+          reject(controller.signal.aborted ? new Error(timeoutMessage) : error);
+        },
+      );
     });
-  } catch {
-    // The original rejection (including any abort error) is dropped so response
-    // bodies and fetch messages can never carry the key into an error.
-    if (controller.signal.aborted) {
-      throw new Error(`openai-compat request timed out after ${timeoutMs} ms`);
-    }
-    throw new Error("openai-compat request failed");
-  } finally {
+  let response: Response;
+  try {
+    response = await withDeadline(
+      (fetchImpl ?? globalThis.fetch)(url, {
+        method: "POST",
+        redirect: "error",
+        signal: controller.signal,
+        headers: {
+          authorization: `Bearer ${apiKey}`,
+          "content-type": "application/json",
+        },
+        body,
+      }),
+    );
+  } catch (error) {
     // A completed attempt must never abort late.
     clearTimeout(timer);
+    if (controller.signal.aborted || (error instanceof Error && error.message === timeoutMessage)) {
+      throw new Error(timeoutMessage);
+    }
+    throw new Error("openai-compat request failed");
+  }
+  if (!response.ok) {
+    // Error bodies are never read: statuses stay sanitized without a deadline.
+    clearTimeout(timer);
+    return { response, text: "" };
+  }
+  try {
+    // The timer keeps running until the body has been fully read.
+    const text = await withDeadline(response.text());
+    clearTimeout(timer);
+    return { response, text };
+  } catch (error) {
+    clearTimeout(timer);
+    if (controller.signal.aborted || (error instanceof Error && error.message === timeoutMessage)) {
+      throw new Error(timeoutMessage);
+    }
+    // An unreadable body parses as nothing, like malformed JSON.
+    return { response, text: null };
   }
 }
 
@@ -173,11 +218,14 @@ export function createOpenAICompatProvider(options: OpenAICompatProviderOptions)
       // One budgeted transient retry: a 5xx is retried once, anything else throws.
       const budget = createBudget({ maxSteps: 0, maxRetries: 0, transientRetry: 1 });
       for (;;) {
-        const response = await postOnce(url, apiKey, body, timeoutMs, options.fetch);
+        const { response, text } = await postOnce(url, apiKey, body, timeoutMs, options.fetch);
         if (response.ok) {
+          if (text === null) {
+            return { vote: null, error: "openai-compat response JSON did not parse" };
+          }
           let parsed: unknown;
           try {
-            parsed = JSON.parse(await response.text());
+            parsed = JSON.parse(text);
           } catch {
             return { vote: null, error: "openai-compat response JSON did not parse" };
           }

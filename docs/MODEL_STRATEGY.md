@@ -33,12 +33,12 @@ Each role maps to a provider (`meta` = Meta Model API, `baseten` = Meta open-wei
 | `verifier` | `meta:muse-spark-1.3` | Must be Spark (computer tool) |
 | `ui` | `meta:sam-3.1` | Prefers short concepts ("button" works where "Pay button" returns nothing), so Attest falls back to the head noun |
 | `judge` | `baseten:meta-models/muse-spark-open` when `BASETEN_API_KEY` is set or a cassette replays; otherwise `meta:muse-wonder-1.0` | |
-| `judge` (explicit override) | `openai-compat:<model>` via `ATTEST_ROUTE_JUDGE`, endpoint from `ATTEST_OPENAI_COMPAT_BASE_URL`, key from `ATTEST_OPENAI_COMPAT_KEY_ENV` (default `OPENAI_COMPAT_API_KEY`) | Puts the judge in another model family (e.g. OpenRouter) so the author and the judge never share one |
+| `judge` (explicit override) | `openai-compat:<model>` via `ATTEST_ROUTE_JUDGE`, endpoint from `ATTEST_OPENAI_COMPAT_BASE_URL`, key from `ATTEST_OPENAI_COMPAT_KEY_ENV` (default `OPENAI_COMPAT_API_KEY`) | Enables a judge from another model family (e.g. OpenRouter); the user must pick a non-Meta model for that to hold |
+| `worker`, `reasoning`, `image` | Spark 1.3, Wonder, Muse Image | Defined for the roadmap; not called by the proof today |
 
 ## Independent judge across families
 
 Today every model Attest calls is a Meta model, so when Muse Code (also Meta) writes the fix, the judge comes from the same family as the author. Setting `ATTEST_ROUTE_JUDGE=openai-compat:<model>` (for example a non-Meta vision model on OpenRouter) moves the deciding vote to another family: the request is OpenAI-compatible Chat Completions with the same criteria text, prompt hash and frame plan (up to 8 frames go one per image, longer runs are tiled into contact sheets), and the receipt names the judge as `openai-compat/<model> @ <host>`. With none of the new variables set, routing is exactly as before.
-| `worker`, `reasoning`, `image` | Spark 1.3, Wonder, Muse Image | Defined for the roadmap; not called by the proof today |
 
 Override any role without code changes: `ATTEST_ROUTE_<ROLE>=provider:model`. Keys and endpoints come from environment variables; see `.env.example`.
 

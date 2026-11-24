@@ -74,6 +74,24 @@ function openAICompatDisplayModel(routeModel: string, baseUrl: string): string {
   return `openai-compat/${routeModel} @ ${new URL(baseUrl).host}`;
 }
 
+/** Identity when the base URL is missing or invalid: slash form with no host, never the colon form. */
+function openAICompatHostlessModel(routeModel: string): string {
+  return `openai-compat/${routeModel}`;
+}
+
+/** Host form whenever the base URL parses validly, hostless slash form otherwise. Never echoes the URL. */
+function openAICompatModelForEnv(routeModel: string, env: NodeJS.ProcessEnv): string {
+  const baseUrl = env.ATTEST_OPENAI_COMPAT_BASE_URL;
+  if (typeof baseUrl === "string" && baseUrl !== "") {
+    try {
+      return openAICompatDisplayModel(routeModel, baseUrl);
+    } catch {
+      // Fall through to the hostless form below.
+    }
+  }
+  return openAICompatHostlessModel(routeModel);
+}
+
 async function runOpenAICompatJudge(
   routeModel: string,
   criteria: CriteriaFile,
@@ -85,9 +103,10 @@ async function runOpenAICompatJudge(
 ): Promise<JudgeResult> {
   // Used only when the base URL itself fails to resolve, so no host is known.
   // Every path with a resolved base URL (success, no-vote, HTTP error, timeout,
-  // transport rejection) reports the full slash-form identity with host instead.
+  // transport rejection, missing key) reports the full slash-form identity with
+  // host instead. The colon form is never used.
   const fallback: JudgeResult = {
-    model: `openai-compat:${routeModel}`,
+    model: openAICompatHostlessModel(routeModel),
     provider: "openai-compat",
     votes: [],
     promptSha256,
@@ -134,6 +153,9 @@ async function runOpenAICompatJudge(
   } catch (err) {
     const keyEnv = env.ATTEST_OPENAI_COMPAT_KEY_ENV || "OPENAI_COMPAT_API_KEY";
     const knownKey = apiKey || env[keyEnv] || "";
+    // A valid base URL names its host even when the key (or the call) failed;
+    // only a missing or invalid URL stays hostless. Never the colon form.
+    model = openAICompatModelForEnv(routeModel, env);
     return { ...fallback, model, error: redactKey(err instanceof Error ? err.message : String(err), knownKey) };
   }
 }
@@ -144,12 +166,32 @@ export async function runJudge(
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<JudgeResult> {
   const plan = planSheets(screenshots.length);
-  const route = pickRoute("judge", false, env);
   const task = [
     "Acceptance criteria:",
     ...criteria.criteria.map((c) => `- id: ${c.id}\n  given: ${c.given}\n  when: ${c.when}\n  then: ${c.then}`),
   ].join("\n");
   const promptSha256 = createHash("sha256").update(`${INSTRUCTIONS}\n---\n${task}`).digest("hex");
+  let route: ReturnType<typeof pickRoute>;
+  try {
+    route = pickRoute("judge", false, env);
+  } catch (err) {
+    // An openai-compat route whose base URL is missing or invalid still reports
+    // a judge result (hostless slash identity, clear error) instead of throwing.
+    // Any other bad override keeps throwing, as before.
+    const raw = env.ATTEST_ROUTE_JUDGE?.trim() ?? "";
+    const prefix = "openai-compat:";
+    if (!raw.startsWith(prefix)) throw err;
+    const keyEnv = env.ATTEST_OPENAI_COMPAT_KEY_ENV || "OPENAI_COMPAT_API_KEY";
+    const knownKey = env[keyEnv] || "";
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      model: openAICompatModelForEnv(raw.slice(prefix.length), env),
+      provider: "openai-compat",
+      votes: [],
+      promptSha256,
+      error: redactKey(message, knownKey),
+    };
+  }
   if (route.provider === "openai-compat") {
     return runOpenAICompatJudge(route.model, criteria, screenshots, plan, task, promptSha256, env);
   }
