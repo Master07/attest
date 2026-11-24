@@ -2,13 +2,13 @@
 
 The P1 question: did moving Attest's core (event log, receipts, router, cassettes, budget, the
 OpenAI-compatible judge) into `@corbet/harness-core` change any observable behaviour? This report
-is the evidence Opus reads to approve P1. Every number below was re-run locally on the branch
+is the evidence Opus reads to verify and recommend P1 — the owner approves. Every number below was re-run locally on the branch
 head; the CI run links are filled in after the branch pushes.
 
 - **Branch:** `t/T-005` from `main` @ `8562a1c`
 - **Baseline commit (pre-extraction):** `b6b9b6a5c7899e018f9d394f083b007334d4f17c`
 - **Local machine:** macOS (Darwin), Node v22.22.1, Google Chrome via `ATTEST_BROWSER_CHANNEL=chrome`
-- **Keys:** none set (`MODEL_API_KEY`, `BASETEN_API_KEY` unset; no `.env`); replays scrub them anyway
+- **Keys:** none set (`MODEL_API_KEY`, `BASETEN_API_KEY` unset; no `.env`); replays scrub model keys case-insensitively, refuse a repo `.env`, and confine the signing key to a temp dir
 
 ## CI run links
 
@@ -49,21 +49,22 @@ so the extraction preserved every field the fingerprint watches: phase/kind orde
 steps, checks outcomes, judge votes, and the final verdict. `log.head` is not the baseline (it
 carries timestamps, ports and screenshot hashes that change every run); the fingerprint is.
 
-## Files moved into `@corbet/harness-core`
+## Files in `@corbet/harness-core`
 
-Eight source files moved out of `src/` into `packages/harness-core/src/` (the `index.ts` barrel
-was added with the empty workspace before T-002):
+The core now has these files. Some were **extracted** from `src/eventlog.ts`, `src/receipt.ts`,
+`src/models.ts` and `src/api.ts`; others are **new** (the adapters and `providers/openai-compat.ts`).
+The `index.ts` barrel was added with the empty workspace before T-002:
 
-| File | Moved by | What it is |
-|---|---|---|
-| `eventlog.ts` | T-002 (#4) | Append-only hash-chained event log + chain verification |
-| `receipt.ts` | T-002 (#4) | Ed25519 signing + the generic receipt verifier |
-| `adapters/node.ts` | T-002 (#4) | Node crypto/fs backing (sha256, file I/O, Ed25519) |
-| `router.ts` | T-003 (#5) | Model router: role → provider + model, env-overridable |
-| `cassette.ts` | T-003 (#5) | Record-once / replay-with-no-calls cassette |
-| `budget.ts` | T-003 (#5) | Step caps + retry budget |
-| `adapters/cassette-node.ts` | T-003 (#5) | Node file backing for `Cassette` |
-| `providers/openai-compat.ts` | T-004 (#6) | OpenAI-compatible Chat Completions judge provider |
+| File | Moved by | Provenance | What it is |
+|---|---|---|---|
+| `eventlog.ts` | T-002 (#4) | extracted from `src/eventlog.ts` | Append-only hash-chained event log + chain verification |
+| `receipt.ts` | T-002 (#4) | extracted from `src/receipt.ts` | Ed25519 signing + the generic receipt verifier |
+| `adapters/node.ts` | T-002 (#4) | new | Node crypto/fs backing (sha256, file I/O, Ed25519) |
+| `router.ts` | T-003 (#5) | extracted from `src/models.ts` | Model router: role → provider + model, env-overridable |
+| `cassette.ts` | T-003 (#5) | extracted from `src/api.ts` | Record-once / replay-with-no-calls cassette |
+| `budget.ts` | T-003 (#5) | extracted from `src/api.ts` | Step caps + retry budget |
+| `adapters/cassette-node.ts` | T-003 (#5) | new | Node file backing for `Cassette` |
+| `providers/openai-compat.ts` | T-004 (#6) | new | OpenAI-compatible Chat Completions judge provider |
 
 `src/` keeps the product surface (CLI, `proof.ts`, `cua.ts`, `judge.ts`, `sam.ts`, `browser.ts`,
 `workspace.ts`, `models.ts`) and now imports the core types and helpers from `@corbet/harness-core`.
@@ -144,14 +145,60 @@ is `"0.0.0"`.
 
 ## Replay check design
 
-`scripts/replay-all.ts` runs each cassette in its **own child process** (`attest prove --replay …
---out <tmpdir>`): the replay queue in `src/api.ts` is a process-wide singleton loaded once from the
-first cassette path and never reset, so two cassettes cannot share a process. Each run writes its
-evidence under a temp directory (never inside the repo), with `MODEL_API_KEY`, `BASETEN_API_KEY`,
-any `OPENAI_COMPAT*` and any `ATTEST_ROUTE_*` variables removed from the child environment. The
-script then reads `events.jsonl`, computes the BASELINE.md fingerprint, prints
-`name · verdict · <n> events · fp:<16 hex>`, and exits non-zero with the expected and actual
-lines if either line differs from `docs/harness/replay-baseline.txt`.
+`scripts/replay-all.ts` runs each cassette in its **own child process** (`node --import tsx
+src/index.ts prove --replay … --out <tmpdir>`, no shell, so paths with spaces work on every OS):
+the replay queue in `src/api.ts` is a process-wide singleton loaded once from the first cassette
+path and never reset, so two cassettes cannot share a process. Each child must exit 0
+**independently** of the fingerprint check — a child that crashes after writing a matching
+`events.jsonl` still fails the script, with the exit code and the last stderr lines printed. Each
+run writes its evidence and signing key under a temp directory (never the repo or `~/.attest`;
+`ATTEST_KEY_PATH` points there), with `MODEL_API_KEY`, `BASETEN_API_KEY`, any `OPENAI_COMPAT*`,
+`OPENAI_*`, `OPENROUTER_*`, any `ATTEST_ROUTE_*`, `ATTEST_RECORD` and `ATTEST_KEY_PATH` removed
+case-insensitively from the child environment (so a Windows `Model_Api_Key` is caught). A repo
+root `.env` is refused outright — `src/index.ts:28` reloads it and could restore the scrubbed
+keys (CI has none). The script then reads `events.jsonl`, computes the BASELINE.md fingerprint,
+prints `name · verdict · <n> events · fp:<16 hex>`, and compares the printed lines against
+`docs/harness/replay-baseline.txt` exactly (CRLF/CR normalised to LF, no trim: a missing or extra
+line, a blank line, or stray whitespace on any line all fail). Temp dirs are removed on success
+and kept — with their paths printed — on failure.
+
+## Replay check self-test
+
+Run locally on the branch head (macOS, Chrome), each with `ATTEST_BROWSER_CHANNEL=chrome`:
+
+- **A mismatched baseline line fails.** A copy of the baseline with one fingerprint hex digit
+  changed (`fp:d849ae1eb892a09X`) is passed as the baseline path; the two real replays still
+  produce the correct fingerprints, and the exact comparison catches the one-char difference:
+  ```
+  line 1 differs:
+    expected: checkout-widget · PROVEN · 54 events · fp:d849ae1eb892a09X
+    actual:   checkout-widget · PROVEN · 54 events · fp:d849ae1eb892a099
+  ```
+  exit 1.
+- **An extra blank line fails.** A copy of the baseline with one trailing blank line added is
+  passed as the baseline path; the no-trim comparison sees a third expected line with no matching
+  actual line:
+  ```
+  line 3 differs:
+    expected: 
+    actual:   (missing)
+  ```
+  exit 1.
+- **A child that exits non-zero fails.** `ATTEST_REPLAY_SELFTEST=bad-app` (read only by
+  `replay-all.ts`, never by `src/`) points the first cassette at `does/not/exist`, so the child
+  throws in `loadConfig` and exits 1 before any evidence is written. The exit-code check fires
+  independently of the fingerprint:
+  ```
+  [checkout-widget] child exited 1
+  [checkout-widget] last stderr lines:
+    attest: …/does/not/exist/attest.yml: cannot read attest.yml (ENOENT: no such file or directory, open '…/does/not/exist/attest.yml')
+  ```
+  The second cassette still runs (PROVEN); the script exits 1 and keeps the temp dirs.
+
+The normal run (`ATTEST_BROWSER_CHANNEL=chrome npx tsx scripts/replay-all.ts`) prints the two
+baseline lines and exits 0; `git status` is clean afterwards (no key written in the repo, temp
+dirs removed on success). Left for Opus: the two CI links above, and a throwaway-branch mutation
+check (mutate the core to confirm the replay fingerprint catches a behavioural change).
 
 ## Known gaps
 
