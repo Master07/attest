@@ -461,8 +461,10 @@ function expectedImageParts(plan: number[][], total: number, images: Buffer[]): 
 test("ATTEST_ROUTE_JUDGE selects openai-compat and overrides the Baseten default", async (t) => {
   await withHarness(t, async () => {
     const models = await loadModels();
+    // The card requires a missing base URL to fail at route resolution, so this precedence check supplies one.
     assert.deepEqual(models.pickRoute("judge", false, {
       ATTEST_ROUTE_JUDGE: ROUTE,
+      ATTEST_OPENAI_COMPAT_BASE_URL: BASE_URL,
       BASETEN_API_KEY: "sk-test-NOT-REAL-baseten",
     }), { provider: "openai-compat", model: MODEL }, "not implemented: explicit openai-compat route");
   });
