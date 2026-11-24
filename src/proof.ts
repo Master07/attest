@@ -12,6 +12,7 @@ import { loadCriteria } from "./criteria.js";
 import type { CriteriaFile } from "./criteria.js";
 import { runVerifier } from "./cua.js";
 import { EventLog } from "./eventlog.js";
+import { createBudget } from "@corbet/harness-core";
 import { pickRoute } from "./models.js";
 import { RECEIPT_VERSION, sha256File, signReceipt } from "./receipt.js";
 import { writeReport } from "./report.js";
@@ -106,11 +107,15 @@ async function runPhase(
     let firstPng: Buffer | undefined;
     let lastPng: Buffer | undefined;
     const allPngs: Buffer[] = [];
+    // Step cap and retry allowance come from the core budget; the numbers are Attest's own:
+    // verifier.max_steps (default 25 in config.ts), 3 backoff retries (api.ts), one stateless fallback.
+    const budget = createBudget({ maxSteps: ctx.config.verifier.max_steps, maxRetries: 3, transientRetry: 1 });
     const result = await runVerifier({
       browser,
       criteria,
       appUrl: workspace.url,
       maxSteps: ctx.config.verifier.max_steps,
+      budget,
       onScreenshot: (step, png) => {
         const path = join(dir, "shots", `${phase}-${String(step).padStart(2, "0")}.png`);
         writeFileSync(path, png);

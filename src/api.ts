@@ -1,5 +1,5 @@
 // Minimal client for the Responses API (Meta Model API, and OpenAI-compatible providers such as Baseten).
-import { appendFileSync, readFileSync } from "node:fs";
+import { Cassette, CassetteExhaustedError, createBudget, nodeCassetteIo, withRetries } from "@corbet/harness-core";
 
 export interface ApiOutputItem {
   type?: string;
@@ -30,35 +30,25 @@ export class ApiError extends Error {
 // replay shows the same model decisions being re-applied to a live app — it is marked as a replay.
 
 // `ms` is how long the live call took. Replay waits that long too: timing matters — e.g. a widget that
-// appears 250 ms after load only covers the button if the click comes after "thinking time".
-interface CassetteLine { seq: number; model: string; ms?: number; response: ApiResponse }
-let replayQueues: Map<string, CassetteLine[]> | null = null;
+// appears 250 ms after load only covers the button if the click comes after "thinking" time.
+// Attest's production retry policy: network errors and 5xx are retried up to 3
+// times with [1000, 3000, 8000]ms backoff; 4xx (including 429) never is. The retry
+// limit lives on the budget — the schedule here only sets the delays.
+const retryBudget = createBudget({ maxSteps: 0, maxRetries: 3, transientRetry: 0 });
+const RETRY_BACKOFF_MS = [1000, 3000, 8000];
+
+// One record sequence counter and one replay queue for the whole process, exactly
+// like the pre-extraction code: they are never reset when ATTEST_RECORD or
+// ATTEST_REPLAY changes, or when replay is turned off and on again. Only the path
+// used for each read or write comes from the environment on every call. The Node
+// file backing is passed explicitly (the cassette core itself never imports it).
+let replayCassette: Cassette | null = null;
 let recordSeq = 0;
-const REPLAY_DEFAULT_MS = 1500;   // for cassettes recorded before `ms` existed
-const REPLAY_MAX_MS = 10_000;
 
 function modelOf(body: unknown): string {
   return typeof body === "object" && body !== null && typeof (body as { model?: unknown }).model === "string"
     ? (body as { model: string }).model
     : "unknown";
-}
-
-async function nextReplay(path: string, model: string): Promise<ApiResponse> {
-  if (replayQueues === null) {
-    replayQueues = new Map();
-    for (const line of readFileSync(path, "utf8").split(/\r?\n/)) {
-      if (!line.trim()) continue;
-      const entry = JSON.parse(line) as CassetteLine;
-      const queue = replayQueues.get(entry.model) ?? [];
-      queue.push(entry);
-      replayQueues.set(entry.model, queue);
-    }
-  }
-  const entry = replayQueues.get(model)?.shift();
-  // 4xx-style status: a missing recording is not transient, so it is never retried.
-  if (entry === undefined) throw new ApiError(`replay cassette has no more responses for ${model}`, 499, "");
-  await new Promise((r) => setTimeout(r, Math.min(entry.ms ?? REPLAY_DEFAULT_MS, REPLAY_MAX_MS)));
-  return entry.response;
 }
 
 export function isReplaying(env: NodeJS.ProcessEnv = process.env): boolean {
@@ -69,14 +59,33 @@ export function isReplaying(env: NodeJS.ProcessEnv = process.env): boolean {
 export async function postResponses(baseUrl: string, apiKey: string, body: unknown): Promise<ApiResponse> {
   const model = modelOf(body);
   const replay = process.env.ATTEST_REPLAY;
-  if (replay) return nextReplay(replay, model);
+  if (replay) {
+    // Loaded once, from the first path seen: later changes keep answering from the
+    // same queue, which the calls below consume in order. The state is assigned
+    // BEFORE reading and parsing — exactly like the pre-extraction code, which
+    // initialised its queue map before readFileSync — so a failed load still
+    // leaves an initialised (empty or partial) queue behind for later calls.
+    if (replayCassette === null) {
+      const cassette = Cassette.emptyReplay(replay, nodeCassetteIo);
+      replayCassette = cassette;
+      cassette.load();
+    }
+    try {
+      return (await replayCassette.nextResponse(model)) as ApiResponse;
+    } catch (err) {
+      // 4xx-style status: a missing recording is not transient, so it is never retried.
+      if (err instanceof CassetteExhaustedError) {
+        throw new ApiError(`replay cassette has no more responses for ${model}`, 499, "");
+      }
+      throw err;
+    }
+  }
 
   const started = Date.now();
   const response = await postLive(baseUrl, apiKey, body);
   const record = process.env.ATTEST_RECORD;
   if (record) {
-    const line: CassetteLine = { seq: ++recordSeq, model, ms: Date.now() - started, response };
-    appendFileSync(record, `${JSON.stringify(line)}\n`);
+    nodeCassetteIo.appendText(record, `${JSON.stringify({ seq: ++recordSeq, model, ms: Date.now() - started, response })}\n`);
   }
   return response;
 }
@@ -101,17 +110,14 @@ async function postLive(baseUrl: string, apiKey: string, body: unknown): Promise
 
   // Transient failures (network, 5xx — e.g. the 500s and 503 "persistence service error" seen in live runs)
   // are retried with backoff. 4xx means the request itself is wrong, so it is never retried.
-  const backoffMs = [1000, 3000, 8000];
-  for (let attempt = 0; ; attempt++) {
-    try {
-      return await send();
-    } catch (err) {
-      const transient = err instanceof ApiError && (err.status === null || err.status >= 500);
-      const wait = backoffMs[attempt];
-      if (!transient || wait === undefined) throw err;
-      await new Promise((r) => setTimeout(r, wait));
-    }
-  }
+  // The default wait sleeps with setTimeout, so tests fast-forward it with fake timers.
+  return withRetries(
+    send,
+    retryBudget.retryPolicy(
+      RETRY_BACKOFF_MS,
+      (err) => err instanceof ApiError && (err.status === null || err.status >= 500),
+    ),
+  );
 }
 
 /** All output_text from a response, in order. */

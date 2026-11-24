@@ -1,5 +1,8 @@
+import { createRouter } from "@corbet/harness-core";
 import type { ModelRole, ModelRoute, Provider } from "./types.js";
 
+// Attest's route table. Resolution itself lives in the core router; this file only passes
+// Attest's routes, providers, and environment variable names in.
 export interface ProviderConfig {
   apiKeyEnv: string;
   baseUrlEnv: string;
@@ -34,41 +37,24 @@ export const ROLE_ROUTE: Record<ModelRole, ModelRoute> = {
   ui: { provider: "meta", model: MODEL_IDS.sam },
   // The Model API's computer tool works on Spark 1.3; Wonder returns 400 Unsupported tool type.
   verifier: { provider: "meta", model: MODEL_IDS.spark },
-  // Independent judge: a different model from the verifier. Muse Wonder is the fallback; pickRoute moves
-  // the judge to open weights (Muse Spark Open on Baseten) when a Baseten key is set or a cassette replays.
+  // Independent judge: a different model from the verifier. Muse Wonder is the fallback; the router
+  // moves the judge to open weights (Muse Spark Open on Baseten) when a Baseten key is set or a
+  // cassette replays.
   judge: { provider: "meta", model: MODEL_IDS.wonder },
 };
 
-function isProvider(value: string): value is Provider {
-  return Object.hasOwn(PROVIDERS, value);
-}
-
-// ATTEST_ROUTE_<ROLE>="provider:model" overrides a role, e.g. ATTEST_ROUTE_WORKER=baseten:meta-models/muse-spark-open.
-function routeOverride(role: ModelRole, env: NodeJS.ProcessEnv): ModelRoute | undefined {
-  const name = `ATTEST_ROUTE_${role.toUpperCase()}`;
-  const raw = env[name]?.trim();
-  if (!raw) return undefined;
-  const sep = raw.indexOf(":");
-  const provider = raw.slice(0, sep);
-  const model = raw.slice(sep + 1);
-  if (sep <= 0 || !model) throw new Error(`${name} must be "provider:model", got "${raw}"`);
-  if (!isProvider(provider)) throw new Error(`${name}: unknown provider "${provider}"`);
-  return { provider, model };
-}
+const router = createRouter({
+  envPrefix: "ATTEST_ROUTE_",
+  routes: ROLE_ROUTE,
+  providers: PROVIDERS,
+  replayEnvVar: "ATTEST_REPLAY",
+  openWeights: { role: "judge", provider: "baseten", route: { provider: "baseten", model: MODEL_IDS.sparkOpen } },
+  contributorVariant: { role: "worker", route: { provider: "meta", model: MODEL_IDS.sparkContributor } },
+});
 
 export function pickRoute(role: ModelRole, contributor = false, env: NodeJS.ProcessEnv = process.env): ModelRoute {
-  const override = routeOverride(role, env);
-  if (override) return override;
-  // Open weights for the judge whenever Baseten is reachable. Replays need no key, and the committed
-  // cassettes were recorded with Spark Open judging.
-  if (role === "judge" && (env.BASETEN_API_KEY || env.ATTEST_REPLAY)) {
-    return { provider: "baseten", model: MODEL_IDS.sparkOpen };
-  }
-  const route = ROLE_ROUTE[role];
-  if (role === "worker" && contributor && route.provider === "meta") {
-    return { provider: "meta", model: MODEL_IDS.sparkContributor };
-  }
-  return route;
+  const resolved = router.resolve(role, { contributor, env });
+  return { provider: resolved.provider as Provider, model: resolved.model };
 }
 
 export interface ProviderEndpoint {
@@ -77,13 +63,5 @@ export interface ProviderEndpoint {
 }
 
 export function resolveProvider(provider: Provider, env: NodeJS.ProcessEnv = process.env): ProviderEndpoint {
-  // Replays answer from a recorded cassette and never reach the network, so no key is needed.
-  if (env.ATTEST_REPLAY) return { baseUrl: "replay://", apiKey: "replay" };
-  const config = PROVIDERS[provider];
-  // `||`, not `??`: an empty `KEY=` line in .env must fall back to the default.
-  const baseUrl = env[config.baseUrlEnv] || config.defaultBaseUrl;
-  const apiKey = env[config.apiKeyEnv] || undefined;
-  if (!baseUrl) throw new Error(`${provider}: set ${config.baseUrlEnv}`);
-  if (!apiKey) throw new Error(`${provider}: set ${config.apiKeyEnv}`);
-  return { baseUrl, apiKey };
+  return router.resolveProvider(provider, env);
 }
