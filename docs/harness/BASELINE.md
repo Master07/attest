@@ -184,3 +184,29 @@ None of these can replay with the network blocked, so none can run in CI, and th
 
 - README step 2 says the replay needs Edge or Chrome; on this Mac only Chrome is installed, so `ATTEST_BROWSER_CHANNEL=chrome` is required. That works as documented.
 - The README doesn't mention that `npm test` needs the `demo/*` branches locally (see Environment).
+
+## Gate
+
+The baseline above is a machine check, not just a document. T-005 wires it into CI and produces
+the one report read to approve P1.
+
+- **`scripts/replay-all.ts`** replays the two in-repo cassettes (checkout-widget, checkout-demo)
+  with model hosts blocked and prints one fingerprint line per cassette using the fingerprint
+  definition above (`name · verdict · <n> events · fp:<16 hex>`). Each cassette runs in its own
+  child process — the replay queue in `src/api.ts` is a process-wide singleton loaded once from
+  the first cassette path and never reset, so two cassettes cannot share a process. Evidence is
+  written under a temp directory, never inside the repo; `MODEL_API_KEY`, `BASETEN_API_KEY`, any
+  `OPENAI_COMPAT*` and any `ATTEST_ROUTE_*` variables are removed from the child environment.
+- **`docs/harness/replay-baseline.txt`** holds the two expected lines, copied verbatim from the
+  "Replay baseline lines" block above (recorded at `b6b9b6a`, before any code moved). The script
+  exits non-zero with the expected and actual lines if either line differs.
+- **CI** (`.github/workflows/verify.yml`) runs `npx tsx scripts/replay-all.ts` with
+  `ATTEST_BROWSER_CHANNEL: chrome` on macOS, Linux and Windows, alongside `npm run typecheck`,
+  `npm test` and `npm run verify-proofs`. The replay step also fetches the `demo2/*` branches the
+  same way as `demo/*`. No secrets and no model keys.
+- **`docs/harness/P1-GATE.md`** is the gate report: counts per OS, the files moved into core, the
+  full `@corbet/harness-core` public API, and the known gaps.
+
+A P1 change passes only if every number and fingerprint in this document comes out the same,
+apart from the deltas a card names. The four real-world cassettes stay out of the replay baseline
+(they need third-party fetches); `verify-proofs` still checks their committed receipts.

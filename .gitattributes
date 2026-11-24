@@ -2,3 +2,5 @@
 proofs/** -text
 # Golden fixtures are hashed byte-for-byte: preserve line endings.
 test/fixtures/golden/** -text
+# The replay baseline is compared byte-for-byte (LF only): preserve line endings.
+docs/harness/replay-baseline.txt -text

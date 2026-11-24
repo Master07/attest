@@ -1,5 +1,6 @@
-# Re-checks the whole repository on every push: types, unit tests, and every committed receipt
-# (signature, hash chain, artifact hashes, verdict recomputed from the recorded votes).
+# Re-checks the whole repository on every push: types, unit tests, every committed receipt
+# (signature, hash chain, artifact hashes, verdict recomputed from the recorded votes), and a
+# replay of the two in-repo cassettes checked against a committed fingerprint baseline.
 # No API keys and no model calls.
 name: verify
 
@@ -18,8 +19,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      # The doctor tests resolve the demo branches (demo/base, demo/fix); checkout fetches only this commit.
-      - run: git fetch --no-tags origin "+refs/heads/demo/*:refs/heads/demo/*"
+      # The doctor tests and the cassette replays resolve the demo branches (demo/base, demo/fix
+      # for checkout-demo; demo2/base, demo2/fix, demo2/bad-fix for checkout-widget); checkout
+      # fetches only this commit, so fetch them explicitly as local branches.
+      - run: git fetch --no-tags origin "+refs/heads/demo/*:refs/heads/demo/*" "+refs/heads/demo2/*:refs/heads/demo2/*"
         shell: bash
       - uses: actions/setup-node@v4
         with:
@@ -31,3 +34,13 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run verify-proofs
+      # The replay fingerprint includes event order; the baseline was recorded with video available, so install Playwright's ffmpeg recorder (no browsers — the runner's Chrome is reused).
+      - run: npx playwright install ffmpeg
+      # Replay the two in-repo cassettes and check their fingerprints against the committed
+      # baseline (docs/harness/replay-baseline.txt). Model hosts are blocked by replay mode (the
+      # cassette answers every model call; no keys are read), but the browser, workspace and
+      # checks still run for real, so the step needs a browser. GitHub's hosted runners ship
+      # Google Chrome, so it uses the chrome channel and skips Playwright's own browser download.
+      - run: npx tsx scripts/replay-all.ts
+        env:
+          ATTEST_BROWSER_CHANNEL: chrome
