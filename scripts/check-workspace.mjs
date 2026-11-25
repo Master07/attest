@@ -8,6 +8,6 @@ const require = createRequire(import.meta.url);
 try {
   require.resolve("@corbet/harness-core", { paths: [repoRoot] });
 } catch {
-  process.stderr.write("attest: run `npm install` (the workspace package @corbet/harness-core isn't linked)\n");
+  process.stderr.write("attest: run `npm install` (the dependency @corbet/harness-core isn't installed)\n");
   process.exit(1);
 }

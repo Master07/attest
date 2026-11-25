@@ -252,3 +252,9 @@ Re-run independently by Claude Opus (the reviewer; it built none of this code) b
 - **Local clones:** after T-001, an existing checkout's stale `node_modules` couldn't resolve `@corbet/harness-core`, and 21 test files failed locally while CI was green. `npm ci` fixed it (see Known gaps).
 
 **Recommendation:** approve P1. Behaviour is unchanged by every measure the baseline defines, on all three OSes, and the check that guards it is shown to fail when a single byte of recorded behaviour changes.
+
+## After T-006
+
+- The core moved to `corbet-agents` with its history, published as `@corbet/harness-core` 0.1.0 on npm and JSR.
+- Attest now depends on the published package and pins exactly `0.1.0`.
+- Attest's test count is now 207 (Windows 208), because the 64 core tests run in `corbet-agents` CI on Node (Linux and Windows) and Deno.

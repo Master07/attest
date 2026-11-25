@@ -110,7 +110,7 @@ Ten planted bugs show the mechanism works; they are not a measure of real-world 
 
 Requires Node 22+ and git; step 2 also needs Microsoft Edge or Chrome (`ATTEST_BROWSER_CHANNEL=chrome` for Chrome).
 
-After pulling changes, run `npm install` — the repo includes a workspace package (`packages/harness-core`) that npm must link locally.
+The core lives in the [`corbet-agents`](https://github.com/Master07/corbet-agents) repo and is published as `@corbet/harness-core` on npm and JSR; after pulling changes run `npm install`.
 
 **1. Check the proofs — seconds, no key, no model calls.** Every result above is a signed receipt committed in [proofs/](proofs/), from a **live** run except the one jspaint replay, which is labelled as one (TodoMVC's, at 101 MB, is a release download). This checks each signature, hash chain, screenshot and video, and recomputes each verdict from the recorded votes:
 
