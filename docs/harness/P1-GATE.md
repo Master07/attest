@@ -2,8 +2,8 @@
 
 The P1 question: did moving Attest's core (event log, receipts, router, cassettes, budget, the
 OpenAI-compatible judge) into `@corbet/harness-core` change any observable behaviour? This report
-is the evidence Opus reads to verify and recommend P1 — the owner approves. Every number below was re-run locally on the branch
-head; the CI run links are filled in after the branch pushes.
+is the evidence: Opus verifies it and recommends, and the owner approves P1. Every number below was
+re-run locally on the branch head and on GitHub's three hosted OSes (links below).
 
 - **Branch:** `t/T-005` from `main` @ `8562a1c`
 - **Baseline commit (pre-extraction):** `b6b9b6a5c7899e018f9d394f083b007334d4f17c`
@@ -14,9 +14,15 @@ head; the CI run links are filled in after the branch pushes.
 
 GitHub Actions matrix `os: [windows-latest, macos-latest, ubuntu-latest]`, job `verify`.
 
-- Linux:   TODO(Opus): link after CI
-- macOS:   TODO(Opus): link after CI
-- Windows: TODO(Opus): link after CI
+Run [45476533507](https://github.com/Master07/attest/actions/runs/45476533507) on `t/T-005` @ `31acda4`, the head merged as #7. All green:
+
+| OS | Job | `npm test` | Receipts | checkout-widget | checkout-demo |
+|---|---|---|---|---|---|
+| Linux | [job](https://github.com/Master07/attest/actions/runs/45476533507/job/138738115517) | 252 pass | 220 of 220 | `fp:d849ae1eb892a099` | `fp:795fca3dc280e5e8` |
+| macOS | [job](https://github.com/Master07/attest/actions/runs/45476533507/job/138738115061) | 252 pass | 220 of 220 | `fp:d849ae1eb892a099` | `fp:795fca3dc280e5e8` |
+| Windows | [job](https://github.com/Master07/attest/actions/runs/45476533507/job/138738115530) | 253 pass | 220 of 220 | `fp:d849ae1eb892a099` | `fp:795fca3dc280e5e8` |
+
+**Mutation check** (card acceptance): run [45476522174](https://github.com/Master07/attest/actions/runs/45476522174) on a throwaway branch with exactly one byte changed in `examples/checkout-widget/cassette.jsonl` (the first verifier click, x 955 → 956). It failed on all three OSes ([Linux](https://github.com/Master07/attest/actions/runs/45476522174/job/138738086116), [macOS](https://github.com/Master07/attest/actions/runs/45476522174/job/138738086758), [Windows](https://github.com/Master07/attest/actions/runs/45476522174/job/138738086906)), **only** at the replay step. Typecheck, tests and verify-proofs all passed. Only `checkout-widget` differed (`fp:47d8dcf81b93778a` vs `fp:d849ae1eb892a099`), while `checkout-demo` still matched, so the failure is attributable to the edited byte. The throwaway branch was then deleted.
 
 The workflow (`.github/workflows/verify.yml`) runs, on every OS: `npm run typecheck`, `npm test`
 (which includes `packages/harness-core/test`), `npm run verify-proofs`, and
@@ -230,5 +236,19 @@ dirs removed on success). Left for Opus: the CI links above, and the card's thro
   ambient `ATTEST_REPLAY` in the shell is not cleared.
 - **The Muse sandbox cannot run browser replays**, so Opus runs the two cassette replays locally
   (Chrome) and posts the result; the CI step reproduces them on GitHub runners, which ship Chrome.
-- **CI links are `TODO(Opus)`** because the branch has not pushed yet; Opus fills them in and
-  re-runs every line before recommending the owner's sign-off. The owner approves P1.
+
+## Opus verification notes
+
+Re-run independently by Claude Opus (the reviewer; it built none of this code) before recommending sign-off:
+
+- **Every card, every round:** for T-001 through T-005, Opus re-ran the tests, the verify-proofs hash and both browser replays itself, outside the builder's sandbox. It didn't take builder reports on trust. Each card also got a read-only pre-review from a different model family; T-002a and T-004a had their tests written by a third family before any code.
+- **The review loop caught real bugs before merge:**
+  - two error-path behaviour changes (T-002);
+  - two state-lifetime regressions introduced by a fix round (T-003);
+  - a timeout that didn't cover the response body, and a misconfigured route that still ran all phases (T-004);
+  - a child crash that could pass, and a Windows CRLF break (T-005).
+- **First CI run of T-005 failed, and that was real.** GitHub's runners have no ffmpeg video recorder. Without it, Attest logs `video_unavailable` events in a different order, so the fingerprint differed (`fp:4bd38bc3034d14ce`) even though the verdict and event count matched. Opus reproduced that exact fingerprint locally by hiding ffmpeg. The fix installs ffmpeg in CI, so CI matches the environment the baseline was recorded in. **Neither the baseline nor the fingerprint definition was changed.**
+- **The first mutation run proved nothing**, because it failed for the ffmpeg reason above, not the edited byte. It was rebuilt on the fixed workflow and re-run; the result above is from the rebuilt run.
+- **Local clones:** after T-001, an existing checkout's stale `node_modules` couldn't resolve `@corbet/harness-core`, and 21 test files failed locally while CI was green. `npm ci` fixed it (see Known gaps).
+
+**Recommendation:** approve P1. Behaviour is unchanged by every measure the baseline defines, on all three OSes, and the check that guards it is shown to fail when a single byte of recorded behaviour changes.
