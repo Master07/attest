@@ -345,8 +345,8 @@ function resolveHarnessCore(): string {
 }
 
 /**
- * The workspace package @corbet/harness-core must be linked (npm install) for the judge and
- * router to load. Older clones pulled before packages/harness-core existed are missing it.
+ * The dependency @corbet/harness-core must be installed (npm install) for the judge and
+ * router to load. Older clones pulled before the dependency existed are missing it.
  */
 export function checkWorkspacePackage(
   resolve: () => string = resolveHarnessCore,
@@ -359,7 +359,7 @@ export function checkWorkspacePackage(
       ok: false,
       name: "workspace",
       detail: "@corbet/harness-core does not resolve",
-      fix: "run `npm install` (the workspace package isn't linked)",
+      fix: "run `npm install` (@corbet/harness-core isn't installed)",
     };
   }
 }

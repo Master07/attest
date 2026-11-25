@@ -4,8 +4,8 @@ import { pickRoute, resolveProvider } from "../src/models.js";
 import type { ModelRole } from "../src/types.js";
 
 // Snapshot of Attest's REAL wiring (src/models.ts) recorded from main on 2026-11-24.
-// Unlike packages/harness-core/test/routes.test.ts — which builds its own router with
-// copied routes and would pass even if Attest's wiring were wrong — this file calls
+// Unlike @corbet/harness-core (in Master07/corbet-agents) — which builds its own router
+// with copied routes and would pass even if Attest's wiring were wrong — this file calls
 // Attest's real exports and asserts against literal provider:model strings typed out
 // below, never imported from src/models.js.
 

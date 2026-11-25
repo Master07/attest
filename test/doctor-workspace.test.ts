@@ -1,7 +1,7 @@
-// G2: the doctor workspace check. @corbet/harness-core is a workspace package that npm links
-// into node_modules; an older clone pulled before packages/harness-core existed is missing it.
-// The check must pass in this repo and report a one-line fix when resolution fails, without
-// crashing or skipping the other checks.
+// G2: the doctor workspace check. @corbet/harness-core is a dependency that npm installs into
+// node_modules; an older clone pulled before the dependency existed is missing it. The check
+// must pass in this repo and report a one-line fix when resolution fails, without crashing or
+// skipping the other checks.
 
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -21,6 +21,6 @@ test("a simulated resolution failure reports the npm install fix line", () => {
   });
   assert.equal(check.ok, false);
   assert.equal(check.name, "workspace");
-  assert.equal(check.fix, "run `npm install` (the workspace package isn't linked)");
+  assert.equal(check.fix, "run `npm install` (@corbet/harness-core isn't installed)");
   assert.match(check.detail, /@corbet\/harness-core does not resolve/);
 });
