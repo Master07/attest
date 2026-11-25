@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 import { chromium } from "playwright";
 import { loadConfig, type AttestConfig } from "./config.js";
@@ -337,6 +338,32 @@ export async function checkBrowser(env: NodeJS.ProcessEnv = process.env): Promis
   }
 }
 
+const requireFromDoctor = createRequire(import.meta.url);
+
+function resolveHarnessCore(): string {
+  return requireFromDoctor.resolve("@corbet/harness-core");
+}
+
+/**
+ * The workspace package @corbet/harness-core must be linked (npm install) for the judge and
+ * router to load. Older clones pulled before packages/harness-core existed are missing it.
+ */
+export function checkWorkspacePackage(
+  resolve: () => string = resolveHarnessCore,
+): DoctorCheck {
+  try {
+    resolve();
+    return { ok: true, name: "workspace", detail: "@corbet/harness-core resolves" };
+  } catch {
+    return {
+      ok: false,
+      name: "workspace",
+      detail: "@corbet/harness-core does not resolve",
+      fix: "run `npm install` (the workspace package isn't linked)",
+    };
+  }
+}
+
 export async function checkServer(opts: {
   repoRoot: string;
   appPath: string;
@@ -401,6 +428,7 @@ export async function runDoctor(opts: DoctorOptions): Promise<DoctorReport> {
     ...(opts.configDir !== undefined ? { configDir: opts.configDir } : {}),
   });
   const checks: DoctorCheck[] = [
+    checkWorkspacePackage(),
     ...refChecks,
     ...loaded.checks,
     await checkBrowser(env),

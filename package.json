@@ -9,9 +9,11 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.all.json",
     "build": "tsc -p tsconfig.json",
+    "pretest": "node scripts/check-workspace.mjs",
     "test": "node --import tsx --test \"test/**/*.test.ts\" \"packages/*/test/**/*.test.ts\"",
     "smoke": "tsx scripts/smoke-t4.ts",
     "phase": "tsx scripts/run-phase.ts",
+    "preattest": "node scripts/check-workspace.mjs",
     "attest": "tsx src/index.ts",
     "bench": "tsx scripts/bench.ts",
     "verify-proofs": "tsx scripts/verify-proofs.ts",

@@ -4,3 +4,4 @@ proofs/** -text
 test/fixtures/golden/** -text
 # The replay baseline is compared byte-for-byte (LF only): preserve line endings.
 docs/harness/replay-baseline.txt -text
+docs/harness/replay-baseline-v2.txt -text
